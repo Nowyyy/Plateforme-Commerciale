@@ -41,3 +41,4 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 - Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`.
 - Lighthouse ne fonctionne que sur http://localhost, pas sur file://.
 - Le réseau sortant est filtré par un proxy.
+- Le push de tag est refusé (403) : le tag se pose à la main.

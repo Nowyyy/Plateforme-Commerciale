@@ -3,7 +3,7 @@
 - Registre npm : ok (npm ping, installation de 7 paquets).
 - Navigateur Playwright : ok. Chromium préinstallé dans /opt/pw-browsers/chromium ; ne pas lancer « playwright install » ; lancer avec `executablePath: '/opt/pw-browsers/chromium'`.
 - Lighthouse en ligne de commande : ok sur http://localhost (échoue sur file://) ; `CHROME_PATH=/opt/pw-browsers/chromium` et `--no-sandbox`.
-- Push de branche : ok (main « Init », puis lot-0). Push de tag : non testé. Push de fichiers de workflow : non testé.
+- Push de branche : ok (main « Init », puis lot-0). Push de tag : refusé (HTTP 403). Push de fichier de workflow : ok.
 - Réseau sortant filtré par un proxy (www.google.com refusé) : aucun appel externe fiable.
 
 ## Dépendances de développement (versions exactes)
