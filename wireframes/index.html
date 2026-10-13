@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Wireframes Lo-Fi — lot 1</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body class="wf">
+  <nav class="wf-revue" aria-label="Revue des wireframes">
+    <ul>
+      <li><a href="index.html" aria-current="page">Index des wireframes</a></li>
+      <li><a href="accueil.html">Écran 1 — Accueil</a></li>
+      <li><a href="diagnostic.html">Écran 2 — Diagnostic</a></li>
+      <li><a href="produit.html">Écran 3 — Fiche produit</a></li>
+      <li><a href="panier.html">Écran 4 — Panier</a></li>
+    </ul>
+  </nav>
+  <aside class="wf-bandeau" aria-label="Démonstrateur">Démonstrateur : contenus fictifs, aucune vente</aside>
+  <header class="wf-conteneur wf-entete-page">
+    <p class="wf-note">Validation d'agencement avant le Hi-Fi : niveaux de gris, sans contenu final.</p>
+  </header>
+  <main class="wf-conteneur wf-ecran">
+    <h1>Wireframes Lo-Fi — lot 1</h1>
+
+    <section class="wf-bloc" aria-labelledby="ecrans">
+      <h2 id="ecrans">Les 4 écrans</h2>
+      <ul>
+        <li><a href="accueil.html">Écran 1 — Accueil</a></li>
+        <li><a href="diagnostic.html">Écran 2 — Diagnostic</a></li>
+        <li><a href="produit.html">Écran 3 — Fiche produit</a></li>
+        <li><a href="panier.html">Écran 4 — Panier</a></li>
+      </ul>
+      <p>Chaque écran se lit à 375 px (mobile), 768 px (intermédiaire) et 1440 px (large).</p>
+    </section>
+
+    <section class="wf-bloc" aria-labelledby="legende">
+      <h2 id="legende">Légende</h2>
+      <p>Chaque bloc porte un code visible <span class="wf-code">E&lt;écran&gt;-&lt;n&gt;</span> (par exemple E3-5 : écran 3, bloc 5), un titre court et une note d'une ligne sur sa fonction.</p>
+      <ul class="wf-grille wf-grille--5">
+        <li class="wf-carte"><div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div><p class="wf-annotation">Image</p></li>
+        <li class="wf-carte"><div class="wf-emplacement wf-ratio-4-3"><span>[Vidéo]</span></div><p class="wf-annotation">Vidéo</p></li>
+        <li class="wf-carte"><div class="wf-emplacement wf-ratio-4-3"><span>[Carte]</span></div><p class="wf-annotation">Carte</p></li>
+        <li class="wf-carte"><div class="wf-emplacement wf-ratio-4-3"><span>[Schéma]</span></div><p class="wf-annotation">Schéma</p></li>
+        <li class="wf-carte"><div class="wf-emplacement wf-ratio-4-3"><span>[Logo exemple]</span></div><p class="wf-annotation">Logo (et « [Badge exemple] » pour un badge)</p></li>
+      </ul>
+      <p>Les états alternatifs sont affichés statiquement, côte à côte sur grand écran et empilés sur mobile, étiquetés :</p>
+      <div class="wf-variantes">
+        <div class="wf-variante"><p class="wf-variante-etiquette">Variante a</p><p class="wf-annotation">Premier état.</p></div>
+        <div class="wf-variante"><p class="wf-variante-etiquette">Variante b</p><p class="wf-annotation">Deuxième état.</p></div>
+      </div>
+    </section>
+
+    <section class="wf-bloc" aria-labelledby="consignes">
+      <h2 id="consignes">Consignes de validation</h2>
+      <ol>
+        <li>Tous les éléments du cahier des charges sont-ils présents ?</li>
+        <li>L'ordre sur mobile est-il correct ?</li>
+        <li>Quels blocs faut-il déplacer, supprimer ou ajouter ? Les désigner par leur code (par exemple E2-4).</li>
+      </ol>
+    </section>
+
+    <p><a href="../index.html">Retour à la page d'attente</a></p>
+  </main>
+  <footer class="wf-conteneur wf-entete-page">
+    <p class="wf-note">Rappel : aucune vente. Les wireframes sont jetables.</p>
+  </footer>
+</body>
+</html>

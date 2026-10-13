@@ -42,7 +42,7 @@ jobs:
       - name: Préparer la partie statique
         run: |
           mkdir site
-          cp -r index.html css assets site/
+          cp -r index.html css assets wireframes site/
           if [ -d data ]; then cp -r data site/; fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

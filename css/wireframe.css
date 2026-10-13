@@ -1,0 +1,355 @@
+/*
+  Wireframes Lo-Fi (lot 1) : niveaux de gris, jetables.
+  Couleurs : uniquement les jetons --wf-gris-* (css/tokens.css).
+
+  Points de rupture (mobile d'abord, une colonne par défaut) :
+    < 768 px      : mobile, une colonne (conception à partir de 375 px)
+    768 - 1199 px : intermédiaire, grilles de cartes à 2 colonnes, écrans restent en 1 colonne
+    >= 1200 px    : large (cible 1440 px), conteneur de 1280 px au plus, centré,
+                    colonnes d'écran et grilles de cartes complètes
+  Les variables CSS ne servent pas dans @media : les valeurs sont écrites ici.
+*/
+
+body.wf {
+  background: var(--wf-gris-1);
+  color: var(--wf-gris-6);
+}
+
+.wf :focus-visible {
+  outline: 3px solid var(--wf-gris-6);
+  outline-offset: 3px;
+}
+
+.wf a {
+  color: var(--wf-gris-6);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.wf h1 {
+  font-size: var(--text-xl);
+}
+
+.wf h2 {
+  margin: 0;
+  font-size: var(--text-lg);
+}
+
+.wf h3 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-base);
+}
+
+/* Conteneur centré, 1280 px au plus */
+.wf-conteneur {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+/* Barre de revue (hors blocs) */
+.wf-revue {
+  background: var(--wf-gris-6);
+  color: var(--wf-gris-0);
+  font-size: var(--text-sm);
+}
+
+.wf-revue ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  list-style: none;
+}
+
+.wf-revue a {
+  color: var(--wf-gris-0);
+}
+
+.wf-revue a[aria-current="page"] {
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2px solid var(--wf-gris-0);
+}
+
+/* Bandeau démonstrateur */
+.wf-bandeau {
+  padding: var(--space-2) var(--space-4);
+  background: var(--wf-gris-5);
+  color: var(--wf-gris-0);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Écran : grille de blocs */
+.wf-ecran {
+  display: grid;
+  gap: var(--space-4);
+  padding-block: var(--space-5);
+}
+
+.wf-ecran > h1 {
+  margin: 0;
+}
+
+.wf-colonne {
+  display: contents; /* mobile : l'ordre du DOM fait foi */
+}
+
+/* Bloc */
+.wf-bloc {
+  border: 2px solid var(--wf-gris-4);
+  background: var(--wf-gris-0);
+  padding: var(--space-4);
+  min-width: 0;
+}
+
+.wf-bloc-tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.wf-code {
+  padding: 0 var(--space-2);
+  background: var(--wf-gris-6);
+  color: var(--wf-gris-0);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.wf-titre {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+}
+
+.wf-note {
+  flex-basis: 100%;
+  margin: 0;
+  color: var(--wf-gris-5);
+  font-size: var(--text-sm);
+  font-style: italic;
+}
+
+.wf-annotation {
+  margin: var(--space-2) 0 0;
+  color: var(--wf-gris-5);
+  font-size: var(--text-sm);
+  font-style: italic;
+}
+
+.wf-avenir {
+  margin: 0;
+  padding: var(--space-5);
+  border: 2px dashed var(--wf-gris-4);
+  color: var(--wf-gris-5);
+  text-align: center;
+}
+
+/* Emplacements : rectangle avec croix diagonale */
+.wf-emplacement {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 7rem;
+  border: 2px solid var(--wf-gris-4);
+  background:
+    linear-gradient(to top right, transparent calc(50% - 1px), var(--wf-gris-4) 50%, transparent calc(50% + 1px)),
+    linear-gradient(to bottom right, transparent calc(50% - 1px), var(--wf-gris-4) 50%, transparent calc(50% + 1px)),
+    var(--wf-gris-2);
+  color: var(--wf-gris-6);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.wf-emplacement > span {
+  padding: 0 var(--space-2);
+  background: var(--wf-gris-2);
+}
+
+.wf-ratio-16-9 {
+  aspect-ratio: 16 / 9;
+  min-height: 0;
+}
+
+.wf-ratio-4-3 {
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+}
+
+.wf-ratio-1 {
+  aspect-ratio: 1;
+  min-height: 0;
+}
+
+/* Variantes (états alternatifs statiques) : empilées sur mobile, côte à côte sur grand écran */
+.wf-variantes {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.wf-variante {
+  padding: var(--space-3);
+  border: 2px dashed var(--wf-gris-4);
+  min-width: 0;
+}
+
+.wf-variante-etiquette {
+  display: inline-block;
+  margin: 0 0 var(--space-2);
+  padding: 0 var(--space-2);
+  background: var(--wf-gris-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+/* Grilles de cartes */
+.wf-grille {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wf-carte {
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--wf-gris-4);
+  background: var(--wf-gris-1);
+}
+
+/* Boutons et champs (apparence seulement) */
+.wf-bouton {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border: 2px solid var(--wf-gris-6);
+  background: var(--wf-gris-0);
+  color: var(--wf-gris-6);
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.wf a.wf-bouton {
+  text-decoration: none;
+}
+
+/* En-tête de site (bloc E<n>-1) et pied de page (dernier bloc) */
+.wf-entete-site {
+  border-width: 0 0 2px;
+  padding-inline: 0;
+}
+
+.wf-entete-site .wf-conteneur,
+.wf-pied .wf-conteneur {
+  padding-block: var(--space-3);
+}
+
+.wf-entete-ligne {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.wf-entete-ligne .wf-emplacement {
+  min-height: 3rem;
+  padding: 0 var(--space-4);
+}
+
+.wf-nav-site ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wf-nav-site {
+  display: none; /* mobile : navigation repliée derrière le bouton « Menu » */
+}
+
+.wf-pied {
+  margin-top: var(--space-5);
+  border-width: 2px 0 0;
+  padding-inline: 0;
+}
+
+.wf-pied-colonnes {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.wf-pied-colonnes p {
+  margin: 0;
+}
+
+/* Intermédiaire : 768 px et plus */
+@media (min-width: 768px) {
+  .wf h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .wf-grille--2,
+  .wf-grille--4,
+  .wf-grille--5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wf-grille--3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .wf-nav-site {
+    display: block;
+  }
+
+  .wf-menu-bouton {
+    display: none;
+  }
+
+  .wf-bloc {
+    padding: var(--space-5);
+  }
+}
+
+/* Large : 1200 px et plus (cible 1440 px, conteneur de 1280 px au plus) */
+@media (min-width: 1200px) {
+  .wf-grille--4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .wf-grille--5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .wf-variantes {
+    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+    grid-auto-flow: column;
+  }
+
+  .wf-pied-colonnes {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Pages sans bloc d'en-tête (index des wireframes) */
+.wf-entete-page {
+  padding-block: var(--space-3);
+}
