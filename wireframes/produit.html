@@ -25,8 +25,8 @@
     <div class="wf-conteneur">
       <div class="wf-bloc-tete">
         <span class="wf-code">E3-1</span>
-        <p class="wf-titre">En-tête</p>
-        <p class="wf-note">Identité et navigation du site ; seul « Panier » est cliquable.</p>
+        <p class="wf-titre">En-tête et fil d'Ariane</p>
+        <p class="wf-note">Identité, navigation et fil d'Ariane ; « Panier » et le fil sont cliquables.</p>
       </div>
       <div class="wf-entete-ligne">
         <div class="wf-emplacement"><span>[Logo exemple]</span></div>
@@ -39,11 +39,150 @@
           </ul>
         </nav>
       </div>
+      <nav class="wf-fil" aria-label="Fil d'Ariane">
+        <ol>
+          <li><a href="accueil.html">Accueil</a></li>
+          <li><a href="diagnostic.html">Diagnostic</a></li>
+          <li aria-current="page">Batardeau</li>
+        </ol>
+      </nav>
     </div>
   </header>
-  <main class="wf-conteneur wf-ecran">
+  <main class="wf-conteneur wf-ecran wf-ecran--2col wf-ecran--60">
     <h1>Écran 3 — Fiche produit (wireframe Lo-Fi)</h1>
-    <p class="wf-avenir">Contenu à venir (blocs E3-2 à E3-7, parties suivantes du lot 1)</p>
+    <div class="wf-colonne">
+    <section class="wf-bloc" data-bloc="E3-2" aria-labelledby="t-E3-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E3-2</span>
+        <h2 class="wf-titre" id="t-E3-2">Galerie et vidéo</h2>
+        <p class="wf-note">Visuels du produit et vidéo de crash-test.</p>
+      </div>
+      <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+      <ul class="wf-vignettes">
+          <li><div class="wf-emplacement wf-ratio-1"><span>[Image]</span></div></li>
+          <li><div class="wf-emplacement wf-ratio-1"><span>[Image]</span></div></li>
+          <li><div class="wf-emplacement wf-ratio-1"><span>[Image]</span></div></li>
+          <li><div class="wf-emplacement wf-ratio-1"><span>[Vidéo]</span></div></li>
+      </ul>
+      <p class="wf-annotation">Image principale et 4 vignettes (3 images, 1 vidéo de crash-test).</p>
+    </section>
+    </div>
+    <div class="wf-colonne">
+    <section class="wf-bloc" data-bloc="E3-3" aria-labelledby="t-E3-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E3-3</span>
+        <h2 class="wf-titre" id="t-E3-3">Achat</h2>
+        <p class="wf-note">Identité, prix et délai du produit.</p>
+      </div>
+      <h3>Batardeau modulable [exemple]</h3>
+      <p>Référence : EX-000</p>
+      <p class="wf-prix">000 € TTC</p>
+      <p>Délai de livraison directe usine : 00 jours</p>
+      <ul class="wf-badges">
+        <li><div class="wf-emplacement "><span>[Badge exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Badge exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Badge exemple]</span></div></li>
+      </ul>
+    </section>
+    <section class="wf-bloc" data-bloc="E3-4" aria-labelledby="t-E3-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E3-4</span>
+        <h2 class="wf-titre" id="t-E3-4">Mode de commande</h2>
+        <p class="wf-note">Bascule entre matériel seul et pose par un artisan.</p>
+      </div>
+      <div class="wf-variantes wf-variantes--pile">
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante a</p>
+          <h3>Matériel seul (DIY)</h3>
+          <p>Expédition directe.</p>
+        </div>
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante b</p>
+          <h3>Matériel + pose par un artisan partenaire</h3>
+          <p>Estimation du coût de pose : 000 €</p>
+          <p>Garantie décennale</p>
+        </div>
+      </div>
+    </section>
+    </div>
+    <section class="wf-bloc wf-pleine" data-bloc="E3-5" aria-labelledby="t-E3-5">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E3-5</span>
+        <h2 class="wf-titre" id="t-E3-5">Configurateur de cotes</h2>
+        <p class="wf-note">Saisie des cotes et faisabilité avant l'ajout au panier.</p>
+      </div>
+      <div class="wf-configurateur">
+        <div>
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Schéma]</span></div>
+          <p class="wf-annotation">Schéma annoté : A = largeur de tableau, B = hauteur de seuil, tolérance en mm.</p>
+        </div>
+        <div>
+          <div class="wf-champs">
+          <div class="wf-champ">
+            <label for="cote-a">Largeur du tableau A (mm)</label>
+            <input type="number" id="cote-a" name="cote-a" inputmode="numeric">
+          </div>
+          <div class="wf-champ">
+            <label for="cote-b">Hauteur de seuil B (mm)</label>
+            <input type="number" id="cote-b" name="cote-b" inputmode="numeric">
+          </div>
+          <div class="wf-champ">
+            <label for="cote-tol">Tolérance (mm)</label>
+            <input type="number" id="cote-tol" name="cote-tol" inputmode="numeric">
+          </div>
+          </div>
+          <div class="wf-variantes wf-faisabilite">
+            <div class="wf-variante">
+              <p class="wf-variante-etiquette">Variante a</p>
+              <p>Saisir les cotes</p>
+            </div>
+            <div class="wf-variante">
+              <p class="wf-variante-etiquette">Variante b</p>
+              <div class="wf-ligne-icone"><span class="wf-icone"><span class="wf-emplacement"><span>[Icône]</span></span></span> Compatible</div>
+            </div>
+            <div class="wf-variante">
+              <p class="wf-variante-etiquette">Variante c</p>
+              <div class="wf-ligne-icone"><span class="wf-icone"><span class="wf-emplacement"><span>[Icône]</span></span></span> Hors tolérance</div>
+            </div>
+          </div>
+          <a class="wf-bouton" href="panier.html">Ajouter au panier</a>
+          <p class="wf-annotation">Inactif tant que les cotes ne sont pas compatibles (version interactive).</p>
+        </div>
+      </div>
+    </section>
+    <section class="wf-bloc wf-pleine" data-bloc="E3-6" aria-labelledby="t-E3-6">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E3-6</span>
+        <h2 class="wf-titre" id="t-E3-6">Spécifications d'ingénierie</h2>
+        <p class="wf-note">Caractéristiques techniques certifiées.</p>
+      </div>
+      <table class="wf-specs">
+        <thead><tr><th scope="col">Icône</th><th scope="col">Caractéristique</th><th scope="col">Valeur</th></tr></thead>
+        <tbody>
+          <tr><td><span class="wf-icone"><span class="wf-emplacement"><span>[Icône]</span></span></span></td><td>Résistance hydrostatique certifiée</td><td>000 (unité)</td></tr>
+          <tr><td><span class="wf-icone"><span class="wf-emplacement"><span>[Icône]</span></span></span></td><td>Temps de déploiement (minutes)</td><td>00 min</td></tr>
+          <tr><td><span class="wf-icone"><span class="wf-emplacement"><span>[Icône]</span></span></span></td><td>Garantie anticorrosion</td><td>00 ans</td></tr>
+          <tr><td><span class="wf-icone"><span class="wf-emplacement"><span>[Icône]</span></span></span></td><td>Conformité aux normes</td><td>Norme exemple 000</td></tr>
+        </tbody>
+      </table>
+    </section>
+    <section class="wf-bloc wf-pleine" data-bloc="E3-7" aria-labelledby="t-E3-7">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E3-7</span>
+        <h2 class="wf-titre" id="t-E3-7">Documents officiels</h2>
+        <p class="wf-note">Pièces justificatives, non liées dans ce wireframe.</p>
+      </div>
+      <div class="wf-documents">
+        <div>
+          <button type="button" class="wf-bouton">PV d'essais en laboratoire (PDF) [exemple]</button>
+          <p class="wf-annotation">Fichier fictif prévu au lot 7.</p>
+        </div>
+        <div>
+          <button type="button" class="wf-bouton">Notice technique (PDF) [exemple]</button>
+          <p class="wf-annotation">Fichier fictif prévu au lot 7.</p>
+        </div>
+      </div>
+    </section>
   </main>
   <footer class="wf-bloc wf-pied" data-bloc="E3-8">
     <div class="wf-conteneur">

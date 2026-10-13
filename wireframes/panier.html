@@ -25,8 +25,8 @@
     <div class="wf-conteneur">
       <div class="wf-bloc-tete">
         <span class="wf-code">E4-1</span>
-        <p class="wf-titre">En-tête</p>
-        <p class="wf-note">Identité et navigation du site ; seul « Panier » est cliquable.</p>
+        <p class="wf-titre">En-tête et étapes</p>
+        <p class="wf-note">Identité, navigation et indicateur d'étapes (étape 1 repérée).</p>
       </div>
       <div class="wf-entete-ligne">
         <div class="wf-emplacement"><span>[Logo exemple]</span></div>
@@ -39,11 +39,79 @@
           </ul>
         </nav>
       </div>
+      <ol class="wf-etapes" aria-label="Étapes de la commande">
+        <li aria-current="step">1 Panier</li>
+        <li>2 Validation</li>
+        <li>3 Paiement</li>
+      </ol>
     </div>
   </header>
-  <main class="wf-conteneur wf-ecran">
+  <main class="wf-conteneur wf-ecran wf-ecran--2col">
     <h1>Écran 4 — Panier (wireframe Lo-Fi)</h1>
-    <p class="wf-avenir">Contenu à venir (blocs E4-2 à E4-5, parties suivantes du lot 1)</p>
+    <div class="wf-colonne">
+    <section class="wf-bloc" data-bloc="E4-2" aria-labelledby="t-E4-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E4-2</span>
+        <h2 class="wf-titre" id="t-E4-2">Récapitulatif technique</h2>
+        <p class="wf-note">Article, cotes saisies et prix.</p>
+      </div>
+      <div class="wf-article">
+        <div class="wf-emplacement wf-ratio-1"><span>[Image]</span></div>
+        <div>
+          <h3>Batardeau modulable [exemple]</h3>
+          <p>Mode choisi : Matériel seul (DIY)</p>
+        </div>
+      </div>
+      <h3>Cotes saisies</h3>
+      <ul class="wf-liste">
+        <li>Largeur : 000 mm</li>
+        <li>Hauteur : 000 mm</li>
+        <li>Tolérance : 00 mm</li>
+      </ul>
+      <div class="wf-emplacement wf-ratio-4-3"><span>[Schéma]</span></div>
+      <p class="wf-prix">000 € TTC</p>
+      <a href="produit.html">Modifier mes cotes</a>
+    </section>
+    <section class="wf-bloc" data-bloc="E4-3" aria-labelledby="t-E4-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E4-3</span>
+        <h2 class="wf-titre" id="t-E4-3">Validation de responsabilité</h2>
+        <p class="wf-note">Confirmation des mesures par le client.</p>
+      </div>
+      <div class="wf-case">
+        <input type="checkbox" id="confirmation-mesures" name="confirmation-mesures">
+        <label for="confirmation-mesures">Je confirme l'exactitude des mesures fournies</label>
+      </div>
+      <div class="wf-emplacement wf-ratio-4-3"><span>[Schéma]</span></div>
+      <p class="wf-annotation">Validation inactive tant que la case n'est pas cochée (version interactive).</p>
+    </section>
+    </div>
+    <div class="wf-colonne">
+    <section class="wf-bloc" data-bloc="E4-4" aria-labelledby="t-E4-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E4-4</span>
+        <h2 class="wf-titre" id="t-E4-4">Total</h2>
+        <p class="wf-note">Montants et validation de la commande.</p>
+      </div>
+      <dl class="wf-totaux">
+        <div><dt>Sous-total matériel</dt><dd>000 €</dd></div>
+        <div><dt>Pose (si option)</dt><dd>000 €</dd></div>
+        <div class="wf-total-ttc"><dt>Total TTC</dt><dd>000 €</dd></div>
+      </dl>
+      <button type="button" class="wf-bouton">Valider ma commande</button>
+      <p class="wf-annotation">Aucun paiement réel.</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E4-5" aria-labelledby="t-E4-5">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E4-5</span>
+        <h2 class="wf-titre" id="t-E4-5">Paiement sécurisé et SAV</h2>
+        <p class="wf-note">Réassurance bancaire et prise en charge après-vente.</p>
+      </div>
+      <div class="wf-emplacement "><span>[Logo exemple]</span></div>
+      <p class="wf-annotation">Tiers de confiance bancaire (aucun vrai logo).</p>
+      <p>Texte provisoire : la plateforme prend en charge le service après-vente de votre commande.</p>
+    </section>
+    </div>
   </main>
   <footer class="wf-bloc wf-pied" data-bloc="E4-6">
     <div class="wf-conteneur">

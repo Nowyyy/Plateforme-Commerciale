@@ -615,3 +615,238 @@ body.wf {
 .wf-carte .wf-emplacement + h3 {
   margin-top: var(--space-3);
 }
+
+/* --- Lot 1-C : fiche produit et panier --- */
+.wf-fil ol,
+.wf-etapes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.wf-fil li + li::before {
+  content: ">";
+  margin-right: var(--space-2);
+}
+
+.wf-etapes li {
+  padding: var(--space-1) var(--space-3);
+  border: 2px solid var(--wf-gris-4);
+}
+
+.wf-etapes li[aria-current="step"] {
+  border-color: var(--wf-gris-6);
+  background: var(--wf-gris-6);
+  color: var(--wf-gris-0);
+  font-weight: 600;
+}
+
+.wf-vignettes {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wf-vignettes .wf-emplacement {
+  padding: 0;
+  font-size: var(--text-xs);
+}
+
+.wf-vignettes .wf-emplacement > span {
+  padding: 0 var(--space-1);
+}
+
+.wf-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wf-badges .wf-emplacement {
+  min-height: 2.5rem;
+  padding: 0 var(--space-2);
+}
+
+.wf-prix {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+
+.wf-icone {
+  display: inline-flex;
+  width: 2.5rem;
+  min-height: 2.5rem;
+  vertical-align: middle;
+}
+
+.wf-icone .wf-emplacement {
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0;
+  font-size: var(--text-xs);
+}
+
+.wf-configurateur {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.wf-champs {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-4);
+}
+
+.wf-faisabilite {
+  margin: 0 0 var(--space-4);
+}
+
+.wf-ligne-icone {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.wf-specs {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wf-specs th,
+.wf-specs td {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--wf-gris-4);
+  text-align: left;
+}
+
+/* Mobile : lignes empilées, sans défilement horizontal */
+.wf-specs thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.wf-specs tr,
+.wf-specs td {
+  display: block;
+}
+
+.wf-specs tr {
+  margin-bottom: var(--space-3);
+}
+
+.wf-documents {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.wf-documents .wf-bouton {
+  border-style: dashed;
+  font-family: var(--font-data);
+  font-weight: 400;
+}
+
+.wf-totaux {
+  margin: 0 0 var(--space-3);
+}
+
+.wf-totaux div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--wf-gris-3);
+}
+
+.wf-totaux dt,
+.wf-totaux dd {
+  margin: 0;
+}
+
+.wf-totaux .wf-total-ttc {
+  font-weight: 800;
+}
+
+.wf-article {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  margin-bottom: var(--space-3);
+}
+
+.wf-case {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.wf-case input {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: none;
+  accent-color: var(--wf-gris-6);
+}
+
+.wf-variantes--pile {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .wf-documents {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wf-specs thead {
+    position: static;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip-path: none;
+  }
+
+  .wf-specs tr {
+    display: table-row;
+    margin: 0;
+  }
+
+  .wf-specs td {
+    display: table-cell;
+  }
+
+  .wf-specs th:first-child,
+  .wf-specs td:first-child {
+    width: 4.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .wf-ecran--60 {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+
+  .wf-variantes--pile {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-flow: row;
+  }
+
+  .wf-configurateur {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}

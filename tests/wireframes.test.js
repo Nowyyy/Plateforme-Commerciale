@@ -87,3 +87,32 @@ describe('wireframes : accueil et diagnostic', () => {
     expect(bloc(accueil, 'E1-3')).toContain('href="diagnostic.html"');
   });
 });
+
+describe('wireframes : fiche produit, panier et parcours', () => {
+  const produit = lire('produit');
+  const panier = lire('panier');
+
+  it('produit contient exactement une fois chacun des codes E3-1 à E3-8', () => {
+    exactementUneFois(produit, Array.from({ length: 8 }, (_, i) => `E3-${i + 1}`));
+  });
+
+  it('panier contient exactement une fois chacun des codes E4-1 à E4-6', () => {
+    exactementUneFois(panier, Array.from({ length: 6 }, (_, i) => `E4-${i + 1}`));
+  });
+
+  it('E3-5 a 3 champs numériques avec label et 3 variantes de faisabilité ; E3-4 a 2 variantes', () => {
+    const e35 = bloc(produit, 'E3-5');
+    const champs = [...e35.matchAll(/<input type="number" id="([^"]+)"/g)].map((m) => m[1]);
+    expect(champs).toHaveLength(3);
+    for (const id of champs) expect(e35).toContain(`<label for="${id}">`);
+    expect(e35.match(/<div class="wf-variante">/g)).toHaveLength(3);
+    expect(bloc(produit, 'E3-4').match(/<div class="wf-variante">/g)).toHaveLength(2);
+  });
+
+  it('les liens du parcours existent : E1-3, E2-5, E3-5 et E4-2', () => {
+    expect(bloc(lire('accueil'), 'E1-3')).toContain('href="diagnostic.html"');
+    expect(bloc(lire('diagnostic'), 'E2-5')).toContain('href="produit.html"');
+    expect(bloc(produit, 'E3-5')).toContain('href="panier.html"');
+    expect(bloc(panier, 'E4-2')).toContain('href="produit.html"');
+  });
+});
