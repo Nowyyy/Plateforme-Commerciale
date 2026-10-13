@@ -10,7 +10,7 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 - `assets/fonts/` : polices woff2 (OFL) ; `data/` : à créer avec le premier fichier de données
 - `tests/` : tests Vitest ; `tests/e2e/` Playwright ; `tests/outils/` serveur local et Lighthouse
 - `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références)
-- `.github/workflows/` : publication Pages
+- `.github/workflows/pages.yml` : vérifications (PR, push) et publication Pages (push sur main)
 
 ## Commandes vérifiées
 - `npm ci` : installe les outils de développement
