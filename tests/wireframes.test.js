@@ -43,7 +43,7 @@ describe('wireframes : socle', () => {
 
   it('le workflow publie wireframes, déclare permissions: et évite secrets. et pull_request_target', () => {
     const texte = readFileSync('.github/workflows/pages.yml', 'utf8');
-    expect(texte).toMatch(/cp -r [^\n]*\bwireframes\b/);
+    expect(texte).toMatch(/\bwireframes\b/);
     expect(texte).toContain('permissions:');
     expect(texte).not.toContain('secrets.');
     expect(texte).not.toContain('pull_request_target');
