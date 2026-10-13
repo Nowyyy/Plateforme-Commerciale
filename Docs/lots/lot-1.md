@@ -6,6 +6,12 @@
 - 20 tests Playwright verts : 15 (5 pages × 375, 768, 1440 px : console propre, aucun débordement, axe sans violation, aucune requête externe) + 3 page d'attente + 2 parcours cliqué (375 et 1440 px, jusqu'au panier).
 - Captures des 5 pages vues aux 3 largeurs.
 - Lighthouse mobile (performance / accessibilité / bonnes pratiques) : index 100/100/100 ; accueil 99/100/100 ; diagnostic 100/100/100 ; produit 99/100/100 ; panier 100/100/100 (seuils 90 / 95 / 95 ; SEO exclu, pages `noindex`).
+**Adresses (site `https://nowyyy.github.io/Plateforme-Commerciale/`)** :
+- Racine `/` : contenu de `main` (production, page d'attente tant que `lot-1` n'est pas fusionné).
+- `/lot-1/` : aperçu de la branche `lot-1`, redirige vers `/lot-1/wireframes/` (page principale du lot, lue dans `apercu.txt`). Après fusion, `/wireframes/` existe aussi à la racine.
+- `/apercus/` : liste des aperçus de lots. Pages directes : `/lot-1/wireframes/accueil.html`, `diagnostic.html`, `produit.html`, `panier.html`.
+- Règle durable : l'adresse par lot `/lot-N/` doit rester en place pour tous les autres lots (une branche `lot-N` + son `apercu.txt` suffisent) ; la page d'attente d'un lot y devient `attente.html`.
+**Autorisation** : le propriétaire m'a donné l'autorisation explicite de modifier le workflow de publication de `main` (`.github/workflows/pages.yml`) et les réglages GitHub nécessaires (environnement `github-pages` : branches `main` et `lot-*` autorisées, fait par lui) pour obtenir une page par lot (commits 1-D et 1-E).
 **Points ouverts** : push du tag `lot-1` tenté une fois (refus attendu, voir message final) ; workflow non exécuté avant la fusion ; `tests/outils/lighthouse.mjs` accepte désormais des chemins de pages en arguments.
 
 ## Choix d'agencement à valider

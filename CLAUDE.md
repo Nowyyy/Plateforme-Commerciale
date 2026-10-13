@@ -27,6 +27,7 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 ## Règles durables
 - Dépendances de développement seulement, versions exactes ; toute nouvelle dépendance est signalée et justifiée.
 - Rien de contenu en dur : textes, liens, réglages dans des fichiers de données ou de configuration. Exception : les wireframes sont jetables, les annotations en dur sont permises dans `wireframes/` seulement ; les vrais textes passent en `data/` à partir du lot 2 ; les jetons `--wf-*` sont réservés aux wireframes.
+- L'aperçu par lot `/lot-N/` (publication par branche, `apercu.txt`) reste en place pour tous les lots ; ne pas le retirer ni modifier le workflow ou les réglages GitHub sans accord explicite du propriétaire.
 - Aucune couleur en dur hors `css/tokens.css`.
 - Chemins relatifs partout (site servi sous `/<dépôt>/`).
 - Contenus fictifs, aucun vrai logo, aucun traceur, aucune police ni script externe.
