@@ -49,3 +49,41 @@ describe('wireframes : socle', () => {
     expect(texte).not.toContain('pull_request_target');
   });
 });
+
+function bloc(html, code) {
+  const debut = html.indexOf(`data-bloc="${code}"`);
+  const fin = html.indexOf('data-bloc="', debut + 1);
+  return html.slice(debut, fin === -1 ? html.length : fin);
+}
+
+function exactementUneFois(html, codes) {
+  for (const code of codes) {
+    expect(html.split(`data-bloc="${code}"`).length - 1, code).toBe(1);
+  }
+}
+
+describe('wireframes : accueil et diagnostic', () => {
+  const accueil = lire('accueil');
+  const diagnostic = lire('diagnostic');
+
+  it('accueil contient exactement une fois chacun des codes E1-1 à E1-8', () => {
+    exactementUneFois(accueil, Array.from({ length: 8 }, (_, i) => `E1-${i + 1}`));
+  });
+
+  it('diagnostic contient exactement une fois E2-1 à E2-6, et E2-5 contient 3 cartes', () => {
+    exactementUneFois(diagnostic, Array.from({ length: 6 }, (_, i) => `E2-${i + 1}`));
+    const e25 = bloc(diagnostic, 'E2-5');
+    expect(e25.match(/<li class="wf-carte"/g)).toHaveLength(3);
+  });
+
+  it('E1-5 a les 4 aléas et un lien vers diagnostic.html par carte ; E1-3 a un lien vers diagnostic.html', () => {
+    const e15 = bloc(accueil, 'E1-5');
+    for (const titre of ['Inondations et crues', 'Grêle et vents violents', 'Feux de forêt', 'Canicule et chaleur extrême']) {
+      expect(e15).toContain(`<h3>${titre}</h3>`);
+    }
+    const cartes = e15.split('<li class="wf-carte"').slice(1);
+    expect(cartes).toHaveLength(4);
+    for (const carte of cartes) expect(carte).toContain('href="diagnostic.html"');
+    expect(bloc(accueil, 'E1-3')).toContain('href="diagnostic.html"');
+  });
+});

@@ -43,7 +43,107 @@
   </header>
   <main class="wf-conteneur wf-ecran">
     <h1>Écran 1 — Accueil (wireframe Lo-Fi)</h1>
-    <p class="wf-avenir">Contenu à venir (blocs E1-2 à E1-7, parties suivantes du lot 1)</p>
+    <section class="wf-bloc" data-bloc="E1-2" aria-labelledby="t-E1-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-2</span>
+        <h2 class="wf-titre" id="t-E1-2">Hero</h2>
+        <p class="wf-note">Promesse du site : préserver le patrimoine.</p>
+      </div>
+      <p class="wf-titre-provisoire">Titre provisoire : préserver votre patrimoine face aux aléas climatiques</p>
+      <p class="wf-accroche">Phrase d'accroche provisoire : des équipements certifiés, choisis pour votre maison.</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-3" aria-labelledby="t-E1-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-3</span>
+        <h2 class="wf-titre" id="t-E1-3">Recherche d'adresse</h2>
+        <p class="wf-note">Point d'entrée du parcours : adresse puis diagnostic.</p>
+      </div>
+      <div class="wf-recherche wf-recherche--ligne">
+        <div class="wf-champ">
+          <label for="adresse-e13">Entrez votre adresse pour évaluer l'exposition de votre maison aux aléas et voir les solutions adaptées</label>
+          <input type="text" id="adresse-e13" name="adresse" autocomplete="off">
+        </div>
+        <a class="wf-bouton" href="diagnostic.html">Évaluer</a>
+      </div>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-4" aria-labelledby="t-E1-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-4</span>
+        <h2 class="wf-titre" id="t-E1-4">Réassurance</h2>
+        <p class="wf-note">Preuves de confiance (CSTB, NF, CE, 2 assureurs).</p>
+      </div>
+      <ul class="wf-logos">
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+      </ul>
+      <p class="wf-annotation">Dans l'ordre : CSTB, NF, CE, assureur 1, assureur 2 (aucun vrai logo).</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-5" aria-labelledby="t-E1-5">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-5</span>
+        <h2 class="wf-titre" id="t-E1-5">Les 4 aléas</h2>
+        <p class="wf-note">Une carte par aléa, vers le diagnostic.</p>
+      </div>
+      <ul class="wf-grille wf-grille--4">
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Inondations et crues</h3>
+          <ul class="wf-liste"><li>Batardeaux</li><li>Clapets anti-retour</li><li>Barrières anti-crue</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Grêle et vents violents</h3>
+          <ul class="wf-liste"><li>Volets et stores résistants</li><li>Films de protection</li><li>Protections de toiture</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Feux de forêt</h3>
+          <ul class="wf-liste"><li>Grilles pare-braises</li><li>Volets coupe-feu</li><li>Pare-flammes de ventilation</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Canicule et chaleur extrême</h3>
+          <ul class="wf-liste"><li>Brise-soleil</li><li>Films solaires</li><li>Stores extérieurs</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+      </ul>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-6" aria-labelledby="t-E1-6">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-6</span>
+        <h2 class="wf-titre" id="t-E1-6">Comment ça marche</h2>
+        <p class="wf-note">Trois étapes du parcours.</p>
+      </div>
+      <ol class="wf-grille wf-grille--3">
+        <li class="wf-carte"><span class="wf-numero">1</span><h3>Diagnostic du bien</h3><p>Adresse ou cotes du bien.</p></li>
+        <li class="wf-carte"><span class="wf-numero">2</span><h3>Recommandation d'équipements</h3><p>Équipements certifiés d'usine.</p></li>
+        <li class="wf-carte"><span class="wf-numero">3</span><h3>Choix de pose</h3><p>DIY avec tutoriel ou artisan certifié.</p></li>
+      </ol>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-7" aria-labelledby="t-E1-7">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-7</span>
+        <h2 class="wf-titre" id="t-E1-7">Preuve : crash-test</h2>
+        <p class="wf-note">Vidéo et chiffres clés.</p>
+      </div>
+      <div class="wf-crash">
+        <figure>
+          <div class="wf-emplacement wf-ratio-16-9"><span>[Vidéo]</span></div>
+          <figcaption class="wf-annotation">Légende provisoire de la vidéo de crash-test.</figcaption>
+        </figure>
+        <ul class="wf-chiffres">
+          <li><p class="wf-chiffre">000</p><p>Chiffre clé 1 : libellé et unité à définir</p></li>
+          <li><p class="wf-chiffre">000</p><p>Chiffre clé 2 : libellé et unité à définir</p></li>
+          <li><p class="wf-chiffre">000</p><p>Chiffre clé 3 : libellé et unité à définir</p></li>
+        </ul>
+      </div>
+    </section>
   </main>
   <footer class="wf-bloc wf-pied" data-bloc="E1-8">
     <div class="wf-conteneur">
