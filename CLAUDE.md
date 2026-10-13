@@ -6,9 +6,9 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 
 ## Arborescence
 - `index.html` : page d'attente (lot 0)
-- `css/` : feuilles de style (jetons de design dans `tokens.css`)
-- `data/`, `assets/` : données et ressources
-- `tests/` : tests Vitest
+- `css/` : `tokens.css` (jetons), `base.css`, `attente.css`
+- `assets/fonts/` : polices woff2 (OFL) ; `data/` : à créer avec le premier fichier de données
+- `tests/` : tests Vitest ; `tests/e2e/` Playwright ; `tests/outils/` serveur local et Lighthouse
 - `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références)
 - `.github/workflows/` : publication Pages
 
@@ -16,6 +16,11 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 - `npm ci` : installe les outils de développement
 - `npm run lint` : ESLint
 - `npm test` : Vitest
+- `npm run e2e` : Playwright (captures dans `test-results/`)
+- `npm run lighthouse` : audit mobile et seuils
+
+## Seuils Lighthouse (mobile)
+Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (`tests/outils/seuils-lighthouse.json`).
 
 ## Règles durables
 - Dépendances de développement seulement, versions exactes ; toute nouvelle dépendance est signalée et justifiée.

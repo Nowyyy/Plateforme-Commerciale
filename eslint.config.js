@@ -5,6 +5,10 @@ export default [
   { ignores: ['node_modules/', 'dist/', 'coverage/', 'playwright-report/', 'test-results/', '.lighthouseci/'] },
   js.configs.recommended,
   {
+    files: ['tests/e2e/**/*.js'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
+  },
+  {
     languageOptions: {
       ecmaVersion: 2024,
       sourceType: 'module',
