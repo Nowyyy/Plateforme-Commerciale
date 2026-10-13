@@ -11,7 +11,8 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 - `assets/fonts/` : polices woff2 (OFL) ; `data/` : à créer avec le premier fichier de données
 - `tests/` : tests Vitest ; `tests/e2e/` Playwright ; `tests/outils/` serveur local et Lighthouse
 - `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références)
-- `.github/workflows/pages.yml` : vérifications (PR, push) et publication Pages (push sur main)
+- `.github/workflows/pages.yml` : vérifications (PR, push) et publication Pages (push sur `main` ou `lot-*`) : la racine du site est `main`, chaque branche `lot-N` est publiée sous `/lot-N/`, et `/lot-N/` redirige vers le chemin lu dans `apercu.txt` (racine de la branche, une ligne, ex. `wireframes/`) ; liste des aperçus sur `/apercus/`
+- `apercu.txt` : page principale du lot pour l'aperçu `/lot-N/`
 
 ## Commandes vérifiées
 - `npm ci` : installe les outils de développement

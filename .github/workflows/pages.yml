@@ -59,11 +59,21 @@ jobs:
           liens=""
           for ref in $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/lot-*'); do
             nom="${ref#origin/}"
-            copier "$ref" "site/lots/$nom"
-            liens="$liens<li><a href=\"$nom/\">$nom</a> (<a href=\"$nom/wireframes/\">wireframes</a>)</li>"
+            copier "$ref" "site/$nom"
+            # apercu.txt (racine de la branche) : page principale du lot, chemin relatif sûr
+            entree="$(git show "$ref:apercu.txt" 2>/dev/null | head -n1 | tr -d '\r' || true)"
+            if printf '%s' "$entree" | grep -Eq '^[A-Za-z0-9._/-]+$' && ! printf '%s' "$entree" | grep -q '\.\.'; then
+              # la page d'attente du lot devient attente.html ; /lot-N/ redirige vers la page principale
+              if [ -f "site/$nom/index.html" ]; then
+                mv "site/$nom/index.html" "site/$nom/attente.html"
+                grep -rl --include='*.html' '\.\./index\.html' "site/$nom" | xargs -r sed -i 's|\.\./index\.html|../attente.html|g'
+              fi
+              printf '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=%s"><title>Aperçu du %s</title></head><body><p><a href="%s">Aperçu du %s</a></p></body></html>' "$entree" "$nom" "$entree" "$nom" > "site/$nom/index.html"
+            fi
+            liens="$liens<li><a href=\"../$nom/\">$nom</a></li>"
           done
-          mkdir -p site/lots
-          printf '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Aperçus par lot</title></head><body><main><h1>Aperçus par lot</h1><p>Démonstrateur : contenus fictifs, aucune vente</p><ul>%s</ul></main></body></html>' "$liens" > site/lots/index.html
+          mkdir -p site/apercus
+          printf '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Aperçus par lot</title></head><body><main><h1>Aperçus par lot</h1><p>Démonstrateur : contenus fictifs, aucune vente</p><ul>%s</ul></main></body></html>' "$liens" > site/apercus/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
