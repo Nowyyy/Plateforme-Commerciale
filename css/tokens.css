@@ -1,0 +1,57 @@
+/*
+  Jetons de design : seul fichier où figurent des valeurs de couleur.
+  Points de rupture (documentation ; les variables CSS ne servent pas dans @media) :
+    mobile  : 390 px (conception à partir de 375 px)
+    tablette: 768 px
+    bureau  : 1440 px
+*/
+:root {
+  /* Couleurs du seed */
+  --color-navy: #0f1d38;
+  --color-green: #1b4332;
+  --color-bg: #f8fafc;
+  --color-amber: #d97706;
+
+  /* Teintes dérivées (aucun rouge) */
+  --color-text: var(--color-navy);
+  --color-text-secondary: #475569;
+  --color-border: #d5dce6;
+  --color-card: #ffffff;
+  --color-on-navy: #f8fafc;
+  --color-on-amber: var(--color-navy);
+  --color-focus: var(--color-green);
+
+  /* Polices */
+  --font-heading: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-data: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* Échelle de tailles */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.625rem;
+  --text-2xl: 2.125rem;
+  --text-3xl: 2.75rem;
+  --leading-tight: 1.2;
+  --leading-body: 1.6;
+
+  /* Espacements */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+
+  /* Rayons */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+
+  /* Ombres */
+  --shadow-sm: 0 1px 2px rgb(15 29 56 / 0.08);
+  --shadow-md: 0 4px 12px rgb(15 29 56 / 0.1);
+}
