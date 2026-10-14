@@ -94,10 +94,11 @@ describe('wireframes : accueil et diagnostic', () => {
     expect(accueil.indexOf('data-bloc="E1-10"')).toBeGreaterThan(accueil.indexOf('data-bloc="E1-9"'));
   });
 
-  it('E1-2 affiche la note globale et 5 lignes de répartition ; E1-6 couvre les gilets chauffant, refroidissant et anti-chute avec un lien par carte', () => {
+  it('E1-2 affiche 5 étoiles en carrés, la note, le nombre d\'avis et un logo exemple ; E1-6 couvre les gilets chauffant, refroidissant et anti-chute avec un lien par carte', () => {
     const e12 = bloc(accueil, 'E1-2');
-    expect(e12).toContain('class="wf-note-globale"');
-    expect(e12.match(/<span class="wf-barre"/g)).toHaveLength(5);
+    expect(e12.match(/<span class="wf-carre-etoile/g)).toHaveLength(5);
+    expect(e12).toContain('0,0 / 5 · 000 avis');
+    expect(e12).toContain('[Logo exemple]');
     const e16 = bloc(accueil, 'E1-6');
     for (const gilet of ['Gilets chauffants', 'Gilets refroidissants', 'Gilets anti-chute']) expect(e16).toContain(gilet);
     const cartes = e16.split('<li class="wf-carte"').slice(1);

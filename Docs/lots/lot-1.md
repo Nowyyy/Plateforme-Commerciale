@@ -20,7 +20,7 @@
 - Pastilles, calques, libellés de navigation : texte ou cases non liés ; E3-4 : variantes a et b empilées sur tous les écrans ; E3-7 : boutons non liés.
 - Écrans 2 et 3 : colonnes à partir de 1200 px (diagnostic 2/3 – 1/3, produit 60 % – 40 %) ; à 768 px tout reste en une colonne sauf les grilles de cartes.
 - E3-6 : tableau dont les lignes s'empilent sur mobile ; E3-1 et E4-1 : fil d'Ariane et étapes placés dans le bloc d'en-tête.
-- Accueil révisé à la demande du propriétaire (10 blocs) : E1-2 avis clients fictifs, E1-5 aléas (4 exemples, nombre ouvert), E1-6 protection de la personne (froid, chaleur, chutes ; liens vers `diagnostic.html` faute d'autre page), E1-8 réassurance déplacée entre « Comment ça marche » (E1-7) et crash-test (E1-9), pied E1-10.
+- Accueil révisé à la demande du propriétaire (10 blocs) : E1-2 bandeau d'avis sobre (5 étoiles en carrés, note, nombre d'avis, [Logo exemple]), E1-5 aléas (4 exemples, nombre ouvert), E1-6 protection de la personne (froid, chaleur, chutes ; liens vers `diagnostic.html` faute d'autre page), E1-8 réassurance déplacée entre « Comment ça marche » (E1-7) et crash-test (E1-9), pied E1-10.
 - Chiffres, prix, références et libellés de chiffres clés : « 000 » et textes provisoires.
 
 ## À tester par moi
