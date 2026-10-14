@@ -20,6 +20,12 @@
   --color-on-navy: #f8fafc;
   --color-on-amber: var(--color-navy);
   --color-focus: var(--color-green);
+  --color-navy-hover: #1c2f55;
+  --color-on-navy-muted: #c3cde0;
+  --color-border-on-navy: #3a4d73;
+  --color-focus-on-navy: var(--color-on-navy);
+  --color-amber-hover: #f59e0b;
+  --color-focus-action: var(--color-navy);
 
   /* Polices */
   --font-heading: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -35,6 +41,13 @@
   --text-3xl: 2.75rem;
   --leading-tight: 1.2;
   --leading-body: 1.6;
+
+  /* Mise en page (lot 2) */
+  --container-max: 80rem;
+  --gutter: 1rem;
+  --touch-min: 2.75rem;
+  --text-hero: 2.125rem;
+  --leading-hero: 1.1;
 
   /* Espacements */
   --space-1: 0.25rem;
@@ -63,4 +76,19 @@
   --wf-gris-4: #858585;
   --wf-gris-5: #595959;
   --wf-gris-6: #1c1c1c;
+}
+
+/* Valeurs adaptatives : marges latérales et titre principal */
+@media (min-width: 768px) {
+  :root {
+    --gutter: 2rem;
+    --text-hero: 3rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --gutter: 3rem;
+    --text-hero: 3.375rem;
+  }
 }

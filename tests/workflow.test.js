@@ -11,3 +11,11 @@ describe('workflow de publication', () => {
     expect(texte).not.toContain('pull_request_target');
   });
 });
+
+describe('workflow : chemins publiés', () => {
+  it('publie accueil.html, css, data et assets', () => {
+    const texte = readFileSync('.github/workflows/pages.yml', 'utf8');
+    const liste = texte.match(/for p in ([^;]+);/)?.[1].split(/\s+/);
+    expect(liste).toEqual(expect.arrayContaining(['index.html', 'accueil.html', 'css', 'data', 'assets', 'wireframes']));
+  });
+});

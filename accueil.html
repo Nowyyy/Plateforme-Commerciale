@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Protection Habitat : préservez votre maison face aux aléas du climat</title>
+  <meta name="description" content="Démonstrateur : évaluez l'exposition d'une maison aux aléas climatiques. Contenus fictifs, aucune vente.">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/composants.css">
+  <link rel="stylesheet" href="css/accueil.css">
+  <script type="module" src="assets/js/rendu.js"></script>
+  <script type="module" src="assets/js/menu.js"></script>
+</head>
+<body>
+  <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
+  <a class="lien-evitement" href="#contenu" data-texte="site.evitement"></a>
+  <aside class="bandeau-demo" data-aria-label="site.aria.bandeau">
+    <p class="conteneur" data-texte="site.bandeau"></p>
+  </aside>
+  <header class="entete" data-bloc="E1-1">
+    <div class="conteneur entete__ligne">
+      <a class="marque" data-lien="site.liens.accueil">
+        <svg class="marque__pictogramme" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path class="marque__toit" d="M4 15 16 5l12 10"/>
+          <path class="marque__goutte" d="M16 13c0 0 6 6 6 10a6 6 0 0 1-12 0c0-4 6-10 6-10z"/>
+        </svg>
+        <span data-texte="site.nom"></span>
+      </a>
+      <a class="lien-entete entete__panier-barre" data-lien="site.liens.panier">
+        <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+        <span data-texte="site.navigation.panier"></span>
+      </a>
+      <button type="button" class="bouton bouton--discret entete__menu" data-menu-bouton aria-expanded="false" aria-controls="menu-navigation" data-texte="site.navigation.menu"></button>
+      <nav class="nav" id="menu-navigation" data-aria-label="site.aria.navigation">
+        <ul>
+          <li data-texte="site.navigation.aleas"></li>
+          <li data-texte="site.navigation.fonctionnement"></li>
+          <li class="nav__panier">
+            <a class="lien-entete" data-lien="site.liens.panier">
+              <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+              <span data-texte="site.navigation.panier"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="contenu" tabindex="-1">
+    <section class="avis" data-bloc="E1-2" data-aria-label="accueil.avis.aria">
+      <div class="conteneur avis__ligne">
+        <p data-texte="accueil.avis.note"></p>
+        <p data-texte="accueil.avis.nombre"></p>
+        <p data-texte="accueil.avis.logo"></p>
+      </div>
+    </section>
+    <div class="hero">
+      <div class="conteneur">
+        <section data-bloc="E1-3" aria-labelledby="titre-hero">
+          <h1 class="hero__titre" id="titre-hero" data-texte="accueil.hero.titre"></h1>
+          <p data-texte="accueil.hero.accroche"></p>
+        </section>
+        <section data-bloc="E1-4" aria-labelledby="etiquette-adresse">
+          <form class="recherche carte" novalidate hidden>
+            <label class="etiquette" id="etiquette-adresse" for="adresse" data-texte="accueil.recherche.libelle"></label>
+            <input class="champ" type="text" id="adresse" name="adresse" autocomplete="street-address" data-placeholder="accueil.recherche.placeholder">
+            <button type="submit" class="bouton bouton--action" data-texte="accueil.recherche.bouton"></button>
+            <p class="recherche__microtexte" data-texte="accueil.recherche.microtexte"></p>
+          </form>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="pied">
+    <div class="conteneur">
+      <p data-texte="site.pied.texte"></p>
+    </div>
+  </footer>
+</body>
+</html>

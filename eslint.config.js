@@ -9,6 +9,10 @@ export default [
     languageOptions: { globals: { ...globals.node, ...globals.browser } },
   },
   {
+    files: ['assets/js/**/*.js'],
+    languageOptions: { globals: { ...globals.browser } },
+  },
+  {
     languageOptions: {
       ecmaVersion: 2024,
       sourceType: 'module',
