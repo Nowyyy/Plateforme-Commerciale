@@ -119,6 +119,13 @@ describe('wireframes : fiche produit, panier et parcours', () => {
     exactementUneFois(panier, Array.from({ length: 6 }, (_, i) => `E4-${i + 1}`));
   });
 
+  it('le panier indique le délai de livraison dans E4-2 (usine, pose) et dans E4-4', () => {
+    const e42 = bloc(panier, 'E4-2');
+    expect(e42).toContain('Délai de livraison directe usine');
+    expect(e42).toContain('Délai d\'intervention de l\'artisan (si option pose)');
+    expect(bloc(panier, 'E4-4')).toContain('Livraison estimée');
+  });
+
   it('E3-5 a 3 champs numériques avec label et 3 variantes de faisabilité ; E3-4 a 2 variantes', () => {
     const e35 = bloc(produit, 'E3-5');
     const champs = [...e35.matchAll(/<input type="number" id="([^"]+)"/g)].map((m) => m[1]);
