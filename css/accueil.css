@@ -217,15 +217,22 @@
 }
 
 .avis__carre {
-  display: block;
-  inline-size: 1.25rem;
-  block-size: 1.25rem;
+  display: grid;
+  place-items: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
   border-radius: 2px;
   background: var(--color-green);
 }
 
+.avis__carre svg {
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  fill: var(--color-card);
+}
+
 .avis__carre--partiel {
-  background: linear-gradient(90deg, var(--color-green) 80%, var(--color-border) 80%);
+  background: linear-gradient(90deg, var(--color-green) 80%, var(--color-avis-vide) 80%);
 }
 
 .avis__note {
