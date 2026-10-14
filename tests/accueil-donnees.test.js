@@ -69,3 +69,27 @@ describe('rendu.js : résolution de clés', () => {
     expect(() => resoudre(d, 'nombre')).toThrow(/pas un texte/);
   });
 });
+
+describe('hero et avis (partie B)', () => {
+  const { hero, avis } = donnees.accueil;
+
+  it('les textes du hero et des avis sont présents et non vides ; « exemple » dans la légende et le libellé des avis', () => {
+    for (const texte of [hero.titre, hero.accroche, hero.illustration.legende, hero.illustration.titre, hero.illustration.description, avis.note, avis.nombre]) {
+      expect(typeof texte).toBe('string');
+      expect(texte.trim().length).toBeGreaterThan(0);
+    }
+    expect(hero.illustration.legende.toLowerCase()).toContain('exemple');
+    expect(avis.nombre.toLowerCase()).toContain('exemple');
+  });
+
+  it('le SVG en ligne n\'a aucune valeur hexadécimale ; role="img", title et desc liés par clés', () => {
+    const svg = html.match(/<svg class="illustration"[\s\S]*?<\/svg>/)[0];
+    expect(svg.replace(/url\("?#hachure"?\)|href="#[a-z-]+"/g, '')).not.toMatch(/#[0-9a-f]{3,8}\b/i);
+    expect(svg).toContain('role="img"');
+    expect(svg).toMatch(/<title id="illu-titre" data-texte="accueil\.hero\.illustration\.titre">/);
+    expect(svg).toMatch(/<desc id="illu-desc" data-texte="accueil\.hero\.illustration\.description">/);
+    expect(svg).toContain('aria-labelledby="illu-titre illu-desc"');
+    // aucun autre texte dans le SVG
+    expect(svg.replace(/<title[\s\S]*?<\/title>|<desc[\s\S]*?<\/desc>/g, '')).not.toMatch(/>[^<\s][^<]*</);
+  });
+});

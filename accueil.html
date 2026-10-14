@@ -54,18 +54,19 @@
   <main id="contenu" tabindex="-1">
     <section class="avis" data-bloc="E1-2" data-aria-label="accueil.avis.aria">
       <div class="conteneur avis__ligne">
-        <p data-texte="accueil.avis.note"></p>
-        <p data-texte="accueil.avis.nombre"></p>
-        <p data-texte="accueil.avis.logo"></p>
+        <p class="avis__etoiles" aria-hidden="true"><span class="avis__carre"></span><span class="avis__carre"></span><span class="avis__carre"></span><span class="avis__carre"></span><span class="avis__carre avis__carre--partiel"></span></p>
+        <p class="avis__note" data-texte="accueil.avis.note"></p>
+        <p class="avis__nombre" data-texte="accueil.avis.nombre"></p>
+        <p class="avis__logo" data-texte="accueil.avis.logo"></p>
       </div>
     </section>
     <div class="hero">
-      <div class="conteneur">
-        <section data-bloc="E1-3" aria-labelledby="titre-hero">
+      <div class="conteneur hero__grille">
+        <section class="hero__texte" data-bloc="E1-3" aria-labelledby="titre-hero">
           <h1 class="hero__titre" id="titre-hero" data-texte="accueil.hero.titre"></h1>
-          <p data-texte="accueil.hero.accroche"></p>
+          <p class="hero__accroche" data-texte="accueil.hero.accroche"></p>
         </section>
-        <section data-bloc="E1-4" aria-labelledby="etiquette-adresse">
+        <section class="hero__recherche" data-bloc="E1-4" aria-labelledby="etiquette-adresse">
           <form class="recherche carte" novalidate hidden>
             <label class="etiquette" id="etiquette-adresse" for="adresse" data-texte="accueil.recherche.libelle"></label>
             <input class="champ" type="text" id="adresse" name="adresse" autocomplete="street-address" data-placeholder="accueil.recherche.placeholder">
@@ -73,6 +74,36 @@
             <p class="recherche__microtexte" data-texte="accueil.recherche.microtexte"></p>
           </form>
         </section>
+        <figure class="hero__visuel">
+          <svg class="illustration" viewBox="0 0 480 360" role="img" aria-labelledby="illu-titre illu-desc" focusable="false">
+            <title id="illu-titre" data-texte="accueil.hero.illustration.titre"></title>
+            <desc id="illu-desc" data-texte="accueil.hero.illustration.description"></desc>
+            <defs>
+              <pattern id="hachure" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line class="illu-hachure" x1="0" y1="0" x2="0" y2="8"/></pattern>
+            </defs>
+            <rect class="illu-eau" x="20" y="215" width="180" height="65"/>
+            <path class="illu-trait" d="M20 215q15-6 30 0t30 0t30 0t30 0t30 0t30 0"/>
+            <rect class="illu-trait illu-sol" x="20" y="280" width="440" height="60"/>
+            <rect class="illu-hachure-remplissage" x="20" y="280" width="440" height="60"/>
+            <rect class="illu-trait illu-dalle" x="260" y="268" width="200" height="12"/>
+            <rect class="illu-trait illu-mur" x="200" y="30" width="260" height="12"/>
+            <rect class="illu-trait illu-mur" x="200" y="42" width="60" height="108"/>
+            <rect class="illu-trait illu-mur" x="200" y="268" width="60" height="12"/>
+            <g class="illu-barriere">
+              <rect x="184" y="170" width="14" height="37"/>
+              <rect x="184" y="207" width="14" height="37"/>
+              <rect x="184" y="244" width="14" height="36"/>
+            </g>
+            <path class="illu-cote" d="M60 170V280M56 178l4-8 4 8M56 272l4 8 4-8"/>
+            <path class="illu-guide" d="M60 170H184"/>
+            <path class="illu-cote" d="M110 215V280M106 223l4-8 4 8M106 272l4 8 4-8"/>
+            <path class="illu-cote" d="M200 14H260M208 10l-8 4 8 4M252 10l8 4-8 4"/>
+            <path class="illu-guide" d="M200 14V30M260 14V30"/>
+            <path class="illu-cote" d="M320 150V268M316 158l4-8 4 8M316 260l4 8 4-8"/>
+            <path class="illu-guide" d="M260 150H330M260 268H330"/>
+          </svg>
+          <figcaption class="hero__legende" data-texte="accueil.hero.illustration.legende"></figcaption>
+        </figure>
       </div>
     </div>
   </main>

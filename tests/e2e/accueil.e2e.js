@@ -87,3 +87,36 @@ test('échec de chargement des données : alerte visible, page non cassée', asy
   await page.waitForSelector('html[data-rendu="erreur"]');
   await expect(page.getByRole('alert')).toBeVisible();
 });
+
+for (const largeur of [375, 1440]) {
+  test(`illustration visible à ${largeur} px, légende affichée, aucune erreur de chargement`, async ({ page }) => {
+    await page.setViewportSize({ width: largeur, height: 900 });
+    await page.goto('/accueil.html');
+    await page.waitForSelector('html[data-rendu="pret"]');
+    const svg = page.getByRole('img', { name: /mur avec seuil/ });
+    await expect(svg).toBeVisible();
+    const boite = await svg.boundingBox();
+    expect(boite.width).toBeGreaterThan(250);
+    expect(boite.height).toBeGreaterThan(150);
+    await expect(page.getByText('Illustration schématique (exemple)')).toBeVisible();
+    await expect(page.locator('.erreur-chargement')).toHaveCount(0);
+    await expect(page.locator('.avis__carre')).toHaveCount(5);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  });
+}
+
+test('hero : deux colonnes à 1440 px, illustration sous le texte à 375 px', async ({ page }) => {
+  await page.goto('/accueil.html');
+  const pos = async () => page.evaluate(() => {
+    const t = document.querySelector('.hero__texte').getBoundingClientRect();
+    const v = document.querySelector('.hero__visuel').getBoundingClientRect();
+    return { texteBas: t.bottom, visuelHaut: v.top, texteDroite: t.right, visuelGauche: v.left };
+  });
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.waitForSelector('html[data-rendu="pret"]');
+  const bureau = await pos();
+  expect(bureau.visuelGauche).toBeGreaterThanOrEqual(bureau.texteDroite);
+  await page.setViewportSize({ width: 375, height: 900 });
+  const mobile = await pos();
+  expect(mobile.visuelHaut).toBeGreaterThanOrEqual(mobile.texteBas);
+});

@@ -8,7 +8,12 @@
   },
   "hero": {
     "titre": "Préservez votre maison face aux aléas du climat",
-    "accroche": "Évaluez l'exposition de votre bien, puis équipez-le de solutions certifiées d'usine, posées par vous ou par un artisan partenaire."
+    "accroche": "Évaluez l'exposition de votre bien, puis équipez-le de solutions certifiées d'usine, posées par vous ou par un artisan partenaire.",
+    "illustration": {
+      "titre": "Coupe d'un mur avec seuil protégé par une barrière modulable",
+      "description": "Schéma en coupe : un mur et son ouverture, un niveau d'eau à l'extérieur, une barrière modulable posée devant le seuil et des flèches de cotes indiquant la hauteur d'eau, la hauteur de la barrière et l'épaisseur du mur.",
+      "legende": "Illustration schématique (exemple)"
+    }
   },
   "recherche": {
     "libelle": "Entrez votre adresse pour évaluer l'exposition de votre maison aux aléas et voir les solutions adaptées",
