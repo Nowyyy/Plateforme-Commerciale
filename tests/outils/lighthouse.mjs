@@ -15,7 +15,9 @@ const serveur = await demarrer(port);
 let echec = false;
 for (const page of pages) {
   const sortie = `.lighthouseci/${page.replaceAll('/', '_') || 'accueil'}.json`;
-  const sansSeo = page.startsWith('wireframes/');
+  // pages noindex : la catégorie SEO est inapplicable
+  const fichier = page === '' ? 'index.html' : page;
+  const sansSeo = page.startsWith('wireframes/') || /name="robots" content="noindex"/.test(readFileSync(fichier, 'utf8'));
   const args = [
     'lighthouse', `http://localhost:${port}/${page}`,
     '--chrome-flags=--headless=new --no-sandbox',

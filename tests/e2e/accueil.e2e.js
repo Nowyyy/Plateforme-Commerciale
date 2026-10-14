@@ -16,7 +16,7 @@ for (const largeur of LARGEURS) {
 
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.goto('/accueil.html');
-    await page.waitForSelector('html[data-rendu="pret"]');
+    await page.waitForSelector('.recherche:not([hidden])');
     await page.evaluate(() => document.fonts.ready);
 
     expect(erreurs).toEqual([]);

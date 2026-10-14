@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/accueil.css">
   <script type="module" src="assets/js/rendu.js"></script>
   <script type="module" src="assets/js/menu.js"></script>
+  <script type="module" src="assets/js/adresse.js"></script>
 </head>
 <body>
   <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
@@ -66,12 +67,15 @@
           <h1 class="hero__titre" id="titre-hero" data-texte="accueil.hero.titre"></h1>
           <p class="hero__accroche" data-texte="accueil.hero.accroche"></p>
         </section>
-        <section class="hero__recherche" data-bloc="E1-4" aria-labelledby="etiquette-adresse">
+        <section class="hero__recherche" data-bloc="E1-4">
           <form class="recherche carte" novalidate hidden>
             <label class="etiquette" id="etiquette-adresse" for="adresse" data-texte="accueil.recherche.libelle"></label>
-            <input class="champ" type="text" id="adresse" name="adresse" autocomplete="street-address" data-placeholder="accueil.recherche.placeholder">
-            <button type="submit" class="bouton bouton--action" data-texte="accueil.recherche.bouton"></button>
-            <p class="recherche__microtexte" data-texte="accueil.recherche.microtexte"></p>
+            <div class="recherche__ligne">
+              <input class="champ" type="text" id="adresse" name="adresse" autocomplete="street-address" aria-describedby="adresse-erreur adresse-microtexte" data-placeholder="accueil.recherche.placeholder">
+              <button type="submit" class="bouton bouton--action" data-texte="accueil.recherche.bouton"></button>
+            </div>
+            <p class="recherche__erreur" id="adresse-erreur" aria-live="polite"></p>
+            <p class="recherche__microtexte" id="adresse-microtexte" data-texte="accueil.recherche.microtexte"></p>
           </form>
         </section>
         <figure class="hero__visuel">

@@ -48,6 +48,16 @@
   text-decoration: none;
 }
 
+.marque {
+  font-size: 0.875rem;
+}
+
+@media (min-width: 380px) {
+  .marque {
+    font-size: 0.9375rem;
+  }
+}
+
 .marque__pictogramme {
   flex: none;
   inline-size: 1.5rem;
@@ -254,10 +264,6 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
-.hero__recherche:has(> form[hidden]) {
-  display: none;
-}
-
 .hero__titre {
   margin-bottom: var(--space-4);
   text-wrap: balance;
@@ -293,6 +299,75 @@
   color: var(--color-text-secondary);
   font-size: var(--text-sm);
   text-align: center;
+}
+
+/* Recherche E1-4 : hauteur réservée (le formulaire n'apparaît qu'une fois les données chargées) */
+.hero__recherche {
+  min-block-size: 19.625rem;
+}
+
+@media (min-width: 480px) {
+  .hero__recherche {
+    min-block-size: 18.25rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .hero__recherche {
+    min-block-size: 16.875rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero__recherche {
+    min-block-size: 13.25rem;
+  }
+}
+
+.recherche {
+  max-inline-size: 40rem;
+}
+
+.recherche__ligne {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.recherche__erreur {
+  margin: var(--space-3) 0 0;
+  padding-inline-start: var(--space-3);
+  border-inline-start: 4px solid var(--color-navy);
+  font-weight: 600;
+}
+
+.recherche__erreur:empty {
+  display: none;
+}
+
+.recherche__erreur::before {
+  content: "!" / "";
+  display: inline-block;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin-inline-end: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  line-height: 1.25rem;
+  text-align: center;
+}
+
+.champ[aria-invalid="true"] {
+  border: 3px solid var(--color-navy);
+}
+
+.recherche__microtexte {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
 }
 
 /* Illustration : traits et aplats par jetons */
@@ -357,6 +432,14 @@
     padding-block: var(--space-7);
   }
 
+  .recherche__ligne {
+    flex-direction: row;
+  }
+
+  .recherche__ligne .champ {
+    flex: 1;
+  }
+
   .hero__titre {
     min-block-size: calc(2 * var(--leading-hero) * 1em);
   }
@@ -407,7 +490,7 @@
   }
 
   .hero__accroche {
-    min-block-size: calc(3 * var(--leading-body) * 1.125em);
+    min-block-size: calc(2 * var(--leading-body) * 1.125em);
   }
 }
 

@@ -69,20 +69,25 @@ function afficherErreur(details) {
   (document.querySelector('main') ?? document.body).prepend(alerte);
 }
 
+// Renvoie les données chargées, ou null en cas d'échec (alerte affichée).
 export async function demarrer() {
   const racine = document.documentElement;
+  let donnees;
   try {
-    const donnees = await charger();
+    donnees = await charger();
     const erreurs = remplir(document, donnees);
     if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
     if (typeof donnees.accueil.titrePage === 'string') document.title = donnees.accueil.titrePage;
     racine.dataset.rendu = 'pret';
   } catch (e) {
     console.warn(e);
+    donnees = null;
     racine.dataset.rendu = 'erreur';
     afficherErreur(e.message);
   }
   document.dispatchEvent(new CustomEvent('rendu:termine'));
+  return donnees;
 }
 
-if (typeof document !== 'undefined') demarrer();
+// Une seule exécution par page : les autres modules (adresse.js) attendent cette promesse.
+export const donneesPretes = typeof document !== 'undefined' ? demarrer() : null;
