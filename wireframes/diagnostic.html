@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Wireframe écran 2 — Diagnostic</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body class="wf">
+  <nav class="wf-revue" aria-label="Revue des wireframes">
+    <ul>
+      <li><a href="index.html">Index des wireframes</a></li>
+      <li><a href="accueil.html">Écran 1 — Accueil</a></li>
+      <li><a href="diagnostic.html" aria-current="page">Écran 2 — Diagnostic</a></li>
+      <li><a href="produit.html">Écran 3 — Fiche produit</a></li>
+      <li><a href="panier.html">Écran 4 — Panier</a></li>
+    </ul>
+  </nav>
+  <aside class="wf-bandeau" aria-label="Démonstrateur">Démonstrateur : contenus fictifs, aucune vente</aside>
+  <header class="wf-bloc wf-entete-site" data-bloc="E2-1">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E2-1</span>
+        <p class="wf-titre">En-tête</p>
+        <p class="wf-note">Identité et navigation du site ; seul « Panier » est cliquable.</p>
+      </div>
+      <div class="wf-entete-ligne">
+        <div class="wf-emplacement"><span>[Logo exemple]</span></div>
+        <button type="button" class="wf-bouton wf-menu-bouton" aria-expanded="false">Menu</button>
+        <nav class="wf-nav-site" aria-label="Navigation principale">
+          <ul>
+            <li>Aléas</li>
+            <li>Comment ça marche</li>
+            <li><a href="panier.html">Panier</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main class="wf-conteneur wf-ecran wf-ecran--2col">
+    <h1>Écran 2 — Diagnostic (wireframe Lo-Fi)</h1>
+    <section class="wf-bloc wf-pleine" data-bloc="E2-2" aria-labelledby="t-E2-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E2-2</span>
+        <h2 class="wf-titre" id="t-E2-2">Adresse et aléa</h2>
+        <p class="wf-note">Adresse du bien et filtre par aléa.</p>
+      </div>
+      <div class="wf-recherche wf-recherche--ligne">
+        <div class="wf-champ">
+          <label for="adresse-e22">Adresse</label>
+          <input type="text" id="adresse-e22" name="adresse" value="[Adresse exemple]">
+        </div>
+        <button type="button" class="wf-bouton">Mettre à jour</button>
+      </div>
+      <ul class="wf-pastilles">
+        <li class="wf-pastille wf-pastille--active">Tous</li>
+        <li class="wf-pastille">Inondations</li>
+        <li class="wf-pastille">Grêle et vents</li>
+        <li class="wf-pastille">Feux de forêt</li>
+        <li class="wf-pastille">Canicule</li>
+      </ul>
+    </section>
+    <div class="wf-colonne">
+    <section class="wf-bloc" data-bloc="E2-3" aria-labelledby="t-E2-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E2-3</span>
+        <h2 class="wf-titre" id="t-E2-3">Carte et calques</h2>
+        <p class="wf-note">Carte du risque et calques activables.</p>
+      </div>
+      <div class="wf-emplacement wf-ratio-4-3"><span>[Carte]</span></div>
+      <fieldset class="wf-calques">
+        <legend>Calques</legend>
+        <label><input type="checkbox" id="calque-1" checked> Zone inondable (PPRI)</label><label><input type="checkbox" id="calque-2"> Retrait-gonflement des argiles</label><label><input type="checkbox" id="calque-3"> Feux de forêt</label><label><input type="checkbox" id="calque-4"> Chaleur extrême</label>
+      </fieldset>
+      <p class="wf-annotation">Légende (provisoire) : zones d'exposition faible à forte, en niveaux de gris.</p>
+    </section>
+    </div>
+    <div class="wf-colonne">
+    <section class="wf-bloc" data-bloc="E2-4" aria-labelledby="t-E2-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E2-4</span>
+        <h2 class="wf-titre" id="t-E2-4">Score de vulnérabilité</h2>
+        <p class="wf-note">Niveau d'exposition du bien, à titre illustratif.</p>
+      </div>
+      <ol class="wf-jauge" aria-label="Jauge de vulnérabilité à 4 niveaux">
+        <li>Faible</li>
+        <li>Modéré</li>
+        <li>Élevé</li>
+        <li>Très élevé</li>
+      </ol>
+      <p class="wf-jauge-repere"><span>▲ Repère</span></p>
+      <p class="wf-niveau">Niveau : élevé</p>
+      <p>Phrase explicative provisoire : l'exposition estimée du bien appelle des équipements de protection.</p>
+      <p class="wf-annotation">Score illustratif</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E2-5" aria-labelledby="t-E2-5">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E2-5</span>
+        <h2 class="wf-titre" id="t-E2-5">Équipements recommandés</h2>
+        <p class="wf-note">Trois équipements suggérés, vers la fiche produit.</p>
+      </div>
+      <ul class="wf-grille wf-grille--pile">
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <h3>Équipement exemple 1</h3>
+          <p>Aléa neutralisé : Inondations</p>
+          <p>Prix indicatif TTC : 000 €</p>
+          <a class="wf-bouton" href="produit.html">Voir la fiche</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <h3>Équipement exemple 2</h3>
+          <p>Aléa neutralisé : Grêle et vents</p>
+          <p>Prix indicatif TTC : 000 €</p>
+          <a class="wf-bouton" href="produit.html">Voir la fiche</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <h3>Équipement exemple 3</h3>
+          <p>Aléa neutralisé : Canicule</p>
+          <p>Prix indicatif TTC : 000 €</p>
+          <a class="wf-bouton" href="produit.html">Voir la fiche</a>
+        </li>
+      </ul>
+    </section>
+    </div>
+  </main>
+  <footer class="wf-bloc wf-pied" data-bloc="E2-6">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E2-6</span>
+        <p class="wf-titre">Pied de page</p>
+        <p class="wf-note">Mentions et rappel du caractère fictif du démonstrateur.</p>
+      </div>
+      <div class="wf-pied-colonnes">
+        <p>Mentions légales (page prévue au lot 10)</p>
+        <p>À propos du démonstrateur</p>
+        <p>Rappel : aucune vente</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

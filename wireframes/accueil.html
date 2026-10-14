@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Wireframe écran 1 — Accueil</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body class="wf">
+  <nav class="wf-revue" aria-label="Revue des wireframes">
+    <ul>
+      <li><a href="index.html">Index des wireframes</a></li>
+      <li><a href="accueil.html" aria-current="page">Écran 1 — Accueil</a></li>
+      <li><a href="diagnostic.html">Écran 2 — Diagnostic</a></li>
+      <li><a href="produit.html">Écran 3 — Fiche produit</a></li>
+      <li><a href="panier.html">Écran 4 — Panier</a></li>
+    </ul>
+  </nav>
+  <aside class="wf-bandeau" aria-label="Démonstrateur">Démonstrateur : contenus fictifs, aucune vente</aside>
+  <header class="wf-bloc wf-entete-site" data-bloc="E1-1">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-1</span>
+        <p class="wf-titre">En-tête</p>
+        <p class="wf-note">Identité et navigation du site ; seul « Panier » est cliquable.</p>
+      </div>
+      <div class="wf-entete-ligne">
+        <div class="wf-emplacement"><span>[Logo exemple]</span></div>
+        <button type="button" class="wf-bouton wf-menu-bouton" aria-expanded="false">Menu</button>
+        <nav class="wf-nav-site" aria-label="Navigation principale">
+          <ul>
+            <li>Aléas</li>
+            <li>Comment ça marche</li>
+            <li><a href="panier.html">Panier</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main class="wf-conteneur wf-ecran">
+    <h1>Écran 1 — Accueil (wireframe Lo-Fi)</h1>
+    <section class="wf-bloc wf-bloc--bandeau" data-bloc="E1-2" aria-labelledby="t-E1-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-2</span>
+        <h2 class="wf-titre" id="t-E1-2">Avis clients</h2>
+        <p class="wf-note">Bandeau sobre : note du site et nombre d'avis (notes fictives, aucun vrai avis).</p>
+      </div>
+      <div class="wf-avis-ligne">
+        <p class="wf-etoiles-carres"><span class="wf-carre-etoile" aria-hidden="true">★</span><span class="wf-carre-etoile" aria-hidden="true">★</span><span class="wf-carre-etoile" aria-hidden="true">★</span><span class="wf-carre-etoile" aria-hidden="true">★</span><span class="wf-carre-etoile wf-carre-etoile--demi" aria-hidden="true">★</span></p>
+        <p class="wf-avis-texte">0,0 / 5 · 000 avis</p>
+        <div class="wf-emplacement wf-avis-logo"><span>[Logo exemple]</span></div>
+      </div>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-3" aria-labelledby="t-E1-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-3</span>
+        <h2 class="wf-titre" id="t-E1-3">Hero</h2>
+        <p class="wf-note">Promesse du site : préserver le patrimoine.</p>
+      </div>
+      <p class="wf-titre-provisoire">Titre provisoire : préserver votre patrimoine face aux aléas climatiques</p>
+      <p class="wf-accroche">Phrase d'accroche provisoire : des équipements certifiés, choisis pour votre maison.</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-4" aria-labelledby="t-E1-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-4</span>
+        <h2 class="wf-titre" id="t-E1-4">Recherche d'adresse</h2>
+        <p class="wf-note">Point d'entrée du parcours : adresse puis diagnostic.</p>
+      </div>
+      <div class="wf-recherche wf-recherche--ligne">
+        <div class="wf-champ">
+          <label for="adresse-e13">Entrez votre adresse pour évaluer l'exposition de votre maison aux aléas et voir les solutions adaptées</label>
+          <input type="text" id="adresse-e13" name="adresse" autocomplete="off">
+        </div>
+        <a class="wf-bouton" href="diagnostic.html">Évaluer</a>
+      </div>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-5" aria-labelledby="t-E1-5">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-5</span>
+        <h2 class="wf-titre" id="t-E1-5">Les aléas</h2>
+        <p class="wf-note">Une carte par aléa, vers le diagnostic (4 exemples : le nombre d'aléas n'est pas figé).</p>
+      </div>
+      <ul class="wf-grille wf-grille--auto">
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Inondations et crues</h3>
+          <ul class="wf-liste"><li>Batardeaux</li><li>Clapets anti-retour</li><li>Barrières anti-crue</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Grêle et vents violents</h3>
+          <ul class="wf-liste"><li>Volets et stores résistants</li><li>Films de protection</li><li>Protections de toiture</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Feux de forêt</h3>
+          <ul class="wf-liste"><li>Grilles pare-braises</li><li>Volets coupe-feu</li><li>Pare-flammes de ventilation</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Canicule et chaleur extrême</h3>
+          <ul class="wf-liste"><li>Brise-soleil</li><li>Films solaires</li><li>Stores extérieurs</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+      </ul>
+      <p class="wf-annotation">Exemples : d'autres aléas peuvent s'ajouter, les cartes passent à la ligne.</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-6" aria-labelledby="t-E1-6">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-6</span>
+        <h2 class="wf-titre" id="t-E1-6">Protection de la personne</h2>
+        <p class="wf-note">Une carte par type de protection individuelle (3 exemples : le nombre n'est pas figé).</p>
+      </div>
+      <ul class="wf-grille wf-grille--auto">
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Protection contre le froid</h3>
+          <ul class="wf-liste"><li>Gilets chauffants</li><li>Gants chauffants</li><li>Sous-vêtements thermiques</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Protection contre la chaleur</h3>
+          <ul class="wf-liste"><li>Gilets refroidissants</li><li>Casquettes rafraîchissantes</li><li>Bandanas refroidissants</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+        <li class="wf-carte">
+          <div class="wf-emplacement wf-carte-icone"><span>[Icône]</span></div>
+          <h3>Protection contre les chutes</h3>
+          <ul class="wf-liste"><li>Gilets anti-chute</li><li>Harnais</li><li>Longes et absorbeurs</li></ul>
+          <a href="diagnostic.html">Voir le diagnostic</a>
+        </li>
+      </ul>
+      <p class="wf-annotation">Exemples : d'autres protections peuvent s'ajouter, les cartes passent à la ligne.</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-7" aria-labelledby="t-E1-7">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-7</span>
+        <h2 class="wf-titre" id="t-E1-7">Comment ça marche</h2>
+        <p class="wf-note">Trois étapes du parcours.</p>
+      </div>
+      <ol class="wf-grille wf-grille--3">
+        <li class="wf-carte"><span class="wf-numero">1</span><h3>Diagnostic du bien</h3><p>Adresse ou cotes du bien.</p></li>
+        <li class="wf-carte"><span class="wf-numero">2</span><h3>Recommandation d'équipements</h3><p>Équipements certifiés d'usine.</p></li>
+        <li class="wf-carte"><span class="wf-numero">3</span><h3>Choix de pose</h3><p>DIY avec tutoriel ou artisan certifié.</p></li>
+      </ol>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-8" aria-labelledby="t-E1-8">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-8</span>
+        <h2 class="wf-titre" id="t-E1-8">Réassurance</h2>
+        <p class="wf-note">Preuves de confiance (CSTB, NF, CE, 2 assureurs).</p>
+      </div>
+      <ul class="wf-logos">
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+        <li><div class="wf-emplacement "><span>[Logo exemple]</span></div></li>
+      </ul>
+      <p class="wf-annotation">Dans l'ordre : CSTB, NF, CE, assureur 1, assureur 2 (aucun vrai logo).</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E1-9" aria-labelledby="t-E1-9">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-9</span>
+        <h2 class="wf-titre" id="t-E1-9">Preuve : crash-test</h2>
+        <p class="wf-note">Vidéo et chiffres clés.</p>
+      </div>
+      <div class="wf-crash">
+        <figure>
+          <div class="wf-emplacement wf-ratio-16-9"><span>[Vidéo]</span></div>
+          <figcaption class="wf-annotation">Légende provisoire de la vidéo de crash-test.</figcaption>
+        </figure>
+        <ul class="wf-chiffres">
+          <li><p class="wf-chiffre">000</p><p>Chiffre clé 1 : libellé et unité à définir</p></li>
+          <li><p class="wf-chiffre">000</p><p>Chiffre clé 2 : libellé et unité à définir</p></li>
+          <li><p class="wf-chiffre">000</p><p>Chiffre clé 3 : libellé et unité à définir</p></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+  <footer class="wf-bloc wf-pied" data-bloc="E1-10">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E1-10</span>
+        <p class="wf-titre">Pied de page</p>
+        <p class="wf-note">Mentions et rappel du caractère fictif du démonstrateur.</p>
+      </div>
+      <div class="wf-pied-colonnes">
+        <p>Mentions légales (page prévue au lot 10)</p>
+        <p>À propos du démonstrateur</p>
+        <p>Rappel : aucune vente</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

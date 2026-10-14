@@ -54,4 +54,13 @@
   /* Ombres */
   --shadow-sm: 0 1px 2px rgb(15 29 56 / 0.08);
   --shadow-md: 0 4px 12px rgb(15 29 56 / 0.1);
+
+  /* Wireframes Lo-Fi (lot 1) : niveaux de gris, réservés à wireframes/ */
+  --wf-gris-0: #ffffff;
+  --wf-gris-1: #f3f3f3;
+  --wf-gris-2: #e2e2e2;
+  --wf-gris-3: #bdbdbd;
+  --wf-gris-4: #858585;
+  --wf-gris-5: #595959;
+  --wf-gris-6: #1c1c1c;
 }
