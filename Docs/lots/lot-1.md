@@ -1,8 +1,8 @@
 # Lot 1 — Wireframes Lo-Fi des 4 écrans
-**Livré** : `wireframes/` (index de validation + accueil 8 blocs, diagnostic 6, fiche produit 8, panier 6), `css/wireframe.css`, jetons `--wf-gris-*`, publication ajoutée au workflow Pages, tests, `CLAUDE.md` mis à jour.
+**Livré** : `wireframes/` (index de validation + accueil 10 blocs, diagnostic 6, fiche produit 8, panier 6), `css/wireframe.css`, jetons `--wf-gris-*`, publication ajoutée au workflow Pages, tests, `CLAUDE.md` mis à jour.
 **Choix** : niveaux de gris, sans JavaScript ni ressource externe, mobile d'abord (ruptures 768 et 1200 px, conteneur de 1280 px) ; annotations en dur permises dans `wireframes/` seulement.
 **Critères** :
-- Lint sans avertissement ; 18 tests Vitest verts (7 du lot 0 + 11 nouveaux : 4 + 3 + 4).
+- Lint sans avertissement ; 20 tests Vitest verts (7 du lot 0 + 13 nouveaux).
 - 20 tests Playwright verts : 15 (5 pages × 375, 768, 1440 px : console propre, aucun débordement, axe sans violation, aucune requête externe) + 3 page d'attente + 2 parcours cliqué (375 et 1440 px, jusqu'au panier).
 - Captures des 5 pages vues aux 3 largeurs.
 - Lighthouse mobile (performance / accessibilité / bonnes pratiques) : index 100/100/100 ; accueil 99/100/100 ; diagnostic 100/100/100 ; produit 99/100/100 ; panier 100/100/100 (seuils 90 / 95 / 95 ; SEO exclu, pages `noindex`).
@@ -20,6 +20,7 @@
 - Pastilles, calques, libellés de navigation : texte ou cases non liés ; E3-4 : variantes a et b empilées sur tous les écrans ; E3-7 : boutons non liés.
 - Écrans 2 et 3 : colonnes à partir de 1200 px (diagnostic 2/3 – 1/3, produit 60 % – 40 %) ; à 768 px tout reste en une colonne sauf les grilles de cartes.
 - E3-6 : tableau dont les lignes s'empilent sur mobile ; E3-1 et E4-1 : fil d'Ariane et étapes placés dans le bloc d'en-tête.
+- Accueil révisé à la demande du propriétaire (10 blocs) : E1-2 avis clients fictifs, E1-5 aléas (4 exemples, nombre ouvert), E1-6 protection de la personne (froid, chaleur, chutes ; liens vers `diagnostic.html` faute d'autre page), E1-8 réassurance déplacée entre « Comment ça marche » (E1-7) et crash-test (E1-9), pied E1-10.
 - Chiffres, prix, références et libellés de chiffres clés : « 000 » et textes provisoires.
 
 ## À tester par moi

@@ -66,8 +66,8 @@ describe('wireframes : accueil et diagnostic', () => {
   const accueil = lire('accueil');
   const diagnostic = lire('diagnostic');
 
-  it('accueil contient exactement une fois chacun des codes E1-1 à E1-8', () => {
-    exactementUneFois(accueil, Array.from({ length: 8 }, (_, i) => `E1-${i + 1}`));
+  it('accueil contient exactement une fois chacun des codes E1-1 à E1-10', () => {
+    exactementUneFois(accueil, Array.from({ length: 10 }, (_, i) => `E1-${i + 1}`));
   });
 
   it('diagnostic contient exactement une fois E2-1 à E2-6, et E2-5 contient 3 cartes', () => {
@@ -76,15 +76,33 @@ describe('wireframes : accueil et diagnostic', () => {
     expect(e25.match(/<li class="wf-carte"/g)).toHaveLength(3);
   });
 
-  it('E1-5 a les 4 aléas et un lien vers diagnostic.html par carte ; E1-3 a un lien vers diagnostic.html', () => {
+  it('E1-5 liste des aléas en exemple (nombre non figé) avec un lien vers diagnostic.html par carte ; E1-4 a un lien vers diagnostic.html', () => {
     const e15 = bloc(accueil, 'E1-5');
     for (const titre of ['Inondations et crues', 'Grêle et vents violents', 'Feux de forêt', 'Canicule et chaleur extrême']) {
       expect(e15).toContain(`<h3>${titre}</h3>`);
     }
+    expect(e15).toContain('nombre d\'aléas n\'est pas figé');
     const cartes = e15.split('<li class="wf-carte"').slice(1);
-    expect(cartes).toHaveLength(4);
+    expect(cartes.length).toBeGreaterThanOrEqual(4);
     for (const carte of cartes) expect(carte).toContain('href="diagnostic.html"');
-    expect(bloc(accueil, 'E1-3')).toContain('href="diagnostic.html"');
+    expect(bloc(accueil, 'E1-4')).toContain('href="diagnostic.html"');
+  });
+
+  it('l\'ordre des blocs de l\'accueil est : en-tête, avis, hero, recherche, aléas, personne, étapes, réassurance, crash-test, pied', () => {
+    const titres = ['Avis clients', 'Hero', 'Recherche d\'adresse', 'Les aléas', 'Protection de la personne', 'Comment ça marche', 'Réassurance', 'Preuve : crash-test'];
+    titres.forEach((titre, i) => expect(bloc(accueil, `E1-${i + 2}`), titre).toContain(`>${titre}</h2>`));
+    expect(accueil.indexOf('data-bloc="E1-10"')).toBeGreaterThan(accueil.indexOf('data-bloc="E1-9"'));
+  });
+
+  it('E1-2 affiche la note globale et 5 lignes de répartition ; E1-6 couvre les gilets chauffant, refroidissant et anti-chute avec un lien par carte', () => {
+    const e12 = bloc(accueil, 'E1-2');
+    expect(e12).toContain('class="wf-note-globale"');
+    expect(e12.match(/<span class="wf-barre"/g)).toHaveLength(5);
+    const e16 = bloc(accueil, 'E1-6');
+    for (const gilet of ['Gilets chauffants', 'Gilets refroidissants', 'Gilets anti-chute']) expect(e16).toContain(gilet);
+    const cartes = e16.split('<li class="wf-carte"').slice(1);
+    expect(cartes.length).toBeGreaterThanOrEqual(3);
+    for (const carte of cartes) expect(carte).toContain('href="diagnostic.html"');
   });
 });
 
@@ -110,7 +128,7 @@ describe('wireframes : fiche produit, panier et parcours', () => {
   });
 
   it('les liens du parcours existent : E1-3, E2-5, E3-5 et E4-2', () => {
-    expect(bloc(lire('accueil'), 'E1-3')).toContain('href="diagnostic.html"');
+    expect(bloc(lire('accueil'), 'E1-4')).toContain('href="diagnostic.html"');
     expect(bloc(lire('diagnostic'), 'E2-5')).toContain('href="produit.html"');
     expect(bloc(produit, 'E3-5')).toContain('href="panier.html"');
     expect(bloc(panier, 'E4-2')).toContain('href="produit.html"');

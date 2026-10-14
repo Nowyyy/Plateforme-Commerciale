@@ -850,3 +850,65 @@ body.wf {
     align-items: start;
   }
 }
+
+/* --- Accueil : avis clients, grilles à nombre de cartes ouvert --- */
+.wf-grille--auto {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+}
+
+.wf-avis {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.wf-note-globale {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-3xl);
+  font-weight: 800;
+  line-height: var(--leading-tight);
+}
+
+.wf-note-globale span {
+  font-size: var(--text-lg);
+  color: var(--wf-gris-5);
+}
+
+.wf-etoiles {
+  margin: 0;
+  font-size: var(--text-xl);
+  letter-spacing: 0.15em;
+}
+
+.wf-repartition {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wf-repartition li {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr) 3rem;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--text-sm);
+}
+
+.wf-barre {
+  height: 0.75rem;
+  border: 1px solid var(--wf-gris-4);
+  background: linear-gradient(to right, var(--wf-gris-5) var(--part, 0%), var(--wf-gris-1) var(--part, 0%));
+}
+
+.wf-pourcent {
+  text-align: right;
+}
+
+@media (min-width: 768px) {
+  .wf-avis {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    align-items: center;
+  }
+}
