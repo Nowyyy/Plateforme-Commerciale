@@ -12,7 +12,8 @@
 ## Choix à valider
 - Tailles : h1 34 px (mobile), 48 px (768), 54 px (1200 et plus), interligne 1,1 ; accroche 16 px puis 18 px dès 768 ; corps 16 px.
 - Nom provisoire « Protection Habitat » (non vérifié libre de droits) ; placeholder « Ex. : 12 rue des Tilleuls, Lyon ».
-- Deux colonnes du hero à partir de 1200 px (texte et recherche 55 %, illustration 45 %) ; une colonne en dessous.
+- Deux colonnes du hero à partir de 1200 px (texte et recherche 55 %, illustration 45 %) ; en dessous, une colonne : texte, illustration, puis recherche (demande du propriétaire, lot 2-D).
+- Fond du hero : dégradé très léger blanc vers fond clair, sans grille (demande du propriétaire, lot 2-D).
 - Bandeau démonstrateur vert (jeton), en-tête bleu marine ; carrés de note verts, le 5e à 80 % ; focus des boutons ambre en marine, ailleurs en vert.
 - Validation : 5 à 200 caractères, au moins une lettre ; erreur signalée par texte, icône « ! » et filet marine, sans rouge.
 - Navigation : « Aléas » et « Comment ça marche » non liés (lot 3) ; Panier visible à côté du bouton Menu sur mobile et en fin de navigation sur desktop (deux liens, un seul affiché à la fois) ; liens temporaires vers `wireframes/`.

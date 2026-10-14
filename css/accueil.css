@@ -248,14 +248,10 @@
   font-weight: 600;
 }
 
-/* Hero E1-3 : grille technique discrète, texte et recherche à gauche, illustration à droite dès 1200 px */
+/* Hero E1-3 : fond en dégradé léger ; en dessous de 1200 px texte, illustration puis recherche ; dès 1200 px texte et recherche à gauche, illustration à droite */
 .hero {
   padding-block: var(--space-6) var(--space-7);
-  background-color: var(--color-bg);
-  background-image:
-    linear-gradient(var(--color-grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background: linear-gradient(180deg, var(--color-card), var(--color-bg) 70%);
 }
 
 .hero__grille {
@@ -279,7 +275,12 @@
   min-block-size: calc(3 * var(--leading-body) * 1em);
 }
 
+.hero__recherche {
+  order: 3;
+}
+
 .hero__visuel {
+  order: 2;
   margin: 0;
   justify-self: center;
   inline-size: 100%;

@@ -119,4 +119,9 @@ test('hero : deux colonnes à 1440 px, illustration sous le texte à 375 px', as
   await page.setViewportSize({ width: 375, height: 900 });
   const mobile = await pos();
   expect(mobile.visuelHaut).toBeGreaterThanOrEqual(mobile.texteBas);
+  // mobile : l'illustration fait partie du hero, elle précède la recherche
+  await page.waitForSelector('.recherche:not([hidden])');
+  const rechercheHaut = await page.evaluate(() => document.querySelector('.hero__recherche').getBoundingClientRect().top);
+  const visuelBas = await page.evaluate(() => document.querySelector('.hero__visuel').getBoundingClientRect().bottom);
+  expect(rechercheHaut).toBeGreaterThanOrEqual(visuelBas);
 });
