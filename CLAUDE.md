@@ -16,6 +16,7 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 - `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références)
 - `.github/workflows/pages.yml` : vérifications (PR, push) et publication Pages (push sur `main` ou `lot-*`) : la racine du site est `main`, chaque branche `lot-N` est publiée sous `/lot-N/`, et `/lot-N/` redirige vers le chemin lu dans `apercu.txt` (racine de la branche, une ligne, ex. `wireframes/`) ; liste des aperçus sur `/apercus/`
 - `apercu.txt` : page principale du lot pour l'aperçu `/lot-N/`
+- `Docs/apercus.txt` : une ligne `lot-N|descriptif` par lot, affichée sous chaque lot sur `/apercus/` (à compléter à chaque nouveau lot)
 
 ## Commandes vérifiées
 - `npm ci` : installe les outils de développement
