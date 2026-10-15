@@ -56,6 +56,15 @@ function bloc(html, code) {
   return html.slice(debut, fin === -1 ? html.length : fin);
 }
 
+function blocRole(html, role) {
+  const debut = html.indexOf(`data-role="${role}"`);
+  expect(debut, role).toBeGreaterThan(-1);
+  const fin = html.indexOf('data-role="', debut + 1);
+  return html.slice(debut, fin === -1 ? html.length : fin);
+}
+
+const attributs = (html, nom) => [...html.matchAll(new RegExp(`data-${nom}="([^"]+)"`, 'g'))].map((m) => m[1]);
+
 function exactementUneFois(html, codes) {
   for (const code of codes) {
     expect(html.split(`data-bloc="${code}"`).length - 1, code).toBe(1);
@@ -76,8 +85,8 @@ describe('wireframes : accueil et diagnostic', () => {
     expect(e25.match(/<li class="wf-carte"/g)).toHaveLength(3);
   });
 
-  it('E1-5 liste des aléas en exemple (nombre non figé) avec un lien vers diagnostic.html par carte ; E1-4 a un lien vers diagnostic.html', () => {
-    const e15 = bloc(accueil, 'E1-5');
+  it('le bloc aléas liste des aléas en exemple (nombre non figé) avec un lien vers diagnostic.html par carte ; le bloc recherche a un lien vers diagnostic.html', () => {
+    const e15 = blocRole(accueil, 'aleas');
     for (const titre of ['Inondations et crues', 'Grêle et vents violents', 'Feux de forêt', 'Canicule et chaleur extrême']) {
       expect(e15).toContain(`<h3>${titre}</h3>`);
     }
@@ -85,21 +94,34 @@ describe('wireframes : accueil et diagnostic', () => {
     const cartes = e15.split('<li class="wf-carte"').slice(1);
     expect(cartes.length).toBeGreaterThanOrEqual(4);
     for (const carte of cartes) expect(carte).toContain('href="diagnostic.html"');
-    expect(bloc(accueil, 'E1-4')).toContain('href="diagnostic.html"');
+    expect(blocRole(accueil, 'recherche')).toContain('href="diagnostic.html"');
   });
 
-  it('l\'ordre des blocs de l\'accueil est : en-tête, avis, hero, recherche, aléas, personne, étapes, réassurance, crash-test, pied', () => {
-    const titres = ['Avis clients', 'Hero', 'Recherche d\'adresse', 'Les aléas', 'Protection de la personne', 'Comment ça marche', 'Réassurance', 'Preuve : crash-test'];
+  it('l\'ordre des blocs de l\'accueil est : en-tête, hero, recherche, aléas, personne, étapes, réassurance, avis, crash-test, pied', () => {
+    const titres = ['Hero', 'Recherche d\'adresse', 'Les aléas', 'Protection de la personne', 'Comment ça marche', 'Réassurance', 'Avis clients', 'Preuve : crash-test'];
     titres.forEach((titre, i) => expect(bloc(accueil, `E1-${i + 2}`), titre).toContain(`>${titre}</h2>`));
     expect(accueil.indexOf('data-bloc="E1-10"')).toBeGreaterThan(accueil.indexOf('data-bloc="E1-9"'));
   });
 
-  it('E1-2 affiche 5 étoiles en carrés, la note, le nombre d\'avis et un logo exemple ; E1-6 couvre les gilets chauffant, refroidissant et anti-chute avec un lien par carte', () => {
-    const e12 = bloc(accueil, 'E1-2');
+  it('les data-role de l\'accueil suivent l\'ordre du HTML et les data-bloc vont de E1-1 à E1-10', () => {
+    expect(attributs(accueil, 'role')).toEqual(['en-tete', 'hero', 'recherche', 'aleas', 'protection', 'comment', 'reassurance', 'avis', 'preuve', 'pied']);
+    expect(attributs(accueil, 'bloc')).toEqual(Array.from({ length: 10 }, (_, i) => `E1-${i + 1}`));
+  });
+
+  it('le bloc avis garde son contenu : 5 carrés de note, une note, un nombre d\'avis, un [Logo exemple]', () => {
+    const avis = blocRole(accueil, 'avis');
+    expect(avis.match(/<span class="wf-carre-etoile/g)).toHaveLength(5);
+    expect(avis).toContain('0,0 / 5');
+    expect(avis).toContain('000 avis');
+    expect(avis.match(/\[Logo exemple\]/g)).toHaveLength(1);
+  });
+
+  it('le bloc avis affiche 5 étoiles en carrés, la note, le nombre d\'avis et un logo exemple ; le bloc protection couvre les gilets chauffant, refroidissant et anti-chute avec un lien par carte', () => {
+    const e12 = blocRole(accueil, 'avis');
     expect(e12.match(/<span class="wf-carre-etoile/g)).toHaveLength(5);
     expect(e12).toContain('0,0 / 5 · 000 avis');
     expect(e12).toContain('[Logo exemple]');
-    const e16 = bloc(accueil, 'E1-6');
+    const e16 = blocRole(accueil, 'protection');
     for (const gilet of ['Gilets chauffants', 'Gilets refroidissants', 'Gilets anti-chute']) expect(e16).toContain(gilet);
     const cartes = e16.split('<li class="wf-carte"').slice(1);
     expect(cartes.length).toBeGreaterThanOrEqual(3);
@@ -135,8 +157,8 @@ describe('wireframes : fiche produit, panier et parcours', () => {
     expect(bloc(produit, 'E3-4').match(/<div class="wf-variante">/g)).toHaveLength(2);
   });
 
-  it('les liens du parcours existent : E1-3, E2-5, E3-5 et E4-2', () => {
-    expect(bloc(lire('accueil'), 'E1-4')).toContain('href="diagnostic.html"');
+  it('les liens du parcours existent : recherche (accueil), E2-5, E3-5 et E4-2', () => {
+    expect(blocRole(lire('accueil'), 'recherche')).toContain('href="diagnostic.html"');
     expect(bloc(lire('diagnostic'), 'E2-5')).toContain('href="produit.html"');
     expect(bloc(produit, 'E3-5')).toContain('href="panier.html"');
     expect(bloc(panier, 'E4-2')).toContain('href="produit.html"');
