@@ -79,10 +79,30 @@ describe('wireframes : accueil et diagnostic', () => {
     exactementUneFois(accueil, Array.from({ length: 10 }, (_, i) => `E1-${i + 1}`));
   });
 
-  it('diagnostic contient exactement une fois E2-1 à E2-6, et E2-5 contient 3 cartes', () => {
+  it('diagnostic contient exactement une fois E2-1 à E2-6, et le bloc equipements contient 3 cartes', () => {
     exactementUneFois(diagnostic, Array.from({ length: 6 }, (_, i) => `E2-${i + 1}`));
-    const e25 = bloc(diagnostic, 'E2-5');
-    expect(e25.match(/<li class="wf-carte"/g)).toHaveLength(3);
+    const equipements = blocRole(diagnostic, 'equipements');
+    expect(equipements.match(/<li class="wf-carte[ "]/g)).toHaveLength(3);
+  });
+
+  it('les data-role du diagnostic suivent l\'ordre du HTML et les data-bloc vont de E2-1 à E2-6', () => {
+    expect(attributs(diagnostic, 'role')).toEqual(['en-tete', 'adresse', 'equipements', 'score', 'carte', 'pied']);
+    expect(attributs(diagnostic, 'bloc')).toEqual(Array.from({ length: 6 }, (_, i) => `E2-${i + 1}`));
+  });
+
+  it('le bloc equipements a 3 cartes, chacune avec un lien « Voir la fiche » vers produit.html', () => {
+    const cartes = blocRole(diagnostic, 'equipements').split(/<li class="wf-carte[ "]/).slice(1);
+    expect(cartes).toHaveLength(3);
+    for (const carte of cartes) expect(carte).toMatch(/<a [^>]*href="produit.html"[^>]*>Voir la fiche<\/a>/);
+  });
+
+  it('le bloc carte contient l\'emplacement [Carte], 4 cases à cocher avec label et une légende', () => {
+    const carte = blocRole(diagnostic, 'carte');
+    expect(carte).toContain('<span>[Carte]</span>');
+    const cases = [...carte.matchAll(/<input type="checkbox" id="([^"]+)"/g)].map((m) => m[1]);
+    expect(cases).toHaveLength(4);
+    for (const id of cases) expect(carte).toMatch(new RegExp(`<label><input type="checkbox" id="${id}"[^>]*> [^<]+</label>`));
+    expect(carte).toContain('Légende');
   });
 
   it('le bloc aléas liste des aléas en exemple (nombre non figé) avec un lien vers diagnostic.html par carte ; le bloc recherche a un lien vers diagnostic.html', () => {
@@ -157,9 +177,9 @@ describe('wireframes : fiche produit, panier et parcours', () => {
     expect(bloc(produit, 'E3-4').match(/<div class="wf-variante">/g)).toHaveLength(2);
   });
 
-  it('les liens du parcours existent : recherche (accueil), E2-5, E3-5 et E4-2', () => {
+  it('les liens du parcours existent : recherche (accueil), equipements (diagnostic), E3-5 et E4-2', () => {
     expect(blocRole(lire('accueil'), 'recherche')).toContain('href="diagnostic.html"');
-    expect(bloc(lire('diagnostic'), 'E2-5')).toContain('href="produit.html"');
+    expect(blocRole(lire('diagnostic'), 'equipements')).toContain('href="produit.html"');
     expect(bloc(produit, 'E3-5')).toContain('href="panier.html"');
     expect(bloc(panier, 'E4-2')).toContain('href="produit.html"');
   });

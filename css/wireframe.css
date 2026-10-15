@@ -905,3 +905,64 @@ body.wf {
   min-height: 2rem;
   padding: 0 var(--space-3);
 }
+
+/* --- Lot 1b : diagnostic, équipements à gauche, score et carte à droite --- */
+@media (min-width: 768px) {
+  .wf-grille--horiz {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .wf-carte--horiz {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    grid-template-rows: auto auto auto 1fr;
+    align-content: start;
+    column-gap: var(--space-4);
+  }
+
+  .wf-carte--horiz > .wf-emplacement {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    aspect-ratio: auto;
+    min-height: 12rem;
+  }
+
+  .wf-carte--horiz > :not(.wf-emplacement) {
+    grid-column: 2;
+    margin-block: 0 var(--space-2);
+  }
+
+  .wf-carte--horiz > h3 {
+    margin-top: 0;
+    font-size: var(--text-lg);
+  }
+
+  .wf-carte--horiz > .wf-bouton {
+    justify-self: start;
+    align-self: end;
+  }
+}
+
+@media (min-width: 1200px) {
+  .wf-ecran--diag {
+    align-items: stretch;
+  }
+
+  .wf-ecran--diag > .wf-colonne {
+    align-content: start;
+  }
+
+  .wf-bloc--equipements {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wf-bloc--equipements > .wf-grille {
+    flex: 1;
+    grid-auto-rows: 1fr;
+  }
+
+  .wf-bloc--carte .wf-calques {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
