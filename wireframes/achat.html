@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Wireframe écran 9 — Détail d'un achat</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body class="wf">
+  <nav class="wf-revue" aria-label="Revue des wireframes">
+    <ul>
+      <li><a href="index.html">Index des wireframes</a></li>
+      <li><a href="accueil.html">Écran 1 — Accueil</a></li>
+      <li><a href="diagnostic.html">Écran 2 — Diagnostic</a></li>
+      <li><a href="produit.html">Écran 3 — Fiche produit</a></li>
+      <li><a href="panier.html">Écran 4 — Panier</a></li>
+    </ul>
+  </nav>
+  <aside class="wf-bandeau" aria-label="Démonstrateur">Démonstrateur : contenus fictifs, aucune vente</aside>
+  <header class="wf-bloc wf-entete-site" data-bloc="E9-1" data-role="en-tete">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E9-1</span>
+        <p class="wf-titre">En-tête</p>
+        <p class="wf-note">Identité, navigation (« Vendre sur la plateforme », « Mon compte », « Panier » cliquables) et fil d'Ariane vers le compte et les achats.</p>
+      </div>
+      <div class="wf-entete-ligne">
+        <div class="wf-emplacement"><span>[Logo exemple]</span></div>
+        <input type="checkbox" id="menu-E9" class="wf-menu-case">
+        <label for="menu-E9" class="wf-bouton wf-menu-bouton">Menu</label>
+        <nav class="wf-nav-site" aria-label="Navigation principale">
+          <ul>
+            <li>Aléas</li>
+            <li>Comment ça marche</li>
+            <li><a href="pro.html">Vendre sur la plateforme</a></li>
+            <li><a href="compte.html">Mon compte</a></li>
+            <li><a href="panier.html">Panier</a></li>
+          </ul>
+        </nav>
+      </div>
+      <nav class="wf-fil" aria-label="Fil d'Ariane">
+        <ol>
+          <li><a href="compte.html">Mon compte</a></li>
+          <li><a href="achats.html">Mes achats</a></li>
+          <li aria-current="page">Batardeau</li>
+        </ol>
+      </nav>
+    </div>
+  </header>
+  <main class="wf-conteneur wf-ecran wf-ecran--2col wf-ecran--60">
+    <div class="wf-colonne">
+    <section class="wf-bloc" data-bloc="E9-2" data-role="resume" aria-labelledby="t-E9-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E9-2</span>
+        <h1 class="wf-titre" id="t-E9-2">Batardeau modulable [exemple]</h1>
+        <p class="wf-note">Résumé de la commande.</p>
+      </div>
+      <div class="wf-emplacement wf-ratio-4-3 wf-image-achat"><span>[Image]</span></div>
+      <dl class="wf-totaux">
+        <div><dt>Commande</dt><dd>n° 000</dd></div>
+        <div><dt>Date</dt><dd>00/00/0000</dd></div>
+        <div><dt>Statut</dt><dd>Expédié</dd></div>
+        <div class="wf-total-ttc"><dt>Prix TTC</dt><dd>000 €</dd></div>
+      </dl>
+    </section>
+    <section class="wf-bloc" data-bloc="E9-3" data-role="cotes" aria-labelledby="t-E9-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E9-3</span>
+        <h2 class="wf-titre" id="t-E9-3">Cotes saisies</h2>
+        <p class="wf-note">Rappel des cotes du bien.</p>
+      </div>
+      <dl class="wf-totaux">
+        <div><dt>Largeur du tableau</dt><dd>000 mm</dd></div>
+        <div><dt>Hauteur du seuil</dt><dd>000 mm</dd></div>
+        <div><dt>Tolérance</dt><dd>000 mm</dd></div>
+      </dl>
+      <div class="wf-emplacement wf-ratio-16-9"><span>[Schéma]</span></div>
+      <p class="wf-annotation">Schéma de rappel des cotes.</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E9-4" data-role="mode" aria-labelledby="t-E9-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E9-4</span>
+        <h2 class="wf-titre" id="t-E9-4">Mode de pose</h2>
+        <p class="wf-note">Deux états affichés : DIY ou pose par un artisan.</p>
+      </div>
+      <div class="wf-variantes wf-variantes--pile">
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante a</p>
+          <h3>Matériel seul (DIY)</h3>
+          <p>Expédition directe.</p>
+        </div>
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante b</p>
+          <h3>Matériel + pose par un artisan partenaire</h3>
+          <p>Artisan : [Artisan exemple]</p>
+          <p>Date d'intervention : 00/00/0000</p>
+          <p>Garantie décennale</p>
+        </div>
+      </div>
+    </section>
+    </div>
+    <div class="wf-colonne">
+    <section class="wf-bloc" data-bloc="E9-5" data-role="livraison" aria-labelledby="t-E9-5">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E9-5</span>
+        <h2 class="wf-titre" id="t-E9-5">Livraison</h2>
+        <p class="wf-note">Suivi de la livraison directe usine.</p>
+      </div>
+      <p>Délai de livraison directe usine : 00 jours ouvrés</p>
+      <p>Date estimée : 00/00/0000</p>
+      <p>Statut de suivi : Expédié</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E9-6" data-role="documents" aria-labelledby="t-E9-6">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E9-6</span>
+        <h2 class="wf-titre" id="t-E9-6">Documents</h2>
+        <p class="wf-note">Cinq documents à télécharger (boutons discrets, non liés).</p>
+      </div>
+      <ul class="wf-documents">
+        <li><button type="button" class="wf-bouton">Facture (PDF) [Fichier exemple]</button><p class="wf-annotation">fichier fictif prévu au lot 8c</p></li>
+        <li><button type="button" class="wf-bouton">Notice technique (PDF) [Fichier exemple]</button><p class="wf-annotation">fichier fictif prévu au lot 8c</p></li>
+        <li><button type="button" class="wf-bouton">PV d'essais en laboratoire (PDF) [Fichier exemple]</button><p class="wf-annotation">fichier fictif prévu au lot 8c</p></li>
+        <li><button type="button" class="wf-bouton">Attestation de pose (PDF) [Fichier exemple]</button><p class="wf-annotation">fichier fictif prévu au lot 8c</p></li>
+        <li><button type="button" class="wf-bouton">Garantie décennale (PDF) [Fichier exemple]</button><p class="wf-annotation">fichier fictif prévu au lot 8c</p></li>
+      </ul>
+    </section>
+    <section class="wf-bloc" data-bloc="E9-7" data-role="sav" aria-labelledby="t-E9-7">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E9-7</span>
+        <h2 class="wf-titre" id="t-E9-7">Service après-vente</h2>
+        <p class="wf-note">Entrée vers la demande de SAV, avec reprise des données.</p>
+      </div>
+      <p>Un problème avec ce produit ? Votre commande, vos cotes et votre mode de pose seront repris automatiquement.</p>
+      <p><a class="wf-bouton" href="sav.html">Demander une intervention</a></p>
+    </section>
+    </div>
+  </main>
+  <footer class="wf-bloc wf-pied" data-bloc="E9-8" data-role="pied">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E9-8</span>
+        <p class="wf-titre">Pied de page</p>
+        <p class="wf-note">Mentions, service après-vente et rappel du caractère fictif du démonstrateur.</p>
+      </div>
+      <div class="wf-pied-colonnes">
+        <p>Mentions légales (page prévue au lot 10)</p>
+        <p>À propos du démonstrateur</p>
+        <p><a href="sav-acces.html">Service après-vente</a></p>
+        <p>Rappel : aucune vente</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

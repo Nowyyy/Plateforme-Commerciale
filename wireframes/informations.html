@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Wireframe écran 12 — Mes informations</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body class="wf">
+  <nav class="wf-revue" aria-label="Revue des wireframes">
+    <ul>
+      <li><a href="index.html">Index des wireframes</a></li>
+      <li><a href="accueil.html">Écran 1 — Accueil</a></li>
+      <li><a href="diagnostic.html">Écran 2 — Diagnostic</a></li>
+      <li><a href="produit.html">Écran 3 — Fiche produit</a></li>
+      <li><a href="panier.html">Écran 4 — Panier</a></li>
+    </ul>
+  </nav>
+  <aside class="wf-bandeau" aria-label="Démonstrateur">Démonstrateur : contenus fictifs, aucune vente</aside>
+  <header class="wf-bloc wf-entete-site" data-bloc="E12-1" data-role="en-tete">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E12-1</span>
+        <p class="wf-titre">En-tête</p>
+        <p class="wf-note">Identité et navigation du site ; « Vendre sur la plateforme », « Mon compte » et « Panier » sont cliquables, suivis de la navigation du compte.</p>
+      </div>
+      <div class="wf-entete-ligne">
+        <div class="wf-emplacement"><span>[Logo exemple]</span></div>
+        <input type="checkbox" id="menu-E12" class="wf-menu-case">
+        <label for="menu-E12" class="wf-bouton wf-menu-bouton">Menu</label>
+        <nav class="wf-nav-site" aria-label="Navigation principale">
+          <ul>
+            <li>Aléas</li>
+            <li>Comment ça marche</li>
+            <li><a href="pro.html">Vendre sur la plateforme</a></li>
+            <li><a href="compte.html">Mon compte</a></li>
+            <li><a href="panier.html">Panier</a></li>
+          </ul>
+        </nav>
+      </div>
+      <nav class="wf-nav-compte" aria-label="Mon compte">
+        <ul>
+          <li><a href="compte.html">Tableau de bord</a></li>
+          <li><a href="achats.html">Mes achats</a></li>
+          <li><a href="demandes.html">Mes demandes</a></li>
+          <li><a href="informations.html" aria-current="page">Mes informations <span class="wf-courant">(page actuelle)</span></a></li>
+          <li><a href="connexion.html">Se déconnecter</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="wf-conteneur wf-ecran">
+    <form class="wf-form-page" aria-label="Mes informations">
+    <section class="wf-bloc" data-bloc="E12-2" data-role="identite" aria-labelledby="t-E12-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E12-2</span>
+        <h1 class="wf-titre" id="t-E12-2">Mes informations</h1>
+        <p class="wf-note">Identité préremplie (données fictives).</p>
+      </div>
+      <div class="wf-formulaire">
+        <div class="wf-champ">
+          <label for="prenom-e122">Prénom</label>
+          <input type="text" id="prenom-e122" name="prenom-e122" value="[Client exemple]" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="nom-e122">Nom</label>
+          <input type="text" id="nom-e122" name="nom-e122" value="[Client exemple]" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="email-e122">E-mail</label>
+          <input type="email" id="email-e122" name="email-e122" value="client.demo@exemple.test" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="tel-e122">Téléphone</label>
+          <input type="tel" id="tel-e122" name="tel-e122" value="00 00 00 00 00" autocomplete="off">
+        </div>
+      </div>
+    </section>
+    <section class="wf-bloc" data-bloc="E12-3" data-role="adresse" aria-labelledby="t-E12-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E12-3</span>
+        <h2 class="wf-titre" id="t-E12-3">Adresse de livraison</h2>
+        <p class="wf-note">Adresse préremplie (données fictives).</p>
+      </div>
+      <div class="wf-formulaire">
+        <div class="wf-champ">
+          <label for="adresse-e123">Adresse</label>
+          <input type="text" id="adresse-e123" name="adresse-e123" value="00 rue [exemple]" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="complement-e123">Complément</label>
+          <input type="text" id="complement-e123" name="complement-e123" value="[exemple]" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="cp-e123">Code postal</label>
+          <input type="text" id="cp-e123" name="cp-e123" value="00000" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="ville-e123">Ville</label>
+          <input type="text" id="ville-e123" name="ville-e123" value="[Ville exemple]" autocomplete="off">
+        </div>
+      </div>
+    </section>
+    <section class="wf-bloc" data-bloc="E12-4" data-role="preferences" aria-labelledby="t-E12-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E12-4</span>
+        <h2 class="wf-titre" id="t-E12-4">Préférences</h2>
+        <p class="wf-note">Préférences de communication et mention sur les données personnelles.</p>
+      </div>
+      <fieldset class="wf-calques">
+        <legend>Préférences de communication</legend>
+        <label><input type="checkbox" id="pref-commandes-e124" name="pref-commandes"> Suivi de mes commandes par e-mail</label>
+        <label><input type="checkbox" id="pref-sav-e124" name="pref-sav"> Informations sur mes demandes de SAV par e-mail</label>
+      </fieldset>
+      <p>Données personnelles : l'export et la suppression de vos données ne sont pas actifs dans ce démonstrateur (mention RGPD prévue au lot 10)</p>
+      <p><button type="button" class="wf-bouton">Enregistrer</button></p>
+      <p class="wf-annotation">Démonstrateur : saisissez des données fictives, rien n'est envoyé ni enregistré</p>
+    </section>
+    </form>
+  </main>
+  <footer class="wf-bloc wf-pied" data-bloc="E12-5" data-role="pied">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E12-5</span>
+        <p class="wf-titre">Pied de page</p>
+        <p class="wf-note">Mentions, service après-vente et rappel du caractère fictif du démonstrateur.</p>
+      </div>
+      <div class="wf-pied-colonnes">
+        <p>Mentions légales (page prévue au lot 10)</p>
+        <p>À propos du démonstrateur</p>
+        <p><a href="sav-acces.html">Service après-vente</a></p>
+        <p>Rappel : aucune vente</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

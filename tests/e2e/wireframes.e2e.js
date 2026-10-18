@@ -1,7 +1,10 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const PAGES = ['index', 'accueil', 'diagnostic', 'produit', 'panier'];
+const PAGES = [
+  'index', 'accueil', 'diagnostic', 'produit', 'panier', 'pro', 'connexion', 'compte', 'achats', 'achat',
+  'sav', 'demandes', 'informations', 'sav-acces',
+];
 const LARGEURS = [375, 768, 1440];
 
 for (const nom of PAGES) {

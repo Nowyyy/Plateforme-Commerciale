@@ -10,7 +10,7 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 - `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `attente.css`, `wireframe.css` (wireframes)
 - `data/` : `site.json`, `accueil.json` (tous les textes et liens visibles)
 - `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js` (lot 2-C)
-- `wireframes/` : Lo-Fi du lot 1, publiés, `noindex`
+- `wireframes/` : Lo-Fi publiés, `noindex` : écrans 1 à 13 (`accueil`, `diagnostic`, `produit`, `panier`, `pro`, `connexion`, `compte`, `achats`, `achat`, `sav`, `demandes`, `informations`, `sav-acces`) et `index.html`
 - `assets/fonts/` : polices woff2 (OFL)
 - `tests/` : tests Vitest ; `tests/e2e/` Playwright ; `tests/outils/` serveur local et Lighthouse
 - `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références)
@@ -33,6 +33,7 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 - Rien de contenu en dur : textes, liens, réglages dans des fichiers de données ou de configuration. Exception : les wireframes sont jetables, les annotations en dur sont permises dans `wireframes/` seulement ; les vrais textes passent en `data/` à partir du lot 2 ; les jetons `--wf-*` sont réservés aux wireframes.
 - L'aperçu par lot `/lot-N/` (publication par branche, `apercu.txt`) reste en place pour tous les lots ; ne pas le retirer ni modifier le workflow ou les réglages GitHub sans accord explicite du propriétaire.
 - Aucune couleur en dur hors `css/tokens.css`.
+- Navigation commune : en-tête = Aléas, Comment ça marche, Vendre sur la plateforme, Mon compte, Panier ; pied = Mentions légales, À propos du démonstrateur, Service après-vente, rappel « aucune vente ». Comptes, connexion et formulaires sont simulés : mention démonstrateur sur chaque formulaire, valeurs fictives, rien envoyé ni enregistré (sessionStorage seulement dans la version interactive), jamais de données dans l'URL.
 - Wireframes : chaque bloc porte `data-bloc` (code visible, suit l'ordre de la page) et `data-role` (identifiant stable) ; les tests s'appuient sur `data-role` ; `Docs/lots/lot-1b.md` donne la correspondance anciens/nouveaux codes de l'accueil et du diagnostic.
 - Chemins relatifs partout (site servi sous `/<dépôt>/`).
 - Contenus fictifs, aucun vrai logo, aucun traceur, aucune police ni script externe.
@@ -53,6 +54,7 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 - L'adresse saisie n'est jamais dans l'URL ni envoyée : `sessionStorage` seulement.
 - L'ambre est réservé aux boutons d'action ; texte sur fond ambre en bleu marine.
 - Aperçu de chaque lot : `apercu.txt` + branche `lot-N`.
+- `apercu.txt` : un lot de wireframes pointe vers `wireframes/`, un lot Hi-Fi vers une page Hi-Fi ; chaque lot règle ce fichier sur sa branche.
 
 ## Seuils Lighthouse des wireframes
 Pour les pages de `wireframes/` : seulement performance, accessibilité et bonnes pratiques (la catégorie SEO est inapplicable aux pages `noindex`).

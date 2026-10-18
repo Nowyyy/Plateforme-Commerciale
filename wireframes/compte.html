@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Wireframe écran 7 — Tableau de bord</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body class="wf">
+  <nav class="wf-revue" aria-label="Revue des wireframes">
+    <ul>
+      <li><a href="index.html">Index des wireframes</a></li>
+      <li><a href="accueil.html">Écran 1 — Accueil</a></li>
+      <li><a href="diagnostic.html">Écran 2 — Diagnostic</a></li>
+      <li><a href="produit.html">Écran 3 — Fiche produit</a></li>
+      <li><a href="panier.html">Écran 4 — Panier</a></li>
+    </ul>
+  </nav>
+  <aside class="wf-bandeau" aria-label="Démonstrateur">Démonstrateur : contenus fictifs, aucune vente</aside>
+  <header class="wf-bloc wf-entete-site" data-bloc="E7-1" data-role="en-tete">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E7-1</span>
+        <p class="wf-titre">En-tête</p>
+        <p class="wf-note">Identité et navigation du site ; « Vendre sur la plateforme », « Mon compte » et « Panier » sont cliquables, suivis de la navigation du compte.</p>
+      </div>
+      <div class="wf-entete-ligne">
+        <div class="wf-emplacement"><span>[Logo exemple]</span></div>
+        <input type="checkbox" id="menu-E7" class="wf-menu-case">
+        <label for="menu-E7" class="wf-bouton wf-menu-bouton">Menu</label>
+        <nav class="wf-nav-site" aria-label="Navigation principale">
+          <ul>
+            <li>Aléas</li>
+            <li>Comment ça marche</li>
+            <li><a href="pro.html">Vendre sur la plateforme</a></li>
+            <li><a href="compte.html">Mon compte</a></li>
+            <li><a href="panier.html">Panier</a></li>
+          </ul>
+        </nav>
+      </div>
+      <nav class="wf-nav-compte" aria-label="Mon compte">
+        <ul>
+          <li><a href="compte.html" aria-current="page">Tableau de bord <span class="wf-courant">(page actuelle)</span></a></li>
+          <li><a href="achats.html">Mes achats</a></li>
+          <li><a href="demandes.html">Mes demandes</a></li>
+          <li><a href="informations.html">Mes informations</a></li>
+          <li><a href="connexion.html">Se déconnecter</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="wf-conteneur wf-ecran wf-ecran--2col">
+    <section class="wf-bloc wf-pleine" data-bloc="E7-2" data-role="bienvenue" aria-labelledby="t-E7-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E7-2</span>
+        <h1 class="wf-titre" id="t-E7-2">Bonjour, [Client exemple]</h1>
+        <p class="wf-note">Accueil du compte, simulé.</p>
+      </div>
+      <p>Compte de démonstration — données fictives</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E7-3" data-role="commandes" aria-labelledby="t-E7-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E7-3</span>
+        <h2 class="wf-titre" id="t-E7-3">Mes dernières commandes</h2>
+        <p class="wf-note">Trois dernières commandes, vers le détail ou la liste complète.</p>
+      </div>
+      <ul class="wf-grille wf-grille--pile wf-liste-achats">
+        <li class="wf-carte wf-ligne-achat">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <div class="wf-ligne-corps">
+            <h3>Batardeau modulable [exemple]</h3>
+            <p>Commande n° 000 · 00/00/0000</p>
+            <p>Statut : <strong>Expédié</strong></p>
+            <p>Mode : DIY</p>
+            <p><a href="achat.html">Voir le détail</a></p>
+          </div>
+        </li>
+        <li class="wf-carte wf-ligne-achat">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <div class="wf-ligne-corps">
+            <h3>Clapet anti-retour [exemple]</h3>
+            <p>Commande n° 000 · 00/00/0000</p>
+            <p>Statut : <strong>Pose planifiée</strong></p>
+            <p>Mode : Pose par un artisan</p>
+            <p><a href="achat.html">Voir le détail</a></p>
+          </div>
+        </li>
+        <li class="wf-carte wf-ligne-achat">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <div class="wf-ligne-corps">
+            <h3>Volet résistant à la grêle [exemple]</h3>
+            <p>Commande n° 000 · 00/00/0000</p>
+            <p>Statut : <strong>Livré</strong></p>
+            <p>Mode : DIY</p>
+            <p><a href="achat.html">Voir le détail</a></p>
+          </div>
+        </li>
+      </ul>
+      <p><a href="achats.html">Voir tous mes achats</a></p>
+    </section>
+    <section class="wf-bloc" data-bloc="E7-4" data-role="sav-en-cours" aria-labelledby="t-E7-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E7-4</span>
+        <h2 class="wf-titre" id="t-E7-4">Demandes de service après-vente en cours</h2>
+        <p class="wf-note">Deux demandes en cours, vers la liste complète.</p>
+      </div>
+      <ul class="wf-grille wf-grille--pile">
+        <li class="wf-carte"><h3>SAV-000</h3><p>Produit : Batardeau modulable [exemple]</p><p>Statut : <strong>En analyse</strong></p></li>
+        <li class="wf-carte"><h3>SAV-000</h3><p>Produit : Clapet anti-retour [exemple]</p><p>Statut : <strong>Intervention planifiée</strong></p></li>
+      </ul>
+      <p><a href="demandes.html">Voir toutes mes demandes</a></p>
+    </section>
+  </main>
+  <footer class="wf-bloc wf-pied" data-bloc="E7-5" data-role="pied">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E7-5</span>
+        <p class="wf-titre">Pied de page</p>
+        <p class="wf-note">Mentions, service après-vente et rappel du caractère fictif du démonstrateur.</p>
+      </div>
+      <div class="wf-pied-colonnes">
+        <p>Mentions légales (page prévue au lot 10)</p>
+        <p>À propos du démonstrateur</p>
+        <p><a href="sav-acces.html">Service après-vente</a></p>
+        <p>Rappel : aucune vente</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

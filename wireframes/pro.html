@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Wireframe écran 5 — Vendre sur la plateforme</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body class="wf">
+  <nav class="wf-revue" aria-label="Revue des wireframes">
+    <ul>
+      <li><a href="index.html">Index des wireframes</a></li>
+      <li><a href="accueil.html">Écran 1 — Accueil</a></li>
+      <li><a href="diagnostic.html">Écran 2 — Diagnostic</a></li>
+      <li><a href="produit.html">Écran 3 — Fiche produit</a></li>
+      <li><a href="panier.html">Écran 4 — Panier</a></li>
+    </ul>
+  </nav>
+  <aside class="wf-bandeau" aria-label="Démonstrateur">Démonstrateur : contenus fictifs, aucune vente</aside>
+  <header class="wf-bloc wf-entete-site" data-bloc="E5-1" data-role="en-tete">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E5-1</span>
+        <p class="wf-titre">En-tête</p>
+        <p class="wf-note">Identité et navigation du site ; « Vendre sur la plateforme », « Mon compte » et « Panier » sont cliquables.</p>
+      </div>
+      <div class="wf-entete-ligne">
+        <div class="wf-emplacement"><span>[Logo exemple]</span></div>
+        <input type="checkbox" id="menu-E5" class="wf-menu-case">
+        <label for="menu-E5" class="wf-bouton wf-menu-bouton">Menu</label>
+        <nav class="wf-nav-site" aria-label="Navigation principale">
+          <ul>
+            <li>Aléas</li>
+            <li>Comment ça marche</li>
+            <li><a href="pro.html">Vendre sur la plateforme</a></li>
+            <li><a href="connexion.html">Mon compte</a></li>
+            <li><a href="panier.html">Panier</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main class="wf-conteneur wf-ecran">
+    <section class="wf-bloc" data-bloc="E5-2" data-role="intro" aria-labelledby="t-E5-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E5-2</span>
+        <h1 class="wf-titre" id="t-E5-2">Vendre sur la plateforme</h1>
+        <p class="wf-note">Introduction de l'espace professionnel ; réservé aux vendeurs.</p>
+      </div>
+      <p class="wf-accroche">Phrase d'accroche provisoire : proposez vos équipements certifiés aux propriétaires exposés aux aléas.</p>
+      <p><strong>Réservé aux professionnels</strong></p>
+    </section>
+    <section class="wf-bloc" data-bloc="E5-3" data-role="etapes" aria-labelledby="t-E5-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E5-3</span>
+        <h2 class="wf-titre" id="t-E5-3">De la candidature à la mise en ligne</h2>
+        <p class="wf-note">Trois étapes numérotées.</p>
+      </div>
+      <ol class="wf-grille wf-grille--3">
+        <li class="wf-carte"><span class="wf-numero">1</span><h3>Candidature</h3><p>Présentation de la société et des produits.</p></li>
+        <li class="wf-carte"><span class="wf-numero">2</span><h3>Validation du catalogue et des certifications</h3><p>Contrôle des pièces fournies.</p></li>
+        <li class="wf-carte"><span class="wf-numero">3</span><h3>Mise en ligne</h3><p>Les produits rejoignent le catalogue.</p></li>
+      </ol>
+    </section>
+    <section class="wf-bloc" data-bloc="E5-4" data-role="formulaire" aria-labelledby="t-E5-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E5-4</span>
+        <h2 class="wf-titre" id="t-E5-4">Candidature vendeur</h2>
+        <p class="wf-note">Formulaire de candidature ; rien n'est envoyé.</p>
+      </div>
+      <form class="wf-formulaire" aria-labelledby="t-E5-4">
+        <div class="wf-champ">
+          <label for="societe-e54">Société</label>
+          <input type="text" id="societe-e54" name="societe-e54" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="siret-e54">SIRET</label>
+          <input type="text" id="siret-e54" name="siret-e54" inputmode="numeric" autocomplete="off" aria-describedby="siret-e54-aide">
+          <p class="wf-annotation" id="siret-e54-aide">14 chiffres ; format vérifié seulement, aucune vérification réelle.</p>
+        </div>
+        <div class="wf-champ">
+          <label for="contact-e54">Prénom et nom du contact</label>
+          <input type="text" id="contact-e54" name="contact-e54" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="email-e54">E-mail professionnel</label>
+          <input type="email" id="email-e54" name="email-e54" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="tel-e54">Téléphone</label>
+          <input type="tel" id="tel-e54" name="tel-e54" autocomplete="off">
+        </div>
+        <fieldset class="wf-calques wf-col-pleine">
+          <legend>Aléas couverts</legend>
+          <label><input type="checkbox" id="alea-inondations-e54" name="alea-inondations"> Inondations et crues</label>
+          <label><input type="checkbox" id="alea-grele-e54" name="alea-grele"> Grêle et vents violents</label>
+          <label><input type="checkbox" id="alea-feux-e54" name="alea-feux"> Feux de forêt</label>
+          <label><input type="checkbox" id="alea-canicule-e54" name="alea-canicule"> Canicule et chaleur extrême</label>
+        </fieldset>
+        <div class="wf-champ wf-col-pleine">
+          <label for="produits-e54">Description des produits</label>
+          <textarea id="produits-e54" name="produits-e54" rows="4"></textarea>
+        </div>
+        <fieldset class="wf-calques wf-col-pleine">
+          <legend>Certifications</legend>
+          <div><div class="wf-emplacement"><span>[Fichier exemple]</span></div><p class="wf-annotation">Certification 1 (PDF)</p></div>
+          <div><div class="wf-emplacement"><span>[Fichier exemple]</span></div><p class="wf-annotation">Certification 2 (PDF)</p></div>
+        </fieldset>
+        <div class="wf-champ wf-col-pleine">
+          <label for="message-e54">Message</label>
+          <textarea id="message-e54" name="message-e54" rows="4"></textarea>
+        </div>
+        <div class="wf-case wf-col-pleine">
+          <input type="checkbox" id="consentement-e54" name="consentement-e54">
+          <label for="consentement-e54">J'accepte d'être recontacté à propos de ma candidature</label>
+        </div>
+        <div class="wf-col-pleine">
+          <button type="button" class="wf-bouton">Envoyer ma candidature</button>
+        </div>
+        <p class="wf-annotation wf-col-pleine">Démonstrateur : saisissez des données fictives, rien n'est envoyé ni enregistré</p>
+      </form>
+    </section>
+    <section class="wf-bloc" data-bloc="E5-5" data-role="confirmation" aria-labelledby="t-E5-5">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E5-5</span>
+        <h2 class="wf-titre" id="t-E5-5">Confirmation de candidature</h2>
+        <p class="wf-note">État affiché après l'envoi, sous le formulaire.</p>
+      </div>
+      <div class="wf-variantes">
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante b : après l'envoi</p>
+          <h3>Candidature reçue (exemple)</h3>
+          <p>Numéro de candidature : PRO-000</p>
+          <p>Délai de réponse : 00 jours ouvrés</p>
+          <ol class="wf-liste">
+            <li>Étude de votre dossier par l'équipe.</li>
+            <li>Échange sur votre catalogue et vos certifications.</li>
+            <li>Décision et mise en ligne des produits validés.</li>
+          </ol>
+          <p><a href="accueil.html">Retour à l'accueil</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="wf-bloc wf-pied" data-bloc="E5-6" data-role="pied">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E5-6</span>
+        <p class="wf-titre">Pied de page</p>
+        <p class="wf-note">Mentions, service après-vente et rappel du caractère fictif du démonstrateur.</p>
+      </div>
+      <div class="wf-pied-colonnes">
+        <p>Mentions légales (page prévue au lot 10)</p>
+        <p>À propos du démonstrateur</p>
+        <p><a href="sav-acces.html">Service après-vente</a></p>
+        <p>Rappel : aucune vente</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
