@@ -52,3 +52,13 @@ for (const largeur of LARGEURS) {
     expect(externes).toEqual([]);
   });
 }
+
+test('la note de la preuve se place entre le bloc « Testé en conditions réelles » et le pied de page', async ({ page }) => {
+  await ouvrir(page, 1440);
+  const [preuve, note, pied] = await Promise.all(
+    ['[data-role="preuve"]', '.preuve__note', '[data-role="pied"]'].map((s) => page.locator(s).boundingBox()),
+  );
+  expect(await page.locator('[data-role="preuve"] .preuve__note').count()).toBe(0);
+  expect(note.y).toBeGreaterThanOrEqual(preuve.y + preuve.height);
+  expect(note.y + note.height).toBeLessThanOrEqual(pied.y);
+});
