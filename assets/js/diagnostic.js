@@ -2,7 +2,7 @@
 // L'adresse et l'aléa ne passent jamais par l'URL ; l'adresse est affichée par valeur de champ / textContent seulement.
 import { donneesPretes, resoudre } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
-import { TOUS, aleaValide, filtrerEquipements, formaterPrix, libelleNiveau, niveauGlobal, segmentsJauge } from './diagnostic-logique.js';
+import { TOUS, aleaValide, calquesParDefaut, filtrerEquipements, formaterPrix, libelleNiveau, niveauGlobal, segmentsJauge } from './diagnostic-logique.js';
 
 export const CLE_ALEA = 'alea';
 
@@ -82,12 +82,55 @@ function afficherScore(donnees, filtre) {
 }
 
 function mettreAJour(donnees, filtre, annoncer) {
+  reinitialiserCalques(donnees, filtre);
   const nombre = afficherEquipements(donnees, filtre);
   const niveau = afficherScore(donnees, filtre);
   if (!annoncer) return;
   const { equipements, score } = donnees.diagnostic.textes;
   const phrase = nombre === 1 ? equipements.annonceUn : equipements.annonceN.replace('{n}', String(nombre));
   document.getElementById('annonce-diagnostic').textContent = `${phrase} ${score.annonce.replace('{niveau}', niveau)}`;
+}
+
+// Calques : cases à cocher et légende générées depuis les données ; masquer un calque = classe sur son groupe SVG.
+function initialiserCalques(donnees) {
+  const { aleas, textes } = donnees.diagnostic;
+  const ids = [...new Set(aleas.map((a) => a.calque))];
+  const liste = document.getElementById('liste-calques');
+  const legende = document.getElementById('legende-calques');
+  const modeleCalque = document.getElementById('modele-calque');
+  const modeleLegende = document.getElementById('modele-legende');
+  const adresse = legende.querySelector('li');
+  for (const id of ids) {
+    if (!SYMBOLE.test(id)) throw new Error(`Calque inconnu : « ${id} »`);
+    const libelle = textes.carte.calques[id];
+    const choix = modeleCalque.content.cloneNode(true);
+    const case_ = choix.querySelector('input');
+    case_.value = id;
+    case_.addEventListener('change', () => basculerCalque(id, case_.checked));
+    choix.querySelector('span').textContent = libelle;
+    liste.append(choix);
+    const item = modeleLegende.content.cloneNode(true);
+    item.querySelector('li').setAttribute('data-calque', id);
+    item.querySelector('.legende__zone').setAttribute('fill', `url(#motif-${id})`);
+    item.querySelector('span').textContent = libelle;
+    legende.insertBefore(item, adresse);
+  }
+  document.querySelector('.carte-schema').setAttribute('aria-busy', 'false');
+}
+
+function basculerCalque(id, visible) {
+  for (const groupe of document.querySelectorAll(`.schema [data-calque="${id}"]`)) {
+    groupe.classList.toggle('est-masque', !visible);
+  }
+}
+
+// Un changement de filtre réinitialise les cases (« Tous » : les 4 ; un aléa : le sien) ; l'utilisateur peut ensuite les modifier.
+function reinitialiserCalques(donnees, filtre) {
+  const visibles = calquesParDefaut(donnees.diagnostic.aleas, filtre);
+  for (const case_ of document.querySelectorAll('#liste-calques input')) {
+    case_.checked = visibles.includes(case_.value);
+    basculerCalque(case_.value, case_.checked);
+  }
 }
 
 function afficherPastilles(donnees, etat) {
@@ -148,6 +191,7 @@ if (typeof document !== 'undefined') {
     const etat = { filtre: aleaValide(donnees.diagnostic.aleas.map((a) => a.id), lireSession(CLE_ALEA, true)) ?? TOUS };
     initialiserAdresse(donnees);
     afficherPastilles(donnees, etat);
+    initialiserCalques(donnees);
     mettreAJour(donnees, etat.filtre, false);
     document.dispatchEvent(new CustomEvent('diagnostic:filtre', { detail: { filtre: etat.filtre } }));
   });

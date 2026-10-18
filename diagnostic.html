@@ -136,6 +136,56 @@
       </section>
       <section class="diag__bloc diag__carte" data-bloc="E2-5" data-role="carte" aria-labelledby="titre-carte">
         <h2 id="titre-carte" data-texte="diagnostic.textes.carte.titre"></h2>
+        <div class="carte-schema carte" aria-busy="true">
+          <svg class="schema" viewBox="0 0 400 300" role="img" aria-labelledby="schema-titre schema-desc" focusable="false">
+            <title id="schema-titre" data-texte="diagnostic.textes.carte.svgTitre"></title>
+            <desc id="schema-desc" data-texte="diagnostic.textes.carte.svgDescription"></desc>
+            <defs>
+              <pattern id="motif-inondation" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line class="motif motif--inondation" x1="0" y1="0" x2="0" y2="7"/></pattern>
+              <pattern id="motif-argile" width="9" height="9" patternUnits="userSpaceOnUse"><circle class="motif motif--argile motif--plein" cx="4.5" cy="4.5" r="1.7"/></pattern>
+              <pattern id="motif-feu" width="8" height="8" patternUnits="userSpaceOnUse"><path class="motif motif--feu" d="M0 0L8 8M8 0L0 8"/></pattern>
+              <pattern id="motif-chaleur" width="12" height="12" patternUnits="userSpaceOnUse"><path class="motif motif--chaleur" d="M6 1.5L10.5 6L6 10.5L1.5 6Z"/></pattern>
+              <path id="repere-forme" d="M185 95c-8.5 0-15 6.5-15 15 0 11 15 26 15 26s15-15 15-26c0-8.5-6.5-15-15-15z"/>
+            </defs>
+            <rect class="schema__fond" width="400" height="300"/>
+            <g class="schema__batiments">
+              <rect x="12" y="12" width="40" height="30" rx="2"/><rect x="58" y="12" width="40" height="30" rx="2"/><rect x="12" y="52" width="86" height="28" rx="2"/>
+              <rect x="122" y="12" width="56" height="34" rx="2"/><rect x="186" y="12" width="52" height="34" rx="2"/><rect x="122" y="54" width="116" height="26" rx="2"/>
+              <rect x="262" y="12" width="60" height="30" rx="2"/><rect x="330" y="12" width="58" height="30" rx="2"/><rect x="262" y="52" width="126" height="28" rx="2"/>
+              <rect x="12" y="102" width="40" height="86" rx="2"/><rect x="60" y="102" width="38" height="86" rx="2"/>
+              <rect x="262" y="102" width="56" height="40" rx="2"/><rect x="326" y="102" width="62" height="40" rx="2"/><rect x="262" y="150" width="126" height="38" rx="2"/>
+              <rect x="12" y="212" width="86" height="34" rx="2"/><rect x="12" y="254" width="40" height="34" rx="2"/><rect x="60" y="254" width="38" height="34" rx="2"/>
+              <rect x="122" y="212" width="116" height="34" rx="2"/><rect x="122" y="254" width="56" height="34" rx="2"/><rect x="186" y="254" width="52" height="34" rx="2"/>
+              <rect x="262" y="212" width="60" height="34" rx="2"/><rect x="330" y="212" width="58" height="34" rx="2"/><rect x="262" y="254" width="126" height="34" rx="2"/>
+            </g>
+            <g class="calque" data-calque="inondation"><path class="calque__fond" d="M0 205C70 195 95 230 120 300H215C190 230 160 175 90 160C50 152 20 160 0 165Z"/><path class="calque__zone" fill="url(#motif-inondation)" d="M0 205C70 195 95 230 120 300H215C190 230 160 175 90 160C50 152 20 160 0 165Z"/></g>
+            <g class="calque" data-calque="argile"><path class="calque__fond" d="M255 205L400 190V300H235Z"/><path class="calque__zone" fill="url(#motif-argile)" d="M255 205L400 190V300H235Z"/></g>
+            <g class="calque" data-calque="feu"><path class="calque__fond" d="M255 0H400V108C340 95 300 62 255 56Z"/><path class="calque__zone" fill="url(#motif-feu)" d="M255 0H400V108C340 95 300 62 255 56Z"/></g>
+            <g class="calque" data-calque="chaleur"><path class="calque__fond" d="M0 0H120V100C80 112 30 102 0 96Z"/><path class="calque__zone" fill="url(#motif-chaleur)" d="M0 0H120V100C80 112 30 102 0 96Z"/></g>
+            <path class="schema__rues" d="M0 91H400M0 200H400M110 0V300M250 0V300"/>
+            <rect class="schema__parcelle" x="132" y="106" width="104" height="76" rx="3"/>
+            <path class="schema__maison" d="M158 160V138L184 118L210 138V160Z"/>
+            <use class="schema__repere" href="#repere-forme"/>
+            <circle class="schema__repere-centre" cx="185" cy="110" r="5.5"/>
+          </svg>
+          <fieldset class="calques">
+            <legend data-texte="diagnostic.textes.carte.legendeCalques"></legend>
+            <div class="calques__liste" id="liste-calques">
+              <template id="modele-calque">
+                <label class="calque-choix"><input type="checkbox"><span></span></label>
+              </template>
+            </div>
+          </fieldset>
+          <ul class="legende" id="legende-calques">
+            <template id="modele-legende">
+              <li class="legende__item"><svg class="legende__motif" viewBox="0 0 24 16" aria-hidden="true" focusable="false"><rect class="legende__fond" width="24" height="16" rx="2"/><rect class="legende__zone" width="24" height="16" rx="2"/></svg><span></span></li>
+            </template>
+            <li class="legende__item"><svg class="legende__repere" viewBox="168 93 34 46" aria-hidden="true" focusable="false"><use href="#repere-forme"/><circle cx="185" cy="110" r="5.5"/></svg><span data-texte="diagnostic.textes.carte.legendeAdresse"></span></li>
+          </ul>
+          <p class="diag__mention" data-texte="diagnostic.textes.carte.mention"></p>
+          <p class="diag__lien"><a class="lien-externe" data-lien-externe="georisques" target="_blank" rel="noopener noreferrer"><span data-texte="diagnostic.textes.carte.lienGeorisques"></span> <span class="visuellement-cache" data-texte="diagnostic.textes.carte.nouvelOnglet"></span></a></p>
+          <p class="diag__mention" data-texte="diagnostic.textes.carte.noteGeorisques"></p>
+        </div>
       </section>
     </div>
   </main>

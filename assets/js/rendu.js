@@ -4,7 +4,7 @@
 // élément du tableau. Dans un gabarit, data-texte et data-icone sont relatifs à l'élément ("." = l'élément
 // lui-même, une chaîne) ; data-lien, data-aria-label, data-placeholder et data-texte-global restent globaux.
 // Une clé de liste commençant par « site. » est lue dans data/site.json ; data-lien-element lit le lien dans l'élément
-// (sans lien, l'<a> devient un <span>). Un élément qui a une clé « id » reçoit data-id sur sa racine.
+// (sans lien, l'<a> devient un <span>). data-lien-externe="cle" lit site.liensExternes.cle (protocole https et domaine contrôlés). Un élément qui a une clé « id » reçoit data-id sur sa racine.
 
 const MESSAGE_ERREUR =
   "Le contenu de la page n'a pas pu être chargé. Rechargez la page ou réessayez plus tard.";
@@ -85,6 +85,41 @@ export function validerListe(valeur, cle, requises = CLES_REQUISES[cle] ?? []) {
     }
   });
   return valeur;
+}
+
+// Lien externe autorisé : protocole https, nom d'hôte égal à un domaine déclaré ou sous-domaine de celui-ci, sans caractère
+// de contrôle ni identifiants. Une adresse relative ou une autre origine est refusée.
+export const HOTES_EXTERNES = ['georisques.gouv.fr'];
+
+export function lienExterneValide(adresse, hotes = HOTES_EXTERNES) {
+  if (typeof adresse !== 'string' || !/^https:/i.test(adresse)) return false;
+  // caractères de contrôle et espaces (U+0000 à U+0020, U+007F à U+009F)
+  if ([...adresse].some((c) => c.codePointAt(0) <= 0x20 || (c.codePointAt(0) >= 0x7f && c.codePointAt(0) <= 0x9f))) return false;
+  let url;
+  try {
+    url = new URL(adresse);
+  } catch {
+    return false;
+  }
+  if (url.protocol !== 'https:' || url.username !== '' || url.password !== '') return false;
+  return hotes.some((hote) => url.hostname === hote || url.hostname.endsWith(`.${hote}`));
+}
+
+// data-lien-externe="georisques" : résout site.liensExternes.<clé> ; adresse refusée = texte simple et avertissement.
+export function remplirLiensExternes(racine, donnees) {
+  for (const el of racine.querySelectorAll('[data-lien-externe]')) {
+    const cle = el.getAttribute('data-lien-externe');
+    const adresse = donnees.site?.liensExternes?.[cle];
+    if (lienExterneValide(adresse)) {
+      el.setAttribute('href', adresse);
+      continue;
+    }
+    console.warn(`Lien externe refusé : « ${cle} »`);
+    const texte = document.createElement('span');
+    texte.className = el.className;
+    texte.append(...el.childNodes);
+    el.replaceWith(texte);
+  }
 }
 
 // Remplit les éléments portant un attribut de clé ; renvoie la liste des erreurs de clé.
@@ -211,6 +246,7 @@ export async function demarrer() {
     donnees.site = { ...donnees.site, pied: { ...donnees.site.pied, colonnes: resoudrePied(donnees.site) } };
     const erreurs = remplir(document, donnees);
     if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
+    remplirLiensExternes(document, donnees);
     remplirListes(document, donnees.accueil ?? {}, donnees);
     if (typeof donnees.accueil?.titrePage === 'string') document.title = donnees.accueil.titrePage;
     racine.dataset.rendu = 'pret';

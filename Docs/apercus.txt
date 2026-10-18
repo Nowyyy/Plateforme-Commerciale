@@ -4,4 +4,4 @@ lot-2|Accueil Hi-Fi, partie haute : en-tête, bandeau d'avis, hero avec illustra
 lot-1c|Wireframes Lo-Fi des écrans 5 à 13 : espace professionnel, compte client et service après-vente (partie A : navigation commune, espace professionnel, connexion, SAV sans compte).
 lot-3b|Accueil Hi-Fi complet : réassurance, preuve crash-test, pied de page ; accueil en index.html, page d'attente en attente.html.
 lot-3c|Accueil Hi-Fi : fond de page unique, hero fondu, relief décoratif en courbes de niveau, carte de recherche resserrée.
-lot-4|Diagnostic Hi-Fi : adresse, filtre par aléa, équipements recommandés, score illustratif et carte schématique (partie A : page, adresse et filtre).
+lot-4|Diagnostic Hi-Fi : adresse, filtre par aléa, équipements recommandés, score illustratif et carte schématique à quatre calques.

@@ -36,6 +36,15 @@
   --color-border-fort: #9aa8bd;
   --color-relief: color-mix(in srgb, var(--color-navy) 10%, transparent);
   --opacite-relief-mobile: 0.5;
+  /* Carte schématique du diagnostic : teintes dérivées (ni rouge ni ambre) ; les calques se distinguent aussi par leur motif */
+  --calque-inondation: #2b6cb0;
+  --calque-argile: #7c5e99;
+  --calque-feu: #2d6a4f;
+  --calque-chaleur: #4a6572;
+  --carte-fond: #eaf0f6;
+  --carte-bati: #cdd7e3;
+  --carte-rue: #ffffff;
+  --carte-parcelle: #f8fafc;
   --color-pastille-active: var(--color-navy);
   --color-on-pastille-active: var(--color-on-navy);
 
