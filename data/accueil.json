@@ -122,5 +122,52 @@
         "texte": "Posez vous-même avec un tutoriel, ou confiez la pose à un artisan certifié."
       }
     ]
+  },
+  "reassurance": {
+    "titre": "Des partenaires et des certifications de confiance",
+    "liste": [
+      {
+        "id": "organisme",
+        "titre": "Organisme de certification (exemple)"
+      },
+      {
+        "id": "norme",
+        "titre": "Norme française (exemple)"
+      },
+      {
+        "id": "marquage",
+        "titre": "Marquage européen (exemple)"
+      },
+      {
+        "id": "assureur-1",
+        "titre": "Assureur partenaire 1 (exemple)"
+      },
+      {
+        "id": "assureur-2",
+        "titre": "Assureur partenaire 2 (exemple)"
+      }
+    ]
+  },
+  "preuve": {
+    "titre": "Testé en conditions réelles",
+    "intro": "Un équipement soumis à un essai d'immersion, filmé du début à la fin.",
+    "video": {
+      "legende": "Vidéo de crash-test à venir (exemple)"
+    },
+    "chiffres": [
+      {
+        "valeur": "60 cm",
+        "libelle": "Hauteur d'eau retenue"
+      },
+      {
+        "valeur": "12 min",
+        "libelle": "Temps de déploiement"
+      },
+      {
+        "valeur": "72 h",
+        "libelle": "Durée de l'essai d'immersion"
+      }
+    ],
+    "note": "Valeurs d'exemple du démonstrateur."
   }
 }

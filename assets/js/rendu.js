@@ -30,6 +30,8 @@ const CLES_REQUISES = {
   'aleas.liste': ['id', 'icone', 'titre', 'familles'],
   'protection.liste': ['id', 'icone', 'titre', 'familles'],
   'comment.liste': ['titre', 'texte'],
+  'reassurance.liste': ['id', 'titre'],
+  'preuve.chiffres': ['valeur', 'libelle'],
 };
 
 const SYMBOLE = /^[a-z0-9-]+$/;

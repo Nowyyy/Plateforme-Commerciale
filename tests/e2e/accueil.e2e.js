@@ -68,7 +68,7 @@ test('desktop : navigation en ligne, bouton Menu absent, Panier en dernier', asy
   await page.waitForSelector('html[data-rendu="pret"]');
   await expect(page.locator('[data-menu-bouton]')).toBeHidden();
   const items = await page.locator('header nav li').allInnerTexts();
-  expect(items.map((t) => t.trim())).toEqual(['Aléas', 'Comment ça marche', 'Vendre sur la plateforme', 'Mon compte', 'Panier']);
+  expect(items.map((t) => t.trim())).toEqual(['Vendre sur la plateforme', 'Mon compte', 'Panier']);
   await expect(page.getByRole('link', { name: 'Panier' })).toHaveAttribute('href', 'wireframes/panier.html');
 });
 

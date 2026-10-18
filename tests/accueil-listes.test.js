@@ -42,7 +42,7 @@ describe('listes de data/accueil.json', () => {
 
 describe('clés des attributs de index.html', () => {
   it('chaque clé se résout : relative au premier élément dans un gabarit, globale ailleurs', () => {
-    expect(modeles.map((m) => m.cle)).toEqual(['aleas.liste', 'protection.liste', 'comment.liste']);
+    expect(modeles.map((m) => m.cle)).toEqual(['aleas.liste', 'protection.liste', 'comment.liste', 'reassurance.liste', 'preuve.chiffres']);
 
     const globales = cles(hors, 'data-texte|data-texte-global|data-lien|data-aria-label|data-placeholder');
     expect(globales.length).toBeGreaterThan(10);
@@ -115,7 +115,7 @@ describe('liens et navigation', () => {
     }
   });
 
-  it('en-tête : cinq libellés dans l\'ordre, avec les bonnes cibles', () => {
+  it('en-tête : trois libellés dans l\'ordre (Aléas et Comment ça marche retirés), avec les bonnes cibles', () => {
     const nav = html.match(/<nav class="nav"[\s\S]*?<\/nav>/)[0];
     const barre = html.match(/<a class="lien-entete entete__panier-barre" data-lien="([^"]+)"/)[1];
     const liens = [...nav.matchAll(/<li[^>]*>([\s\S]*?)<\/li>/g)].map((li) => [
@@ -123,10 +123,10 @@ describe('liens et navigation', () => {
       /data-texte="site\.navigation\.([a-z]+)"/.exec(li[1]),
     ]).map(([l, t]) => [l[1], t[1]]);
     expect(liens.map((m) => site.navigation[m[1]])).toEqual([
-      'Aléas', 'Comment ça marche', 'Vendre sur la plateforme', 'Mon compte', 'Panier',
+      'Vendre sur la plateforme', 'Mon compte', 'Panier',
     ]);
     expect(liens.map((m) => site.liens[m[0]])).toEqual([
-      '#aleas', '#comment', 'wireframes/pro.html', 'wireframes/connexion.html', 'wireframes/panier.html',
+      'wireframes/pro.html', 'wireframes/connexion.html', 'wireframes/panier.html',
     ]);
     expect(resoudre(donnees, barre)).toBe('wireframes/panier.html');
   });

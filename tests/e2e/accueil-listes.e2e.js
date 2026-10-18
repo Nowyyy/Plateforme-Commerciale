@@ -43,30 +43,17 @@ for (const largeur of [375, 768, 1440]) {
   });
 }
 
-for (const [libelle, id, role] of [['Aléas', 'aleas', 'aleas'], ['Comment ça marche', 'comment', 'comment']]) {
-  test(`menu à 375 px : cinq libellés atteignables, « ${libelle} » ferme le menu et place le focus`, async ({ page }, info) => {
-    await page.setViewportSize({ width: 375, height: 800 });
-    await page.goto('/index.html');
-    await page.waitForSelector('html[data-rendu="pret"]');
+test('menu à 375 px : « Vendre sur la plateforme » et « Mon compte » dans le panneau, Panier dans la barre', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 800 });
+  await page.goto('/index.html');
+  await page.waitForSelector('html[data-rendu="pret"]');
 
-    const bouton = page.locator('[data-menu-bouton]');
-    await bouton.click();
-    const nav = page.getByRole('navigation');
-    await expect(nav).toBeVisible();
-    // quatre libellés dans le panneau, le Panier reste dans la barre : cinq au total
-    await expect(nav.getByRole('link')).toHaveText(['Aléas', 'Comment ça marche', 'Vendre sur la plateforme', 'Mon compte']);
-    await expect(page.locator('.entete__panier-barre')).toBeVisible();
-    if (id === 'aleas') await page.screenshot({ path: 'test-results/accueil-375-menu-5.png' });
-
-    await nav.getByRole('link', { name: libelle, exact: true }).click();
-    await expect(bouton).toHaveAttribute('aria-expanded', 'false');
-    await expect(nav).toBeHidden();
-    const section = page.locator(`#${id}`);
-    await expect(section).toHaveAttribute('data-role', role);
-    await expect(section).toBeFocused();
-    await expect(section).toBeInViewport();
-    const haut = await section.evaluate((el) => el.getBoundingClientRect().top);
-    expect(haut).toBeGreaterThanOrEqual(-1);
-    info.annotations.push({ type: 'haut', description: String(haut) });
-  });
-}
+  const bouton = page.locator('[data-menu-bouton]');
+  await bouton.click();
+  const nav = page.getByRole('navigation');
+  await expect(nav).toBeVisible();
+  // Aléas et Comment ça marche ne sont plus dans l'en-tête (ancres, pas des pages)
+  await expect(nav.getByRole('link')).toHaveText(['Vendre sur la plateforme', 'Mon compte']);
+  await expect(page.locator('.entete__panier-barre')).toBeVisible();
+  await page.screenshot({ path: 'test-results/accueil-375-menu-3.png' });
+});
