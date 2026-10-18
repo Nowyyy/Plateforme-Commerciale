@@ -70,7 +70,7 @@ jobs:
               printf '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=%s"><title>Aperçu du %s</title></head><body><p><a href="%s">Aperçu du %s</a></p></body></html>' "$entree" "$nom" "$entree" "$nom" > "site/$nom/index.html"
             fi
           done
-      - name: Générer la page Lots (tolérant aux pannes : la publication continue en cas d'échec)
+      - name: "Générer la page Lots (tolérant aux pannes, la publication continue en cas d'échec)"
         continue-on-error: true
         run: node scripts/lots/generer.mjs site --git
       - uses: actions/configure-pages@v5

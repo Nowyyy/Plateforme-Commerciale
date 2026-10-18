@@ -49,6 +49,12 @@ describe('workflow : page Lots (lot 2b)', () => {
       'contents: read', 'contents: read', 'pages: write', 'id-token: write',
     ]);
   });
+  it('YAML valide : aucun nom d\'étape non guillemeté ne contient « : »', () => {
+    // une valeur simple contenant « : » casse tout le fichier (le run ne démarre aucun job)
+    for (const [, valeur] of workflow().matchAll(/^\s*(?:- )?name: (.+)$/gm)) {
+      if (!/^["']/.test(valeur)) expect(valeur, valeur).not.toMatch(/: |:$/);
+    }
+  });
   it('lignes uses: inchangées', () => {
     expect(lignesUses(workflow())).toEqual([
       'uses: actions/checkout@v4', 'uses: actions/setup-node@v4', 'uses: actions/checkout@v4',
