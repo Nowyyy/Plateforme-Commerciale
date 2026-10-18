@@ -41,9 +41,15 @@ describe('accueil.html', () => {
     }
   });
 
-  it('place les blocs dans l\'ordre E1-1 à E1-4 du wireframe', () => {
-    const codes = [...html.matchAll(/data-bloc="(E1-\d+)"/g)].map((m) => m[1]);
-    expect(codes).toEqual(['E1-1', 'E1-2', 'E1-3', 'E1-4']);
+  it('les blocs portent data-bloc et data-role, dans l\'ordre relatif en-tete < hero < recherche < avis', () => {
+    const attendu = { 'en-tete': 'E1-1', hero: 'E1-2', recherche: 'E1-3', avis: 'E1-8' };
+    const index = [];
+    for (const [role, code] of Object.entries(attendu)) {
+      const m = html.match(new RegExp(`data-bloc="${code}"[^>]*data-role="${role}"`));
+      expect(m, role).not.toBeNull();
+      index.push(m.index);
+    }
+    expect(index).toEqual([...index].sort((x, y) => x - y));
   });
 });
 

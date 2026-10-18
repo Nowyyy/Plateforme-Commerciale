@@ -1,4 +1,4 @@
-// Recherche d'adresse (E1-4) : validation, stockage de session, navigation vers le diagnostic.
+// Recherche d'adresse (E1-3) : validation, stockage de session, navigation vers le diagnostic.
 // L'adresse n'est jamais écrite dans l'URL, jamais envoyée ; aucun géocodage ni autocomplétion.
 import { donneesPretes, resoudre } from './rendu.js';
 

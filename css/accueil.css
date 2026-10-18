@@ -191,10 +191,10 @@
   }
 }
 
-/* Avis E1-2 */
+/* Avis E1-8 : après la recherche, filet fin en haut */
 .avis {
   background: var(--color-card);
-  border-bottom: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
 }
 
 .avis__ligne {
@@ -255,7 +255,7 @@
   font-weight: 600;
 }
 
-/* Hero E1-3 : fond en dégradé léger ; en dessous de 1200 px texte, illustration puis recherche ; dès 1200 px texte et recherche à gauche, illustration à droite */
+/* Hero E1-2 : fond en dégradé léger ; en dessous de 1200 px texte, illustration puis recherche ; dès 1200 px texte et recherche à gauche, illustration à droite */
 .hero {
   padding-block: var(--space-6) var(--space-7);
   background: linear-gradient(180deg, var(--color-bg), var(--color-hero-fin));
@@ -309,7 +309,7 @@
   text-align: center;
 }
 
-/* Recherche E1-4 : hauteur réservée (le formulaire n'apparaît qu'une fois les données chargées) */
+/* Recherche E1-3 : hauteur réservée (le formulaire n'apparaît qu'une fois les données chargées) */
 .hero__recherche {
   min-block-size: 19.625rem;
 }

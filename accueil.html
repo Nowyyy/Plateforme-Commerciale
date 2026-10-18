@@ -24,7 +24,7 @@
   <aside class="bandeau-demo" data-aria-label="site.aria.bandeau">
     <p class="conteneur" data-texte="site.bandeau"></p>
   </aside>
-  <header class="entete" data-bloc="E1-1">
+  <header class="entete" data-bloc="E1-1" data-role="en-tete">
     <div class="conteneur entete__ligne">
       <a class="marque" data-lien="site.liens.accueil">
         <svg class="marque__pictogramme" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
@@ -53,21 +53,13 @@
     </div>
   </header>
   <main id="contenu" tabindex="-1">
-    <section class="avis" data-bloc="E1-2" data-aria-label="accueil.avis.aria">
-      <div class="conteneur avis__ligne">
-        <p class="avis__etoiles" aria-hidden="true"><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre avis__carre--partiel"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span></p>
-        <p class="avis__note" data-texte="accueil.avis.note"></p>
-        <p class="avis__nombre" data-texte="accueil.avis.nombre"></p>
-        <p class="avis__logo" data-texte="accueil.avis.logo"></p>
-      </div>
-    </section>
     <div class="hero">
       <div class="conteneur hero__grille">
-        <section class="hero__texte" data-bloc="E1-3" aria-labelledby="titre-hero">
+        <section class="hero__texte" data-bloc="E1-2" data-role="hero" aria-labelledby="titre-hero">
           <h1 class="hero__titre" id="titre-hero" data-texte="accueil.hero.titre"></h1>
           <p class="hero__accroche" data-texte="accueil.hero.accroche"></p>
         </section>
-        <section class="hero__recherche" data-bloc="E1-4">
+        <section class="hero__recherche" data-bloc="E1-3" data-role="recherche">
           <form class="recherche carte" novalidate hidden>
             <label class="etiquette" id="etiquette-adresse" for="adresse" data-texte="accueil.recherche.libelle"></label>
             <div class="recherche__ligne">
@@ -110,6 +102,14 @@
         </figure>
       </div>
     </div>
+    <section class="avis" data-bloc="E1-8" data-role="avis" data-aria-label="accueil.avis.aria">
+      <div class="conteneur avis__ligne">
+        <p class="avis__etoiles" aria-hidden="true"><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre avis__carre--partiel"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span></p>
+        <p class="avis__note" data-texte="accueil.avis.note"></p>
+        <p class="avis__nombre" data-texte="accueil.avis.nombre"></p>
+        <p class="avis__logo" data-texte="accueil.avis.logo"></p>
+      </div>
+    </section>
   </main>
   <footer class="pied">
     <div class="conteneur">
