@@ -1072,3 +1072,88 @@ body.wf {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+/* --- Lot 1c-B : navigation du compte, lignes d'achat, détail d'un achat --- */
+.wf-nav-compte {
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--wf-gris-3);
+}
+
+.wf-nav-compte ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wf-nav-compte a[aria-current="page"] {
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 3px solid var(--wf-gris-6);
+}
+
+.wf-courant {
+  font-size: var(--text-xs);
+  font-weight: 400;
+}
+
+.wf-grille.wf-liste-achats {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.wf-ligne-achat {
+  display: grid;
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.wf-ligne-achat .wf-emplacement {
+  width: 100%;
+  max-width: 10rem;
+}
+
+.wf-ligne-corps p {
+  margin: 0 0 var(--space-1);
+}
+
+.wf-image-achat {
+  max-width: 24rem;
+  margin-bottom: var(--space-3);
+}
+
+.wf-pastille .wf-courant {
+  font-weight: 400;
+}
+
+@media (min-width: 768px) {
+  .wf-ligne-achat {
+    grid-template-columns: 9rem minmax(0, 1fr);
+  }
+
+  .wf-ligne-achat .wf-emplacement {
+    max-width: none;
+  }
+}
+
+@media (min-width: 1200px) {
+  .wf-ecran--60 .wf-documents {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+ul.wf-documents {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wf-documents .wf-annotation {
+  margin: var(--space-1) 0 0;
+}
+
+.wf-grille + p {
+  margin-top: var(--space-3);
+}

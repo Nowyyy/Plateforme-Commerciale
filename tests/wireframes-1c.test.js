@@ -131,3 +131,55 @@ describe('wireframes lot 1c : pro, connexion, SAV sans compte', () => {
     for (const nom of Object.values(ECRANS)) expect(index, nom).toContain(`<a href="${nom}.html">`);
   });
 });
+
+function blocRole(html, role) {
+  const debut = html.indexOf(`data-role="${role}"`);
+  expect(debut, role).toBeGreaterThan(-1);
+  const fin = html.indexOf('data-role="', debut + 1);
+  return html.slice(debut, fin === -1 ? html.length : fin);
+}
+
+describe('wireframes lot 1c-B : compte, achats, détail d\'un achat', () => {
+  const compte = lire('compte');
+  const achats = lire('achats');
+  const achat = lire('achat');
+
+  it('compte, achats et achat : codes exactement une fois, dans l\'ordre, avec les bons rôles', () => {
+    const cas = [
+      [compte, 7, ['en-tete', 'bienvenue', 'commandes', 'sav-en-cours', 'raccourcis', 'pied']],
+      [achats, 8, ['en-tete', 'filtre', 'liste', 'pied']],
+      [achat, 9, ['en-tete', 'resume', 'cotes', 'mode', 'livraison', 'documents', 'sav', 'pied']],
+    ];
+    for (const [html, ecran, roles] of cas) {
+      expect(attributs(html, 'bloc')).toEqual(roles.map((_, i) => `E${ecran}-${i + 1}`));
+      expect(attributs(html, 'role')).toEqual(roles);
+    }
+  });
+
+  it('compte : navigation du compte à 5 liens, page actuelle repérée, liens vers achats, demandes, informations, achat ; achats : 4 lignes, 4 statuts', () => {
+    for (const [html, courant] of [[compte, 'compte.html'], [achats, 'achats.html']]) {
+      const nav = html.match(/<nav class="wf-nav-compte" aria-label="Mon compte">[\s\S]*?<\/nav>/)[0];
+      expect(nav.match(/<a /g)).toHaveLength(5);
+      expect(nav).toContain(`<a href="${courant}" aria-current="page">`);
+      expect(nav).toContain('(page actuelle)');
+      expect(nav).toContain('href="connexion.html">Se déconnecter');
+    }
+    for (const cible of ['achats.html', 'demandes.html', 'informations.html', 'achat.html']) expect(compte).toContain(`href="${cible}"`);
+    expect(blocRole(compte, 'commandes').match(/>Voir le détail<\/a>/g)).toHaveLength(3);
+    const liste = blocRole(achats, 'liste');
+    expect(liste.match(/<li class="wf-carte wf-ligne-achat">/g)).toHaveLength(4);
+    expect(liste.match(/>Voir le détail<\/a>/g)).toHaveLength(4);
+    const statuts = [...liste.matchAll(/Statut : <strong>([^<]+)<\/strong>/g)].map((m) => m[1]);
+    expect(new Set(statuts)).toEqual(new Set(['En préparation', 'Expédié', 'Livré', 'Pose planifiée']));
+    expect(statuts).toHaveLength(4);
+  });
+
+  it('achat : 5 documents, 2 variantes de mode, lien vers sav.html, fil d\'Ariane vers compte et achats', () => {
+    expect(blocRole(achat, 'documents').match(/\(PDF\) \[Fichier exemple\]/g)).toHaveLength(5);
+    expect(blocRole(achat, 'mode').match(/<div class="wf-variante">/g)).toHaveLength(2);
+    expect(lien(blocRole(achat, 'sav'), 'Demander une intervention')).toBe('sav.html');
+    const fil = achat.match(/<nav class="wf-fil"[\s\S]*?<\/nav>/)[0];
+    expect(fil).toContain('href="compte.html"');
+    expect(fil).toContain('href="achats.html"');
+  });
+});

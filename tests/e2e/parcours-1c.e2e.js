@@ -28,3 +28,19 @@ for (const largeur of [375, 1440]) {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 }
+
+for (const largeur of [375, 1440]) {
+  test(`parcours compte : connexion → compte → détail d'un achat → demande de SAV à ${largeur} px`, async ({ page }) => {
+    await page.setViewportSize({ width: largeur, height: 900 });
+    await page.goto('/wireframes/connexion.html');
+    await page.getByRole('link', { name: 'Accéder au compte de démonstration' }).click();
+    await expect(page).toHaveURL(/\/wireframes\/compte\.html$/);
+    await expect(page.getByRole('heading', { level: 1, name: /Bonjour/ })).toBeVisible();
+    await page.getByRole('link', { name: 'Voir le détail' }).first().click();
+    await expect(page).toHaveURL(/\/wireframes\/achat\.html$/);
+    await expect(page.getByRole('heading', { level: 1, name: /Batardeau modulable/ })).toBeVisible();
+    await page.getByRole('link', { name: 'Demander une intervention' }).click();
+    await expect(page).toHaveURL(/\/wireframes\/sav\.html$/);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  });
+}

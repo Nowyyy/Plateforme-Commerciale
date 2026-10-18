@@ -26,7 +26,7 @@
       <div class="wf-bloc-tete">
         <span class="wf-code">E7-1</span>
         <p class="wf-titre">En-tête</p>
-        <p class="wf-note">Identité et navigation du site ; « Vendre sur la plateforme », « Mon compte » et « Panier » sont cliquables.</p>
+        <p class="wf-note">Identité et navigation du site ; « Vendre sur la plateforme », « Mon compte » et « Panier » sont cliquables, suivis de la navigation du compte.</p>
       </div>
       <div class="wf-entete-ligne">
         <div class="wf-emplacement"><span>[Logo exemple]</span></div>
@@ -42,11 +42,90 @@
           </ul>
         </nav>
       </div>
+      <nav class="wf-nav-compte" aria-label="Mon compte">
+        <ul>
+          <li><a href="compte.html" aria-current="page">Tableau de bord <span class="wf-courant">(page actuelle)</span></a></li>
+          <li><a href="achats.html">Mes achats</a></li>
+          <li><a href="demandes.html">Mes demandes</a></li>
+          <li><a href="informations.html">Mes informations</a></li>
+          <li><a href="connexion.html">Se déconnecter</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
-  <main class="wf-conteneur wf-ecran">
-    <h1>Bonjour, [Client exemple]</h1>
-    <p class="wf-avenir">Contenu à venir (lot 1c, parties B et C).</p>
+  <main class="wf-conteneur wf-ecran wf-ecran--2col">
+    <section class="wf-bloc wf-pleine" data-bloc="E7-2" data-role="bienvenue" aria-labelledby="t-E7-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E7-2</span>
+        <h1 class="wf-titre" id="t-E7-2">Bonjour, [Client exemple]</h1>
+        <p class="wf-note">Accueil du compte, simulé.</p>
+      </div>
+      <p>Compte de démonstration — données fictives</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E7-3" data-role="commandes" aria-labelledby="t-E7-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E7-3</span>
+        <h2 class="wf-titre" id="t-E7-3">Mes dernières commandes</h2>
+        <p class="wf-note">Trois dernières commandes, vers le détail ou la liste complète.</p>
+      </div>
+      <ul class="wf-grille wf-grille--pile wf-liste-achats">
+        <li class="wf-carte wf-ligne-achat">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <div class="wf-ligne-corps">
+            <h3>Batardeau modulable [exemple]</h3>
+            <p>Commande n° 000 · 00/00/0000</p>
+            <p>Statut : <strong>Expédié</strong></p>
+            <p>Mode : DIY</p>
+            <p><a href="achat.html">Voir le détail</a></p>
+          </div>
+        </li>
+        <li class="wf-carte wf-ligne-achat">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <div class="wf-ligne-corps">
+            <h3>Clapet anti-retour [exemple]</h3>
+            <p>Commande n° 000 · 00/00/0000</p>
+            <p>Statut : <strong>Pose planifiée</strong></p>
+            <p>Mode : Pose par un artisan</p>
+            <p><a href="achat.html">Voir le détail</a></p>
+          </div>
+        </li>
+        <li class="wf-carte wf-ligne-achat">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <div class="wf-ligne-corps">
+            <h3>Volet résistant à la grêle [exemple]</h3>
+            <p>Commande n° 000 · 00/00/0000</p>
+            <p>Statut : <strong>Livré</strong></p>
+            <p>Mode : DIY</p>
+            <p><a href="achat.html">Voir le détail</a></p>
+          </div>
+        </li>
+      </ul>
+      <p><a href="achats.html">Voir tous mes achats</a></p>
+    </section>
+    <section class="wf-bloc" data-bloc="E7-4" data-role="sav-en-cours" aria-labelledby="t-E7-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E7-4</span>
+        <h2 class="wf-titre" id="t-E7-4">Demandes de service après-vente en cours</h2>
+        <p class="wf-note">Deux demandes en cours, vers la liste complète.</p>
+      </div>
+      <ul class="wf-grille wf-grille--pile">
+        <li class="wf-carte"><h3>SAV-000</h3><p>Produit : Batardeau modulable [exemple]</p><p>Statut : <strong>En analyse</strong></p></li>
+        <li class="wf-carte"><h3>SAV-000</h3><p>Produit : Clapet anti-retour [exemple]</p><p>Statut : <strong>Intervention planifiée</strong></p></li>
+      </ul>
+      <p><a href="demandes.html">Voir toutes mes demandes</a></p>
+    </section>
+    <section class="wf-bloc wf-pleine" data-bloc="E7-5" data-role="raccourcis" aria-labelledby="t-E7-5">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E7-5</span>
+        <h2 class="wf-titre" id="t-E7-5">Raccourcis</h2>
+        <p class="wf-note">Trois cartes vers les rubriques du compte.</p>
+      </div>
+      <ul class="wf-grille wf-grille--3">
+        <li class="wf-carte"><h3><a href="achats.html">Mes achats</a></h3><p>Suivre mes commandes et leurs documents.</p></li>
+        <li class="wf-carte"><h3><a href="demandes.html">Mes demandes</a></h3><p>Suivre mes demandes de service après-vente.</p></li>
+        <li class="wf-carte"><h3><a href="informations.html">Mes informations</a></h3><p>Modifier mon identité et mon adresse.</p></li>
+      </ul>
+    </section>
   </main>
   <footer class="wf-bloc wf-pied" data-bloc="E7-6" data-role="pied">
     <div class="wf-conteneur">
