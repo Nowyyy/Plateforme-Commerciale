@@ -1,0 +1,16 @@
+{
+  "entrees": [
+    {
+      "branche": "lot-1c",
+      "apercu": "wireframes/",
+      "bilan": null,
+      "fusionne": true
+    },
+    {
+      "branche": "lot-2",
+      "apercu": "accueil.html",
+      "bilan": "# Lot 2 — Accueil Hi-Fi",
+      "fusionne": true
+    }
+  ]
+}

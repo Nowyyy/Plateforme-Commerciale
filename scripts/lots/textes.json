@@ -1,0 +1,30 @@
+{
+  "langue": "fr",
+  "titre": "Lots du démonstrateur",
+  "introduction": "Page de relecture, hors démonstrateur : retrouvez les wireframes, la dernière page Hi-Fi et l'historique des lots.",
+  "wireframe": {
+    "bouton": "Accès Wireframe",
+    "aide": "Dernière version des wireframes",
+    "aucun": "Aucun lot wireframe publié pour l'instant."
+  },
+  "hifi": {
+    "bouton": "Page Hi-Fi",
+    "aide": "Dernier lot, avec toutes les évolutions",
+    "aucun": "Aucun lot Hi-Fi publié pour l'instant."
+  },
+  "anciens": {
+    "resume": "Anciens lots",
+    "vide": "Aucun ancien lot Hi-Fi pour l'instant."
+  },
+  "etat": {
+    "prefixe": "État :",
+    "en-cours": "en cours",
+    "fusionne": "fusionné"
+  },
+  "repli": "Liste des lots indisponible pour le moment.",
+  "pied": "Page générée automatiquement à chaque publication.",
+  "redirection": {
+    "titre": "Lots",
+    "lien": "Cette page s'appelle désormais Lots"
+  }
+}

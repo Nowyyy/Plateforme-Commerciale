@@ -1,0 +1,171 @@
+/* Page Lots : mobile d'abord, jetons de css/tokens.css uniquement. */
+.lots-entete,
+.lots-main,
+.lots-pied {
+  max-inline-size: 60rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.lots-entete {
+  padding-block: var(--space-6) var(--space-4);
+}
+
+.lots-entete h1 {
+  font-size: var(--text-2xl);
+}
+
+.lots-entete p {
+  max-inline-size: 40rem;
+  color: var(--color-text-secondary);
+}
+
+.lots-acces {
+  display: grid;
+  gap: var(--space-5);
+  margin-block-end: var(--space-5);
+}
+
+.lots-carte {
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+}
+
+.lots-carte p {
+  margin: 0 0 var(--space-2);
+}
+
+.lots-bouton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 100%;
+  min-block-size: 3rem;
+  margin-block-end: var(--space-3);
+  padding: var(--space-3) var(--space-5);
+  border: 2px solid var(--color-navy);
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+
+.lots-bouton--principal {
+  border-color: var(--color-amber);
+  background: var(--color-amber);
+  color: var(--color-on-amber);
+}
+
+.lots-bouton--principal:hover {
+  border-color: var(--color-amber-hover);
+  background: var(--color-amber-hover);
+}
+
+.lots-bouton--principal:focus-visible {
+  outline: 3px solid var(--color-focus-action);
+  outline-offset: 3px;
+}
+
+.lots-bouton--secondaire {
+  background: var(--color-bg);
+  color: var(--color-navy);
+}
+
+.lots-bouton--secondaire:hover {
+  background: var(--color-card);
+}
+
+.lots-aide {
+  color: var(--color-text-secondary);
+}
+
+.lots-lot {
+  font-weight: 600;
+}
+
+.lots-etat {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.lots-vide {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.lots-anciens {
+  margin-block-end: var(--space-6);
+}
+
+.lots-anciens summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-block-size: 3rem;
+  padding: var(--space-3) var(--space-5);
+  border: 1px solid var(--color-text-secondary);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-navy);
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.lots-anciens summary::-webkit-details-marker {
+  display: none;
+}
+
+.lots-anciens summary::after {
+  content: "";
+  inline-size: 0.6rem;
+  block-size: 0.6rem;
+  border-inline-end: 2px solid currentcolor;
+  border-block-end: 2px solid currentcolor;
+  transform: translateY(-25%) rotate(45deg);
+}
+
+.lots-anciens[open] summary::after {
+  transform: translateY(25%) rotate(-135deg);
+}
+
+.lots-anciens > .lots-vide {
+  padding: var(--space-4) var(--space-2);
+}
+
+.lots-liste {
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lots-liste a {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  padding: var(--space-2);
+  border-block-end: 1px solid var(--color-border);
+  color: var(--color-navy);
+}
+
+.lots-pied {
+  padding-block: var(--space-5);
+  border-block-start: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+@media (min-width: 768px) {
+  .lots-acces {
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+  }
+}
