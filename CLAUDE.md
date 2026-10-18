@@ -5,75 +5,52 @@ Démonstrateur statique hébergé sur GitHub Pages, 4 écrans (accueil, diagnost
 Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 
 ## Arborescence
-- `index.html` : accueil Hi-Fi complet (blocs E1-1 à E1-10, `noindex` jusqu'au lot 10) ; `attente.html` : ancienne page d'attente, conservée ; `accueil.html` : redirection vers `index.html` (anciens liens)
-- `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `attente.css`, `wireframe.css` (wireframes)
-- `data/` : `site.json`, `accueil.json` (tous les textes et liens visibles)
+- `index.html` : accueil Hi-Fi (blocs E1-1 à E1-10, `noindex` jusqu'au lot 10) ; `diagnostic.html` : diagnostic Hi-Fi (E2-1 à E2-6, `noindex`) ; `attente.html` : ancienne page d'attente ; `accueil.html` : redirection vers `index.html`
+- `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `diagnostic.css`, `attente.css`, `wireframe.css`
+- `data/` : `site.json`, `accueil.json`, `diagnostic.json` (tous les textes et liens visibles)
+- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js`, `diagnostic-logique.js` (pur), `diagnostic.js`, `alea.js` ; `assets/fonts/` : woff2 (OFL)
 - `scripts/lots/` : génération de la page Lots (sans dépendance ; logique pure dans `logique.mjs`)
-- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js` (lot 2-C)
 - `wireframes/` : Lo-Fi publiés, `noindex` : écrans 1 à 13 (`accueil`, `diagnostic`, `produit`, `panier`, `pro`, `connexion`, `compte`, `achats`, `achat`, `sav`, `demandes`, `informations`, `sav-acces`) et `index.html`
-- `assets/fonts/` : polices woff2 (OFL)
-- `tests/` : tests Vitest ; `tests/e2e/` Playwright ; `tests/outils/` serveur local et Lighthouse
-- `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références, dont `apercus.md` : aperçus et page Lots)
-- `.github/workflows/pages.yml` : vérifications (PR, push) et publication Pages (push sur `main` ou `lot-*`) : la racine du site est `main`, chaque branche `lot-N` est publiée sous `/lot-N/`, et `/lot-N/` redirige vers le chemin lu dans `apercu.txt` (racine de la branche, une ligne, ex. `wireframes/`) ; liste des aperçus sur `/apercus/`
-- `apercu.txt` : page principale du lot pour l'aperçu `/lot-N/`
-- `Docs/apercus.txt` : une ligne `lot-N|descriptif` par lot, affichée sous chaque lot sur `/apercus/` (à compléter à chaque nouveau lot)
+- `tests/` : Vitest ; `tests/e2e/` Playwright ; `tests/outils/` serveur local et Lighthouse
+- `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références, dont `apercus.md`), `apercus.txt` (lignes `lot-N|descriptif`, à compléter à chaque lot)
+- `.github/workflows/pages.yml` : vérifications (PR, push) et publication Pages (push sur `main` ou `lot-*`) : racine = `main`, chaque branche `lot-N` sous `/lot-N/` (redirection vers la cible d'`apercu.txt`) ; liste des lots sur `/lots/`
+- `apercu.txt` : cible sur la première ligne ; lignes optionnelles `type: wireframe|hifi|technique` et `titre: <court>`. Sans `type:`, une cible `wireframes/…` est un wireframe, toute autre un lot Hi-Fi ; les lots techniques n'apparaissent pas sur la page. Chaque lot règle ce fichier sur sa branche.
 
 ## Commandes vérifiées
-- `npm ci` : installe les outils de développement
-- `npm run lint` : ESLint
-- `npm test` : Vitest
-- `npm run e2e` : Playwright (captures dans `test-results/`)
-- `npm run lighthouse` : audit mobile et seuils
-
-## Seuils Lighthouse (mobile)
-Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (`tests/outils/seuils-lighthouse.json`).
+- `npm ci` ; `npm run lint` (ESLint) ; `npm test` (Vitest) ; `npm run e2e` (Playwright, captures dans `test-results/`) ; `npm run lighthouse` (mobile)
+- Seuils Lighthouse mobile : performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (`tests/outils/seuils-lighthouse.json`) ; wireframes, `index.html` et `diagnostic.html` tant qu'ils sont `noindex` : sans SEO.
 
 ## Règles durables
 - Dépendances de développement seulement, versions exactes ; toute nouvelle dépendance est signalée et justifiée.
-- Rien de contenu en dur : textes, liens, réglages dans des fichiers de données ou de configuration. Exception : les wireframes sont jetables, les annotations en dur sont permises dans `wireframes/` seulement ; les vrais textes passent en `data/` à partir du lot 2 ; les jetons `--wf-*` sont réservés aux wireframes.
-- L'aperçu par lot `/lot-N/` (publication par branche, `apercu.txt`) reste en place pour tous les lots ; ne pas le retirer ni modifier le workflow ou les réglages GitHub sans accord explicite du propriétaire.
-- Page `/lots/` générée à chaque publication à partir des branches `lot-*` ; `apercus/` redirige vers elle. `apercu.txt` : cible sur la première ligne ; lignes optionnelles `type: wireframe|hifi|technique` et `titre: <court>`. Sans `type:`, une cible `wireframes/…` est un wireframe, toute autre cible un lot Hi-Fi. Chaque lot règle `apercu.txt` sur sa branche (`type: technique` pour un lot d'outillage). Les lots techniques n'apparaissent pas sur la page.
-- Aucune couleur en dur hors `css/tokens.css`.
-- Navigation commune : en-tête = Vendre sur la plateforme, Mon compte, Panier ; pied = Vendre sur la plateforme, Mon compte, Panier, Mentions légales, À propos du démonstrateur, Service après-vente, rappel « aucune vente ». Comptes, connexion et formulaires sont simulés : mention démonstrateur sur chaque formulaire, valeurs fictives, rien envoyé ni enregistré (sessionStorage seulement dans la version interactive), jamais de données dans l'URL.
-- Wireframes : chaque bloc porte `data-bloc` (code visible, suit l'ordre de la page) et `data-role` (identifiant stable) ; les tests s'appuient sur `data-role` ; `Docs/lots/lot-1b.md` donne la correspondance anciens/nouveaux codes de l'accueil et du diagnostic.
-- Chemins relatifs partout (site servi sous `/<dépôt>/`).
-- Contenus fictifs, aucun vrai logo, aucun traceur, aucune police ni script externe.
-- Un réglage qui résiste après trois essais : documenter et s'arrêter. Ne jamais modifier un critère non atteint : le signaler.
-- Ne jamais simuler un résultat non obtenu.
+- Rien de contenu en dur : textes, liens, réglages dans `data/` ou des fichiers de configuration. Exception : annotations en dur dans `wireframes/` (jetables, jetons `--wf-*` réservés).
+- Aucune couleur en dur hors `css/tokens.css`. Pas de rouge. L'ambre est réservé aux boutons d'action (texte marine dessus).
+- Le workflow et les réglages GitHub ne se modifient que sur autorisation explicite du prompt du lot ; l'aperçu `/lot-N/` reste en place pour tous les lots. La page `/lots/` est générée à chaque publication à partir des branches `lot-*` ; sa génération est tolérante aux pannes (page de repli, `::warning::`).
+- Navigation commune : en-tête = Vendre sur la plateforme, Mon compte, Panier ; pied = les mêmes plus Mentions légales, À propos du démonstrateur, Service après-vente, rappel « aucune vente ». Comptes, connexion et formulaires sont simulés : mention démonstrateur sur chaque formulaire, valeurs fictives, rien envoyé ni enregistré (sessionStorage seulement), jamais de données dans l'URL.
+- Wireframes : chaque bloc porte `data-bloc` (code visible) et `data-role` (identifiant stable) ; les tests s'appuient sur `data-role` ; `Docs/lots/lot-1b.md` donne la correspondance des anciens codes.
+- Chemins relatifs partout (site servi sous `/<dépôt>/`). Contenus fictifs, aucun vrai logo, aucun traceur, aucune police ni script externe.
+- Un réglage qui résiste après trois essais : documenter et s'arrêter. Ne jamais modifier un critère non atteint : le signaler. Ne jamais simuler un résultat non obtenu.
+- Pages Hi-Fi : en-tête, pied et décor `.relief` sont copiés à l'identique entre les pages (un test compare) ; toute nouvelle page de la racine doit être ajoutée à la liste publiée du workflow (autorisation explicite du lot).
+- Diagnostic : adresse en `sessionStorage` (clé `adresse`), aléa choisi sur l'accueil en `sessionStorage` (clé `alea`, lu une fois) ; jamais dans l'URL ; score et équipements illustratifs, jamais calculés sur l'adresse ; carte schématique en SVG, calques distingués par des motifs ; aucun bouton ambre sur cette page.
+- Liens externes : seuls ceux de `liensExternes` (`data/site.json`) : `https://`, domaine déclaré, nouvel onglet, `rel="noopener noreferrer"`, aucune donnée du visiteur dans le lien ; aucune requête vers un autre site avant le lot optionnel 4b.
+
+## Règles du Hi-Fi
+- Un seul fond de page (jeton de fond clair), sections transparentes ; cartes, pastilles et blocs de données en fond blanc à bordure fine. Le dégradé du hero part d'une teinte bleutée et arrive exactement sur le fond de page.
+- Décor `.relief` (SVG en ligne, `aria-hidden`, `pointer-events: none`, jeton `--color-relief`) : jamais de texte ni d'interaction dedans ; deux groupes dès 768 px, un seul en dessous.
+- Accueil, ordre des blocs : en-tete, hero, recherche, aleas, protection, comment, reassurance, preuve, avis, pied ; les tests vérifient l'ordre relatif, jamais la liste exacte. Le pied est piloté par `data/site.json` (clé `pied`) ; une entrée sans `lien` est un texte non lié.
+- Listes (cartes, étapes) : elles viennent des données et sont rendues par des `<template data-liste="…">` ; clés relatives à l'élément (`data-texte`, `data-icone`), `.` pour une chaîne ; `data-lien` et `data-texte-global` restent globaux ; jamais de nombre d'éléments figé dans le HTML ou le CSS ; conteneurs en `aria-busy` jusqu'au remplissage.
+- Navigation : les liens vers des pages pas encore en Hi-Fi pointent vers `wireframes/` via `data/site.json` ; menu replié jusqu'à 1199 px.
+- Textes visibles par clés de `data/*.json` : `data-texte`, `data-lien` (ex. `site.liens.panier`), `data-aria-label`, `data-placeholder`. Exceptions en dur : `<title>`, meta description, `noscript`, message d'erreur de chargement (`rendu.js`).
+- L'adresse saisie n'est jamais dans l'URL ni envoyée : `sessionStorage` seulement.
 
 ## Git
-- Branche `lot-N` ; un commit « Lot N-X — titre » par partie ; push après chaque commit.
-- Le push de tags est refusé depuis la session cloud (HTTP 403 constaté au lot 0) : créer `lot-N` en local est facultatif, tenter le push une seule fois sans insister. Le lot N-1 est considéré fusionné si `Docs/lots/lot-<N-1>.md` et `.github/workflows/pages.yml` existent sur `origin/main` et si `git merge-base --is-ancestor origin/lot-<N-1> origin/main` réussit (ou, si la branche a été supprimée, si `git log --oneline --grep="Lot <N-1>-C" origin/main` n'est pas vide). Le bilan `Docs/lots/lot-N.md` est inclus dans le dernier commit de partie : aucun commit après le tag, jamais de force-push.
-- Début de lot : `git fetch origin --prune --tags`, `git ls-remote --heads origin`, arbre propre, `git pull --ff-only origin main`, preuve que le lot N-1 est fusionné, `npm ci` puis lint et tests verts sur `main` avant de créer `lot-N`. Push : `git push -u origin refs/heads/lot-N:refs/heads/lot-N`, puis vérifier que `git ls-remote --heads origin lot-N` égale `git rev-parse HEAD`. Interdits : `--force`, `--force-with-lease`, `rebase`, `commit --amend` après un push. `gh`, s'il est disponible, sert à lire seulement ; jamais de `pr create` ni de `pr merge`. Fin de lot : afficher le lien de comparaison de Pull Request ; c'est le propriétaire qui la crée et la fusionne.
-- Le workflow ne se modifie que sur autorisation explicite du prompt du lot. Ne jamais supprimer une branche `lot-N` : l'aperçu `/lot-N/` en dépend.
-- Ne jamais pousser sur une ancienne branche de lot après la fusion du lot 2b : son ancien workflow régénérerait l'ancienne page.
-- Jamais de fusion dans `main` (le propriétaire fusionne par Pull Request).
-- Fin de lot : `Docs/lots/lot-N.md`.
-
-## Règles du Hi-Fi (lot 2 et suivants)
-- Un seul fond de page pour toutes les sections de l'accueil (jeton de fond clair) ; les sections sont transparentes ; cartes, pastilles et blocs de données sont en fond blanc à bordure fine. Le dégradé du hero part d'une teinte bleutée et arrive exactement sur le fond de page.
-- Décor `.relief` (SVG en ligne, `aria-hidden`, `pointer-events: none`, couleur par le jeton `--color-relief`) : jamais de texte ni d'interaction dedans ; deux groupes à partir de 768 px, un seul en dessous.
-- Ordre final des blocs de l'accueil : en-tete, hero, recherche, aleas, protection, comment, reassurance, preuve, avis, pied (avis juste au-dessus du pied) ; les tests vérifient l'ordre relatif, jamais la liste exacte. Le pied de page est piloté par `data/site.json` (clé `pied`) ; une entrée sans `lien` est un texte non lié.
-- Listes (cartes, étapes) : elles viennent de `data/accueil.json` et sont rendues par des `<template data-liste="…">` ; clés relatives à l'élément (`data-texte`, `data-icone`), `.` pour une chaîne ; `data-lien` et `data-texte-global` restent globaux ; les nombres d'éléments ne sont jamais figés dans le HTML ou le CSS ; conteneurs en `aria-busy` jusqu'au remplissage.
-- Navigation Hi-Fi : les liens vers des pages pas encore en Hi-Fi pointent provisoirement vers `wireframes/` via `data/site.json` ; menu replié jusqu'à 1199 px.
-- Les textes visibles viennent de `data/*.json` par clés : `data-texte`, `data-lien` (ex. `site.liens.panier`), `data-aria-label`, `data-placeholder`. Exceptions en dur : `<title>`, meta description, message `noscript`, message d'erreur de chargement (dans `rendu.js`).
-- L'adresse saisie n'est jamais dans l'URL ni envoyée : `sessionStorage` seulement.
-- L'ambre est réservé aux boutons d'action ; texte sur fond ambre en bleu marine.
-- `apercu.txt` : un lot de wireframes pointe vers `wireframes/`, un lot Hi-Fi vers une page Hi-Fi ; chaque lot règle ce fichier sur sa branche.
-
-## Seuils Lighthouse des wireframes
-Pour les pages de `wireframes/` : seulement performance, accessibilité et bonnes pratiques (la catégorie SEO est inapplicable aux pages `noindex`).
-
-## Seuils Lighthouse de `index.html` (accueil)
-Tant qu'elle est `noindex` : performance, accessibilité, bonnes pratiques seulement ; dès qu'elle devient indexable, la catégorie SEO s'applique avec son seuil.
+- Branche `lot-N` ; un commit « Lot N-X — titre » par partie ; push après chaque commit ; bilan `Docs/lots/lot-N.md` dans le dernier commit de partie (aucun commit après le tag, jamais de force-push).
+- Début de lot : `git fetch origin --prune --tags`, `git ls-remote --heads origin`, arbre propre, `git pull --ff-only origin main`, preuve que le lot N-1 est fusionné (`Docs/lots/lot-<N-1>.md` et `pages.yml` sur `origin/main`, et `git merge-base --is-ancestor origin/lot-<N-1> origin/main` ; si la branche a été supprimée, `git log --grep="Lot <N-1>-C" origin/main` non vide), `npm ci`, lint et tests verts sur `main`, puis création de `lot-N`.
+- Push : `git push -u origin refs/heads/lot-N:refs/heads/lot-N`, puis `git ls-remote --heads origin lot-N` doit égaler `git rev-parse HEAD`. Interdits : `--force`, `--force-with-lease`, `rebase`, `commit --amend` après un push, fusion dans `main`, suppression d'une branche `lot-N`, push sur un ancien lot. `gh` : lecture seule ; jamais de `pr create` ni de `pr merge`.
+- Le push de tag est refusé (403) : une seule tentative, le propriétaire pose le tag. Fin de lot : afficher le lien de comparaison de Pull Request ; le propriétaire la crée et la fusionne.
 
 ## Pièges (voir `Docs/ref/environnement.md`)
-- Le message d'erreur de la recherche d'adresse n'a plus de réserve de hauteur : son apparition suit une action de l'utilisateur, donc hors CLS ; ne pas la rétablir.
-- Un lot dont `apercu.txt` vise `index.html` : le workflow ne déplace plus l'`index.html` du lot (sinon boucle de redirection).
-- Les listes remplies par JavaScript (cartes, étapes) arrivent après le premier rendu : réserver leur hauteur (`min-block-size` par point de rupture), sinon le CLS dépasse 0,1.
-- CLS : les textes remplis par JavaScript arrivent après le premier rendu ; réserver leur hauteur (`min-block-size`) pour ne pas décaler la page.
-- Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`.
-- Lighthouse ne fonctionne que sur http://localhost, pas sur file://.
-- La génération de la page Lots est tolérante aux pannes : en cas d'échec, page de repli et `::warning::`, la publication des aperçus `/lot-N/` continue.
-- Réseau sortant filtré par un proxy.
-- Le push de tag est refusé (403) : une seule tentative, le propriétaire pose le tag à la main (voir règles Git).
+- Le message d'erreur de la recherche d'adresse n'a pas de réserve de hauteur (son apparition suit une action de l'utilisateur, hors CLS) : ne pas la rétablir.
+- Lot dont `apercu.txt` vise `index.html` : le workflow ne déplace plus l'`index.html` du lot (sinon boucle de redirection).
+- Textes et listes remplis par JavaScript arrivent après le premier rendu : réserver leur hauteur (`min-block-size`, par point de rupture), sinon le CLS dépasse 0,1.
+- Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`. Lighthouse ne fonctionne que sur http://localhost. Réseau sortant filtré par un proxy.
+- Le diagnostic Hi-Fi est `wireframes/diagnostic.html` pour le gabarit seulement ; les tests des wireframes ne doivent pas être confondus avec ceux de `diagnostic.html`.

@@ -9,10 +9,11 @@
 const MESSAGE_ERREUR =
   "Le contenu de la page n'a pas pu être chargé. Rechargez la page ou réessayez plus tard.";
 
-const FICHIERS = {
-  site: '../../data/site.json',
-  accueil: '../../data/accueil.json',
-};
+// data/site.json est toujours chargé ; <html data-donnees="…"> nomme les autres fichiers (défaut : accueil).
+const fichiersDe = (racine) => [
+  'site',
+  ...(racine.dataset.donnees ?? 'accueil').split(/\s+/).filter((nom) => /^[a-z0-9-]+$/.test(nom)),
+];
 
 const poserTexte = (el, valeur) => { el.textContent = valeur; };
 
@@ -174,10 +175,10 @@ export function remplirListes(racine, donneesAccueil, donnees) {
   }
 }
 
-async function charger() {
+async function charger(noms) {
   const entrees = await Promise.all(
-    Object.entries(FICHIERS).map(async ([nom, chemin]) => {
-      const reponse = await fetch(new URL(chemin, import.meta.url));
+    noms.map(async (nom) => {
+      const reponse = await fetch(new URL(`../../data/${nom}.json`, import.meta.url));
       if (!reponse.ok) throw new Error(`${nom}.json : HTTP ${reponse.status}`);
       return [nom, await reponse.json()];
     }),
@@ -199,12 +200,12 @@ export async function demarrer() {
   const racine = document.documentElement;
   let donnees;
   try {
-    donnees = await charger();
+    donnees = await charger(fichiersDe(racine));
     donnees.site = { ...donnees.site, pied: { ...donnees.site.pied, colonnes: resoudrePied(donnees.site) } };
     const erreurs = remplir(document, donnees);
     if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
-    remplirListes(document, donnees.accueil, donnees);
-    if (typeof donnees.accueil.titrePage === 'string') document.title = donnees.accueil.titrePage;
+    remplirListes(document, donnees.accueil ?? {}, donnees);
+    if (typeof donnees.accueil?.titrePage === 'string') document.title = donnees.accueil.titrePage;
     racine.dataset.rendu = 'pret';
   } catch (e) {
     console.warn(e);
