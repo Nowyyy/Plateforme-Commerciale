@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Wireframe écran 6 — Connexion</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../css/tokens.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/wireframe.css">
+</head>
+<body class="wf">
+  <nav class="wf-revue" aria-label="Revue des wireframes">
+    <ul>
+      <li><a href="index.html">Index des wireframes</a></li>
+      <li><a href="accueil.html">Écran 1 — Accueil</a></li>
+      <li><a href="diagnostic.html">Écran 2 — Diagnostic</a></li>
+      <li><a href="produit.html">Écran 3 — Fiche produit</a></li>
+      <li><a href="panier.html">Écran 4 — Panier</a></li>
+    </ul>
+  </nav>
+  <aside class="wf-bandeau" aria-label="Démonstrateur">Démonstrateur : contenus fictifs, aucune vente</aside>
+  <header class="wf-bloc wf-entete-site" data-bloc="E6-1" data-role="en-tete">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E6-1</span>
+        <p class="wf-titre">En-tête</p>
+        <p class="wf-note">Identité et navigation du site ; « Vendre sur la plateforme », « Mon compte » et « Panier » sont cliquables.</p>
+      </div>
+      <div class="wf-entete-ligne">
+        <div class="wf-emplacement"><span>[Logo exemple]</span></div>
+        <input type="checkbox" id="menu-E6" class="wf-menu-case">
+        <label for="menu-E6" class="wf-bouton wf-menu-bouton">Menu</label>
+        <nav class="wf-nav-site" aria-label="Navigation principale">
+          <ul>
+            <li>Aléas</li>
+            <li>Comment ça marche</li>
+            <li><a href="pro.html">Vendre sur la plateforme</a></li>
+            <li><a href="connexion.html">Mon compte</a></li>
+            <li><a href="panier.html">Panier</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </header>
+  <main class="wf-conteneur wf-ecran">
+    <section class="wf-bloc" data-bloc="E6-2" data-role="connexion" aria-labelledby="t-E6-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E6-2</span>
+        <h1 class="wf-titre" id="t-E6-2">Connexion à mon compte</h1>
+        <p class="wf-note">Formulaire de connexion simulée.</p>
+      </div>
+      <form class="wf-formulaire wf-etroit" aria-labelledby="t-E6-2">
+        <div class="wf-champ">
+          <label for="email-e62">E-mail</label>
+          <input type="email" id="email-e62" name="email-e62" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="mdp-e62">Mot de passe</label>
+          <input type="password" id="mdp-e62" name="mdp-e62" value="fictif" autocomplete="off">
+        </div>
+        <div>
+          <a class="wf-bouton" href="compte.html">Se connecter</a>
+          <p class="wf-annotation">connexion simulée</p>
+        </div>
+        <p>Aucun mot de passe réel n'est demandé ni enregistré</p>
+        <p class="wf-annotation">Démonstrateur : saisissez des données fictives, rien n'est envoyé ni enregistré</p>
+      </form>
+    </section>
+    <section class="wf-bloc" data-bloc="E6-3" data-role="demo" aria-labelledby="t-E6-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E6-3</span>
+        <h2 class="wf-titre" id="t-E6-3">Compte de démonstration</h2>
+        <p class="wf-note">Accès direct au compte fictif.</p>
+      </div>
+      <div class="wf-etroit wf-encadre">
+        <p>E-mail : client.demo@exemple.test</p>
+        <p>Mot de passe : fictif</p>
+        <p><a class="wf-bouton" href="compte.html">Accéder au compte de démonstration</a></p>
+      </div>
+    </section>
+    <section class="wf-bloc" data-bloc="E6-4" data-role="sav-sans-compte" aria-labelledby="t-E6-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E6-4</span>
+        <h2 class="wf-titre" id="t-E6-4">Pas de compte ?</h2>
+        <p class="wf-note">Entrée du service après-vente sans compte.</p>
+      </div>
+      <div class="wf-etroit">
+        <p><a href="sav-acces.html">Service après-vente sans compte</a></p>
+      </div>
+    </section>
+  </main>
+  <footer class="wf-bloc wf-pied" data-bloc="E6-5" data-role="pied">
+    <div class="wf-conteneur">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E6-5</span>
+        <p class="wf-titre">Pied de page</p>
+        <p class="wf-note">Mentions, service après-vente et rappel du caractère fictif du démonstrateur.</p>
+      </div>
+      <div class="wf-pied-colonnes">
+        <p>Mentions légales (page prévue au lot 10)</p>
+        <p>À propos du démonstrateur</p>
+        <p><a href="sav-acces.html">Service après-vente</a></p>
+        <p>Rappel : aucune vente</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

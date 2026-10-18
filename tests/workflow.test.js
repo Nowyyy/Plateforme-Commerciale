@@ -23,7 +23,7 @@ describe('workflow : chemins publiés', () => {
 describe('page des aperçus : descriptifs', () => {
   it('Docs/apercus.txt décrit chaque lot (lot-N|texte) et le workflow le lit', () => {
     const lignes = readFileSync('Docs/apercus.txt', 'utf8').split('\n').filter(Boolean);
-    for (const ligne of lignes) expect(ligne).toMatch(/^lot-\d+\|[^|]{10,}$/);
+    for (const ligne of lignes) expect(ligne).toMatch(/^lot-\d+[a-z]?\|[^|]{10,}$/);
     const lots = lignes.map((l) => l.split('|')[0]);
     expect(lots).toEqual(expect.arrayContaining(['lot-0', 'lot-1', 'lot-2']));
     expect(new Set(lots).size).toBe(lots.length);
