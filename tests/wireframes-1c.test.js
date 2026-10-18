@@ -146,7 +146,7 @@ describe('wireframes lot 1c-B : compte, achats, détail d\'un achat', () => {
 
   it('compte, achats et achat : codes exactement une fois, dans l\'ordre, avec les bons rôles', () => {
     const cas = [
-      [compte, 7, ['en-tete', 'bienvenue', 'commandes', 'sav-en-cours', 'raccourcis', 'pied']],
+      [compte, 7, ['en-tete', 'bienvenue', 'commandes', 'sav-en-cours', 'pied']],
       [achats, 8, ['en-tete', 'filtre', 'liste', 'pied']],
       [achat, 9, ['en-tete', 'resume', 'cotes', 'mode', 'livraison', 'documents', 'sav', 'pied']],
     ];
@@ -181,5 +181,71 @@ describe('wireframes lot 1c-B : compte, achats, détail d\'un achat', () => {
     const fil = achat.match(/<nav class="wf-fil"[\s\S]*?<\/nav>/)[0];
     expect(fil).toContain('href="compte.html"');
     expect(fil).toContain('href="achats.html"');
+  });
+});
+
+describe('wireframes lot 1c-C : demande de SAV, suivi, informations', () => {
+  const sav = lire('sav');
+  const demandes = lire('demandes');
+  const informations = lire('informations');
+
+  it('sav, demandes et informations : codes exactement une fois, dans l\'ordre, avec les bons rôles', () => {
+    const cas = [
+      [sav, 10, ['en-tete', 'intro', 'produit', 'demande', 'photos', 'coordonnees', 'envoi', 'confirmation', 'pied']],
+      [demandes, 11, ['en-tete', 'filtre', 'liste', 'pied']],
+      [informations, 12, ['en-tete', 'identite', 'adresse', 'preferences', 'pied']],
+    ];
+    for (const [html, ecran, roles] of cas) {
+      expect(attributs(html, 'bloc')).toEqual(roles.map((_, i) => `E${ecran}-${i + 1}`));
+      expect(attributs(html, 'role')).toEqual(roles);
+    }
+  });
+
+  it('sav : 5 motifs en boutons radio dans un fieldset, 3 fichiers, 2 variantes (produit, coordonnées), confirmation avec liens, aucun action', () => {
+    const demande = blocRole(sav, 'demande');
+    expect(demande).toMatch(/<fieldset[^>]*>\s*<legend>Motif<\/legend>/);
+    expect(demande.match(/<input type="radio"/g)).toHaveLength(5);
+    expect(blocRole(sav, 'photos').match(/\[Fichier exemple\]/g)).toHaveLength(3);
+    expect(blocRole(sav, 'photos')).toContain('5 Mo au plus par fichier');
+    expect(blocRole(sav, 'produit').match(/<div class="wf-variante">/g)).toHaveLength(2);
+    expect(blocRole(sav, 'coordonnees').match(/<div class="wf-variante">/g)).toHaveLength(2);
+    expect(blocRole(sav, 'produit').match(/<input type="radio"/g)).toHaveLength(2);
+    const conf = blocRole(sav, 'confirmation');
+    expect(conf).toContain('SAV-000');
+    expect(lien(conf, 'Retour à mes demandes')).toBe('demandes.html');
+    expect(lien(conf, 'Retour à l\'accueil')).toBe('accueil.html');
+    expect(sav).not.toMatch(/\saction=/);
+    const fil = sav.match(/<nav class="wf-fil"[\s\S]*?<\/nav>/g);
+    expect(fil).toHaveLength(2);
+    expect(fil[0]).toContain('href="achat.html"');
+    expect(fil[1]).toContain('href="accueil.html"');
+    expect(fil[1]).toContain('href="sav-acces.html"');
+  });
+
+  it('demandes : les 4 statuts exacts, aucun lien dans le bloc liste', () => {
+    const liste = blocRole(demandes, 'liste');
+    for (const statut of ['Reçue', 'En analyse', 'Intervention planifiée', 'Clôturée']) {
+      expect(liste, statut).toContain(`Statut : <strong>${statut}</strong>`);
+    }
+    expect(liste.match(/SAV-000/g)).toHaveLength(4);
+    expect(liste).not.toMatch(/<a[\s>]/);
+    expect(liste).toContain('détail d\'une demande : hors lot');
+    expect(liste).toContain('(étape actuelle)');
+  });
+
+  it('informations : champs avec label, mention RGPD non liée, pas d\'export ni de suppression ; chaque formulaire porte la mention démonstrateur', () => {
+    const champs = [...informations.matchAll(/<input type="(?:text|email|tel)" id="([^"]+)"/g)].map((m) => m[1]);
+    expect(champs).toHaveLength(8);
+    for (const id of champs) expect(informations).toContain(`<label for="${id}">`);
+    const prefs = blocRole(informations, 'preferences');
+    expect(prefs.match(/type="checkbox"/g)).toHaveLength(2);
+    expect(prefs).toContain('<p>Données personnelles : l\'export et la suppression de vos données ne sont pas actifs dans ce démonstrateur (mention RGPD prévue au lot 10)</p>');
+    expect(informations).not.toMatch(/href="[^"]*(export|suppression)/i);
+    for (const nom of readdirSync('wireframes').filter((f) => f.endsWith('.html'))) {
+      const html = readFileSync(`wireframes/${nom}`, 'utf8');
+      for (const form of html.match(/<form[\s\S]*?<\/form>/g) ?? []) {
+        expect(form, nom).toContain('Démonstrateur : saisissez des données fictives, rien n\'est envoyé ni enregistré');
+      }
+    }
   });
 });

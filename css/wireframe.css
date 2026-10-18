@@ -1157,3 +1157,34 @@ ul.wf-documents {
 .wf-grille + p {
   margin-top: var(--space-3);
 }
+
+/* --- Lot 1c-C : demande de SAV, suivi, informations --- */
+.wf-form-page {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.wf-entete-site .wf-variantes {
+  margin-top: var(--space-3);
+}
+
+.wf-entete-site .wf-variante .wf-fil ol {
+  margin-top: 0;
+}
+
+.wf-grille--3 > li {
+  min-width: 0;
+}
+
+.wf-carte .wf-etapes {
+  margin-top: var(--space-2);
+}
+
+.wf-carte .wf-etapes li {
+  min-width: 0;
+}
+
+.wf-calques input {
+  flex: none;
+}

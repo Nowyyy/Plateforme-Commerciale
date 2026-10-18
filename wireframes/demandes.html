@@ -26,7 +26,7 @@
       <div class="wf-bloc-tete">
         <span class="wf-code">E11-1</span>
         <p class="wf-titre">En-tête</p>
-        <p class="wf-note">Identité et navigation du site ; « Vendre sur la plateforme », « Mon compte » et « Panier » sont cliquables.</p>
+        <p class="wf-note">Identité et navigation du site ; « Vendre sur la plateforme », « Mon compte » et « Panier » sont cliquables, suivis de la navigation du compte.</p>
       </div>
       <div class="wf-entete-ligne">
         <div class="wf-emplacement"><span>[Logo exemple]</span></div>
@@ -42,11 +42,90 @@
           </ul>
         </nav>
       </div>
+      <nav class="wf-nav-compte" aria-label="Mon compte">
+        <ul>
+          <li><a href="compte.html">Tableau de bord</a></li>
+          <li><a href="achats.html">Mes achats</a></li>
+          <li><a href="demandes.html" aria-current="page">Mes demandes <span class="wf-courant">(page actuelle)</span></a></li>
+          <li><a href="informations.html">Mes informations</a></li>
+          <li><a href="connexion.html">Se déconnecter</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
   <main class="wf-conteneur wf-ecran">
-    <h1>Mes demandes de service après-vente</h1>
-    <p class="wf-avenir">Contenu à venir (lot 1c, parties B et C).</p>
+    <section class="wf-bloc" data-bloc="E11-2" data-role="filtre" aria-labelledby="t-E11-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E11-2</span>
+        <h1 class="wf-titre" id="t-E11-2">Mes demandes de service après-vente</h1>
+        <p class="wf-note">Filtre par statut (pastilles non liées).</p>
+      </div>
+      <ul class="wf-pastilles">
+        <li class="wf-pastille wf-pastille--active">Toutes <span class="wf-courant">(actif)</span></li>
+        <li class="wf-pastille">Reçue</li>
+        <li class="wf-pastille">En analyse</li>
+        <li class="wf-pastille">Intervention planifiée</li>
+        <li class="wf-pastille">Clôturée</li>
+      </ul>
+    </section>
+    <section class="wf-bloc" data-bloc="E11-3" data-role="liste" aria-labelledby="t-E11-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E11-3</span>
+        <h2 class="wf-titre" id="t-E11-3">Liste des demandes</h2>
+        <p class="wf-note">Quatre demandes, un statut par ligne, avec indicateur d'étapes.</p>
+      </div>
+      <ul class="wf-grille wf-liste-achats">
+        <li class="wf-carte">
+          <h3>SAV-000</h3>
+          <p>Batardeau modulable [exemple] · 00/00/0000</p>
+          <p>Motif : Défaut à la livraison</p>
+          <p>Statut : <strong>Reçue</strong></p>
+            <ol class="wf-etapes" aria-label="Étapes de la demande">
+              <li aria-current="step">1 Reçue <span class="wf-courant">(étape actuelle)</span></li>
+              <li>2 En analyse</li>
+              <li>3 Intervention planifiée</li>
+              <li>4 Clôturée</li>
+            </ol>
+        </li>
+        <li class="wf-carte">
+          <h3>SAV-000</h3>
+          <p>Clapet anti-retour [exemple] · 00/00/0000</p>
+          <p>Motif : Défaut de fonctionnement</p>
+          <p>Statut : <strong>En analyse</strong></p>
+            <ol class="wf-etapes" aria-label="Étapes de la demande">
+              <li>1 Reçue</li>
+              <li aria-current="step">2 En analyse <span class="wf-courant">(étape actuelle)</span></li>
+              <li>3 Intervention planifiée</li>
+              <li>4 Clôturée</li>
+            </ol>
+        </li>
+        <li class="wf-carte">
+          <h3>SAV-000</h3>
+          <p>Volet résistant à la grêle [exemple] · 00/00/0000</p>
+          <p>Motif : Problème de pose</p>
+          <p>Statut : <strong>Intervention planifiée</strong></p>
+            <ol class="wf-etapes" aria-label="Étapes de la demande">
+              <li>1 Reçue</li>
+              <li>2 En analyse</li>
+              <li aria-current="step">3 Intervention planifiée <span class="wf-courant">(étape actuelle)</span></li>
+              <li>4 Clôturée</li>
+            </ol>
+        </li>
+        <li class="wf-carte">
+          <h3>SAV-000</h3>
+          <p>Brise-soleil [exemple] · 00/00/0000</p>
+          <p>Motif : Pièce manquante</p>
+          <p>Statut : <strong>Clôturée</strong></p>
+            <ol class="wf-etapes" aria-label="Étapes de la demande">
+              <li>1 Reçue</li>
+              <li>2 En analyse</li>
+              <li>3 Intervention planifiée</li>
+              <li aria-current="step">4 Clôturée <span class="wf-courant">(étape actuelle)</span></li>
+            </ol>
+        </li>
+      </ul>
+      <p class="wf-annotation">détail d'une demande : hors lot</p>
+    </section>
   </main>
   <footer class="wf-bloc wf-pied" data-bloc="E11-4" data-role="pied">
     <div class="wf-conteneur">

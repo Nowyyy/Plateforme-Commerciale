@@ -42,11 +42,192 @@
           </ul>
         </nav>
       </div>
+      <div class="wf-variantes">
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante a : avec compte</p>
+          <nav class="wf-fil" aria-label="Fil d'Ariane, variante a">
+            <ol>
+              <li><a href="compte.html">Mon compte</a></li>
+              <li><a href="achats.html">Mes achats</a></li>
+              <li><a href="achat.html">Batardeau</a></li>
+              <li aria-current="page">Demande de SAV</li>
+            </ol>
+          </nav>
+        </div>
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante b : sans compte</p>
+          <nav class="wf-fil" aria-label="Fil d'Ariane, variante b">
+            <ol>
+              <li><a href="accueil.html">Accueil</a></li>
+              <li><a href="sav-acces.html">Service après-vente</a></li>
+            </ol>
+          </nav>
+        </div>
+      </div>
     </div>
   </header>
   <main class="wf-conteneur wf-ecran">
-    <h1>Demande de service après-vente</h1>
-    <p class="wf-avenir">Contenu à venir (lot 1c, parties B et C).</p>
+    <section class="wf-bloc" data-bloc="E10-2" data-role="intro" aria-labelledby="t-E10-2">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E10-2</span>
+        <h1 class="wf-titre" id="t-E10-2">Demande de service après-vente</h1>
+        <p class="wf-note">Introduction et aide.</p>
+      </div>
+      <p class="wf-accroche">Phrase d'aide provisoire : décrivez le problème rencontré, nous reprenons les informations de votre commande.</p>
+    </section>
+    <form class="wf-form-page" aria-label="Demande de service après-vente">
+    <section class="wf-bloc" data-bloc="E10-3" data-role="produit" aria-labelledby="t-E10-3">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E10-3</span>
+        <h2 class="wf-titre" id="t-E10-3">Produit concerné</h2>
+        <p class="wf-note">Produit prérempli (avec compte) ou à choisir (sans compte).</p>
+      </div>
+      <div class="wf-variantes">
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante a : avec compte</p>
+          <p class="wf-annotation">Produit prérempli, en lecture seule.</p>
+          <div class="wf-emplacement wf-ratio-4-3 wf-image-achat"><span>[Image]</span></div>
+          <dl class="wf-totaux">
+            <div><dt>Produit</dt><dd>Batardeau modulable [exemple]</dd></div>
+            <div><dt>Commande</dt><dd>n° 000</dd></div>
+            <div><dt>Date d'achat</dt><dd>00/00/0000</dd></div>
+            <div><dt>Mode</dt><dd>Pose par un artisan</dd></div>
+            <div><dt>Largeur du tableau</dt><dd>000 mm</dd></div>
+            <div><dt>Hauteur du seuil</dt><dd>000 mm</dd></div>
+            <div><dt>Tolérance</dt><dd>000 mm</dd></div>
+          </dl>
+        </div>
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante b : sans compte</p>
+          <p>Commande n° 000</p>
+          <fieldset class="wf-calques">
+            <legend>Produit concerné</legend>
+          <label><input type="radio" id="produit-1-e103" name="produit"> Batardeau modulable [exemple]</label>
+          <label><input type="radio" id="produit-2-e103" name="produit"> Clapet anti-retour [exemple]</label>
+          </fieldset>
+        </div>
+      </div>
+    </section>
+    <section class="wf-bloc" data-bloc="E10-4" data-role="demande" aria-labelledby="t-E10-4">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E10-4</span>
+        <h2 class="wf-titre" id="t-E10-4">Votre demande</h2>
+        <p class="wf-note">Motif et description du problème.</p>
+      </div>
+      <fieldset class="wf-calques">
+        <legend>Motif</legend>
+          <label><input type="radio" id="motif-1-e104" name="motif"> Défaut à la livraison</label>
+          <label><input type="radio" id="motif-2-e104" name="motif"> Défaut de fonctionnement</label>
+          <label><input type="radio" id="motif-3-e104" name="motif"> Problème de pose</label>
+          <label><input type="radio" id="motif-4-e104" name="motif"> Pièce manquante</label>
+          <label><input type="radio" id="motif-5-e104" name="motif"> Autre</label>
+      </fieldset>
+      <div class="wf-champ">
+        <label for="description-e104">Description</label>
+        <textarea id="description-e104" name="description" rows="4" aria-describedby="description-e104-aide"></textarea>
+        <p class="wf-annotation" id="description-e104-aide">Précisez ce qui s'est passé et depuis quand</p>
+      </div>
+    </section>
+    <section class="wf-bloc" data-bloc="E10-5" data-role="photos" aria-labelledby="t-E10-5">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E10-5</span>
+        <h2 class="wf-titre" id="t-E10-5">Photos</h2>
+        <p class="wf-note">Trois photos facultatives du problème.</p>
+      </div>
+      <ul class="wf-grille wf-grille--3">
+        <li><div class="wf-emplacement"><span>[Fichier exemple]</span></div><p class="wf-annotation">Photo 1</p></li>
+        <li><div class="wf-emplacement"><span>[Fichier exemple]</span></div><p class="wf-annotation">Photo 2</p></li>
+        <li><div class="wf-emplacement"><span>[Fichier exemple]</span></div><p class="wf-annotation">Photo 3</p></li>
+      </ul>
+      <p class="wf-annotation">5 Mo au plus par fichier</p>
+    </section>
+    <section class="wf-bloc" data-bloc="E10-6" data-role="coordonnees" aria-labelledby="t-E10-6">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E10-6</span>
+        <h2 class="wf-titre" id="t-E10-6">Vos coordonnées</h2>
+        <p class="wf-note">Préremplies avec un compte, à saisir sans compte.</p>
+      </div>
+      <div class="wf-variantes">
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante a : avec compte (préremplies)</p>
+          <div class="wf-champs">
+        <div class="wf-champ">
+          <label for="nom-a-e106">Nom</label>
+          <input type="text" id="nom-a-e106" name="nom-a-e106" value="[Client exemple]" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="email-a-e106">E-mail</label>
+          <input type="email" id="email-a-e106" name="email-a-e106" value="client.demo@exemple.test" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="tel-a-e106">Téléphone</label>
+          <input type="tel" id="tel-a-e106" name="tel-a-e106" value="00 00 00 00 00" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="adresse-a-e106">Adresse d'intervention</label>
+          <input type="text" id="adresse-a-e106" name="adresse-a-e106" value="00 rue [exemple], 00000 [Ville exemple]" autocomplete="off">
+        </div>
+          </div>
+        </div>
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante b : sans compte (à saisir)</p>
+          <div class="wf-champs">
+        <div class="wf-champ">
+          <label for="nom-b-e106">Nom</label>
+          <input type="text" id="nom-b-e106" name="nom-b-e106" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="email-b-e106">E-mail</label>
+          <input type="email" id="email-b-e106" name="email-b-e106" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="tel-b-e106">Téléphone</label>
+          <input type="tel" id="tel-b-e106" name="tel-b-e106" autocomplete="off">
+        </div>
+        <div class="wf-champ">
+          <label for="adresse-b-e106">Adresse d'intervention</label>
+          <input type="text" id="adresse-b-e106" name="adresse-b-e106" autocomplete="off">
+        </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="wf-bloc" data-bloc="E10-7" data-role="envoi" aria-labelledby="t-E10-7">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E10-7</span>
+        <h2 class="wf-titre" id="t-E10-7">Envoi</h2>
+        <p class="wf-note">Consentement et envoi (rien n'est envoyé).</p>
+      </div>
+      <div class="wf-case">
+        <input type="checkbox" id="consentement-e107" name="consentement">
+        <label for="consentement-e107">J'accepte d'être recontacté à propos de cette demande</label>
+      </div>
+      <p><button type="button" class="wf-bouton">Envoyer ma demande</button></p>
+      <p class="wf-annotation">Démonstrateur : saisissez des données fictives, rien n'est envoyé ni enregistré</p>
+    </section>
+    </form>
+    <section class="wf-bloc" data-bloc="E10-8" data-role="confirmation" aria-labelledby="t-E10-8">
+      <div class="wf-bloc-tete">
+        <span class="wf-code">E10-8</span>
+        <h2 class="wf-titre" id="t-E10-8">Confirmation de la demande</h2>
+        <p class="wf-note">État affiché après l'envoi, sous le formulaire.</p>
+      </div>
+      <div class="wf-variantes">
+        <div class="wf-variante">
+          <p class="wf-variante-etiquette">Variante c : après l'envoi</p>
+          <h3>Demande reçue (exemple)</h3>
+          <p>Numéro de demande : SAV-000</p>
+          <p>Délai de réponse : 00 jours ouvrés</p>
+          <ol class="wf-liste">
+            <li>Analyse de votre demande.</li>
+            <li>Prise de contact.</li>
+            <li>Intervention.</li>
+          </ol>
+          <p><a href="demandes.html">Retour à mes demandes</a></p>
+          <p><a href="accueil.html">Retour à l'accueil</a></p>
+        </div>
+      </div>
+    </section>
   </main>
   <footer class="wf-bloc wf-pied" data-bloc="E10-9" data-role="pied">
     <div class="wf-conteneur">

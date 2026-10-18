@@ -30,9 +30,13 @@ for (const largeur of [375, 1440]) {
 }
 
 for (const largeur of [375, 1440]) {
-  test(`parcours compte : connexion → compte → détail d'un achat → demande de SAV à ${largeur} px`, async ({ page }) => {
+  test(`parcours SAV avec compte : accueil → connexion → compte → achat → sav, puis demandes et informations à ${largeur} px`, async ({ page }) => {
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/wireframes/connexion.html');
+    await page.goto('/wireframes/accueil.html');
+    await ouvrirMenu(page, largeur);
+    await page.getByRole('banner').getByRole('link', { name: 'Mon compte' }).click();
+    await expect(page).toHaveURL(/\/wireframes\/connexion\.html$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Connexion à mon compte' })).toBeVisible();
     await page.getByRole('link', { name: 'Accéder au compte de démonstration' }).click();
     await expect(page).toHaveURL(/\/wireframes\/compte\.html$/);
     await expect(page.getByRole('heading', { level: 1, name: /Bonjour/ })).toBeVisible();
@@ -41,6 +45,17 @@ for (const largeur of [375, 1440]) {
     await expect(page.getByRole('heading', { level: 1, name: /Batardeau modulable/ })).toBeVisible();
     await page.getByRole('link', { name: 'Demander une intervention' }).click();
     await expect(page).toHaveURL(/\/wireframes\/sav\.html$/);
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 1, name: 'Demande de service après-vente' })).toBeVisible();
+
+    await page.goBack();
+    await page.goBack();
+    await expect(page).toHaveURL(/\/wireframes\/compte\.html$/);
+    await page.getByRole('navigation', { name: 'Mon compte' }).getByRole('link', { name: 'Mes demandes' }).click();
+    await expect(page).toHaveURL(/\/wireframes\/demandes\.html$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Mes demandes de service après-vente' })).toBeVisible();
+    await page.goBack();
+    await page.getByRole('navigation', { name: 'Mon compte' }).getByRole('link', { name: 'Mes informations' }).click();
+    await expect(page).toHaveURL(/\/wireframes\/informations\.html$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Mes informations' })).toBeVisible();
   });
 }
