@@ -78,3 +78,20 @@ test('stockage de session indisponible : la navigation a quand même lieu', asyn
   await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
   await page.waitForURL('**/wireframes/diagnostic.html');
 });
+
+for (const largeur of [375, 768, 1440]) {
+  test(`l'apparition du message d'erreur ne déplace ni l'illustration ni le bandeau d'avis à ${largeur} px`, async ({ page }) => {
+    await page.setViewportSize({ width: largeur, height: 900 });
+    await page.goto('/accueil.html');
+    await page.waitForSelector('.recherche:not([hidden])');
+    const positions = () => page.evaluate(() => ['.hero__visuel', '.avis'].map((s) => {
+      const b = document.querySelector(s).getBoundingClientRect();
+      return [Math.round(b.top + scrollY), Math.round(b.left)];
+    }));
+    const avant = await positions();
+    await page.fill('#adresse', 'ab');
+    await page.click('.recherche button[type="submit"]');
+    await expect(page.locator('#adresse-erreur')).not.toBeEmpty();
+    expect(await positions()).toEqual(avant);
+  });
+}
