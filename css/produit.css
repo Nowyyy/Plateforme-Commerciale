@@ -1,0 +1,67 @@
+/* Fiche produit Hi-Fi, zone haute (écran 3). Mobile d'abord ; ruptures 768 et 1200 px.
+   L'en-tête, le pied et le relief viennent de accueil.css. */
+
+/* Fil d'Ariane (E3-1) */
+.fil {
+  padding-block: var(--space-3) 0;
+}
+
+.fil__liste {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.fil__liste li {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  column-gap: var(--space-2);
+}
+
+.fil__liste li + li::before {
+  content: "›" / "";
+  color: var(--color-puce);
+}
+
+.fil__lien {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.fil__courant {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+/* Grille des blocs E3-2 à E3-4 : une colonne dans l'ordre du HTML (la mise en page à deux colonnes vient avec la partie C) */
+.produit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+  padding-block: var(--space-4) var(--space-7);
+}
+
+.produit__bloc {
+  min-inline-size: 0;
+}
+
+.produit h1 {
+  margin-block-end: var(--space-3);
+  font-size: var(--produit-text-h1);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.produit h2 {
+  font-size: var(--produit-text-h2);
+}

@@ -1,0 +1,194 @@
+{
+  "produits": [
+    {
+      "id": "batardeau-modulable",
+      "titre": "Batardeau modulable",
+      "prix": 690,
+      "reference": "BAT-120",
+      "delaiLivraison": "2 à 3 semaines",
+      "pose": 280,
+      "delaiPose": "sous 2 semaines après livraison",
+      "complet": true
+    },
+    {
+      "id": "bouclier-de-baie",
+      "titre": "Bouclier de baie",
+      "prix": 1250,
+      "reference": "BDB-210",
+      "delaiLivraison": "3 à 4 semaines",
+      "pose": 500,
+      "delaiPose": "sous 3 semaines après livraison",
+      "complet": false
+    },
+    {
+      "id": "sprinkler-de-toiture",
+      "titre": "Sprinkler de toiture",
+      "prix": 1890,
+      "reference": "SPR-330",
+      "delaiLivraison": "4 à 6 semaines",
+      "pose": 750,
+      "delaiPose": "sous 4 semaines après livraison",
+      "complet": false
+    },
+    {
+      "id": "cool-roofing",
+      "titre": "Revêtement cool roofing",
+      "prix": 1450,
+      "reference": "CRF-140",
+      "delaiLivraison": "3 à 5 semaines",
+      "pose": 580,
+      "delaiPose": "sous 4 semaines après livraison",
+      "complet": false
+    },
+    {
+      "id": "clapet-anti-retour",
+      "titre": "Clapet anti-retour",
+      "prix": 149,
+      "reference": "CAR-050",
+      "delaiLivraison": "1 à 2 semaines",
+      "pose": 60,
+      "delaiPose": "sous 1 semaine après livraison",
+      "complet": false
+    },
+    {
+      "id": "volet-extrude",
+      "titre": "Volet extrudé renforcé",
+      "prix": 980,
+      "reference": "VEX-180",
+      "delaiLivraison": "3 à 4 semaines",
+      "pose": 390,
+      "delaiPose": "sous 3 semaines après livraison",
+      "complet": false
+    },
+    {
+      "id": "grille-pare-braises",
+      "titre": "Grille pare-braises",
+      "prix": 260,
+      "reference": "GPB-060",
+      "delaiLivraison": "1 à 2 semaines",
+      "pose": 100,
+      "delaiPose": "sous 2 semaines après livraison",
+      "complet": false
+    },
+    {
+      "id": "isolant-reflecteur",
+      "titre": "Isolant réflecteur",
+      "prix": 310,
+      "reference": "ISR-070",
+      "delaiLivraison": "2 semaines",
+      "pose": 120,
+      "delaiPose": "sous 2 semaines après livraison",
+      "complet": false
+    },
+    {
+      "id": "pompe-de-relevage",
+      "titre": "Pompe de relevage",
+      "prix": 420,
+      "reference": "PDR-090",
+      "delaiLivraison": "2 à 3 semaines",
+      "pose": 170,
+      "delaiPose": "sous 2 semaines après livraison",
+      "complet": false
+    },
+    {
+      "id": "filet-de-toiture",
+      "titre": "Filet de toiture",
+      "prix": 340,
+      "reference": "FDT-080",
+      "delaiLivraison": "2 à 3 semaines",
+      "pose": 130,
+      "delaiPose": "sous 3 semaines après livraison",
+      "complet": false
+    }
+  ],
+  "produitParDefaut": "batardeau-modulable",
+  "galerie": {
+    "vues": [
+      {
+        "id": "eclate",
+        "type": "image",
+        "court": "Éclaté",
+        "legende": "Rendu 3D éclaté (exemple)"
+      },
+      {
+        "id": "coupe",
+        "type": "image",
+        "court": "Coupe",
+        "legende": "Coupe technique du mur et du seuil (exemple)"
+      },
+      {
+        "id": "situation",
+        "type": "image",
+        "court": "En situation",
+        "legende": "Vue en situation (exemple)"
+      },
+      {
+        "id": "video",
+        "type": "video",
+        "court": "Vidéo",
+        "legende": "Vidéo de crash-test à venir (exemple)"
+      }
+    ]
+  },
+  "badges": [
+    {
+      "id": "certification",
+      "titre": "Certification d'usine (exemple)"
+    },
+    {
+      "id": "norme",
+      "titre": "Norme française (exemple)"
+    },
+    {
+      "id": "resistance",
+      "titre": "Résistance classe 3 (exemple)"
+    }
+  ],
+  "modes": {
+    "diy": {
+      "titre": "Matériel seul (DIY)",
+      "aide": "Expédition directe depuis l'usine, tutoriel de pose fourni (exemple)"
+    },
+    "pose": {
+      "titre": "Matériel + pose par un artisan partenaire",
+      "aide": "Intervention d'un artisan certifié (exemple)",
+      "garantie": "Garantie décennale incluse (exemple)"
+    },
+    "lignes": {
+      "materiel": "Matériel",
+      "pose": "Pose estimée",
+      "total": "Total estimé TTC"
+    }
+  },
+  "textes": {
+    "fil": {
+      "aria": "Fil d'Ariane",
+      "accueil": "Accueil",
+      "diagnostic": "Diagnostic"
+    },
+    "galerie": {
+      "titre": "Vues du produit",
+      "legendeVues": "Vues",
+      "placeholder": "Visuel à venir (exemple)",
+      "lecture": "Lecture"
+    },
+    "achat": {
+      "mention": "Produit fictif (exemple)",
+      "reference": "Réf.",
+      "exemple": "(exemple)",
+      "prix": "Prix TTC du matériel :",
+      "livraison": "Livraison directe usine :"
+    },
+    "mode": {
+      "titre": "Mode de commande",
+      "legende": "Choisissez comment commander",
+      "detailDiy": "Le matériel est expédié directement depuis l'usine ; la pose se fait avec le tutoriel fourni (exemple).",
+      "estimation": "Estimation du coût de pose :",
+      "estimationSuffixe": "TTC (exemple)",
+      "delaiPose": "Délai d'intervention :",
+      "recapitulatif": "Récapitulatif de prix",
+      "mention": "Estimation indicative, aucun achat n'est possible dans ce démonstrateur.",
+      "annonce": "{mode} choisi. Total estimé : {total}."
+    }
+  }
+}

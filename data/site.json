@@ -60,7 +60,7 @@
     "connexion": "wireframes/connexion.html",
     "panier": "wireframes/panier.html",
     "savAcces": "wireframes/sav-acces.html",
-    "produit": "wireframes/produit.html"
+    "produit": "produit.html"
   },
   "liensExternes": {
     "georisques": "https://www.georisques.gouv.fr/"

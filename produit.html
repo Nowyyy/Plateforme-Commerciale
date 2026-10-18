@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fr" data-donnees="produit">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Fiche produit : galerie, achat et mode de commande (exemple)</title>
+  <meta name="description" content="Démonstrateur : fiche produit d'un équipement de protection de l'habitat, galerie, prix, délai et choix du mode de commande. Contenus fictifs, aucune vente.">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/composants.css">
+  <link rel="stylesheet" href="css/accueil.css">
+  <link rel="stylesheet" href="css/diagnostic.css">
+  <link rel="stylesheet" href="css/produit.css">
+  <script type="module" src="assets/js/rendu.js"></script>
+  <script type="module" src="assets/js/menu.js"></script>
+  <script type="module" src="assets/js/produit.js"></script>
+</head>
+<body>
+  <div class="relief" aria-hidden="true">
+    <svg class="relief__groupe relief__groupe--1" viewBox="-190 -150 380 300" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <defs><path id="relief-blob" vector-effect="non-scaling-stroke" d="M-120 0C-125 -62 -45 -92 25 -82C105 -72 135 -12 112 42C90 94 22 104 -42 88C-100 72 -116 38 -120 0Z"/></defs>
+      <use href="#relief-blob" transform="scale(0.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.5)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.75)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.5)" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <svg class="relief__groupe relief__groupe--2" viewBox="-170 -170 340 340" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <g transform="rotate(30)">
+      <use href="#relief-blob" transform="scale(0.2)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.45)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.7)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.95)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.2)" vector-effect="non-scaling-stroke"/>
+      </g>
+    </svg>
+  </div>
+  <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
+  <a class="lien-evitement" href="#contenu" data-texte="site.evitement"></a>
+  <aside class="bandeau-demo" data-aria-label="site.aria.bandeau">
+    <p class="conteneur" data-texte="site.bandeau"></p>
+  </aside>
+  <header class="entete" data-bloc="E3-1" data-role="en-tete">
+    <div class="conteneur entete__ligne">
+      <a class="marque" data-lien="site.liens.accueil">
+        <svg class="marque__pictogramme" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path class="marque__toit" d="M4 15 16 5l12 10"/>
+          <path class="marque__goutte" d="M16 13c0 0 6 6 6 10a6 6 0 0 1-12 0c0-4 6-10 6-10z"/>
+        </svg>
+        <span data-texte="site.nom"></span>
+      </a>
+      <a class="lien-entete entete__panier-barre" data-lien="site.liens.panier">
+        <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+        <span data-texte="site.navigation.panier"></span>
+      </a>
+      <button type="button" class="bouton bouton--discret entete__menu" data-menu-bouton aria-expanded="false" aria-controls="menu-navigation" data-texte="site.navigation.menu"></button>
+      <nav class="nav" id="menu-navigation" data-aria-label="site.aria.navigation">
+        <ul>
+          <li><a class="nav__lien" data-lien="site.liens.pro" data-texte="site.navigation.pro"></a></li>
+          <li><a class="nav__lien" data-lien="site.liens.connexion" data-texte="site.navigation.compte"></a></li>
+          <li class="nav__panier">
+            <a class="lien-entete" data-lien="site.liens.panier">
+              <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+              <span data-texte="site.navigation.panier"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="contenu" tabindex="-1">
+    <nav class="fil" data-aria-label="produit.textes.fil.aria">
+      <div class="conteneur">
+        <ol class="fil__liste">
+          <li><a class="fil__lien" data-lien="site.liens.accueil" data-texte="produit.textes.fil.accueil"></a></li>
+          <li><a class="fil__lien" data-lien="site.liens.diagnostic" data-texte="produit.textes.fil.diagnostic"></a></li>
+          <li class="fil__courant" aria-current="page" id="fil-produit"></li>
+        </ol>
+      </div>
+    </nav>
+    <div class="conteneur produit">
+      <section class="produit__bloc produit__galerie" data-bloc="E3-2" data-role="galerie" aria-labelledby="titre-galerie">
+        <h2 class="visuellement-cache" id="titre-galerie" data-texte="produit.textes.galerie.titre"></h2>
+        <div class="galerie" aria-busy="true"></div>
+      </section>
+      <section class="produit__bloc produit__achat" data-bloc="E3-3" data-role="achat" aria-labelledby="titre-achat">
+        <h1 id="titre-achat"></h1>
+        <div class="achat" aria-busy="true"></div>
+      </section>
+      <section class="produit__bloc produit__mode" data-bloc="E3-4" data-role="mode" aria-labelledby="titre-mode">
+        <h2 id="titre-mode" data-texte="produit.textes.mode.titre"></h2>
+        <div class="mode" aria-busy="true"></div>
+      </section>
+    </div>
+  </main>
+  <footer class="pied" data-bloc="E3-8" data-role="pied">
+    <div class="conteneur">
+      <div class="pied__grille" aria-busy="true">
+        <template data-liste="site.pied.colonnes">
+          <div class="pied__colonne">
+            <h2 class="pied__titre" data-texte="titre"></h2>
+            <ul class="pied__liste">
+              <template data-liste="entrees">
+                <li><a class="pied__lien" data-lien-element="lien" data-texte="texte"></a></li>
+              </template>
+            </ul>
+          </div>
+        </template>
+        <div class="pied__colonne pied__marque">
+          <p class="pied__nom" data-texte="site.nom"></p>
+          <p class="pied__presentation" data-texte="site.pied.presentation"></p>
+        </div>
+      </div>
+      <p class="pied__bas" data-texte="site.bandeau"></p>
+    </div>
+  </footer>
+</body>
+</html>
