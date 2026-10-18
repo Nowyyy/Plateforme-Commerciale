@@ -206,9 +206,8 @@
   }
 }
 
-/* Avis E1-8 : après la recherche, filet fin en haut */
+/* Avis E1-8 : après la recherche, filet fin en haut ; fond de page unique (sections transparentes) */
 .avis {
-  background: var(--color-card);
   border-top: 1px solid var(--color-border);
 }
 
@@ -264,16 +263,16 @@
   padding: var(--space-1) var(--space-3);
   border: 1px solid var(--color-border);
   border-radius: 999px;
-  background: var(--color-bg);
+  background: var(--color-card);
   color: var(--color-text-secondary);
   font-size: var(--text-xs);
   font-weight: 600;
 }
 
-/* Hero E1-2 : fond en dégradé léger ; en dessous de 1200 px texte, illustration puis recherche ; dès 1200 px texte et recherche à gauche, illustration à droite */
+/* Hero E1-2 : dégradé vertical, teinte bleutée en haut, fond de page au bord inférieur ; en dessous de 1200 px texte, illustration puis recherche ; dès 1200 px texte et recherche à gauche, illustration à droite */
 .hero {
   padding-block: var(--space-6) var(--space-7);
-  background: linear-gradient(180deg, var(--color-bg), var(--color-hero-fin));
+  background: linear-gradient(180deg, var(--color-hero-debut), var(--color-bg));
 }
 
 .hero__grille {
@@ -674,14 +673,6 @@ span.pied__lien {
 .bloc h2 {
   font-size: var(--text-h2);
   text-wrap: balance;
-}
-
-.bloc--blanc {
-  background: var(--color-card);
-}
-
-.bloc--clair {
-  background: var(--color-bg);
 }
 
 .bloc:focus {
@@ -1167,7 +1158,7 @@ html:not([data-rendu]) .bloc__intro {
 .chiffre {
   min-inline-size: 0;
   padding: var(--space-4);
-  background: var(--color-bg);
+  background: var(--color-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
 }
