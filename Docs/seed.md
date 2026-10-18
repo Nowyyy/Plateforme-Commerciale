@@ -1,5 +1,5 @@
 # Seed — Plateforme de protection de l'habitat (démonstrateur)
-Modifiable par le seul propriétaire. Version 3, 18 octobre 2026 (remplace la version 2).
+Modifiable par le seul propriétaire. Version 4, 18 octobre 2026 (remplace la version 3).
 
 ## Le site en une phrase
 Un démonstrateur en ligne, hébergé sur GitHub Pages, d'une place de marché d'équipements de protection de la maison contre quatre aléas climatiques (inondations, grêle et vents, feux de forêt, canicule), au parcours calme et technique : adresse, diagnostic, fiche produit, cotes, mode de pose, panier récapitulatif. S'y ajoutent un espace professionnel (candidature de vendeurs) et un espace client simulé (achats, service après-vente).
@@ -12,9 +12,10 @@ Un démonstrateur en ligne, hébergé sur GitHub Pages, d'une place de marché d
 5. Simple d'abord : statique, sans serveur, sans traceur, données dans des fichiers, comptes et formulaires simulés.
 
 ## Navigation commune
-- En-tête : Aléas, Comment ça marche, Vendre sur la plateforme, Mon compte, Panier. Les libellés dont la page n'existe pas encore en Hi-Fi pointent provisoirement vers `wireframes/`.
+- En-tête : Aléas, Comment ça marche, Vendre sur la plateforme, Mon compte, Panier. « Mon compte » mène à la connexion, ou au tableau de bord sur les pages connectées (écrans 7, 8, 9, 11, 12). Les libellés dont la page n'existe pas encore en Hi-Fi pointent provisoirement vers `wireframes/`.
+- Menu mobile : bouton « Menu » repliable sans JavaScript dans les wireframes (case masquée et libellé), absent dès 768 px.
 - Pied de page : Mentions légales (lot 10), À propos du démonstrateur, Service après-vente (accès sans compte), rappel « aucune vente ».
-- Le lot 1c ajoute ces libellés aux blocs d'en-tête et de pied de page des écrans 1 à 4 ; les codes de blocs ne changent pas.
+- Navigation du compte (écrans 7, 8, 11, 12) : Tableau de bord, Mes achats, Mes demandes, Mes informations, Se déconnecter ; la page courante est repérée par du texte.
 
 ## Pages et parcours : écrans 1 à 4
 | Écran | Page | Blocs, dans l'ordre de la page |
@@ -24,18 +25,18 @@ Un démonstrateur en ligne, hébergé sur GitHub Pages, d'une place de marché d
 | 3 Fiche produit | `produit.html` | E3-1 en-tête et fil d'Ariane ; E3-2 galerie et vidéo ; E3-3 achat ; E3-4 mode de commande (DIY ou pose) ; E3-5 configurateur de cotes ; E3-6 spécifications ; E3-7 documents ; E3-8 pied |
 | 4 Panier | `panier.html` | E4-1 en-tête et étapes ; E4-2 récapitulatif technique et délai de livraison ; E4-3 validation de responsabilité ; E4-4 total ; E4-5 paiement sécurisé et SAV ; E4-6 pied |
 
-## Pages et parcours : écrans 5 à 13 (propositions, fixées par le lot 1c)
-| Écran | Page | Blocs proposés |
+## Pages et parcours : écrans 5 à 13 (agencement validé au lot 1c)
+| Écran | Page | Blocs, dans l'ordre de la page |
 |---|---|---|
-| 5 Espace professionnel | `pro.html` | en-tête ; introduction (vendre sur la plateforme) ; étapes (candidature, validation du catalogue et des certifications, mise en ligne) ; formulaire (société, SIRET en format seulement, contact, e-mail, téléphone, aléas couverts, description des produits, certifications en emplacements de fichiers, message, consentement) ; confirmation (variante) ; pied |
-| 6 Connexion | `connexion.html` | en-tête ; champs e-mail et mot de passe fictifs ; accès au compte de démonstration ; lien « SAV sans compte » ; mention « aucun mot de passe réel » ; pied |
-| 7 Tableau de bord | `compte.html` | en-tête ; bienvenue au client de démonstration ; dernières commandes ; demandes SAV en cours ; raccourcis (achats, demandes, informations) ; pied |
-| 8 Mes achats | `achats.html` | en-tête ; filtre par statut ; liste (produit, date, numéro, statut, mode DIY ou pose) ; pied |
-| 9 Détail d'un achat | `achat.html` | en-tête ; résumé ; cotes saisies et schéma de rappel ; mode de commande, artisan et date d'intervention fictifs ; livraison ; documents (facture, notice, PV d'essais, attestation de pose, garantie décennale) en emplacements de fichiers ; bouton « Demander une intervention » ; pied |
-| 10 Demande de SAV | `sav.html` | en-tête ; produit concerné (prérempli depuis un achat, ou à choisir sans compte) ; motif ; description ; photos en emplacements de fichiers ; coordonnées (préremplies avec compte) ; confirmation avec numéro fictif (variante) ; pied |
-| 11 Mes demandes | `demandes.html` | en-tête ; liste des demandes SAV avec statut (reçue, en analyse, intervention planifiée, clôturée) ; pied |
-| 12 Mes informations | `informations.html` | en-tête ; identité ; coordonnées ; adresse de livraison ; préférences de communication ; mention RGPD en texte seulement (export et suppression non actifs) ; bouton d'enregistrement simulé ; pied |
-| 13 SAV sans compte | `sav-acces.html` | en-tête ; numéro de commande et e-mail (valeurs de démonstration indiquées à l'écran, format vérifié seulement) ; pied |
+| 5 Espace professionnel | `pro.html` | E5-1 en-tête ; E5-2 introduction ; E5-3 trois étapes (candidature, validation du catalogue et des certifications, mise en ligne) ; E5-4 formulaire de candidature (société, SIRET en format seulement, contact, e-mail, téléphone, aléas couverts, description des produits, certifications en emplacements de fichiers, message, consentement) ; E5-5 confirmation (variante) ; E5-6 pied |
+| 6 Connexion | `connexion.html` | E6-1 en-tête ; E6-2 connexion ; E6-3 compte de démonstration ; E6-4 « SAV sans compte » ; E6-5 pied |
+| 7 Tableau de bord | `compte.html` | E7-1 en-tête et navigation du compte ; E7-2 bienvenue ; E7-3 dernières commandes ; E7-4 demandes de SAV en cours ; E7-5 pied (le bloc de raccourcis a été retiré : doublon avec la navigation du compte) |
+| 8 Mes achats | `achats.html` | E8-1 en-tête et navigation du compte ; E8-2 filtre par statut ; E8-3 liste (produit, date, numéro, statut, mode DIY ou pose) ; E8-4 pied |
+| 9 Détail d'un achat | `achat.html` | E9-1 en-tête et fil d'Ariane ; E9-2 résumé ; E9-3 cotes saisies et schéma de rappel ; E9-4 mode de commande (artisan et date d'intervention fictifs) ; E9-5 livraison ; E9-6 documents (facture, notice, PV d'essais, attestation de pose, garantie décennale) en emplacements de fichiers ; E9-7 « Demander une intervention » ; E9-8 pied |
+| 10 Demande de SAV | `sav.html` | E10-1 en-tête et fil d'Ariane (avec ou sans compte) ; E10-2 introduction ; E10-3 produit concerné (prérempli depuis un achat, ou à choisir sans compte) ; E10-4 motif et description ; E10-5 photos en emplacements de fichiers ; E10-6 coordonnées (préremplies avec compte) ; E10-7 envoi et consentement ; E10-8 confirmation avec numéro fictif (variante) ; E10-9 pied |
+| 11 Mes demandes | `demandes.html` | E11-1 en-tête et navigation du compte ; E11-2 filtre par statut ; E11-3 liste avec indicateur d'étapes (reçue, en analyse, intervention planifiée, clôturée) ; E11-4 pied |
+| 12 Mes informations | `informations.html` | E12-1 en-tête et navigation du compte ; E12-2 identité ; E12-3 adresse de livraison ; E12-4 préférences de communication, mention RGPD en texte seulement (export et suppression non actifs), enregistrement simulé ; E12-5 pied |
+| 13 SAV sans compte | `sav-acces.html` | E13-1 en-tête ; E13-2 numéro de commande et e-mail (valeurs de démonstration indiquées à l'écran, format vérifié seulement) ; E13-3 pied |
 
 Parcours :
 - Principal : recherche d'adresse, diagnostic, sélection produit, saisie des cotes, choix de pose, panier.
@@ -43,14 +44,20 @@ Parcours :
 - SAV avec compte : connexion, tableau de bord, achats, détail d'un achat, demande de SAV, confirmation, suivi.
 - SAV sans compte : pied de page, accès SAV, demande de SAV, confirmation.
 
-Source de vérité de l'agencement : `wireframes/` (validé aux lots 1 et 1b, étendu au lot 1c). Identifiants stables : les `data-role`. Les numéros suivent l'ordre de la page ; tout déplacement passe par un lot de correctif. Une seule fiche produit est complète (un batardeau) ; les autres restent allégées.
+Source de vérité de l'agencement : `wireframes/` (validé aux lots 1, 1b et 1c). Identifiants stables : les `data-role`. Les numéros suivent l'ordre de la page ; tout déplacement passe par un lot de correctif. Une seule fiche produit est complète (un batardeau) ; les autres restent allégées.
 
-## Page des aperçus (`/apercus/`)
-Elle sert à relire le travail depuis un téléphone. Elle comporte :
-- un bouton « Accès Wireframe » : la version la plus récente des wireframes, y compris celle d'un lot de wireframes en cours ;
-- un bouton « Page Hi-Fi » : le lot Hi-Fi le plus récent, en cours ou terminé. Chaque lot part de `main` à jour, donc cette page contient toutes les évolutions précédentes. Quand aucun lot Hi-Fi n'est en cours, le bouton mène à la version de `main` ;
-- un menu déroulant « Anciens lots » : tous les lots Hi-Fi précédents uniquement, du plus récent au plus ancien, avec numéro et titre. Ni wireframes ni lots techniques.
-Règles : alimentée automatiquement à partir des fichiers `apercu.txt` (type du lot, titre), sans liste à maintenir à la main (faisabilité à vérifier au lot 2b) ; mêmes jetons et même police que le site ; lisible à 375 et 1440 px ; `noindex` ; menu déroulant utilisable au clavier ; aucune ressource externe. Sa refonte modifie le workflow : elle n'est autorisée que par le prompt du lot 2b.
+## Page des aperçus (`/apercus/`) devenue Page des lots (`/lots/`)
+Page de relecture pour un téléphone, hors démonstrateur, nommée « Lots » et publiée à `/lots/`. L'ancienne adresse `/apercus/` reste une page de redirection vers `/lots/`. Elle comporte :
+- un bouton « Accès Wireframe » : le lot de wireframes le plus récent (lien vers son aperçu s'il est en cours, vers la version de `main` s'il est fusionné) ;
+- un bouton « Page Hi-Fi » : même règle pour le lot Hi-Fi le plus récent. Chaque lot part de `main` à jour, donc cette page contient toutes les évolutions précédentes ;
+- un menu déroulant « Anciens lots » : tous les lots Hi-Fi sauf le plus récent, du plus récent au plus ancien, chacun avec un lien vers son aperçu d'époque ; un message s'affiche quand la liste est vide. Ni wireframes ni lots techniques.
+Règles :
+- Générée automatiquement à chaque publication à partir des branches `lot-*` et de leur fichier `apercu.txt`, sans liste à maintenir à la main. Le nom du fichier `apercu.txt` ne change pas.
+- Format de `apercu.txt` : la cible sur la première ligne ; lignes optionnelles `type: wireframe`, `hifi` ou `technique`, et `titre: <court>`. Sans `type:`, une cible `wireframes/…` est un wireframe et toute autre cible un lot Hi-Fi. Un lot d'outillage s'écrit `type: technique` et n'apparaît pas sur la page.
+- Mêmes jetons et même police que le site ; lisible à 375 et 1440 px ; `noindex` ; aucun script (menu déroulant natif, utilisable au clavier) ; aucune ressource externe.
+- Une panne de génération ne doit jamais empêcher la publication des aperçus `/lot-N/` : page de repli et avertissement dans les journaux.
+- Sa refonte modifie le workflow : elle n'est autorisée que par le prompt du lot 2b.
+- Après la fusion du lot 2b, ne plus pousser sur les anciennes branches de lot : leur ancien workflow régénérerait l'ancienne page.
 
 ## Contenus et source
 | Contenu | Source |
@@ -69,7 +76,7 @@ Règles : alimentée automatiquement à partir des fichiers `apercu.txt` (type d
 - Hero : dégradé vertical du fond clair vers une teinte bleutée dérivée du marine, sans grille ; sur mobile, ordre texte, illustration, puis recherche.
 - Typographie : Plus Jakarta Sans (titres, labels), Inter avec chiffres tabulaires (données, cotes), polices hébergées dans le dépôt.
 - Tous les réglages vivent dans des variables CSS (`css/tokens.css`) ; aucune couleur en dur. Les wireframes restent en niveaux de gris (`--wf-*`).
-- Les écrans de formulaires et de compte reprennent les composants existants (champs, boutons, cartes) ; aucun style hors jetons. Les erreurs de saisie se signalent par texte, icône et filet marine, sans rouge.
+- Les écrans de formulaires et de compte reprennent les composants existants (champs, boutons, cartes) ; aucun style hors jetons. Les erreurs de saisie se signalent par texte, icône et filet marine, sans rouge ; l'état d'un élément (actif, repéré) est toujours donné par du texte, jamais par la couleur seule.
 
 ## Stack et hébergement
 HTML, CSS à variables, JavaScript en modules, sans compilation ni dépendance d'exécution. Textes et liens dans `data/*.json`, injectés par clés (`data-texte`, `data-lien`). Outils de développement seulement : ESLint, Vitest, Playwright avec axe, Lighthouse. Chemins relatifs. Justification : peu d'état, aucun serveur possible. Alternative si le nombre de pages explose : Astro ou Vite.
@@ -78,15 +85,15 @@ Hébergement : GitHub Pages (adresse `github.io`), publication par workflow GitH
 Flux : cadrage dans le chat Claude (téléphone), exécution par Claude Code cloud, relecture et fusion par Pull Request (« Create a merge commit »). L'export Figma (lot 11) se fait sur ordinateur.
 
 ## Hors périmètre
-Fichier Figma produit sans retouche humaine ; vrai paiement ; vraie authentification (connexion réelle, création de compte, mot de passe) ; vrai envoi des formulaires professionnel et SAV ; vrai stockage de pièces jointes ; vraie vérification du SIRET ; suivi réel de colis ; messagerie avec l'artisan et favoris ; vraies données de risque, carte réelle, vrai calcul de vulnérabilité ; vrais logos, certifications, avis clients et notes ; vraies vidéos ; catalogue complet et page de liste ; CMS ; autre langue que le français ; analytique et cookies.
+Fichier Figma produit sans retouche humaine ; vrai paiement ; vraie authentification (connexion réelle, mot de passe) ; création de compte ; vrai envoi des formulaires professionnel et SAV ; vrai stockage de pièces jointes ; vraie vérification du SIRET ; suivi réel de colis ; page de détail d'une demande de SAV ; messagerie avec l'artisan et favoris ; vraies données de risque, carte réelle, vrai calcul de vulnérabilité ; vrais logos, certifications, avis clients et notes ; vraies vidéos ; catalogue complet et page de liste ; CMS ; autre langue que le français ; analytique et cookies.
 
 ## Risques connus
-- Constaté aux lots 0 à 2 : navigateur piloté, captures, Lighthouse, push de branches et de workflow fonctionnent ; le push de tags est refusé (HTTP 403) ; l'agent ne peut pas ouvrir l'adresse publiée, donc le déploiement se vérifie à la main ; Lighthouse exclut la catégorie SEO des pages `noindex`.
-- Les lots 1 et 2 ont reçu des ajouts en cours de route (parties D à I) : le plafond de taille d'un lot n'est pas tenu. Préférer un lot de correctif (comme le 1b) à des parties ajoutées.
+- Constaté aux lots 0 à 1c : navigateur piloté, captures, Lighthouse, push de branches et de workflow fonctionnent ; le push de tags est refusé (HTTP 403) ; l'agent ne peut pas ouvrir l'adresse publiée, donc le déploiement se vérifie à la main ; Lighthouse exclut la catégorie SEO des pages `noindex`.
+- Les lots 1 et 2 ont reçu des ajouts en cours de route (parties D à I) : le plafond de taille d'un lot n'est pas tenu. Préférer un lot de correctif (comme le 1b) à des parties ajoutées ; les prompts interdisent désormais toute partie supplémentaire.
 - Logos CSTB ou NF, garantie décennale, tiers de confiance sans droit : pastilles « exemple », bandeau « démonstrateur, aucune vente » sur chaque page.
 - Données personnelles : les formulaires sont simulés, mais un visiteur peut y saisir de vraies données. Mention visible sur chaque formulaire, aucune donnée envoyée ni conservée au-delà de la session. Une version réelle exigerait un service externe et la conformité RGPD, hors de ce démonstrateur.
 - Textes injectés par JavaScript : invisibles sans lui, et risque de décalage de mise en page (réserve de hauteur).
-- La page des aperçus dépend du workflow : sa refonte peut casser les aperçus existants ; à vérifier à la main après fusion.
+- La page des lots dépend du workflow : la détection des lots fusionnés demande l'historique Git complet, et la refonte peut casser les aperçus existants ; à vérifier à la main après fusion.
 - Export Figma : résultat non garanti conforme (composants, auto-layout strict, variables) ; compte Figma nécessaire ; plugin non testé.
 
 ## Plan en lots
@@ -95,10 +102,10 @@ Fichier Figma produit sans retouche humaine ; vrai paiement ; vraie authentifica
 | 0 | Socle, jetons, page d'attente en ligne | fait |
 | 1 | Wireframes Lo-Fi des 4 écrans, aperçu par lot | fait |
 | 1b | Correctifs d'agencement : accueil (avis) et diagnostic (équipements et carte) | fait |
-| 2 | Hi-Fi accueil, partie haute : E1-1 à E1-3 et bandeau d'avis E1-8 | terminé, à fusionner |
-| 1c | Wireframes Lo-Fi : écrans 5 à 13 (professionnel, connexion, compte, achats, détail d'achat, SAV avec et sans compte, suivi, informations) ; en-têtes et pieds des écrans 1 à 4 mis à jour ; parcours cliqués | à faire, avant 3a |
-| 2b | Page des aperçus retravaillée (section dédiée) | à faire, après 1c |
-| 3a | Hi-Fi accueil : E1-4 aléas, E1-5 protection de la personne, E1-6 comment ça marche, insérés entre la recherche et le bandeau d'avis (découpage proposé) | à faire |
+| 2 | Hi-Fi accueil, partie haute : E1-1 à E1-3 et bandeau d'avis E1-8 | fait |
+| 1c | Wireframes Lo-Fi : écrans 5 à 13 (professionnel, connexion, compte, achats, détail d'achat, SAV avec et sans compte, suivi, informations) ; navigation commune ; parcours cliqués | validé |
+| 2b | Page « Lots » (`/lots/`) : accès wireframes, page Hi-Fi, anciens lots ; génération automatique ; redirection de `/apercus/` | prochain |
+| 3a | Hi-Fi accueil : E1-4 aléas, E1-5 protection de la personne, E1-6 comment ça marche, insérés entre la recherche et le bandeau d'avis ; navigation Hi-Fi mise à jour avec les nouveaux libellés | à faire |
 | 3b | Hi-Fi accueil : E1-7 réassurance, E1-9 crash-test, E1-10 pied ; navigation liée ; `accueil.html` devient `index.html`, la page d'attente devient `attente.html` | à faire |
 | 4 | Diagnostic : carte stylisée, calques, jauge, recommandations fictives ; régler l'espace libre des cartes d'équipements | à faire |
 | 5 | Fiche produit : zone haute et bascule DIY / pose | à faire |
@@ -112,4 +119,4 @@ Fichier Figma produit sans retouche humaine ; vrai paiement ; vraie authentifica
 | 11 | Optionnel, sur ordinateur : export Figma des écrans, puis reprise manuelle | à faire |
 
 ## Idées en attente (hors lot en cours)
-Index des projets sur `nowyyy.github.io` (autre dépôt, accord requis) ; pose manuelle des tags `lot-N` (facultatif) ; remplacement du nom de marque provisoire et du schéma du hero ; bouton « Menu » qui passe à la ligne sous 350 px ; message d'erreur unique de la recherche d'adresse ; « Mes diagnostics » dans le compte.
+Index des projets sur `nowyyy.github.io` (autre dépôt, accord requis) ; pose manuelle des tags `lot-N` (facultatif) ; remplacement du nom de marque provisoire et du schéma du hero ; bouton « Menu » du Hi-Fi qui passe à la ligne sous 350 px ; message d'erreur unique de la recherche d'adresse ; « Mes diagnostics » dans le compte ; page de détail d'une demande de SAV ; suppression de `Docs/apercus.txt` s'il devient inutile après le lot 2b.
