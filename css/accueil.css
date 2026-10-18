@@ -620,7 +620,7 @@ span.pied__lien {
 }
 
 .pied__grille[aria-busy="true"] {
-  min-block-size: 41.7rem;
+  min-block-size: 36.2rem;
 }
 
 @media (min-width: 768px) {
@@ -633,7 +633,7 @@ span.pied__lien {
   }
 
   .pied__grille[aria-busy="true"] {
-    min-block-size: 29.7rem;
+    min-block-size: 24.25rem;
   }
 }
 
@@ -648,7 +648,7 @@ span.pied__lien {
   }
 
   .pied__grille[aria-busy="true"] {
-    min-block-size: 20.4rem;
+    min-block-size: 14.95rem;
   }
 }
 

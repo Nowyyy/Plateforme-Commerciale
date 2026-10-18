@@ -21,16 +21,18 @@ describe('data/site.json : pied de page', () => {
   it('la colonne « Le site » reprend les libellés et liens de la navigation sans les dupliquer', () => {
     const [premiere] = resoudrePied(site);
     expect(premiere.entrees.map((e) => e.texte)).toEqual(
-      ['aleas', 'fonctionnement', 'pro', 'compte', 'panier'].map((k) => site.navigation[k]),
+      ['pro', 'compte', 'panier'].map((k) => site.navigation[k]),
     );
     expect(premiere.entrees.map((e) => e.lien)).toEqual(
-      [site.liens.aleas, site.liens.comment, site.liens.pro, site.liens.connexion, site.liens.panier],
+      [site.liens.pro, site.liens.connexion, site.liens.panier],
     );
     expect(JSON.stringify(site.pied)).not.toContain('Comment ça marche');
+    expect(site.pied.colonnes[0].navigation.map((n) => n.cle)).not.toContain('aleas');
+    expect(site.pied.colonnes[0].navigation.map((n) => n.cle)).not.toContain('fonctionnement');
   });
   it('chaque lien se résout : fichier existant, ou ancre présente dans index.html', () => {
     const liens = resoudrePied(site).flatMap((c) => c.entrees).filter((e) => e.lien !== undefined);
-    expect(liens.length).toBeGreaterThanOrEqual(5);
+    expect(liens.length).toBeGreaterThanOrEqual(4);
     for (const { lien } of liens) {
       if (lien.startsWith('#')) expect(html, lien).toContain(`id="${lien.slice(1)}"`);
       else expect(existsSync(lien), lien).toBe(true);
