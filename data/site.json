@@ -10,6 +10,8 @@
     "menu": "Menu",
     "aleas": "Aléas",
     "fonctionnement": "Comment ça marche",
+    "pro": "Vendre sur la plateforme",
+    "compte": "Mon compte",
     "panier": "Panier"
   },
   "pied": {
@@ -17,7 +19,11 @@
   },
   "liens": {
     "accueil": "accueil.html",
+    "aleas": "#aleas",
+    "comment": "#comment",
     "diagnostic": "wireframes/diagnostic.html",
+    "pro": "wireframes/pro.html",
+    "connexion": "wireframes/connexion.html",
     "panier": "wireframes/panier.html"
   }
 }

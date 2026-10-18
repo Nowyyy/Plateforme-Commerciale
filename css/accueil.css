@@ -113,7 +113,7 @@
   font-size: var(--text-sm);
 }
 
-/* Panneau de navigation : replié sur mobile, en ligne dès 768 px */
+/* Panneau de navigation : replié (bouton Menu) jusqu'à 1199 px, en ligne dès 1200 px : cinq libellés ne tiennent pas en ligne à 768 px */
 .nav {
   flex-basis: 100%;
   display: none;
@@ -134,11 +134,25 @@
   display: flex;
   align-items: center;
   min-block-size: var(--touch-min);
-  padding-inline: var(--space-3);
   border-top: 1px solid var(--color-border-on-navy);
   color: var(--color-on-navy-muted);
   font-family: var(--font-heading);
   font-weight: 600;
+}
+
+.nav__lien {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-block-size: var(--touch-min);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-on-navy);
+  text-decoration: none;
+}
+
+.nav__lien:hover {
+  background: var(--color-navy-hover);
 }
 
 .nav .nav__panier {
@@ -162,7 +176,9 @@
   .hero__titre {
     min-block-size: calc(2 * var(--leading-hero) * 1em);
   }
+}
 
+@media (min-width: 1200px) {
   .entete__menu,
   .entete__panier-barre {
     display: none;
@@ -182,7 +198,6 @@
 
   .nav li {
     border-top: 0;
-    padding-inline: var(--space-3);
   }
 
   .nav .nav__panier {
@@ -505,6 +520,19 @@
   }
 }
 
+/* Réserve de l'accroche : 4 lignes sous 375 px, 3 lignes de 1200 à 1279 px (mesuré de 360 à 1440 px) */
+@media (max-width: 374px) {
+  .hero__accroche {
+    min-block-size: calc(4 * var(--leading-body) * 1em);
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .hero__accroche {
+    min-block-size: calc(3 * var(--leading-body) * 1.25rem);
+  }
+}
+
 /* Pied minimal */
 .pied {
   padding-block: var(--space-5);
@@ -516,4 +544,395 @@
 .pied p {
   margin: 0;
   min-block-size: 1lh;
+}
+
+/* Blocs E1-4 à E1-6 (E1-6 : mise en forme finale à la partie C) */
+.sprite {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+  overflow: hidden;
+}
+
+.visuellement-cache {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.bloc {
+  padding-block: var(--space-7);
+  scroll-margin-top: var(--space-4);
+}
+
+.bloc h2 {
+  font-size: var(--text-h2);
+  text-wrap: balance;
+}
+
+.bloc--blanc {
+  background: var(--color-card);
+}
+
+.bloc--clair {
+  background: var(--color-bg);
+}
+
+.bloc:focus {
+  outline: none;
+}
+
+.bloc:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: -3px;
+}
+
+.bloc__intro {
+  max-inline-size: 40rem;
+  margin-block-end: var(--space-6);
+  color: var(--color-text-secondary);
+}
+
+/* Réserve de hauteur avant le remplissage par JavaScript (CLS) */
+html:not([data-rendu]) .bloc__intro {
+  min-block-size: 2lh;
+}
+
+@media (min-width: 768px) {
+  html:not([data-rendu]) .bloc__intro {
+    min-block-size: 1lh;
+  }
+}
+
+.cartes,
+.etapes,
+.carte-bloc__familles {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Cartes E1-4 et E1-5 : le nombre de cartes n'est pas figé, la grille passe à la ligne */
+.cartes {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.carte-bloc {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  padding: var(--space-5);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.carte-bloc:hover,
+.carte-bloc:focus-within {
+  border-color: var(--color-border-fort);
+  box-shadow: var(--shadow-md);
+}
+
+.carte-bloc__icone {
+  display: grid;
+  place-items: center;
+  inline-size: 4.5rem;
+  block-size: 4.5rem;
+  margin-block-end: var(--space-4);
+  border-radius: var(--radius-lg);
+  background: var(--color-pastille);
+  color: var(--color-navy);
+}
+
+.carte-bloc h3 {
+  margin-block-end: var(--space-3);
+  font-size: var(--text-h3);
+  overflow-wrap: anywhere;
+}
+
+.carte-bloc__familles {
+  margin-block-end: var(--space-4);
+}
+
+.carte-bloc__familles li {
+  position: relative;
+  padding-inline-start: var(--space-4);
+  overflow-wrap: anywhere;
+}
+
+.carte-bloc__familles li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.7em;
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 50%;
+  background: var(--color-puce);
+}
+
+.carte-bloc__lien {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--space-2);
+  min-block-size: var(--touch-min);
+  margin-block-start: auto;
+  color: var(--color-navy);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.carte-bloc__lien::after {
+  content: "→" / "";
+}
+
+.carte-bloc__lien:hover,
+.carte-bloc__lien:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.icone {
+  inline-size: 3rem;
+  block-size: 3rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Hauteurs mesurées avec les données actuelles (4 aléas, 3 protections), appliquées avant le remplissage seulement */
+.carrousel__fleche {
+  display: none;
+}
+
+.cartes--aleas[aria-busy="true"] {
+  min-block-size: 77.5rem;
+}
+
+.cartes--protection[aria-busy="true"] {
+  min-block-size: 60.25rem;
+}
+
+@media (min-width: 768px) {
+  .cartes--aleas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cartes--aleas[aria-busy="true"] {
+    min-block-size: 38.25rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  /* Aléas : 3 cartes visibles, les suivantes défilent (flèches) ; la piste reste une grille à une rangée */
+  .cartes--aleas {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 2 * var(--space-4)) / 3);
+    margin-block: calc(-1 * var(--space-2));
+    padding-block: var(--space-2);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .cartes--aleas::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cartes--aleas > li {
+    scroll-snap-align: start;
+  }
+
+  .carrousel {
+    position: relative;
+  }
+
+  .carrousel__fleche {
+    position: absolute;
+    inset-block-start: 50%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    inline-size: var(--touch-min);
+    block-size: var(--touch-min);
+    margin-block-start: calc(var(--touch-min) / -2);
+    padding: 0;
+    border: 1px solid var(--color-border-fort);
+    border-radius: 50%;
+    background: var(--color-card);
+    color: var(--color-navy);
+    box-shadow: var(--shadow-md);
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .carrousel__fleche[hidden] {
+    display: none;
+  }
+
+  .carrousel__fleche:hover {
+    background: var(--color-pastille);
+  }
+
+  .carrousel__fleche--precedent {
+    inset-inline-start: calc(var(--touch-min) / -2);
+  }
+
+  .carrousel__fleche--suivant {
+    inset-inline-end: calc(var(--touch-min) / -2);
+  }
+
+  .carrousel__fleche--precedent::before {
+    content: "←" / "";
+  }
+
+  .carrousel__fleche--suivant::before {
+    content: "→" / "";
+  }
+
+  .cartes--aleas[aria-busy="true"],
+  .cartes--protection[aria-busy="true"] {
+    min-block-size: 19.5rem;
+  }
+
+  .cartes--protection {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Comment ça marche E1-6 : liste ordonnée, numéros ronds (décoratifs), filet de liaison */
+.etapes {
+  margin-block-start: var(--space-5);
+  counter-reset: etape;
+}
+
+.etape {
+  position: relative;
+  min-inline-size: 0;
+  padding-block-end: var(--space-6);
+  padding-inline-start: 3.5rem;
+  counter-increment: etape;
+}
+
+.etape:last-of-type {
+  padding-block-end: 0;
+}
+
+.etape__numero {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: grid;
+  place-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.etape__numero::before {
+  content: counter(etape) / "";
+}
+
+.etape:not(:last-of-type)::after {
+  content: "";
+  position: absolute;
+  inset-block: 2.75rem calc(0.25rem - var(--space-1));
+  inset-inline-start: calc(1.25rem - 1px);
+  inline-size: 2px;
+  background: var(--color-border-fort);
+}
+
+.etape h3 {
+  margin-block: var(--space-2) var(--space-2);
+  font-size: var(--text-h3);
+}
+
+.etape p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+/* Réserve de hauteur avant remplissage (mesurée) */
+.etapes[aria-busy="true"] {
+  min-block-size: 27.3rem;
+}
+
+@media (min-width: 414px) {
+  .etapes[aria-busy="true"] {
+    min-block-size: 24.1rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .etapes[aria-busy="true"] {
+    min-block-size: 21rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .etapes[aria-busy="true"] {
+    min-block-size: 17.8rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .etapes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+
+  .etapes[aria-busy="true"] {
+    min-block-size: 8.7rem;
+  }
+
+  .etape {
+    padding: 3.5rem 0 0;
+  }
+
+  .etape:last-of-type {
+    padding: 3.5rem 0 0;
+  }
+
+  .etape:not(:last-of-type)::after {
+    inset-block: 1.25rem auto;
+    inset-inline: 3rem calc(0.5rem - var(--space-6));
+    inline-size: auto;
+    block-size: 2px;
+  }
+
+  .etape h3 {
+    margin-block-start: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

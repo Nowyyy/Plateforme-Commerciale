@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { resoudre } from '../assets/js/rendu.js';
+import { extraire } from './outils/gabarits.mjs';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const donnees = {
@@ -11,14 +12,14 @@ const html = lire('accueil.html');
 
 describe('données de l\'accueil', () => {
   it('site.json et accueil.json sont du JSON valide ; les liens pointent vers des fichiers existants', () => {
-    for (const cible of Object.values(donnees.site.liens)) {
+    for (const cible of Object.values(donnees.site.liens).filter((c) => !c.startsWith('#'))) {
       expect(existsSync(cible), cible).toBe(true);
     }
     expect(Object.keys(donnees.site.liens)).toEqual(expect.arrayContaining(['accueil', 'diagnostic', 'panier']));
   });
 
   it('toute clé data-texte, data-lien, data-aria-label et data-placeholder existe dans les données', () => {
-    const cles = [...html.matchAll(/data-(?:texte|lien|aria-label|placeholder)="([^"]+)"/g)].map((m) => m[1]);
+    const cles = [...extraire(html).hors.matchAll(/data-(?:texte|lien|aria-label|placeholder)="([^"]+)"/g)].map((m) => m[1]);
     expect(cles.length).toBeGreaterThan(10);
     for (const cle of cles) {
       expect(() => resoudre(donnees, cle), cle).not.toThrow();

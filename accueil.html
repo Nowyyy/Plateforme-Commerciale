@@ -17,10 +17,19 @@
   <script type="module" src="assets/js/rendu.js"></script>
   <script type="module" src="assets/js/menu.js"></script>
   <script type="module" src="assets/js/adresse.js"></script>
+  <script type="module" src="assets/js/carrousel.js"></script>
 </head>
 <body>
   <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
   <a class="lien-evitement" href="#contenu" data-texte="site.evitement"></a>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="inondation" viewBox="0 0 48 48"><path d="M9 23 24 9l15 14M13 20v10M35 20v10"/><path d="M5 36q4.5-4 9 0t9 0t9 0t9 0t4 0M5 43q4.5-4 9 0t9 0t9 0t9 0t4 0"/></symbol>
+    <symbol id="grele-vent" viewBox="0 0 48 48"><path d="M14 28a6 6 0 0 1 0-12 9 9 0 0 1 17-1 6 6 0 0 1 2 13z"/><circle cx="15" cy="37" r="1.8"/><circle cx="25" cy="42" r="1.8"/><circle cx="35" cy="37" r="1.8"/></symbol>
+    <symbol id="feu" viewBox="0 0 48 48"><path d="M24 6c2 7 11 11 11 22a11 11 0 0 1-22 0c0-5 3-8 5-10 0 4 2 6 4 6 0-6-1-11 2-18z"/><path d="M24 42a5 5 0 0 1-5-5c0-3 2-5 5-8 3 3 5 5 5 8a5 5 0 0 1-5 5z"/></symbol>
+    <symbol id="chaleur" viewBox="0 0 48 48"><circle cx="24" cy="24" r="8"/><path d="M24 5v6M24 37v6M5 24h6M37 24h6M10.6 10.6l4.2 4.2M33.2 33.2l4.2 4.2M10.6 37.4l4.2-4.2M33.2 14.8l4.2-4.2"/></symbol>
+    <symbol id="froid" viewBox="0 0 48 48"><path d="M24 6v36M8.4 15l31.2 18M8.4 33l31.2-18M19 9l5 4 5-4M19 39l5-4 5 4"/></symbol>
+    <symbol id="chute" viewBox="0 0 48 48"><path d="M24 8v26M14 24l10 10 10-10M10 41h28"/></symbol>
+  </svg>
   <aside class="bandeau-demo" data-aria-label="site.aria.bandeau">
     <p class="conteneur" data-texte="site.bandeau"></p>
   </aside>
@@ -40,8 +49,10 @@
       <button type="button" class="bouton bouton--discret entete__menu" data-menu-bouton aria-expanded="false" aria-controls="menu-navigation" data-texte="site.navigation.menu"></button>
       <nav class="nav" id="menu-navigation" data-aria-label="site.aria.navigation">
         <ul>
-          <li data-texte="site.navigation.aleas"></li>
-          <li data-texte="site.navigation.fonctionnement"></li>
+          <li><a class="nav__lien" data-lien="site.liens.aleas" data-texte="site.navigation.aleas"></a></li>
+          <li><a class="nav__lien" data-lien="site.liens.comment" data-texte="site.navigation.fonctionnement"></a></li>
+          <li><a class="nav__lien" data-lien="site.liens.pro" data-texte="site.navigation.pro"></a></li>
+          <li><a class="nav__lien" data-lien="site.liens.connexion" data-texte="site.navigation.compte"></a></li>
           <li class="nav__panier">
             <a class="lien-entete" data-lien="site.liens.panier">
               <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
@@ -102,6 +113,60 @@
         </figure>
       </div>
     </div>
+    <section class="bloc bloc--blanc" id="aleas" tabindex="-1" data-bloc="E1-4" data-role="aleas" aria-labelledby="titre-aleas">
+      <div class="conteneur">
+        <h2 id="titre-aleas" data-texte="accueil.aleas.titre"></h2>
+        <p class="bloc__intro" data-texte="accueil.aleas.intro"></p>
+        <div class="carrousel" data-carrousel>
+        <button type="button" class="carrousel__fleche carrousel__fleche--precedent" data-carrousel-precedent data-aria-label="accueil.aleas.precedent" hidden></button>
+        <ul class="cartes cartes--aleas" aria-busy="true">
+          <template data-liste="aleas.liste">
+            <li class="carte-bloc">
+              <span class="carte-bloc__icone"><svg class="icone" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><use data-icone="icone"></use></svg></span>
+              <h3 data-texte="titre"></h3>
+              <ul class="carte-bloc__familles">
+                <template data-liste="familles"><li data-texte="."></li></template>
+              </ul>
+              <a class="carte-bloc__lien" data-lien="site.liens.diagnostic"><span data-texte-global="accueil.aleas.lien"></span> <span class="visuellement-cache" data-texte="titre"></span></a>
+            </li>
+          </template>
+        </ul>
+        <button type="button" class="carrousel__fleche carrousel__fleche--suivant" data-carrousel-suivant data-aria-label="accueil.aleas.suivant" hidden></button>
+        </div>
+      </div>
+    </section>
+    <section class="bloc bloc--clair" id="protection" data-bloc="E1-5" data-role="protection" aria-labelledby="titre-protection">
+      <div class="conteneur">
+        <h2 id="titre-protection" data-texte="accueil.protection.titre"></h2>
+        <p class="bloc__intro" data-texte="accueil.protection.intro"></p>
+        <ul class="cartes cartes--protection" aria-busy="true">
+          <template data-liste="protection.liste">
+            <li class="carte-bloc">
+              <span class="carte-bloc__icone"><svg class="icone" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><use data-icone="icone"></use></svg></span>
+              <h3 data-texte="titre"></h3>
+              <ul class="carte-bloc__familles">
+                <template data-liste="familles"><li data-texte="."></li></template>
+              </ul>
+              <a class="carte-bloc__lien" data-lien="site.liens.diagnostic"><span data-texte-global="accueil.protection.lien"></span> <span class="visuellement-cache" data-texte="titre"></span></a>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </section>
+    <section class="bloc bloc--blanc" id="comment" tabindex="-1" data-bloc="E1-6" data-role="comment" aria-labelledby="titre-comment">
+      <div class="conteneur">
+        <h2 id="titre-comment" data-texte="accueil.comment.titre"></h2>
+        <ol class="etapes" aria-busy="true">
+          <template data-liste="comment.liste">
+            <li class="etape">
+              <span class="etape__numero" aria-hidden="true"></span>
+              <h3 data-texte="titre"></h3>
+              <p data-texte="texte"></p>
+            </li>
+          </template>
+        </ol>
+      </div>
+    </section>
     <section class="avis" data-bloc="E1-8" data-role="avis" data-aria-label="accueil.avis.aria">
       <div class="conteneur avis__ligne">
         <p class="avis__etoiles" aria-hidden="true"><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre avis__carre--partiel"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span></p>

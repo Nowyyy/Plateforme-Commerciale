@@ -1,5 +1,8 @@
 // Chargement des données (2 requêtes, même origine) et remplissage de la page.
 // Attributs lus : data-texte, data-lien, data-aria-label, data-placeholder (clé = chemin dans les données).
+// Listes : <template data-liste="aleas.liste"> (clé relative aux données de accueil.json) est cloné pour chaque
+// élément du tableau. Dans un gabarit, data-texte et data-icone sont relatifs à l'élément ("." = l'élément
+// lui-même, une chaîne) ; data-lien, data-aria-label, data-placeholder et data-texte-global restent globaux.
 
 const MESSAGE_ERREUR =
   "Le contenu de la page n'a pas pu être chargé. Rechargez la page ou réessayez plus tard.";
@@ -9,15 +12,29 @@ const FICHIERS = {
   accueil: '../../data/accueil.json',
 };
 
+const poserTexte = (el, valeur) => { el.textContent = valeur; };
+
 const ATTRIBUTS = [
-  ['data-texte', (el, valeur) => { el.textContent = valeur; }],
+  ['data-texte', poserTexte],
+  ['data-texte-global', poserTexte],
   ['data-lien', (el, valeur) => { el.setAttribute('href', valeur); }],
   ['data-aria-label', (el, valeur) => { el.setAttribute('aria-label', valeur); }],
   ['data-placeholder', (el, valeur) => { el.setAttribute('placeholder', valeur); }],
 ];
 
-// Résolution pure d'une clé pointée ("site.liens.panier") dans un objet de données.
-export function resoudre(donnees, cle) {
+// Dans un gabarit de liste, data-texte est relatif à l'élément : le reste reste global.
+const ATTRIBUTS_GLOBAUX = ATTRIBUTS.filter(([attribut]) => attribut !== 'data-texte');
+
+// Clés requises par liste (validerListe).
+const CLES_REQUISES = {
+  'aleas.liste': ['id', 'icone', 'titre', 'familles'],
+  'protection.liste': ['id', 'icone', 'titre', 'familles'],
+  'comment.liste': ['titre', 'texte'],
+};
+
+const SYMBOLE = /^[a-z0-9-]+$/;
+
+function parcourir(donnees, cle) {
   if (typeof cle !== 'string' || cle.trim() === '') {
     throw new Error('Clé vide ou invalide');
   }
@@ -28,16 +45,45 @@ export function resoudre(donnees, cle) {
     }
     courant = courant[segment];
   }
-  if (typeof courant !== 'string') {
-    throw new Error(`La clé « ${cle} » ne désigne pas un texte`);
-  }
   return courant;
 }
 
+// Résolution pure d'une clé pointée ("site.liens.panier") dans un objet de données.
+export function resoudre(donnees, cle) {
+  const valeur = parcourir(donnees, cle);
+  if (typeof valeur !== 'string') {
+    throw new Error(`La clé « ${cle} » ne désigne pas un texte`);
+  }
+  return valeur;
+}
+
+// Résolution relative à un élément de liste : clé simple, imbriquée, ou "." (l'élément est une chaîne).
+export function resoudreDans(element, cle) {
+  if (cle === '.') {
+    if (typeof element !== 'string') throw new Error('La clé « . » demande un élément de type texte');
+    return element;
+  }
+  return resoudre(element, cle);
+}
+
+// Une liste doit être un tableau non vide dont chaque élément porte les clés requises.
+export function validerListe(valeur, cle, requises = CLES_REQUISES[cle] ?? []) {
+  if (!Array.isArray(valeur)) throw new Error(`« ${cle} » n'est pas une liste`);
+  if (valeur.length === 0) throw new Error(`« ${cle} » est une liste vide`);
+  valeur.forEach((element, i) => {
+    for (const requise of requises) {
+      if (element === null || typeof element !== 'object' || !Object.hasOwn(element, requise)) {
+        throw new Error(`« ${cle} », élément ${i + 1} : clé « ${requise} » absente`);
+      }
+    }
+  });
+  return valeur;
+}
+
 // Remplit les éléments portant un attribut de clé ; renvoie la liste des erreurs de clé.
-export function remplir(racine, donnees) {
+export function remplir(racine, donnees, attributs = ATTRIBUTS) {
   const erreurs = [];
-  for (const [attribut, appliquer] of ATTRIBUTS) {
+  for (const [attribut, appliquer] of attributs) {
     for (const el of racine.querySelectorAll(`[${attribut}]`)) {
       try {
         appliquer(el, resoudre(donnees, el.getAttribute(attribut)));
@@ -47,6 +93,45 @@ export function remplir(racine, donnees) {
     }
   }
   return erreurs;
+}
+
+function remplirElement(clone, element, donnees) {
+  for (const el of clone.querySelectorAll('[data-texte]')) {
+    el.textContent = resoudreDans(element, el.getAttribute('data-texte'));
+  }
+  for (const el of clone.querySelectorAll('[data-icone]')) {
+    const nom = resoudreDans(element, el.getAttribute('data-icone'));
+    if (!SYMBOLE.test(nom) || !document.getElementById(nom)) {
+      throw new Error(`Pictogramme inconnu : « ${nom} »`);
+    }
+    el.setAttribute('href', `#${nom}`);
+  }
+  const erreurs = remplir(clone, donnees, ATTRIBUTS_GLOBAUX);
+  if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
+}
+
+// Clone le gabarit pour chaque élément de la liste ; les gabarits imbriqués sont rendus à leur tour.
+function instancier(modele, source, donnees, imbrique) {
+  const cle = modele.getAttribute('data-liste');
+  const liste = validerListe(parcourir(source, cle), cle);
+  const rendu = document.createDocumentFragment();
+  for (const element of liste) {
+    const clone = modele.content.cloneNode(true);
+    remplirElement(clone, element, donnees);
+    for (const sous of clone.querySelectorAll('template[data-liste]')) {
+      instancier(sous, element, donnees, true);
+    }
+    rendu.append(clone);
+  }
+  modele.parentNode.insertBefore(rendu, modele);
+  if (imbrique) modele.remove();
+}
+
+export function remplirListes(racine, donneesAccueil, donnees) {
+  for (const modele of racine.querySelectorAll('template[data-liste]')) {
+    instancier(modele, donneesAccueil, donnees, false);
+    modele.parentElement.setAttribute('aria-busy', 'false');
+  }
 }
 
 async function charger() {
@@ -77,12 +162,14 @@ export async function demarrer() {
     donnees = await charger();
     const erreurs = remplir(document, donnees);
     if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
+    remplirListes(document, donnees.accueil, donnees);
     if (typeof donnees.accueil.titrePage === 'string') document.title = donnees.accueil.titrePage;
     racine.dataset.rendu = 'pret';
   } catch (e) {
     console.warn(e);
     donnees = null;
     racine.dataset.rendu = 'erreur';
+    for (const occupe of document.querySelectorAll('[aria-busy="true"]')) occupe.setAttribute('aria-busy', 'false');
     afficherErreur(e.message);
   }
   document.dispatchEvent(new CustomEvent('rendu:termine'));

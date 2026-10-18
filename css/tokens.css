@@ -31,6 +31,9 @@
   --color-illu-mur: #dde4ee;
   --color-illu-eau: #c9d6ea;
   --color-illu-dalle: #cbd5e1;
+  --color-pastille: #e4ecf5;
+  --color-puce: #64748b;
+  --color-border-fort: #9aa8bd;
 
   /* Polices */
   --font-heading: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
@@ -53,6 +56,8 @@
   --touch-min: 2.75rem;
   --text-hero: 2.125rem;
   --leading-hero: 1.1;
+  --text-h2: 1.75rem;
+  --text-h3: 1.25rem;
 
   /* Espacements */
   --space-1: 0.25rem;
@@ -88,6 +93,7 @@
   :root {
     --gutter: 2rem;
     --text-hero: 3rem;
+    --text-h2: 2.25rem;
   }
 }
 
