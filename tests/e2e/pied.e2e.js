@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const ROLES = ['en-tete', 'hero', 'recherche', 'aleas', 'protection', 'comment', 'reassurance', 'avis', 'preuve', 'pied'];
+const ROLES = ['en-tete', 'hero', 'recherche', 'aleas', 'protection', 'comment', 'reassurance', 'preuve', 'avis', 'pied'];
 
 for (const largeur of [375, 768, 1440]) {
   test(`page entière à ${largeur} px : console propre, aucun débordement, axe, ordre des 10 blocs`, async ({ page }, info) => {

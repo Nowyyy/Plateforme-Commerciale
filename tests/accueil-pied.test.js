@@ -62,7 +62,7 @@ describe('index.html : pied et ordre complet des blocs', () => {
     expect(html).not.toContain('site.pied.texte');
   });
   it('les 10 blocs dans l\'ordre, chaque code E1-1 à E1-10 exactement une fois', () => {
-    const roles = ['en-tete', 'hero', 'recherche', 'aleas', 'protection', 'comment', 'reassurance', 'avis', 'preuve', 'pied'];
+    const roles = ['en-tete', 'hero', 'recherche', 'aleas', 'protection', 'comment', 'reassurance', 'preuve', 'avis', 'pied'];
     const positions = roles.map((r) => html.indexOf(`data-role="${r}"`));
     for (const [i, p] of positions.entries()) {
       expect(p, roles[i]).toBeGreaterThan(-1);

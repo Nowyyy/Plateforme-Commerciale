@@ -136,9 +136,9 @@ describe('liens et navigation', () => {
 });
 
 describe('ordre des blocs de index.html', () => {
-  it('en-tete < hero < recherche < aleas < protection < comment < avis, avec E1-1 à E1-6 et E1-8', () => {
+  it('en-tete < hero < recherche < aleas < protection < comment < avis, avec E1-1 à E1-6 et E1-9', () => {
     const attendu = [['en-tete', 'E1-1'], ['hero', 'E1-2'], ['recherche', 'E1-3'], ['aleas', 'E1-4'],
-      ['protection', 'E1-5'], ['comment', 'E1-6'], ['avis', 'E1-8']];
+      ['protection', 'E1-5'], ['comment', 'E1-6'], ['avis', 'E1-9']];
     const index = attendu.map(([role, code]) => {
       const m = html.match(new RegExp(`data-bloc="${code}"[^>]*data-role="${role}"`));
       expect(m, role).not.toBeNull();

@@ -206,7 +206,7 @@
   }
 }
 
-/* Avis E1-8 : après la recherche, filet fin en haut ; fond de page unique (sections transparentes) */
+/* Avis E1-9 : juste au-dessus du pied, filet fin en haut ; fond de page unique (sections transparentes) */
 .avis {
   border-top: 1px solid var(--color-border);
 }
@@ -1110,11 +1110,7 @@ html:not([data-rendu]) .bloc__intro {
   }
 }
 
-/* Preuve crash-test E1-9 : vidéo 16:9 (rectangle décoratif, aucun lecteur), puis chiffres ; deux colonnes dès 1200 px */
-.avis + .preuve {
-  border-top: 1px solid var(--color-border);
-}
-
+/* Preuve crash-test E1-8 : vidéo 16:9 (rectangle décoratif, aucun lecteur), puis chiffres ; deux colonnes dès 1200 px */
 .preuve__grille {
   display: grid;
   gap: var(--space-5);
@@ -1186,8 +1182,7 @@ html:not([data-rendu]) .bloc__intro {
 
 .preuve__note {
   min-block-size: 1lh;
-  margin: 0;
-  padding-block: 0 var(--space-6);
+  margin: var(--space-4) 0 0;
   color: var(--color-text-secondary);
   font-size: var(--text-sm);
 }

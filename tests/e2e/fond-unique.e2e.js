@@ -53,12 +53,11 @@ for (const largeur of LARGEURS) {
   });
 }
 
-test('la note de la preuve se place entre le bloc « Testé en conditions réelles » et le pied de page', async ({ page }) => {
+test('le bloc des avis est juste au-dessus du pied de page, après la preuve', async ({ page }) => {
   await ouvrir(page, 1440);
-  const [preuve, note, pied] = await Promise.all(
-    ['[data-role="preuve"]', '.preuve__note', '[data-role="pied"]'].map((s) => page.locator(s).boundingBox()),
+  const [preuve, avis, pied] = await Promise.all(
+    ['preuve', 'avis', 'pied'].map((r) => page.locator(`[data-role="${r}"]`).boundingBox()),
   );
-  expect(await page.locator('[data-role="preuve"] .preuve__note').count()).toBe(0);
-  expect(note.y).toBeGreaterThanOrEqual(preuve.y + preuve.height);
-  expect(note.y + note.height).toBeLessThanOrEqual(pied.y);
+  expect(Math.abs(avis.y - (preuve.y + preuve.height))).toBeLessThanOrEqual(1);
+  expect(Math.abs(pied.y - (avis.y + avis.height))).toBeLessThanOrEqual(1);
 });
