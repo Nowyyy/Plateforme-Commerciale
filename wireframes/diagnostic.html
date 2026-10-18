@@ -21,7 +21,7 @@
     </ul>
   </nav>
   <aside class="wf-bandeau" aria-label="Démonstrateur">Démonstrateur : contenus fictifs, aucune vente</aside>
-  <header class="wf-bloc wf-entete-site" data-bloc="E2-1">
+  <header class="wf-bloc wf-entete-site" data-bloc="E2-1" data-role="en-tete">
     <div class="wf-conteneur">
       <div class="wf-bloc-tete">
         <span class="wf-code">E2-1</span>
@@ -41,9 +41,9 @@
       </div>
     </div>
   </header>
-  <main class="wf-conteneur wf-ecran wf-ecran--2col">
+  <main class="wf-conteneur wf-ecran wf-ecran--2col wf-ecran--diag">
     <h1>Écran 2 — Diagnostic (wireframe Lo-Fi)</h1>
-    <section class="wf-bloc wf-pleine" data-bloc="E2-2" aria-labelledby="t-E2-2">
+    <section class="wf-bloc wf-pleine" data-bloc="E2-2" data-role="adresse" aria-labelledby="t-E2-2">
       <div class="wf-bloc-tete">
         <span class="wf-code">E2-2</span>
         <h2 class="wf-titre" id="t-E2-2">Adresse et aléa</h2>
@@ -64,23 +64,38 @@
         <li class="wf-pastille">Canicule</li>
       </ul>
     </section>
-    <div class="wf-colonne">
-    <section class="wf-bloc" data-bloc="E2-3" aria-labelledby="t-E2-3">
+    <section class="wf-bloc wf-bloc--equipements" data-bloc="E2-3" data-role="equipements" aria-labelledby="t-E2-3">
       <div class="wf-bloc-tete">
         <span class="wf-code">E2-3</span>
-        <h2 class="wf-titre" id="t-E2-3">Carte et calques</h2>
-        <p class="wf-note">Carte du risque et calques activables.</p>
+        <h2 class="wf-titre" id="t-E2-3">Équipements recommandés</h2>
+        <p class="wf-note">Trois équipements suggérés, vers la fiche produit.</p>
       </div>
-      <div class="wf-emplacement wf-ratio-4-3"><span>[Carte]</span></div>
-      <fieldset class="wf-calques">
-        <legend>Calques</legend>
-        <label><input type="checkbox" id="calque-1" checked> Zone inondable (PPRI)</label><label><input type="checkbox" id="calque-2"> Retrait-gonflement des argiles</label><label><input type="checkbox" id="calque-3"> Feux de forêt</label><label><input type="checkbox" id="calque-4"> Chaleur extrême</label>
-      </fieldset>
-      <p class="wf-annotation">Légende (provisoire) : zones d'exposition faible à forte, en niveaux de gris.</p>
+      <ul class="wf-grille wf-grille--pile wf-grille--horiz">
+        <li class="wf-carte wf-carte--horiz">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <h3>Équipement exemple 1</h3>
+          <p>Aléa neutralisé : Inondations</p>
+          <p>Prix indicatif TTC : 000 €</p>
+          <a class="wf-bouton" href="produit.html">Voir la fiche</a>
+        </li>
+        <li class="wf-carte wf-carte--horiz">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <h3>Équipement exemple 2</h3>
+          <p>Aléa neutralisé : Grêle et vents</p>
+          <p>Prix indicatif TTC : 000 €</p>
+          <a class="wf-bouton" href="produit.html">Voir la fiche</a>
+        </li>
+        <li class="wf-carte wf-carte--horiz">
+          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
+          <h3>Équipement exemple 3</h3>
+          <p>Aléa neutralisé : Canicule</p>
+          <p>Prix indicatif TTC : 000 €</p>
+          <a class="wf-bouton" href="produit.html">Voir la fiche</a>
+        </li>
+      </ul>
     </section>
-    </div>
     <div class="wf-colonne">
-    <section class="wf-bloc" data-bloc="E2-4" aria-labelledby="t-E2-4">
+    <section class="wf-bloc" data-bloc="E2-4" data-role="score" aria-labelledby="t-E2-4">
       <div class="wf-bloc-tete">
         <span class="wf-code">E2-4</span>
         <h2 class="wf-titre" id="t-E2-4">Score de vulnérabilité</h2>
@@ -97,39 +112,22 @@
       <p>Phrase explicative provisoire : l'exposition estimée du bien appelle des équipements de protection.</p>
       <p class="wf-annotation">Score illustratif</p>
     </section>
-    <section class="wf-bloc" data-bloc="E2-5" aria-labelledby="t-E2-5">
+    <section class="wf-bloc wf-bloc--carte" data-bloc="E2-5" data-role="carte" aria-labelledby="t-E2-5">
       <div class="wf-bloc-tete">
         <span class="wf-code">E2-5</span>
-        <h2 class="wf-titre" id="t-E2-5">Équipements recommandés</h2>
-        <p class="wf-note">Trois équipements suggérés, vers la fiche produit.</p>
+        <h2 class="wf-titre" id="t-E2-5">Carte et calques</h2>
+        <p class="wf-note">Carte du risque et calques activables.</p>
       </div>
-      <ul class="wf-grille wf-grille--pile">
-        <li class="wf-carte">
-          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
-          <h3>Équipement exemple 1</h3>
-          <p>Aléa neutralisé : Inondations</p>
-          <p>Prix indicatif TTC : 000 €</p>
-          <a class="wf-bouton" href="produit.html">Voir la fiche</a>
-        </li>
-        <li class="wf-carte">
-          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
-          <h3>Équipement exemple 2</h3>
-          <p>Aléa neutralisé : Grêle et vents</p>
-          <p>Prix indicatif TTC : 000 €</p>
-          <a class="wf-bouton" href="produit.html">Voir la fiche</a>
-        </li>
-        <li class="wf-carte">
-          <div class="wf-emplacement wf-ratio-4-3"><span>[Image]</span></div>
-          <h3>Équipement exemple 3</h3>
-          <p>Aléa neutralisé : Canicule</p>
-          <p>Prix indicatif TTC : 000 €</p>
-          <a class="wf-bouton" href="produit.html">Voir la fiche</a>
-        </li>
-      </ul>
+      <div class="wf-emplacement wf-ratio-4-3"><span>[Carte]</span></div>
+      <fieldset class="wf-calques">
+        <legend>Calques</legend>
+        <label><input type="checkbox" id="calque-1" checked> Zone inondable (PPRI)</label><label><input type="checkbox" id="calque-2"> Retrait-gonflement des argiles</label><label><input type="checkbox" id="calque-3"> Feux de forêt</label><label><input type="checkbox" id="calque-4"> Chaleur extrême</label>
+      </fieldset>
+      <p class="wf-annotation">Légende (provisoire) : zones d'exposition faible à forte, en niveaux de gris.</p>
     </section>
     </div>
   </main>
-  <footer class="wf-bloc wf-pied" data-bloc="E2-6">
+  <footer class="wf-bloc wf-pied" data-bloc="E2-6" data-role="pied">
     <div class="wf-conteneur">
       <div class="wf-bloc-tete">
         <span class="wf-code">E2-6</span>
