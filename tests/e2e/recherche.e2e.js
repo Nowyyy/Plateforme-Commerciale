@@ -55,7 +55,7 @@ for (const largeur of [375, 1440]) {
     if (largeur === 1440) await page.screenshot({ path: 'test-results/accueil-1440-saisie.png', fullPage: true });
     await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
 
-    await page.waitForURL('**/wireframes/diagnostic.html');
+    await page.waitForURL('**/diagnostic.html');
     expect(page.url()).not.toContain(encodeURIComponent('Tilleuls'));
     expect(page.url()).not.toContain('Tilleuls');
     expect(new URL(page.url()).search).toBe('');
@@ -76,6 +76,6 @@ test('stockage de session indisponible : la navigation a quand même lieu', asyn
   await page.getByLabel(/Entrez votre adresse/).click();
   await page.keyboard.type(ADRESSE);
   await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
-  await page.waitForURL('**/wireframes/diagnostic.html');
+  await page.waitForURL('**/diagnostic.html');
 });
 

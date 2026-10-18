@@ -26,7 +26,7 @@ for (const largeur of [375, 1440]) {
         await expect(carte.getByRole('heading', { level: 3 })).toBeVisible();
         expect(await carte.locator('.carte-bloc__familles li').count()).toBeGreaterThanOrEqual(role === 'protection' ? 3 : 2);
         const lien = carte.getByRole('link');
-        await expect(lien).toHaveAttribute('href', 'wireframes/diagnostic.html');
+        await expect(lien).toHaveAttribute('href', 'diagnostic.html');
         const titre = await carte.getByRole('heading', { level: 3 }).innerText();
         await expect(lien).toHaveAccessibleName(`Voir les solutions ${titre}`);
         expect((await lien.boundingBox()).height).toBeGreaterThanOrEqual(44);
@@ -90,7 +90,7 @@ for (const largeur of [375, 1440]) {
     await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
     await page.locator('[data-role="aleas"] .cartes > li').first().getByRole('link').click();
-    await expect(page).toHaveURL(/wireframes\/diagnostic\.html$/);
+    await expect(page).toHaveURL(/\/diagnostic\.html$/);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 }

@@ -1,0 +1,185 @@
+{
+  "aleas": [
+    {
+      "id": "inondations",
+      "titre": "Inondations et crues",
+      "court": "Inondations",
+      "niveau": 3,
+      "calque": "inondation",
+      "icone": "inondation"
+    },
+    {
+      "id": "grele-vents",
+      "titre": "Grêle et vents violents",
+      "court": "Grêle et vents",
+      "niveau": 2,
+      "calque": "argile",
+      "icone": "grele-vent"
+    },
+    {
+      "id": "feux-de-foret",
+      "titre": "Feux de forêt",
+      "court": "Feux de forêt",
+      "niveau": 1,
+      "calque": "feu",
+      "icone": "feu"
+    },
+    {
+      "id": "canicule",
+      "titre": "Canicule et chaleur extrême",
+      "court": "Canicule",
+      "niveau": 2,
+      "calque": "chaleur",
+      "icone": "chaleur"
+    }
+  ],
+  "niveaux": [
+    "faible",
+    "modéré",
+    "élevé",
+    "très élevé"
+  ],
+  "equipements": [
+    {
+      "id": "batardeau-modulable",
+      "titre": "Batardeau modulable",
+      "aleas": [
+        "inondations"
+      ],
+      "priorite": 1,
+      "prix": 690
+    },
+    {
+      "id": "bouclier-de-baie",
+      "titre": "Bouclier de baie",
+      "aleas": [
+        "grele-vents"
+      ],
+      "priorite": 2,
+      "prix": 1250
+    },
+    {
+      "id": "sprinkler-de-toiture",
+      "titre": "Sprinkler de toiture",
+      "aleas": [
+        "feux-de-foret"
+      ],
+      "priorite": 3,
+      "prix": 1890
+    },
+    {
+      "id": "cool-roofing",
+      "titre": "Revêtement cool roofing",
+      "aleas": [
+        "canicule"
+      ],
+      "priorite": 4,
+      "prix": 1450
+    },
+    {
+      "id": "clapet-anti-retour",
+      "titre": "Clapet anti-retour",
+      "aleas": [
+        "inondations"
+      ],
+      "priorite": 5,
+      "prix": 149
+    },
+    {
+      "id": "volet-extrude",
+      "titre": "Volet extrudé renforcé",
+      "aleas": [
+        "grele-vents"
+      ],
+      "priorite": 6,
+      "prix": 980
+    },
+    {
+      "id": "grille-pare-braises",
+      "titre": "Grille pare-braises",
+      "aleas": [
+        "feux-de-foret"
+      ],
+      "priorite": 7,
+      "prix": 260
+    },
+    {
+      "id": "isolant-reflecteur",
+      "titre": "Isolant réflecteur",
+      "aleas": [
+        "canicule"
+      ],
+      "priorite": 8,
+      "prix": 310
+    },
+    {
+      "id": "pompe-de-relevage",
+      "titre": "Pompe de relevage",
+      "aleas": [
+        "inondations"
+      ],
+      "priorite": 9,
+      "prix": 420
+    },
+    {
+      "id": "filet-de-toiture",
+      "titre": "Filet de toiture",
+      "aleas": [
+        "grele-vents"
+      ],
+      "priorite": 10,
+      "prix": 340
+    }
+  ],
+  "textes": {
+    "titre": "Diagnostic de votre exposition",
+    "aide": "Vérifiez l'adresse, puis choisissez un aléa pour voir les équipements et le niveau d'exposition correspondants.",
+    "aideSansAdresse": "Aucune adresse enregistrée : saisissez-en une, ou parcourez le diagnostic avec les exemples ci-dessous.",
+    "champLibelle": "Adresse évaluée",
+    "placeholder": "Ex. : 12 rue des Tilleuls, Lyon",
+    "bouton": "Mettre à jour",
+    "erreur": "Saisissez une adresse d'au moins 5 caractères.",
+    "legendeAlea": "Aléa",
+    "tous": "Tous",
+    "mention": "Démonstrateur : l'adresse reste dans votre navigateur, rien n'est envoyé. Les résultats sont des exemples.",
+    "equipements": {
+      "titre": "Équipements recommandés",
+      "intro": "Pour l'aléa choisi, voici l'essentiel à prévoir.",
+      "neutralise": "Neutralise :",
+      "prix": "Prix indicatif TTC :",
+      "exemple": "(exemple)",
+      "voirFiche": "Voir la fiche",
+      "annonceUn": "1 équipement recommandé.",
+      "annonceN": "{n} équipements recommandés."
+    },
+    "score": {
+      "titre": "Niveau d'exposition",
+      "libelle": "Niveau d'exposition :",
+      "phrases": [
+        "L'exposition d'exemple est faible : quelques gestes d'entretien suffisent.",
+        "L'exposition d'exemple est modérée : prévoir des équipements ciblés.",
+        "L'exposition d'exemple est élevée : des équipements de protection sont à prévoir en priorité.",
+        "L'exposition d'exemple est très élevée : une protection complète est recommandée."
+      ],
+      "mention": "Score illustratif : il ne remplace ni un document réglementaire ni l'avis d'un professionnel.",
+      "annonce": "Niveau d'exposition : {niveau}."
+    },
+    "carte": {
+      "titre": "Carte et calques",
+      "legendeCalques": "Calques",
+      "calques": {
+        "inondation": "Zone inondable",
+        "argile": "Retrait-gonflement des argiles",
+        "feu": "Feux de forêt",
+        "chaleur": "Chaleur extrême"
+      },
+      "legendeAdresse": "Votre adresse",
+      "mention": "Carte schématique d'exemple, sans données réelles.",
+      "svgTitre": "Carte schématique d'un quartier d'exemple",
+      "svgDescription": "Quelques rues, des îlots de bâtiments et une parcelle avec une maison repérée comme votre adresse. Quatre calques d'exemple se superposent : zone inondable en bordure de rivière, retrait-gonflement des argiles, zone boisée exposée aux feux, zone urbaine dense exposée à la chaleur.",
+      "lienGeorisques": "Consulter la source officielle des risques (Géorisques)",
+      "nouvelOnglet": "(nouvel onglet)",
+      "noteGeorisques": "Ce démonstrateur n'envoie pas votre adresse à ce site."
+    }
+  }
+}

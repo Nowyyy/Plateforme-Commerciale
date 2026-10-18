@@ -4,15 +4,16 @@
 // élément du tableau. Dans un gabarit, data-texte et data-icone sont relatifs à l'élément ("." = l'élément
 // lui-même, une chaîne) ; data-lien, data-aria-label, data-placeholder et data-texte-global restent globaux.
 // Une clé de liste commençant par « site. » est lue dans data/site.json ; data-lien-element lit le lien dans l'élément
-// (sans lien, l'<a> devient un <span>).
+// (sans lien, l'<a> devient un <span>). data-lien-externe="cle" lit site.liensExternes.cle (protocole https et domaine contrôlés). Un élément qui a une clé « id » reçoit data-id sur sa racine.
 
 const MESSAGE_ERREUR =
   "Le contenu de la page n'a pas pu être chargé. Rechargez la page ou réessayez plus tard.";
 
-const FICHIERS = {
-  site: '../../data/site.json',
-  accueil: '../../data/accueil.json',
-};
+// data/site.json est toujours chargé ; <html data-donnees="…"> nomme les autres fichiers (défaut : accueil).
+const fichiersDe = (racine) => [
+  'site',
+  ...(racine.dataset.donnees ?? 'accueil').split(/\s+/).filter((nom) => /^[a-z0-9-]+$/.test(nom)),
+];
 
 const poserTexte = (el, valeur) => { el.textContent = valeur; };
 
@@ -86,6 +87,41 @@ export function validerListe(valeur, cle, requises = CLES_REQUISES[cle] ?? []) {
   return valeur;
 }
 
+// Lien externe autorisé : protocole https, nom d'hôte égal à un domaine déclaré ou sous-domaine de celui-ci, sans caractère
+// de contrôle ni identifiants. Une adresse relative ou une autre origine est refusée.
+export const HOTES_EXTERNES = ['georisques.gouv.fr'];
+
+export function lienExterneValide(adresse, hotes = HOTES_EXTERNES) {
+  if (typeof adresse !== 'string' || !/^https:/i.test(adresse)) return false;
+  // caractères de contrôle et espaces (U+0000 à U+0020, U+007F à U+009F)
+  if ([...adresse].some((c) => c.codePointAt(0) <= 0x20 || (c.codePointAt(0) >= 0x7f && c.codePointAt(0) <= 0x9f))) return false;
+  let url;
+  try {
+    url = new URL(adresse);
+  } catch {
+    return false;
+  }
+  if (url.protocol !== 'https:' || url.username !== '' || url.password !== '') return false;
+  return hotes.some((hote) => url.hostname === hote || url.hostname.endsWith(`.${hote}`));
+}
+
+// data-lien-externe="georisques" : résout site.liensExternes.<clé> ; adresse refusée = texte simple et avertissement.
+export function remplirLiensExternes(racine, donnees) {
+  for (const el of racine.querySelectorAll('[data-lien-externe]')) {
+    const cle = el.getAttribute('data-lien-externe');
+    const adresse = donnees.site?.liensExternes?.[cle];
+    if (lienExterneValide(adresse)) {
+      el.setAttribute('href', adresse);
+      continue;
+    }
+    console.warn(`Lien externe refusé : « ${cle} »`);
+    const texte = document.createElement('span');
+    texte.className = el.className;
+    texte.append(...el.childNodes);
+    el.replaceWith(texte);
+  }
+}
+
 // Remplit les éléments portant un attribut de clé ; renvoie la liste des erreurs de clé.
 export function remplir(racine, donnees, attributs = ATTRIBUTS) {
   const erreurs = [];
@@ -150,6 +186,11 @@ function remplirElement(clone, element, donnees) {
   }
 }
 
+// Identifiant d'un élément de liste (clé « id » de type texte), ou null : posé en data-id sur la racine de l'élément rendu.
+export function identifiantElement(element) {
+  return element !== null && typeof element === 'object' && typeof element.id === 'string' && element.id !== '' ? element.id : null;
+}
+
 // Clone le gabarit pour chaque élément de la liste ; les gabarits imbriqués sont rendus à leur tour.
 function instancier(modele, source, donnees, imbrique) {
   const cle = modele.getAttribute('data-liste');
@@ -158,6 +199,8 @@ function instancier(modele, source, donnees, imbrique) {
   for (const element of liste) {
     const clone = modele.content.cloneNode(true);
     remplirElement(clone, element, donnees);
+    const id = identifiantElement(element);
+    if (id !== null) clone.firstElementChild?.setAttribute('data-id', id);
     for (const sous of clone.querySelectorAll('template[data-liste]')) {
       instancier(sous, element, donnees, true);
     }
@@ -174,10 +217,10 @@ export function remplirListes(racine, donneesAccueil, donnees) {
   }
 }
 
-async function charger() {
+async function charger(noms) {
   const entrees = await Promise.all(
-    Object.entries(FICHIERS).map(async ([nom, chemin]) => {
-      const reponse = await fetch(new URL(chemin, import.meta.url));
+    noms.map(async (nom) => {
+      const reponse = await fetch(new URL(`../../data/${nom}.json`, import.meta.url));
       if (!reponse.ok) throw new Error(`${nom}.json : HTTP ${reponse.status}`);
       return [nom, await reponse.json()];
     }),
@@ -199,12 +242,13 @@ export async function demarrer() {
   const racine = document.documentElement;
   let donnees;
   try {
-    donnees = await charger();
+    donnees = await charger(fichiersDe(racine));
     donnees.site = { ...donnees.site, pied: { ...donnees.site.pied, colonnes: resoudrePied(donnees.site) } };
     const erreurs = remplir(document, donnees);
     if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
-    remplirListes(document, donnees.accueil, donnees);
-    if (typeof donnees.accueil.titrePage === 'string') document.title = donnees.accueil.titrePage;
+    remplirLiensExternes(document, donnees);
+    remplirListes(document, donnees.accueil ?? {}, donnees);
+    if (typeof donnees.accueil?.titrePage === 'string') document.title = donnees.accueil.titrePage;
     racine.dataset.rendu = 'pret';
   } catch (e) {
     console.warn(e);

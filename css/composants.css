@@ -123,3 +123,14 @@
   border-bottom: 2px solid var(--color-navy);
   font-weight: 600;
 }
+
+/* Bouton secondaire : contour marine, sans ambre (l'ambre reste réservé aux boutons d'action) */
+.bouton--secondaire {
+  background: var(--color-card);
+  color: var(--color-navy);
+  border-color: var(--color-navy);
+}
+
+.bouton--secondaire:hover {
+  background: var(--color-pastille);
+}
