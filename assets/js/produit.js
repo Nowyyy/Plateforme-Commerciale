@@ -3,6 +3,7 @@
 import { donneesPretes } from './rendu.js';
 import { lignesPrixFormatees, modeValide, produitValide, totalEstime } from './produit-logique.js';
 import { formaterPrix } from './diagnostic-logique.js';
+import { initialiserConfigurateur } from './configurateur.js';
 
 export const CLE_PRODUIT = 'produit';
 export const CLE_MODE = 'mode';
@@ -118,6 +119,9 @@ if (typeof document !== 'undefined') {
     const produit = produitValide(produits, lireSession(CLE_PRODUIT), produitParDefaut);
     if (produit) afficherProduit(produit);
     initialiserGalerie(donnees.produit.galerie.vues);
-    if (produit) initialiserMode(donnees, produit);
+    if (produit) {
+      initialiserMode(donnees, produit);
+      initialiserConfigurateur(donnees, produit);
+    }
   });
 }

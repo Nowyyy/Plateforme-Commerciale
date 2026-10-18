@@ -3,12 +3,14 @@
 
 /* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
 html:not([data-rendu]) .fil__liste,
-html:not([data-rendu]) .produit {
+html:not([data-rendu]) .produit,
+html:not([data-rendu]) .configurateur {
   visibility: hidden;
 }
 
 html[data-rendu="erreur"] .fil,
-html[data-rendu="erreur"] .produit {
+html[data-rendu="erreur"] .produit,
+html[data-rendu="erreur"] .configurateur {
   display: none;
 }
 
@@ -470,5 +472,50 @@ html[data-rendu="erreur"] .produit {
 
   .mode[aria-busy="true"] {
     min-block-size: 25.3rem;
+  }
+}
+
+/* Configurateur de cotes E3-5 : pleine largeur, sous la grille de la zone haute */
+.configurateur {
+  padding-block: 0 var(--space-7);
+}
+
+.configurateur h2 {
+  margin-block-end: var(--space-3);
+  font-size: var(--produit-text-h2);
+}
+
+.configurateur__intro {
+  margin-block-end: var(--space-4);
+}
+
+.configurateur__grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+}
+
+.configurateur__gauche,
+.configurateur__droite {
+  min-inline-size: 0;
+}
+
+.configurateur__message {
+  max-inline-size: 40rem;
+  margin-block-end: var(--space-3);
+}
+
+.configurateur__retour {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+@media (min-width: 1200px) {
+  .configurateur__grille {
+    gap: var(--space-4);
   }
 }

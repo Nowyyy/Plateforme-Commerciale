@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <title>Fiche produit : galerie, achat et mode de commande (exemple)</title>
-  <meta name="description" content="Démonstrateur : fiche produit d'un équipement de protection de l'habitat, galerie, prix, délai et choix du mode de commande. Contenus fictifs, aucune vente.">
+  <title>Fiche produit : achat, mode de commande et configurateur de cotes (exemple)</title>
+  <meta name="description" content="Démonstrateur : fiche produit d'un équipement de protection de l'habitat, galerie, prix, délai, choix du mode de commande et configurateur de cotes. Contenus fictifs, aucune vente.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -145,6 +145,34 @@
         </div>
       </section>
     </div>
+    <section class="conteneur configurateur" data-bloc="E3-5" data-role="configurateur" aria-labelledby="titre-configurateur">
+      <h2 id="titre-configurateur" data-texte="produit.configurateur.titre"></h2>
+      <div class="configurateur__outil" aria-busy="true">
+        <p class="configurateur__intro" data-texte="produit.configurateur.intro"></p>
+        <div class="configurateur__grille">
+          <div class="configurateur__gauche">
+            <div class="configurateur__schema" id="cotes-schema"></div>
+            <h3 class="configurateur__sous-titre" id="titre-etapes" data-texte="produit.configurateur.etapesTitre"></h3>
+            <ol class="etapes" aria-labelledby="titre-etapes" aria-busy="true">
+              <template data-liste="configurateur.etapes">
+                <li class="etapes__item"><span class="etapes__lettre" data-texte="lettre"></span><span class="etapes__texte" data-texte="texte"></span></li>
+              </template>
+            </ol>
+          </div>
+          <div class="configurateur__droite">
+            <fieldset class="saisie" id="cotes-saisie">
+              <legend class="saisie__legende" data-texte="produit.configurateur.saisie.legende"></legend>
+            </fieldset>
+            <div class="faisabilite" id="cotes-faisabilite" role="status" aria-live="polite"></div>
+            <div class="action" id="cotes-action"></div>
+          </div>
+        </div>
+      </div>
+      <div class="configurateur__indisponible" hidden>
+        <p class="configurateur__message" data-texte="produit.configurateur.nonComplet.message"></p>
+        <a class="configurateur__retour" data-lien="site.liens.diagnostic" data-texte="produit.configurateur.nonComplet.lien"></a>
+      </div>
+    </section>
   </main>
   <footer class="pied" data-bloc="E3-8" data-role="pied">
     <div class="conteneur">
