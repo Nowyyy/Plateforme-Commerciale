@@ -1,27 +1,28 @@
 # Seed — Plateforme de protection de l'habitat (démonstrateur)
-Modifiable par le seul propriétaire. Version 5, 18 octobre 2026 (remplace la version 4).
+Modifiable par le seul propriétaire. Version 6, 18 octobre 2026 (remplace la version 5).
 
 ## Le site en une phrase
 Un démonstrateur en ligne, hébergé sur GitHub Pages, d'une place de marché d'équipements de protection de la maison contre quatre aléas climatiques (inondations, grêle et vents, feux de forêt, canicule), au parcours calme et technique : adresse, diagnostic, fiche produit, cotes, mode de pose, panier récapitulatif. S'y ajoutent un espace professionnel (candidature de vendeurs) et un espace client simulé (achats, service après-vente).
 
 ## Piliers (ils tranchent les décisions)
 1. Calme et certitude : aucun rouge, aucune alarme visuelle ; l'ambre sert uniquement à l'action.
-2. Honnêteté du démonstrateur : tout ce qui est fictif ou simulé (produits, avis, connexion, formulaires) est marqué comme tel ; aucun vrai logo de certification, aucune fausse promesse.
+2. Honnêteté du démonstrateur : tout ce qui est fictif ou simulé (produits, avis, certifications, connexion, formulaires) est marqué comme tel ; aucun vrai logo de certification, aucune fausse promesse.
 3. La fiche produit prime : en cas d'arbitrage, l'écran 3 et son configurateur de cotes passent d'abord.
 4. Mobile et desktop à égalité : 375 et 1440 px pour chaque écran.
 5. Simple d'abord : statique, sans serveur, sans traceur, données dans des fichiers, comptes et formulaires simulés.
 
 ## Navigation commune
 - En-tête : Aléas, Comment ça marche, Vendre sur la plateforme, Mon compte, Panier. « Mon compte » mène à la connexion, ou au tableau de bord sur les pages connectées (écrans 7, 8, 9, 11, 12).
-- Dans les wireframes, « Aléas » et « Comment ça marche » sont du texte non lié. Dans le Hi-Fi (depuis le lot 3a), ce sont des ancres de l'accueil (`#aleas`, `#comment`) qui placent le focus sur la section. Les libellés dont la page n'existe pas encore en Hi-Fi (Vendre sur la plateforme, Mon compte) pointent provisoirement vers `wireframes/`, via `data/site.json`.
-- Menu mobile : bouton « Menu » repliable sans JavaScript dans les wireframes (case masquée et libellé), absent dès 768 px. Dans le Hi-Fi, il reste visible jusqu'à 1199 px si les cinq libellés ne tiennent pas en ligne.
-- Pied de page : Mentions légales (lot 10), À propos du démonstrateur, Service après-vente (accès sans compte), rappel « aucune vente ». Le pied complet du Hi-Fi arrive au lot 3b.
+- Dans les wireframes, « Aléas » et « Comment ça marche » sont du texte non lié ; le menu mobile est un bouton « Menu » repliable sans JavaScript (case masquée et libellé), absent dès 768 px.
+- Dans le Hi-Fi (depuis le lot 3a) : « Aléas » et « Comment ça marche » sont des ancres de l'accueil (`#aleas`, `#comment`) qui défilent doucement jusqu'à la section et y placent le focus ; « Vendre sur la plateforme » et « Mon compte » pointent provisoirement vers `wireframes/`, via `data/site.json`, jusqu'aux lots 8b et 8c ; le menu reste replié jusqu'à 1199 px ; le Panier reste dans la barre sous 1200 px, le panneau du menu contient les quatre autres liens.
+- Pied de page des wireframes : Mentions légales (lot 10), À propos du démonstrateur, Service après-vente (accès sans compte), rappel « aucune vente ».
+- Pied de page Hi-Fi complet (lot 3b, accueil seulement pour l'instant), piloté par `data/site.json` (clé `pied`), fond bleu marine, trois colonnes dès 1200 px : « Le site » (mêmes libellés et liens que l'en-tête) ; « Aide et informations » (Service après-vente vers `wireframes/sav-acces.html`, Mentions légales et À propos du démonstrateur en texte « (à venir) », sans lien) ; marque et phrase de présentation. Bas de pied : « Démonstrateur : contenus fictifs, aucune vente ». Sur d'autres pages, les ancres du pied devront être préfixées (`index.html#aleas`).
 - Navigation du compte (écrans 7, 8, 11, 12) : Tableau de bord, Mes achats, Mes demandes, Mes informations, Se déconnecter ; la page courante est repérée par du texte.
 
 ## Pages et parcours : écrans 1 à 4
 | Écran | Page | Blocs, dans l'ordre de la page |
 |---|---|---|
-| 1 Accueil | `index.html` (`accueil.html` jusqu'au lot 3b) | E1-1 en-tête ; E1-2 hero ; E1-3 recherche d'adresse ; E1-4 les 4 aléas ; E1-5 protection de la personne (froid, chaleur, chutes) ; E1-6 comment ça marche ; E1-7 réassurance ; E1-8 bandeau d'avis ; E1-9 preuve crash-test ; E1-10 pied |
+| 1 Accueil | `index.html` (depuis le lot 3b ; `accueil.html` est alors une redirection et l'ancienne page d'attente devient `attente.html`) | E1-1 en-tête ; E1-2 hero ; E1-3 recherche d'adresse ; E1-4 les 4 aléas (cartes en 1 puis 2 colonnes, carrousel dès 1200 px avec 3 cartes visibles et des flèches) ; E1-5 protection de la personne (froid, chaleur, chutes) ; E1-6 comment ça marche (3 étapes) ; E1-7 réassurance (pastilles génériques marquées « exemple ») ; E1-8 bandeau d'avis ; E1-9 preuve crash-test (emplacement vidéo sans lecteur, 3 chiffres d'exemple) ; E1-10 pied complet |
 | 2 Diagnostic | `diagnostic.html` | E2-1 en-tête ; E2-2 adresse et filtre d'aléa ; E2-3 équipements recommandés (colonne principale) ; E2-4 score de vulnérabilité ; E2-5 carte et calques (sous le score, même largeur) ; E2-6 pied |
 | 3 Fiche produit | `produit.html` | E3-1 en-tête et fil d'Ariane ; E3-2 galerie et vidéo ; E3-3 achat ; E3-4 mode de commande (DIY ou pose) ; E3-5 configurateur de cotes ; E3-6 spécifications ; E3-7 documents ; E3-8 pied |
 | 4 Panier | `panier.html` | E4-1 en-tête et étapes ; E4-2 récapitulatif technique et délai de livraison ; E4-3 validation de responsabilité ; E4-4 total ; E4-5 paiement sécurisé et SAV ; E4-6 pied |
@@ -45,7 +46,7 @@ Parcours :
 - SAV avec compte : connexion, tableau de bord, achats, détail d'un achat, demande de SAV, confirmation, suivi.
 - SAV sans compte : pied de page, accès SAV, demande de SAV, confirmation.
 
-Source de vérité de l'agencement : `wireframes/` (validé aux lots 1, 1b et 1c). Identifiants stables : les `data-role`. Les numéros suivent l'ordre de la page ; tout déplacement passe par un lot de correctif. Une seule fiche produit est complète (un batardeau) ; les autres restent allégées. Les cartes d'aléas de l'accueil mèneront au diagnostic filtré sur l'aléa (lot 4) ; chaque aléa porte déjà un identifiant stable dans les données.
+Source de vérité de l'agencement : `wireframes/` (validé aux lots 1, 1b et 1c). Identifiants stables : les `data-role`. Les numéros suivent l'ordre de la page ; tout déplacement passe par un lot de correctif. Le Hi-Fi suit l'ordre des wireframes ; les écarts voulus sont listés ci-dessus (carrousel des aléas, familles d'équipements issues du cahier des charges). Une seule fiche produit est complète (un batardeau) ; les autres restent allégées. Les cartes d'aléas de l'accueil mèneront au diagnostic filtré sur l'aléa (lot 4) ; chaque aléa porte déjà un identifiant stable dans les données.
 
 ## Page des lots (`/lots/`)
 Page de relecture pour un téléphone, hors démonstrateur, publiée à `/lots/` depuis le lot 2b. L'ancienne adresse `/apercus/` est une page de redirection vers `/lots/`. Elle comporte :
@@ -55,7 +56,7 @@ Page de relecture pour un téléphone, hors démonstrateur, publiée à `/lots/`
 Règles :
 - Générée automatiquement à chaque publication à partir des branches `lot-*` et de leur fichier `apercu.txt`, sans liste à maintenir à la main. Le nom du fichier `apercu.txt` ne change pas. La logique et le rendu vivent dans `scripts/lots/`, décrits dans `Docs/ref/apercus.md`.
 - Format de `apercu.txt` : la cible sur la première ligne (caractères `A-Za-z0-9._/-`, sans `..` ni `/` initial) ; lignes optionnelles `type: wireframe`, `hifi` ou `technique`, et `titre: <court>`. Sans `type:`, une cible `wireframes/…` est un wireframe et toute autre cible un lot Hi-Fi. Un lot d'outillage s'écrit `type: technique` et n'apparaît pas sur la page. Un type inconnu ou une branche sans `apercu.txt` est ignoré.
-- Le lot 3a et les suivants doivent régler `apercu.txt` : cible `accueil.html`, `type: hifi`, `titre: …`.
+- Chaque lot Hi-Fi règle `apercu.txt` sur sa branche : cible `index.html` (ou `accueil.html` avant le lot 3b), `type: hifi`, `titre: …`.
 - Mêmes jetons et même police que le site ; lisible à 375 et 1440 px ; `noindex` ; aucun script (menu déroulant natif, utilisable au clavier) ; aucune ressource externe.
 - Une panne de génération ne doit jamais empêcher la publication des aperçus `/lot-N/` : page de repli et avertissement dans les journaux.
 - Toute modification du workflow exige l'autorisation explicite du prompt du lot.
@@ -66,9 +67,12 @@ Règles :
 |---|---|
 | Textes, produits, prix, délais, cotes, avis | Fictifs, rédigés par l'agent, dans `data/*.json` ; avis marqués « exemple » |
 | Familles d'équipements par aléa | Issues du cahier des charges (batardeaux, clapets, pompes ; boucliers, volets extrudés, filets de toiture ; sprinklers, grilles pare-braises ; cool roofing, isolants réflecteurs) ; familles de protection de la personne rédigées par l'agent, fictives |
+| Titres de section de l'accueil | « À chaque aléa immobilier sa solution », « Protéger aussi les personnes », « Comment ça marche » ; provisoires |
+| Réassurance (accueil) | Cinq pastilles génériques, toutes marquées « exemple » (organisme de certification, norme française, marquage européen, deux assureurs) ; aucun vrai nom |
+| Preuve crash-test (accueil) | Emplacement vidéo sans lecteur ; chiffres d'exemple (60 cm de hauteur d'eau retenue, 12 min de déploiement, 72 h d'essai) et note « valeurs d'exemple » |
 | Client de démonstration, commandes, demandes SAV, candidatures | Fictifs, dans `data/compte.json` ; aucune donnée réelle |
-| Photos, rendus 3D, coupes, vidéo de crash-test | Emplacements et visuels de substitution ; vrais fichiers fournis plus tard par le propriétaire |
-| Pictogrammes des aléas | Sprite SVG géométrique de substitution |
+| Photos, rendus 3D, coupes, vidéo de crash-test réelle | Emplacements et visuels de substitution ; vrais fichiers fournis plus tard par le propriétaire |
+| Pictogrammes | Sprite SVG géométrique de substitution (aléas, protection, bouclier) |
 | Certifications, assureurs, plateformes d'avis | Pastilles « exemple » sans vrai logo ni vrai nom |
 | Facture, PV d'essais, notices, attestations, pièces jointes | Emplacements « [Fichier exemple] » ou PDF fictifs marqués « exemple » |
 | Nom de marque | « Protection Habitat », provisoire, à remplacer |
@@ -76,30 +80,34 @@ Règles :
 
 ## Design
 - Ton : sobre, typographique, axé données, inspiré de l'architecture et de la cartographie technique.
-- Couleurs : bleu marine `#0F1D38` (structure), vert `#1B4332` (durabilité), fond `#F8FAFC`, accent ambre `#D97706`. Texte sur fond ambre en bleu marine ; l'ambre n'est pas utilisé pour du texte courant sur fond clair. Bandeau démonstrateur vert, en-tête bleu marine ; focus ambre sur les boutons d'action, vert ailleurs. Les liens de cartes ne sont pas des boutons d'action : bleu marine, soulignés au survol et au focus.
-- Hero : dégradé vertical du fond clair vers une teinte bleutée dérivée du marine, sans grille ; sur mobile, ordre texte, illustration, puis recherche.
-- Sections de l'accueil : fonds alternés par jetons (blanc, fond clair), pictogrammes en traits dans des pastilles claires, numéros d'étapes en ronds marine.
+- Couleurs : bleu marine `#0F1D38` (structure), vert `#1B4332` (durabilité), fond `#F8FAFC`, accent ambre `#D97706`. Texte sur fond ambre en bleu marine ; l'ambre n'est pas utilisé pour du texte courant sur fond clair. Bandeau démonstrateur vert, en-tête et pied de page bleu marine ; focus ambre sur les boutons d'action, vert ailleurs. Les liens de cartes ne sont pas des boutons d'action : bleu marine, soulignés au survol et au focus.
+- Fond de page unique (lot 3c) : toutes les sections de l'accueil partagent le jeton de fond clair ; les sections sont transparentes ; cartes, pastilles de réassurance et blocs de chiffres sont en fond blanc à bordure fine. Les espacements entre sections sont par jetons.
+- Hero : dégradé vertical d'une teinte bleutée dérivée du marine, sous l'en-tête, qui se fond exactement dans le fond de page (aucune arête) ; sans grille ; sur mobile, ordre texte, illustration, puis recherche ; dès 1200 px, deux colonnes (texte et recherche environ 55 %, illustration environ 45 %).
+- Relief décoratif (lot 3c) : courbes de niveau en SVG en ligne, très discrètes (environ 10 % d'opacité), derrière le contenu, non interactives (`aria-hidden`, `pointer-events: none`) ; deux « collines » dès 768 px, une seule en dessous. Les cartes blanches les masquent.
+- Pictogrammes en traits dans des pastilles claires ; numéros d'étapes en ronds marine ; preuve crash-test : emplacement vidéo 16:9 et chiffres en grand, chiffres tabulaires.
 - Typographie : Plus Jakarta Sans (titres, labels), Inter avec chiffres tabulaires (données, cotes), polices hébergées dans le dépôt.
 - Tous les réglages vivent dans des variables CSS (`css/tokens.css`) ; aucune couleur en dur. Les wireframes restent en niveaux de gris (`--wf-*`).
-- Les écrans de formulaires et de compte reprennent les composants existants (champs, boutons, cartes) ; aucun style hors jetons. Les erreurs de saisie se signalent par texte, icône et filet marine, sans rouge ; l'état d'un élément (actif, repéré) est toujours donné par du texte, jamais par la couleur seule.
+- Les écrans de formulaires et de compte reprennent les composants existants (champs, boutons, cartes) ; aucun style hors jetons. Les erreurs de saisie se signalent par texte, icône et filet marine, sans rouge ; l'état d'un élément (actif, repéré) est toujours donné par du texte, jamais par la couleur seule. Le message d'erreur de la recherche d'adresse n'a pas de réserve de hauteur (il suit une action de l'utilisateur).
 
 ## Stack et hébergement
-HTML, CSS à variables, JavaScript en modules, sans compilation ni dépendance d'exécution. Textes et liens dans `data/*.json`, injectés par clés (`data-texte`, `data-lien`) ; les listes (cartes, étapes) sont rendues par des gabarits `<template data-liste="…">` et leur nombre d'éléments n'est jamais figé dans le HTML ou le CSS. Outils de développement seulement : ESLint, Vitest, Playwright avec axe, Lighthouse. Chemins relatifs. Justification : peu d'état, aucun serveur possible. Alternative si le nombre de pages explose : Astro ou Vite.
+HTML, CSS à variables, JavaScript en modules, sans compilation ni dépendance d'exécution. Textes et liens dans `data/*.json`, injectés par clés (`data-texte`, `data-lien`) ; les listes (cartes, étapes, pastilles, chiffres, colonnes du pied) sont rendues par des gabarits `<template data-liste="…">` et leur nombre d'éléments n'est jamais figé dans le HTML ou le CSS ; une entrée sans lien est un texte simple. Outils de développement seulement : ESLint, Vitest, Playwright avec axe, Lighthouse. Chemins relatifs. Justification : peu d'état, aucun serveur possible. Alternative si le nombre de pages explose : Astro ou Vite.
 Comptes et formulaires simulés : l'état de connexion et les saisies vivent dans `sessionStorage` (effacés à la fermeture de l'onglet), jamais dans l'URL, jamais envoyés ; chaque formulaire affiche « Démonstrateur : saisissez des données fictives, rien n'est envoyé ni enregistré ».
-Hébergement : GitHub Pages (adresse `github.io`), publication par workflow GitHub Actions. Chaque branche `lot-N` est publiée en aperçu à `/lot-N/` (fichier `apercu.txt`) ; ne jamais supprimer ces branches.
+Hébergement : GitHub Pages (adresse `github.io`), publication par workflow GitHub Actions. Chaque branche `lot-N` est publiée en aperçu à `/lot-N/` (fichier `apercu.txt`) ; ne jamais supprimer ces branches. À la racine du site : `index.html` (accueil Hi-Fi, `noindex` jusqu'au lot 10), `attente.html` (ancienne page d'attente), `accueil.html` (redirection vers `index.html`, pour les anciens liens), `lots/`, `apercus/` (redirection), `wireframes/`.
 Flux : cadrage dans le chat Claude (téléphone), exécution par Claude Code cloud, relecture et fusion par Pull Request (« Create a merge commit »). L'export Figma (lot 11) se fait sur ordinateur.
 
 ## Hors périmètre
-Fichier Figma produit sans retouche humaine ; vrai paiement ; vraie authentification (connexion réelle, mot de passe) ; création de compte ; vrai envoi des formulaires professionnel et SAV ; vrai stockage de pièces jointes ; vraie vérification du SIRET ; suivi réel de colis ; page de détail d'une demande de SAV ; messagerie avec l'artisan et favoris ; vraies données de risque, carte réelle, vrai calcul de vulnérabilité ; vrais logos, certifications, avis clients et notes ; vraies vidéos ; catalogue complet et page de liste ; CMS ; autre langue que le français ; analytique et cookies.
+Fichier Figma produit sans retouche humaine ; vrai paiement ; vraie authentification (connexion réelle, mot de passe) ; création de compte ; vrai envoi des formulaires professionnel et SAV ; vrai stockage de pièces jointes ; vraie vérification du SIRET ; suivi réel de colis ; page de détail d'une demande de SAV ; messagerie avec l'artisan et favoris ; vraies données de risque, carte réelle, vrai calcul de vulnérabilité ; vrais logos, certifications, avis clients et notes ; vraies vidéos et lecteur vidéo (avant fourniture des fichiers) ; catalogue complet et page de liste ; page « À propos du démonstrateur » ; CMS ; autre langue que le français ; analytique et cookies.
 
 ## Risques connus
-- Constaté aux lots 0 à 2b : navigateur piloté, captures, Lighthouse, push de branches et de workflow fonctionnent ; le push de tags est refusé (HTTP 403) ; l'agent ne peut pas ouvrir l'adresse publiée, donc le déploiement se vérifie à la main ; Lighthouse exclut la catégorie SEO des pages `noindex`.
-- Les lots 1 et 2 ont reçu des ajouts en cours de route (parties D à I) : le plafond de taille d'un lot n'est pas tenu. Préférer un lot de correctif (comme le 1b) à des parties ajoutées ; les prompts interdisent désormais toute partie supplémentaire.
+- Constaté aux lots 0 à 3a : navigateur piloté, captures, Lighthouse, push de branches et de workflow fonctionnent ; le push de tags est refusé (HTTP 403) ; l'agent ne peut pas ouvrir l'adresse publiée, donc le déploiement se vérifie à la main ; Lighthouse exclut la catégorie SEO des pages `noindex`.
+- Les lots 1, 2 et 3a ont reçu des ajouts en cours de route (parties supplémentaires, demandes du propriétaire) : le plafond de taille d'un lot n'est pas tenu. Préférer un lot de correctif (comme le 1b) à des parties ajoutées ; les prompts interdisent toute partie supplémentaire.
 - Logos CSTB ou NF, garantie décennale, tiers de confiance sans droit : pastilles « exemple », bandeau « démonstrateur, aucune vente » sur chaque page.
 - Données personnelles : les formulaires sont simulés, mais un visiteur peut y saisir de vraies données. Mention visible sur chaque formulaire, aucune donnée envoyée ni conservée au-delà de la session. Une version réelle exigerait un service externe et la conformité RGPD, hors de ce démonstrateur.
-- Textes injectés par JavaScript : invisibles sans lui, et risque de décalage de mise en page (réserve de hauteur des listes remplies, surveillée par le CLS).
+- Textes injectés par JavaScript : invisibles sans lui, et risque de décalage de mise en page (réserve de hauteur des listes remplies, surveillée par le CLS ; mesuré à 0,013 au maximum au lot 3a).
 - La page des lots dépend du workflow : la détection des lots fusionnés demande l'historique Git complet ; une ancienne branche de lot qui reçoit un push régénérerait l'ancienne page.
-- Navigation à cinq libellés : risque de ne pas tenir en ligne à 768 px (menu conservé jusqu'à 1199 px au besoin).
+- Renommage de l'accueil au lot 3b : risque de liens ou de tests oubliés ; l'ancienne adresse reste servie par une redirection.
+- Relief décoratif : un texte posé sur un motif peut passer en « à vérifier » plutôt qu'en réussite dans l'outil d'accessibilité ; opacité à ajuster sur téléphone ; positions en pourcentage de la hauteur de page.
+- Navigation à cinq libellés : menu replié jusqu'à 1199 px.
 - Export Figma : résultat non garanti conforme (composants, auto-layout strict, variables) ; compte Figma nécessaire ; plugin non testé.
 
 ## Plan en lots
@@ -111,8 +119,9 @@ Fichier Figma produit sans retouche humaine ; vrai paiement ; vraie authentifica
 | 2 | Hi-Fi accueil, partie haute : E1-1 à E1-3 et bandeau d'avis E1-8 | fait |
 | 1c | Wireframes Lo-Fi : écrans 5 à 13 (professionnel, connexion, compte, achats, détail d'achat, SAV avec et sans compte, suivi, informations) ; navigation commune ; parcours cliqués | fait |
 | 2b | Page « Lots » (`/lots/`) : accès wireframes, page Hi-Fi, anciens lots ; génération automatique ; redirection de `/apercus/` | fait |
-| 3a | Hi-Fi accueil : E1-4 aléas, E1-5 protection de la personne, E1-6 comment ça marche, insérés entre la recherche et le bandeau d'avis ; navigation Hi-Fi à cinq libellés (« Aléas » et « Comment ça marche » en ancres, « Vendre sur la plateforme » et « Mon compte » vers les wireframes en attendant les lots 8b et 8c) | prochain |
-| 3b | Hi-Fi accueil : E1-7 réassurance (entre « comment ça marche » et l'avis), E1-9 crash-test et E1-10 pied de page complet (navigation liée) en dessous ; `accueil.html` devient `index.html`, la page d'attente devient `attente.html` | à faire |
+| 3a | Hi-Fi accueil : E1-4 aléas (carrousel dès 1200 px), E1-5 protection de la personne, E1-6 comment ça marche ; navigation Hi-Fi à cinq libellés | fait (fusion à confirmer) |
+| 3b | Hi-Fi accueil : E1-7 réassurance, E1-9 preuve crash-test, E1-10 pied de page complet ; `accueil.html` devient `index.html`, la page d'attente devient `attente.html`, `accueil.html` devient une redirection | prochain |
+| 3c | Fond de page unique, hero fondu dans le fond, relief décoratif (courbes de niveau), correction du vide dans la carte de recherche | ensuite |
 | 4 | Diagnostic : carte stylisée, calques, jauge, recommandations fictives ; filtrage par aléa ; régler l'espace libre des cartes d'équipements | à faire |
 | 5 | Fiche produit : zone haute et bascule DIY / pose | à faire |
 | 6 | Configurateur de cotes et tests de sa logique | à faire |
@@ -121,8 +130,8 @@ Fichier Figma produit sans retouche humaine ; vrai paiement ; vraie authentifica
 | 8b | Hi-Fi : espace professionnel (écran 5), formulaire simulé avec validation, confirmation | à faire |
 | 8c | Hi-Fi : connexion simulée, compte, achats, détail, SAV avec compte (depuis un achat) et sans compte, suivi, informations ; `data/compte.json` | à faire |
 | 9 | Optionnel : comparateur de 2 à 3 produits, sélecteur de niveau de risque | à faire |
-| 10 | Performance, accessibilité, SEO, mentions légales et texte RGPD, nom de marque définitif, relecture des mentions « simulé » | à faire |
+| 10 | Performance, accessibilité, SEO (fin du `noindex`), mentions légales et texte RGPD, nom de marque définitif, relecture des mentions « simulé » | à faire |
 | 11 | Optionnel, sur ordinateur : export Figma des écrans, puis reprise manuelle | à faire |
 
 ## Idées en attente (hors lot en cours)
-Index des projets sur `nowyyy.github.io` (autre dépôt, accord requis) ; pose manuelle des tags `lot-N` (facultatif) ; remplacement du nom de marque provisoire, du schéma du hero et des pictogrammes ; bouton « Menu » du Hi-Fi qui passe à la ligne sous 350 px ; message d'erreur unique de la recherche d'adresse ; « Mes diagnostics » dans le compte ; page de détail d'une demande de SAV ; suppression de `Docs/apercus.txt`, devenu inutile depuis le lot 2b (à faire dans un lot d'outillage).
+Index des projets sur `nowyyy.github.io` (autre dépôt, accord requis) ; pose manuelle des tags `lot-N` (facultatif) ; remplacement du nom de marque provisoire, du schéma du hero et des pictogrammes ; bouton « Menu » du Hi-Fi qui passe à la ligne sous 350 px ; message d'erreur unique de la recherche d'adresse ; « Mes diagnostics » dans le compte ; page de détail d'une demande de SAV ; page « À propos du démonstrateur » (aucun lot prévu) ; suppression de `Docs/apercus.txt`, devenu inutile depuis le lot 2b (à faire dans un lot d'outillage) ; éventuellement une section en bleu marine (le crash-test) pour ancrer la page avant le pied ; préfixer les ancres du pied de page quand il sera réutilisé sur d'autres pages.
