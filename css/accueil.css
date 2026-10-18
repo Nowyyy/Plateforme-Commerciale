@@ -1,0 +1,519 @@
+/* Accueil Hi-Fi, partie haute. Mobile d'abord ; ruptures 768 et 1200 px. */
+
+/* Réserve de hauteur : les textes remplis par JavaScript ne doivent pas déplacer la page. */
+:where([data-texte]:empty) {
+  min-block-size: 1lh;
+}
+
+/* Bandeau démonstrateur (au-dessus de l'en-tête) */
+.bandeau-demo {
+  background: var(--color-green);
+  color: var(--color-on-navy);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.bandeau-demo p {
+  margin: 0;
+  padding-block: var(--space-2);
+  min-block-size: calc(1lh + var(--space-4));
+}
+
+/* En-tête E1-1 */
+.entete {
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+}
+
+.entete__ligne {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-1);
+  min-block-size: 4rem;
+  padding-block: var(--space-2);
+}
+
+.marque {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--touch-min);
+  margin-inline-end: auto;
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.marque {
+  font-size: 0.875rem;
+}
+
+@media (min-width: 380px) {
+  .marque {
+    font-size: 0.9375rem;
+  }
+}
+
+.marque__pictogramme {
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+}
+
+.marque__toit {
+  fill: none;
+  stroke: var(--color-on-navy);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.marque__goutte {
+  fill: var(--color-on-navy);
+}
+
+.lien-entete {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--touch-min);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.lien-entete:hover {
+  background: var(--color-navy-hover);
+}
+
+.pictogramme {
+  flex: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.entete :focus-visible {
+  outline-color: var(--color-focus-on-navy);
+}
+
+.entete__menu {
+  padding-inline: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+/* Panneau de navigation : replié sur mobile, en ligne dès 768 px */
+.nav {
+  flex-basis: 100%;
+  display: none;
+}
+
+.nav.est-ouvert {
+  display: block;
+  padding-block-end: var(--space-3);
+}
+
+.nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav li {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  padding-inline: var(--space-3);
+  border-top: 1px solid var(--color-border-on-navy);
+  color: var(--color-on-navy-muted);
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+.nav .nav__panier {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .marque {
+    font-size: var(--text-lg);
+  }
+
+  .marque__pictogramme {
+    inline-size: 2rem;
+    block-size: 2rem;
+  }
+
+  .lien-entete {
+    padding-inline: var(--space-3);
+  }
+
+  .hero__titre {
+    min-block-size: calc(2 * var(--leading-hero) * 1em);
+  }
+
+  .entete__menu,
+  .entete__panier-barre {
+    display: none;
+  }
+
+  .nav {
+    display: block;
+    flex-basis: auto;
+    padding: 0;
+  }
+
+  .nav ul {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .nav li {
+    border-top: 0;
+    padding-inline: var(--space-3);
+  }
+
+  .nav .nav__panier {
+    display: flex;
+    padding: 0;
+  }
+}
+
+/* Avis E1-8 : après la recherche, filet fin en haut */
+.avis {
+  background: var(--color-card);
+  border-top: 1px solid var(--color-border);
+}
+
+.avis__ligne {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2) var(--space-4);
+  padding-block: var(--space-3);
+  min-block-size: 5.5rem;
+}
+
+.avis__ligne p {
+  margin: 0;
+}
+
+.avis__etoiles {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.avis__carre {
+  display: grid;
+  place-items: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  border-radius: 2px;
+  background: var(--color-green);
+}
+
+.avis__carre svg {
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  fill: var(--color-card);
+}
+
+.avis__carre--partiel {
+  background: linear-gradient(90deg, var(--color-green) 80%, var(--color-avis-vide) 80%);
+}
+
+.avis__note {
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+.avis__nombre {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.avis__logo {
+  padding: var(--space-1) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-bg);
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+  font-weight: 600;
+}
+
+/* Hero E1-2 : fond en dégradé léger ; en dessous de 1200 px texte, illustration puis recherche ; dès 1200 px texte et recherche à gauche, illustration à droite */
+.hero {
+  padding-block: var(--space-6) var(--space-7);
+  background: linear-gradient(180deg, var(--color-bg), var(--color-hero-fin));
+}
+
+.hero__grille {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.hero__titre {
+  margin-bottom: var(--space-4);
+  text-wrap: balance;
+  font-size: var(--text-hero);
+  line-height: var(--leading-hero);
+  min-block-size: calc(3 * var(--leading-hero) * 1em);
+}
+
+.hero__accroche {
+  max-inline-size: 40rem;
+  margin: 0;
+  font-size: var(--text-base);
+  min-block-size: calc(3 * var(--leading-body) * 1em);
+}
+
+.hero__recherche {
+  order: 3;
+}
+
+.hero__visuel {
+  order: 2;
+  margin: 0;
+  justify-self: center;
+  inline-size: 100%;
+  max-inline-size: 35rem;
+}
+
+.illustration {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 4 / 3;
+}
+
+.hero__legende {
+  min-block-size: 1lh;
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+/* Recherche E1-3 : hauteur réservée (le formulaire n'apparaît qu'une fois les données chargées) */
+.hero__recherche {
+  min-block-size: 23.5625rem;
+}
+
+@media (min-width: 480px) {
+  .hero__recherche {
+    min-block-size: 22.125rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .hero__recherche {
+    min-block-size: 20.75rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero__recherche {
+    min-block-size: 17.1875rem;
+  }
+}
+
+.recherche {
+  max-inline-size: 40rem;
+}
+
+.recherche__ligne {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.recherche__erreur {
+  margin: var(--space-3) 0 0;
+  padding-inline-start: var(--space-3);
+  border-inline-start: 4px solid var(--color-navy);
+  font-weight: 600;
+  min-block-size: 2lh;
+}
+
+.recherche__erreur:empty {
+  visibility: hidden;
+}
+
+.recherche__erreur::before {
+  content: "!" / "";
+  display: inline-block;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin-inline-end: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  line-height: 1.25rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.champ[aria-invalid="true"] {
+  border-color: var(--color-navy);
+  box-shadow: 0 0 0 2px var(--color-navy);
+}
+
+.recherche__microtexte {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* Illustration : traits et aplats par jetons */
+.illu-trait,
+.illu-cote,
+.illu-guide,
+.illu-barriere rect {
+  stroke: var(--color-navy);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.illu-trait {
+  fill: none;
+}
+
+.illu-sol {
+  fill: var(--color-card);
+}
+
+.illu-hachure-remplissage {
+  fill: url("#hachure");
+}
+
+.illu-hachure {
+  stroke: var(--color-text-secondary);
+  stroke-width: 1;
+}
+
+.illu-mur {
+  fill: var(--color-illu-mur);
+}
+
+.illu-dalle {
+  fill: var(--color-illu-dalle);
+}
+
+.illu-eau {
+  fill: var(--color-illu-eau);
+}
+
+.illu-barriere rect {
+  fill: var(--color-green);
+}
+
+.illu-cote {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.illu-guide {
+  fill: none;
+  stroke: var(--color-text-secondary);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+@media (min-width: 768px) {
+  .hero {
+    padding-block: var(--space-7);
+  }
+
+  .recherche__ligne {
+    flex-direction: row;
+  }
+
+  .recherche__ligne .champ {
+    flex: 1;
+  }
+
+  .hero__titre {
+    min-block-size: calc(2 * var(--leading-hero) * 1em);
+  }
+
+  .hero__accroche {
+    font-size: var(--text-lg);
+    min-block-size: calc(2 * var(--leading-body) * 1em);
+  }
+
+  .avis__ligne {
+    flex-wrap: nowrap;
+    min-block-size: 3.5rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero {
+    padding-block: var(--space-8);
+  }
+
+  .hero__grille {
+    grid-template-columns: minmax(0, 11fr) minmax(0, 9fr);
+    grid-template-areas:
+      "texte visuel"
+      "recherche visuel";
+    grid-template-rows: auto 1fr;
+    column-gap: var(--space-7);
+    align-items: start;
+  }
+
+  .hero__texte {
+    grid-area: texte;
+  }
+
+  .hero__recherche {
+    grid-area: recherche;
+  }
+
+  .hero__visuel {
+    grid-area: visuel;
+    align-self: center;
+    justify-self: end;
+    max-inline-size: none;
+  }
+
+  .hero__titre {
+    min-block-size: calc(3 * var(--leading-hero) * 1em);
+  }
+
+  .hero__accroche {
+    min-block-size: calc(2 * var(--leading-body) * 1.125em);
+  }
+}
+
+/* Pied minimal */
+.pied {
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.pied p {
+  margin: 0;
+  min-block-size: 1lh;
+}

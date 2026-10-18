@@ -1,0 +1,23 @@
+{
+  "nom": "Protection Habitat",
+  "bandeau": "Démonstrateur : contenus fictifs, aucune vente",
+  "evitement": "Aller au contenu",
+  "aria": {
+    "bandeau": "Démonstrateur",
+    "navigation": "Navigation principale"
+  },
+  "navigation": {
+    "menu": "Menu",
+    "aleas": "Aléas",
+    "fonctionnement": "Comment ça marche",
+    "panier": "Panier"
+  },
+  "pied": {
+    "texte": "Démonstrateur : contenus fictifs, aucune vente"
+  },
+  "liens": {
+    "accueil": "accueil.html",
+    "diagnostic": "wireframes/diagnostic.html",
+    "panier": "wireframes/panier.html"
+  }
+}

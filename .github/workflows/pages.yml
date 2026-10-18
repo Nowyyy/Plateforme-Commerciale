@@ -50,7 +50,7 @@ jobs:
           copier() {
             ref="$1"; cible="$2"; chemins=""
             mkdir -p "$cible"
-            for p in index.html css assets data wireframes; do
+            for p in index.html accueil.html css assets data wireframes; do
               if git cat-file -e "$ref:$p" 2>/dev/null; then chemins="$chemins $p"; fi
             done
             git archive "$ref" $chemins | tar -x -C "$cible"
@@ -70,7 +70,9 @@ jobs:
               fi
               printf '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=%s"><title>Aperçu du %s</title></head><body><p><a href="%s">Aperçu du %s</a></p></body></html>' "$entree" "$nom" "$entree" "$nom" > "site/$nom/index.html"
             fi
-            liens="$liens<li><a href=\"../$nom/\">$nom</a></li>"
+            # descriptif du lot : ligne « lot-N|texte » de Docs/apercus.txt (échappé pour le HTML)
+            desc="$(grep -m1 "^$nom|" Docs/apercus.txt 2>/dev/null | cut -d'|' -f2- | tr -d '\r' | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' || true)"
+            liens="$liens<li><a href=\"../$nom/\">$nom</a><p>$desc</p></li>"
           done
           mkdir -p site/apercus
           printf '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Aperçus par lot</title></head><body><main><h1>Aperçus par lot</h1><p>Démonstrateur : contenus fictifs, aucune vente</p><ul>%s</ul></main></body></html>' "$liens" > site/apercus/index.html

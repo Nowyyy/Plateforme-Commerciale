@@ -11,3 +11,22 @@ describe('workflow de publication', () => {
     expect(texte).not.toContain('pull_request_target');
   });
 });
+
+describe('workflow : chemins publiés', () => {
+  it('publie accueil.html, css, data et assets', () => {
+    const texte = readFileSync('.github/workflows/pages.yml', 'utf8');
+    const liste = texte.match(/for p in ([^;]+);/)?.[1].split(/\s+/);
+    expect(liste).toEqual(expect.arrayContaining(['index.html', 'accueil.html', 'css', 'data', 'assets', 'wireframes']));
+  });
+});
+
+describe('page des aperçus : descriptifs', () => {
+  it('Docs/apercus.txt décrit chaque lot (lot-N|texte) et le workflow le lit', () => {
+    const lignes = readFileSync('Docs/apercus.txt', 'utf8').split('\n').filter(Boolean);
+    for (const ligne of lignes) expect(ligne).toMatch(/^lot-\d+\|[^|]{10,}$/);
+    const lots = lignes.map((l) => l.split('|')[0]);
+    expect(lots).toEqual(expect.arrayContaining(['lot-0', 'lot-1', 'lot-2']));
+    expect(new Set(lots).size).toBe(lots.length);
+    expect(readFileSync('.github/workflows/pages.yml', 'utf8')).toContain('Docs/apercus.txt');
+  });
+});

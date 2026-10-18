@@ -1,0 +1,25 @@
+{
+  "titrePage": "Protection Habitat : préservez votre maison face aux aléas du climat",
+  "avis": {
+    "aria": "Avis clients",
+    "note": "4,8 sur 5",
+    "nombre": "1 284 avis clients (exemple)",
+    "logo": "Logo exemple"
+  },
+  "hero": {
+    "titre": "Préservez votre maison face aux aléas du climat",
+    "accroche": "Évaluez l'exposition de votre bien, puis équipez-le de solutions certifiées d'usine, posées par vous ou par un artisan partenaire.",
+    "illustration": {
+      "titre": "Coupe d'un mur avec seuil protégé par une barrière modulable",
+      "description": "Schéma en coupe : un mur et son ouverture, un niveau d'eau à l'extérieur, une barrière modulable posée devant le seuil et des flèches de cotes indiquant la hauteur d'eau, la hauteur de la barrière et l'épaisseur du mur.",
+      "legende": "Illustration schématique (exemple)"
+    }
+  },
+  "recherche": {
+    "libelle": "Entrez votre adresse pour évaluer l'exposition de votre maison aux aléas et voir les solutions adaptées",
+    "placeholder": "Ex. : 12 rue des Tilleuls, Lyon",
+    "bouton": "Évaluer mon exposition",
+    "microtexte": "Démonstrateur : l'adresse reste dans votre navigateur et n'est ni envoyée ni enregistrée ailleurs.",
+    "erreur": "Saisissez une adresse d'au moins 5 caractères."
+  }
+}
