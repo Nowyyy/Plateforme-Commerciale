@@ -8,7 +8,7 @@ const lire = (chemin) => readFileSync(chemin, 'utf8');
 const site = JSON.parse(lire('data/site.json'));
 const accueil = JSON.parse(lire('data/accueil.json'));
 const donnees = { site, accueil };
-const html = lire('accueil.html');
+const html = lire('index.html');
 
 const texte = (v) => typeof v === 'string' && v.trim().length > 0;
 const cles = (source, attributs) =>
@@ -40,7 +40,7 @@ describe('listes de data/accueil.json', () => {
   });
 });
 
-describe('clés des attributs de accueil.html', () => {
+describe('clés des attributs de index.html', () => {
   it('chaque clé se résout : relative au premier élément dans un gabarit, globale ailleurs', () => {
     expect(modeles.map((m) => m.cle)).toEqual(['aleas.liste', 'protection.liste', 'comment.liste']);
 
@@ -105,7 +105,7 @@ describe('rendu.js : résolution relative et validation de listes', () => {
 });
 
 describe('liens et navigation', () => {
-  it('les liens pointent vers des fichiers existants et les ancres vers un id de accueil.html', () => {
+  it('les liens pointent vers des fichiers existants et les ancres vers un id de index.html', () => {
     for (const [nom, cible] of Object.entries(site.liens)) {
       if (cible.startsWith('#')) {
         expect(html, nom).toContain(`id="${cible.slice(1)}"`);
@@ -132,7 +132,7 @@ describe('liens et navigation', () => {
   });
 });
 
-describe('ordre des blocs de accueil.html', () => {
+describe('ordre des blocs de index.html', () => {
   it('en-tete < hero < recherche < aleas < protection < comment < avis, avec E1-1 à E1-6 et E1-8', () => {
     const attendu = [['en-tete', 'E1-1'], ['hero', 'E1-2'], ['recherche', 'E1-3'], ['aleas', 'E1-4'],
       ['protection', 'E1-5'], ['comment', 'E1-6'], ['avis', 'E1-8']];
@@ -148,7 +148,7 @@ describe('ordre des blocs de accueil.html', () => {
 });
 
 describe('style des blocs (partie B)', () => {
-  it('css/accueil.css et css/composants.css sans couleur hexadécimale ; accueil.html sans style= hors sprite', () => {
+  it('css/accueil.css et css/composants.css sans couleur hexadécimale ; index.html sans style= hors sprite', () => {
     for (const f of ['css/accueil.css', 'css/composants.css']) {
       expect(lire(f).replace(/\/\*[\s\S]*?\*\//g, ''), f).not.toMatch(/#[0-9a-f]{3,8}\b/i);
     }

@@ -5,7 +5,7 @@ const ROLES = ['en-tete', 'hero', 'recherche', 'aleas', 'protection', 'comment',
 const colonnes = (page) => page.evaluate(() => new Set([...document.querySelectorAll('[data-role="comment"] ol > li')].map((li) => Math.round(li.getBoundingClientRect().left))).size);
 
 test('comment ça marche : 3 étapes dans un <ol>, 1 colonne à 375 px, 3 à 1440 px', async ({ page }) => {
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   for (const [largeur, attendu] of [[375, 1], [768, 1], [1440, 3]]) {
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.waitForSelector('html[data-rendu="pret"]');
@@ -25,7 +25,7 @@ test('comment ça marche : 3 étapes dans un <ol>, 1 colonne à 375 px, 3 à 144
 for (const largeur of [375, 1440]) {
   test(`les sept blocs se suivent de haut en bas à ${largeur} px`, async ({ page }) => {
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
     const hauts = [];
     for (const role of ROLES) {
@@ -44,7 +44,7 @@ for (const largeur of [375, 1440]) {
   for (const [libelle, cible] of [['Vendre sur la plateforme', /wireframes\/pro\.html$/], ['Mon compte', /wireframes\/connexion\.html$/]]) {
     test(`parcours à ${largeur} px : « ${libelle} »`, async ({ page }) => {
       await page.setViewportSize({ width: largeur, height: 900 });
-      await page.goto('/accueil.html');
+      await page.goto('/index.html');
       await page.waitForSelector('html[data-rendu="pret"]');
       if (largeur === 375) await page.locator('[data-menu-bouton]').click();
       await page.getByRole('navigation').getByRole('link', { name: libelle, exact: true }).click();

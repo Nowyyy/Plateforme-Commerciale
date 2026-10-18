@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 const NOMBRES = { aleas: 4, protection: 3, comment: 3 };
 
 for (const largeur of [375, 768, 1440]) {
-  test(`accueil.html à ${largeur} px : listes rendues, console propre, axe sans violation`, async ({ page }, info) => {
+  test(`index.html à ${largeur} px : listes rendues, console propre, axe sans violation`, async ({ page }, info) => {
     const erreurs = [];
     page.on('console', (m) => ['error', 'warning'].includes(m.type()) && erreurs.push(m.text()));
     page.on('pageerror', (e) => erreurs.push(e.message));
@@ -15,7 +15,7 @@ for (const largeur of [375, 768, 1440]) {
     });
 
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
     await page.evaluate(() => document.fonts.ready);
 
@@ -46,7 +46,7 @@ for (const largeur of [375, 768, 1440]) {
 for (const [libelle, id, role] of [['Aléas', 'aleas', 'aleas'], ['Comment ça marche', 'comment', 'comment']]) {
   test(`menu à 375 px : cinq libellés atteignables, « ${libelle} » ferme le menu et place le focus`, async ({ page }, info) => {
     await page.setViewportSize({ width: 375, height: 800 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
 
     const bouton = page.locator('[data-menu-bouton]');

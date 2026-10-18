@@ -1,3 +1,3 @@
-accueil.html
+index.html
 type: hifi
-titre: Accueil Hi-Fi : aléas, protection, comment ça marche
+titre: Accueil Hi-Fi complet

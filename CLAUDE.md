@@ -5,8 +5,7 @@ Démonstrateur statique hébergé sur GitHub Pages, 4 écrans (accueil, diagnost
 Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 
 ## Arborescence
-- `index.html` : page d'attente (lot 0)
-- `accueil.html` : accueil Hi-Fi en cours (blocs E1-1 à E1-6 et E1-8 ; pictogrammes dans un sprite SVG en ligne), `noindex` jusqu'au lot 3, deviendra `index.html`
+- `index.html` : accueil Hi-Fi (blocs E1-1 à E1-6 et E1-8 pour l'instant ; E1-1 à E1-10 à la fin du lot 3b), `noindex` jusqu'au lot 10 ; `attente.html` : ancienne page d'attente, conservée ; `accueil.html` : redirection vers `index.html` (anciens liens)
 - `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `attente.css`, `wireframe.css` (wireframes)
 - `data/` : `site.json`, `accueil.json` (tous les textes et liens visibles)
 - `scripts/lots/` : génération de la page Lots (sans dépendance ; logique pure dans `logique.mjs`)
@@ -64,7 +63,7 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 ## Seuils Lighthouse des wireframes
 Pour les pages de `wireframes/` : seulement performance, accessibilité et bonnes pratiques (la catégorie SEO est inapplicable aux pages `noindex`).
 
-## Seuils Lighthouse de `accueil.html`
+## Seuils Lighthouse de `index.html` (accueil)
 Tant qu'elle est `noindex` : performance, accessibilité, bonnes pratiques seulement ; dès qu'elle devient indexable, la catégorie SEO s'applique avec son seuil.
 
 ## Pièges (voir `Docs/ref/environnement.md`)

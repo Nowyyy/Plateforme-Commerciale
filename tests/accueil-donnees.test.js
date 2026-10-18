@@ -8,7 +8,7 @@ const donnees = {
   site: JSON.parse(lire('data/site.json')),
   accueil: JSON.parse(lire('data/accueil.json')),
 };
-const html = lire('accueil.html');
+const html = lire('index.html');
 
 describe('données de l\'accueil', () => {
   it('site.json et accueil.json sont du JSON valide ; les liens pointent vers des fichiers existants', () => {
@@ -27,7 +27,7 @@ describe('données de l\'accueil', () => {
   });
 });
 
-describe('accueil.html', () => {
+describe('index.html', () => {
   it('a lang="fr", noindex, un seul h1, aucune URL http(s) ni script externe', () => {
     expect(html).toContain('<html lang="fr">');
     expect(html).toMatch(/<meta name="robots" content="noindex">/);

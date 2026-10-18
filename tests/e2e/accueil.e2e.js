@@ -4,7 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 const LARGEURS = [375, 768, 1440];
 
 for (const largeur of LARGEURS) {
-  test(`accueil.html à ${largeur} px`, async ({ page }, info) => {
+  test(`index.html à ${largeur} px`, async ({ page }, info) => {
     const erreurs = [];
     page.on('console', (m) => ['error', 'warning'].includes(m.type()) && erreurs.push(m.text()));
     page.on('pageerror', (e) => erreurs.push(e.message));
@@ -15,7 +15,7 @@ for (const largeur of LARGEURS) {
     });
 
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('.recherche:not([hidden])');
     await page.evaluate(() => document.fonts.ready);
 
@@ -39,7 +39,7 @@ for (const largeur of LARGEURS) {
 
 test('menu mobile : ouverture, aria-expanded, Échap et retour du focus', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 800 });
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   await page.waitForSelector('html[data-rendu="pret"]');
 
   const bouton = page.locator('[data-menu-bouton]');
@@ -64,7 +64,7 @@ test('menu mobile : ouverture, aria-expanded, Échap et retour du focus', async 
 
 test('desktop : navigation en ligne, bouton Menu absent, Panier en dernier', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   await page.waitForSelector('html[data-rendu="pret"]');
   await expect(page.locator('[data-menu-bouton]')).toBeHidden();
   const items = await page.locator('header nav li').allInnerTexts();
@@ -75,7 +75,7 @@ test('desktop : navigation en ligne, bouton Menu absent, Panier en dernier', asy
 test('JavaScript désactivé : aucun texte visible hors message noscript', async ({ browser }) => {
   const contexte = await browser.newContext({ javaScriptEnabled: false });
   const page = await contexte.newPage();
-  await page.goto('http://localhost:4173/accueil.html');
+  await page.goto('http://localhost:4173/index.html');
   const visible = (await page.evaluate(() => document.body.innerText)).trim();
   expect(visible).toBe('Ce démonstrateur nécessite JavaScript');
   await contexte.close();
@@ -83,7 +83,7 @@ test('JavaScript désactivé : aucun texte visible hors message noscript', async
 
 test('échec de chargement des données : alerte visible, page non cassée', async ({ page }) => {
   await page.route('**/data/accueil.json', (route) => route.fulfill({ status: 500, body: 'x' }));
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   await page.waitForSelector('html[data-rendu="erreur"]');
   await expect(page.getByRole('alert')).toBeVisible();
 });
@@ -91,7 +91,7 @@ test('échec de chargement des données : alerte visible, page non cassée', asy
 for (const largeur of [375, 1440]) {
   test(`illustration visible à ${largeur} px, légende affichée, aucune erreur de chargement`, async ({ page }) => {
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
     const svg = page.getByRole('img', { name: /mur avec seuil/ });
     await expect(svg).toBeVisible();
@@ -106,7 +106,7 @@ for (const largeur of [375, 1440]) {
 }
 
 test('hero : deux colonnes à 1440 px, illustration sous le texte à 375 px', async ({ page }) => {
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   const pos = async () => page.evaluate(() => {
     const t = document.querySelector('.hero__texte').getBoundingClientRect();
     const v = document.querySelector('.hero__visuel').getBoundingClientRect();

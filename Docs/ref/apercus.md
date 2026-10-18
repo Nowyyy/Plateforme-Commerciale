@@ -10,3 +10,4 @@
 - Titre : `titre:`, sinon premier titre de `Docs/lots/lot-<id>.md` sans `# Lot <id> — `, sinon « Lot <id> ».
 - Identifiant : `lot-<n><lettre?>` ; ordre `1 < 1b < 1c < 2 < 2b < 10`. « Fusionné » : `git merge-base --is-ancestor origin/<branche> origin/main`.
 - Code : `scripts/lots/logique.mjs` (pur, testé par `tests/lots.test.js`) ; rendu, génération et collecte aux parties B et C du lot 2b.
+- Exemple de cible Hi-Fi (depuis le lot 3b) : `index.html`. Attention : le workflow renomme l'`index.html` d'un lot en `attente.html` puis écrit sa propre redirection `index.html` ; un lot dont la cible est `index.html` n'est donc pas atteignable tel quel sur `/lot-N/` (voir `Docs/lots/lot-3b.md`).

@@ -5,7 +5,7 @@ const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 
 async function ouvrir(page, largeur) {
   await page.setViewportSize({ width: largeur, height: 900 });
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   await page.waitForSelector('.recherche:not([hidden])');
 }
 
@@ -26,7 +26,7 @@ for (const [nom, saisie] of [['champ vide', ''], ['adresse invalide', '1234567']
     await expect(champ).toHaveAttribute('aria-invalid', 'true');
     await expect(champ).toHaveAttribute('aria-describedby', /adresse-erreur/);
     await expect(erreur).toHaveAttribute('aria-live', 'polite');
-    expect(new URL(page.url()).pathname).toBe('/accueil.html');
+    expect(new URL(page.url()).pathname).toBe('/index.html');
     expect(await page.evaluate(() => sessionStorage.getItem('adresse'))).toBeNull();
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
     if (nom === 'champ vide') await page.screenshot({ path: 'test-results/accueil-375-erreur.png', fullPage: true });
@@ -82,7 +82,7 @@ test('stockage de session indisponible : la navigation a quand même lieu', asyn
 for (const largeur of [375, 768, 1440]) {
   test(`l'apparition du message d'erreur ne déplace ni l'illustration ni le bandeau d'avis à ${largeur} px`, async ({ page }) => {
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('.recherche:not([hidden])');
     const positions = () => page.evaluate(() => ['.hero__visuel', '.avis'].map((s) => {
       const b = document.querySelector(s).getBoundingClientRect();

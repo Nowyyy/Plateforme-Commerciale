@@ -14,10 +14,10 @@ describe('workflow de publication', () => {
 });
 
 describe('workflow : chemins publiés', () => {
-  it('publie accueil.html, css, data et assets', () => {
+  it('publie attente.html, index.html, accueil.html, css, data et assets', () => {
     const texte = readFileSync('.github/workflows/pages.yml', 'utf8');
     const liste = texte.match(/for p in ([^;]+);/)?.[1].split(/\s+/);
-    expect(liste).toEqual(expect.arrayContaining(['index.html', 'accueil.html', 'css', 'data', 'assets', 'wireframes']));
+    expect(liste).toEqual(expect.arrayContaining(['index.html', 'accueil.html', 'attente.html', 'css', 'data', 'assets', 'wireframes']));
   });
 });
 

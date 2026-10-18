@@ -18,7 +18,7 @@
     "texte": "Démonstrateur : contenus fictifs, aucune vente"
   },
   "liens": {
-    "accueil": "accueil.html",
+    "accueil": "index.html",
     "aleas": "#aleas",
     "comment": "#comment",
     "diagnostic": "wireframes/diagnostic.html",
