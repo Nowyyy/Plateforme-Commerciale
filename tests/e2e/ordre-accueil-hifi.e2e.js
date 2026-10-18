@@ -5,7 +5,7 @@ const ROLES = ['en-tete', 'hero', 'recherche', 'avis'];
 for (const largeur of [375, 1440]) {
   test(`accueil Hi-Fi : en-tete, hero, recherche et avis se suivent de haut en bas à ${largeur} px`, async ({ page }) => {
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
     const hauts = [];
     for (const role of ROLES) {

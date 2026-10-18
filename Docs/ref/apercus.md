@@ -10,3 +10,4 @@
 - Titre : `titre:`, sinon premier titre de `Docs/lots/lot-<id>.md` sans `# Lot <id> — `, sinon « Lot <id> ».
 - Identifiant : `lot-<n><lettre?>` ; ordre `1 < 1b < 1c < 2 < 2b < 10`. « Fusionné » : `git merge-base --is-ancestor origin/<branche> origin/main`.
 - Code : `scripts/lots/logique.mjs` (pur, testé par `tests/lots.test.js`) ; rendu, génération et collecte aux parties B et C du lot 2b.
+- Cible `index.html` (depuis le lot 3b) : le workflow ne déplace ni ne remplace alors l'`index.html` du lot (sinon boucle de redirection) ; `/lot-N/` sert directement l'accueil et `attente.html` reste la page d'attente du lot.

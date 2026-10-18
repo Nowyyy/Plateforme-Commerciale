@@ -2,3 +2,4 @@ lot-0|Socle du projet : dépôt, outils de test, jetons de design, polices et pa
 lot-1|Wireframes Lo-Fi des 4 écrans (accueil, diagnostic, fiche produit, panier) en niveaux de gris, pour valider l'agencement.
 lot-2|Accueil Hi-Fi, partie haute : en-tête, bandeau d'avis, hero avec illustration et recherche d'adresse vers le diagnostic.
 lot-1c|Wireframes Lo-Fi des écrans 5 à 13 : espace professionnel, compte client et service après-vente (partie A : navigation commune, espace professionnel, connexion, SAV sans compte).
+lot-3b|Accueil Hi-Fi complet : réassurance, preuve crash-test, pied de page ; accueil en index.html, page d'attente en attente.html.

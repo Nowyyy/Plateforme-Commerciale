@@ -1,5 +1,5 @@
 // Lance Lighthouse (mobile par défaut) sur des pages locales et vérifie les seuils.
-// Usage : npm run lighthouse [-- chemin/page.html ...] (par défaut : la page d'attente « / »).
+// Usage : npm run lighthouse [-- chemin/page.html ...] (par défaut : l'accueil « / »).
 // Pages de wireframes/ : performance, accessibilité et bonnes pratiques seulement (pages noindex).
 import { spawn } from 'node:child_process';
 import { readFileSync, mkdirSync } from 'node:fs';

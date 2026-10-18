@@ -15,7 +15,7 @@ for (const largeur of LARGEURS) {
     });
 
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/');
+    await page.goto('/attente.html');
     await page.evaluate(() => document.fonts.ready);
 
     expect(erreurs).toEqual([]);

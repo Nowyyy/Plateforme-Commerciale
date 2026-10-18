@@ -16,7 +16,7 @@ const colonnes = (page, role) => page.evaluate((r) => {
 for (const largeur of [375, 1440]) {
   test(`cartes à ${largeur} px : h3, familles et lien vers le diagnostic`, async ({ page }) => {
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
     for (const [role, nombre] of Object.entries(ATTENDU)) {
       const cartes = page.locator(`[data-role="${role}"] .cartes > li`);
@@ -36,7 +36,7 @@ for (const largeur of [375, 1440]) {
 }
 
 test('colonnes mesurées par les positions des cartes', async ({ page }) => {
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   const attendu = [[375, 1, 1], [768, 2, 1], [1440, 3, 3]];
   for (const [largeur, aleas, protection] of attendu) {
     await page.setViewportSize({ width: largeur, height: 900 });
@@ -48,7 +48,7 @@ test('colonnes mesurées par les positions des cartes', async ({ page }) => {
 
 test('hauteurs égales, lien aligné en bas de carte à 1440 px', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   await page.waitForSelector('html[data-rendu="pret"]');
   for (const role of Object.keys(ATTENDU)) {
     const mesures = await page.evaluate((r) => [...document.querySelectorAll(`[data-role="${r}"] .cartes > li`)].map((li) => ({
@@ -68,7 +68,7 @@ test('robustesse : 5 aléas, aucun débordement et retour à la ligne', async ({
     donnees.aleas.liste = [...liste, { ...liste[0], id: 'cinquieme', titre: 'Cinquième aléa avec un titre assez long pour passer à la ligne' }];
     await route.fulfill({ response: reponse, json: donnees });
   });
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   for (const largeur of [375, 768, 1440]) {
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.waitForSelector('html[data-rendu="pret"]');
@@ -87,7 +87,7 @@ test('robustesse : 5 aléas, aucun débordement et retour à la ligne', async ({
 for (const largeur of [375, 1440]) {
   test(`parcours à ${largeur} px : lien de la première carte d'aléa vers le diagnostic`, async ({ page }) => {
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
     await page.locator('[data-role="aleas"] .cartes > li').first().getByRole('link').click();
     await expect(page).toHaveURL(/wireframes\/diagnostic\.html$/);
@@ -97,7 +97,7 @@ for (const largeur of [375, 1440]) {
 
 test('carrousel des aléas à 1440 px : 3 cartes visibles, flèches cycliques', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto('/accueil.html');
+  await page.goto('/index.html');
   await page.waitForSelector('html[data-rendu="pret"]');
   const section = page.locator('[data-role="aleas"]');
   const precedent = section.getByRole('button', { name: 'Aléas précédents' });
@@ -130,7 +130,7 @@ test('carrousel des aléas à 1440 px : 3 cartes visibles, flèches cycliques', 
 test('carrousel : flèches masquées sous 1200 px où toutes les cartes sont visibles', async ({ page }) => {
   for (const largeur of [375, 768]) {
     await page.setViewportSize({ width: largeur, height: 900 });
-    await page.goto('/accueil.html');
+    await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
     for (const fleche of await page.locator('.carrousel__fleche').all()) await expect(fleche).toBeHidden();
   }

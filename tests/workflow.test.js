@@ -14,10 +14,10 @@ describe('workflow de publication', () => {
 });
 
 describe('workflow : chemins publiés', () => {
-  it('publie accueil.html, css, data et assets', () => {
+  it('publie attente.html, index.html, accueil.html, css, data et assets', () => {
     const texte = readFileSync('.github/workflows/pages.yml', 'utf8');
     const liste = texte.match(/for p in ([^;]+);/)?.[1].split(/\s+/);
-    expect(liste).toEqual(expect.arrayContaining(['index.html', 'accueil.html', 'css', 'data', 'assets', 'wireframes']));
+    expect(liste).toEqual(expect.arrayContaining(['index.html', 'accueil.html', 'attente.html', 'css', 'data', 'assets', 'wireframes']));
   });
 });
 
@@ -67,5 +67,15 @@ describe('workflow : page Lots (lot 2b)', () => {
   } catch { /* clone superficiel : origin/main absent */ }
   it.skipIf(main === null)('lignes uses: identiques à celles de origin/main', () => {
     expect(lignesUses(workflow())).toEqual(lignesUses(main));
+  });
+});
+
+describe('workflow : aperçu dont la cible est index.html', () => {
+  it('ne déplace ni ne remplace index.html quand la cible est index.html (pas de boucle)', () => {
+    const texte = readFileSync('.github/workflows/pages.yml', 'utf8');
+    const garde = texte.indexOf('if [ "$entree" = "index.html" ]');
+    expect(garde).toBeGreaterThan(-1);
+    expect(garde).toBeLessThan(texte.indexOf('mv "site/$nom/index.html"'));
+    expect(garde).toBeLessThan(texte.indexOf('printf \'<!doctype html>'));
   });
 });

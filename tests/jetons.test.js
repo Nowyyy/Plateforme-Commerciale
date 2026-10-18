@@ -38,7 +38,7 @@ describe('jetons de design', () => {
 });
 
 describe('page d\'attente', () => {
-  const html = readFileSync('index.html', 'utf8');
+  const html = readFileSync('attente.html', 'utf8');
 
   it('a lang="fr", un title, un seul h1 et le bandeau démonstrateur', () => {
     expect(html).toContain('lang="fr"');

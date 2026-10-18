@@ -50,7 +50,7 @@ jobs:
           copier() {
             ref="$1"; cible="$2"; chemins=""
             mkdir -p "$cible"
-            for p in index.html accueil.html css assets data wireframes; do
+            for p in index.html accueil.html attente.html css assets data wireframes; do
               if git cat-file -e "$ref:$p" 2>/dev/null; then chemins="$chemins $p"; fi
             done
             git archive "$ref" $chemins | tar -x -C "$cible"
@@ -63,6 +63,10 @@ jobs:
             entree="$(git show "$ref:apercu.txt" 2>/dev/null | head -n1 | tr -d '\r' || true)"
             if printf '%s' "$entree" | grep -Eq '^[A-Za-z0-9._/-]+$' && ! printf '%s' "$entree" | grep -q '\.\.'; then
               # la page d'attente du lot devient attente.html ; /lot-N/ redirige vers la page principale
+              # (cible index.html : l'accueil est déjà /lot-N/index.html, rien à déplacer ni à rediriger)
+              if [ "$entree" = "index.html" ]; then
+                continue
+              fi
               if [ -f "site/$nom/index.html" ]; then
                 mv "site/$nom/index.html" "site/$nom/attente.html"
                 grep -rl --include='*.html' '\.\./index\.html' "site/$nom" | xargs -r sed -i 's|\.\./index\.html|../attente.html|g'

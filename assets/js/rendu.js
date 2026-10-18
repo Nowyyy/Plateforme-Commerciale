@@ -3,6 +3,8 @@
 // Listes : <template data-liste="aleas.liste"> (clé relative aux données de accueil.json) est cloné pour chaque
 // élément du tableau. Dans un gabarit, data-texte et data-icone sont relatifs à l'élément ("." = l'élément
 // lui-même, une chaîne) ; data-lien, data-aria-label, data-placeholder et data-texte-global restent globaux.
+// Une clé de liste commençant par « site. » est lue dans data/site.json ; data-lien-element lit le lien dans l'élément
+// (sans lien, l'<a> devient un <span>).
 
 const MESSAGE_ERREUR =
   "Le contenu de la page n'a pas pu être chargé. Rechargez la page ou réessayez plus tard.";
@@ -30,6 +32,10 @@ const CLES_REQUISES = {
   'aleas.liste': ['id', 'icone', 'titre', 'familles'],
   'protection.liste': ['id', 'icone', 'titre', 'familles'],
   'comment.liste': ['titre', 'texte'],
+  'reassurance.liste': ['id', 'titre'],
+  'preuve.chiffres': ['valeur', 'libelle'],
+  'site.pied.colonnes': ['titre', 'entrees'],
+  entrees: ['texte'],
 };
 
 const SYMBOLE = /^[a-z0-9-]+$/;
@@ -95,6 +101,27 @@ export function remplir(racine, donnees, attributs = ATTRIBUTS) {
   return erreurs;
 }
 
+// Pied de page : les colonnes « navigation » reprennent les libellés (site.navigation) et les liens (site.liens)
+// de l'en-tête ; chaque entrée devient { texte, lien? } où lien est la cible finale (absente = texte non lié).
+export function resoudrePied(site) {
+  const cibleDe = (cle) => {
+    if (typeof site.liens?.[cle] !== 'string') throw new Error(`Lien inconnu dans le pied : « ${cle} »`);
+    return site.liens[cle];
+  };
+  return site.pied.colonnes.map((colonne) => {
+    const { navigation, entrees = [], ...reste } = colonne;
+    const issues = (navigation ?? []).map(({ cle, lien }) => ({
+      texte: resoudre(site, `navigation.${cle}`),
+      lien: cibleDe(lien),
+    }));
+    const propres = entrees.map(({ texte, lien }) => (lien === undefined ? { texte } : { texte, lien: cibleDe(lien) }));
+    return { ...reste, entrees: [...issues, ...propres] };
+  });
+}
+
+// Une entrée sans lien est un texte simple : aucune balise <a>.
+export const baliseEntree = (entree) => (typeof entree?.lien === 'string' && entree.lien !== '' ? 'a' : 'span');
+
 function remplirElement(clone, element, donnees) {
   for (const el of clone.querySelectorAll('[data-texte]')) {
     el.textContent = resoudreDans(element, el.getAttribute('data-texte'));
@@ -108,12 +135,25 @@ function remplirElement(clone, element, donnees) {
   }
   const erreurs = remplir(clone, donnees, ATTRIBUTS_GLOBAUX);
   if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
+  // data-lien-element : lien porté par l'élément de liste ; sans lien, l'<a> devient un <span>
+  for (const el of clone.querySelectorAll('[data-lien-element]')) {
+    const cle = el.getAttribute('data-lien-element');
+    if (baliseEntree({ lien: element[cle] }) === 'a') {
+      el.setAttribute('href', element[cle]);
+      el.removeAttribute('data-lien-element');
+    } else {
+      const texte = document.createElement('span');
+      texte.className = el.className;
+      texte.textContent = el.textContent;
+      el.replaceWith(texte);
+    }
+  }
 }
 
 // Clone le gabarit pour chaque élément de la liste ; les gabarits imbriqués sont rendus à leur tour.
 function instancier(modele, source, donnees, imbrique) {
   const cle = modele.getAttribute('data-liste');
-  const liste = validerListe(parcourir(source, cle), cle);
+  const liste = validerListe(parcourir(cle.startsWith('site.') ? donnees : source, cle), cle);
   const rendu = document.createDocumentFragment();
   for (const element of liste) {
     const clone = modele.content.cloneNode(true);
@@ -160,6 +200,7 @@ export async function demarrer() {
   let donnees;
   try {
     donnees = await charger();
+    donnees.site = { ...donnees.site, pied: { ...donnees.site.pied, colonnes: resoudrePied(donnees.site) } };
     const erreurs = remplir(document, donnees);
     if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
     remplirListes(document, donnees.accueil, donnees);

@@ -5,8 +5,7 @@ Démonstrateur statique hébergé sur GitHub Pages, 4 écrans (accueil, diagnost
 Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 
 ## Arborescence
-- `index.html` : page d'attente (lot 0)
-- `accueil.html` : accueil Hi-Fi en cours (blocs E1-1 à E1-6 et E1-8 ; pictogrammes dans un sprite SVG en ligne), `noindex` jusqu'au lot 3, deviendra `index.html`
+- `index.html` : accueil Hi-Fi complet (blocs E1-1 à E1-10, `noindex` jusqu'au lot 10) ; `attente.html` : ancienne page d'attente, conservée ; `accueil.html` : redirection vers `index.html` (anciens liens)
 - `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `attente.css`, `wireframe.css` (wireframes)
 - `data/` : `site.json`, `accueil.json` (tous les textes et liens visibles)
 - `scripts/lots/` : génération de la page Lots (sans dépendance ; logique pure dans `logique.mjs`)
@@ -52,6 +51,7 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 - Fin de lot : `Docs/lots/lot-N.md`.
 
 ## Règles du Hi-Fi (lot 2 et suivants)
+- Ordre final des blocs de l'accueil : en-tete, hero, recherche, aleas, protection, comment, reassurance, avis, preuve, pied ; les tests vérifient l'ordre relatif, jamais la liste exacte. Le pied de page est piloté par `data/site.json` (clé `pied`) ; une entrée sans `lien` est un texte non lié. L'en-tête ne contient plus Aléas ni Comment ça marche (ancres) : ils restent dans le pied.
 - Listes (cartes, étapes) : elles viennent de `data/accueil.json` et sont rendues par des `<template data-liste="…">` ; clés relatives à l'élément (`data-texte`, `data-icone`), `.` pour une chaîne ; `data-lien` et `data-texte-global` restent globaux ; les nombres d'éléments ne sont jamais figés dans le HTML ou le CSS ; conteneurs en `aria-busy` jusqu'au remplissage.
 - Navigation Hi-Fi : en-tête = Aléas (`#aleas`), Comment ça marche (`#comment`), Vendre sur la plateforme, Mon compte, Panier ; les liens vers des pages pas encore en Hi-Fi pointent provisoirement vers `wireframes/` via `data/site.json` ; menu replié jusqu'à 1199 px ; le pied de page complet arrive au lot 3b.
 - Les textes visibles viennent de `data/*.json` par clés : `data-texte`, `data-lien` (ex. `site.liens.panier`), `data-aria-label`, `data-placeholder`. Exceptions en dur : `<title>`, meta description, message `noscript`, message d'erreur de chargement (dans `rendu.js`).
@@ -64,10 +64,12 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 ## Seuils Lighthouse des wireframes
 Pour les pages de `wireframes/` : seulement performance, accessibilité et bonnes pratiques (la catégorie SEO est inapplicable aux pages `noindex`).
 
-## Seuils Lighthouse de `accueil.html`
+## Seuils Lighthouse de `index.html` (accueil)
 Tant qu'elle est `noindex` : performance, accessibilité, bonnes pratiques seulement ; dès qu'elle devient indexable, la catégorie SEO s'applique avec son seuil.
 
 ## Pièges (voir `Docs/ref/environnement.md`)
+- Le pied de page, réutilisé sur d'autres pages, devra préfixer ses ancres (`index.html#aleas`) ; il n'est utilisé que sur l'accueil pour l'instant.
+- Un lot dont `apercu.txt` vise `index.html` : le workflow ne déplace plus l'`index.html` du lot (sinon boucle de redirection).
 - Les listes remplies par JavaScript (cartes, étapes) arrivent après le premier rendu : réserver leur hauteur (`min-block-size` par point de rupture), sinon le CLS dépasse 0,1.
 - CLS : les textes remplis par JavaScript arrivent après le premier rendu ; réserver leur hauteur (`min-block-size`) pour ne pas décaler la page.
 - Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`.
