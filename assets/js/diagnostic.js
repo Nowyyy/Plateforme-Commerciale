@@ -2,7 +2,7 @@
 // L'adresse et l'aléa ne passent jamais par l'URL ; l'adresse est affichée par valeur de champ / textContent seulement.
 import { donneesPretes, resoudre } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
-import { TOUS, aleaValide } from './diagnostic-logique.js';
+import { TOUS, aleaValide, filtrerEquipements, formaterPrix, libelleNiveau, niveauGlobal, segmentsJauge } from './diagnostic-logique.js';
 
 export const CLE_ALEA = 'alea';
 
@@ -24,6 +24,72 @@ function ecrireSession(cle, valeur) {
   }
 }
 
+const SYMBOLE = /^[a-z0-9-]+$/;
+
+// Cartes d'équipement : <template> et textContent seulement (aucune donnée n'est injectée comme HTML).
+function afficherEquipements(donnees, filtre) {
+  const { aleas, equipements, textes } = donnees.diagnostic;
+  const liste = document.getElementById('liste-equipements');
+  const modele = document.getElementById('modele-equipement');
+  const lienProduit = resoudre(donnees, 'site.liens.produit');
+  const choisis = filtrerEquipements(equipements, filtre);
+  const cartes = choisis.map((equipement) => {
+    const alea = aleas.find((a) => a.id === (equipement.aleas.includes(filtre) ? filtre : equipement.aleas[0]));
+    const carte = modele.content.cloneNode(true);
+    carte.querySelector('h3').textContent = equipement.titre;
+    const [etiquetteAlea, etiquettePrix] = carte.querySelectorAll('.equipement__etiquette');
+    etiquetteAlea.textContent = textes.equipements.neutralise;
+    carte.querySelector('.equipement__alea').textContent = alea.titre;
+    etiquettePrix.textContent = textes.equipements.prix;
+    carte.querySelector('.equipement__prix').textContent = formaterPrix(equipement.prix);
+    carte.querySelector('.equipement__exemple').textContent = textes.equipements.exemple;
+    const lien = carte.querySelector('a');
+    lien.textContent = textes.equipements.voirFiche;
+    lien.setAttribute('href', lienProduit);
+    lien.setAttribute('aria-label', `${textes.equipements.voirFiche} : ${equipement.titre}`);
+    if (SYMBOLE.test(alea.icone) && document.getElementById(alea.icone)) {
+      carte.querySelector('use').setAttribute('href', `#${alea.icone}`);
+    }
+    return carte;
+  });
+  // le <template> reste dans la liste : seules les cartes précédentes sont retirées
+  for (const ancienne of liste.querySelectorAll(':scope > li')) ancienne.remove();
+  liste.append(...cartes);
+  liste.setAttribute('aria-busy', 'false');
+  return choisis.length;
+}
+
+// Jauge à 4 segments (décor) avec repère sous le segment du niveau, puis niveau en toutes lettres et phrase.
+function afficherScore(donnees, filtre) {
+  const { aleas, niveaux, textes } = donnees.diagnostic;
+  const niveau = niveauGlobal(aleas, filtre);
+  const segments = segmentsJauge(niveau, niveaux.length).map((plein, i) => {
+    const segment = document.createElement('li');
+    segment.className = plein ? 'jauge__segment est-plein' : 'jauge__segment';
+    if (i === niveau - 1) {
+      const repere = document.createElement('span');
+      repere.className = 'jauge__repere';
+      segment.append(repere);
+    }
+    return segment;
+  });
+  document.getElementById('jauge').replaceChildren(...segments);
+  const libelle = libelleNiveau(niveaux, niveau);
+  document.getElementById('score-niveau').textContent = `${textes.score.libelle} ${libelle}`;
+  document.getElementById('score-phrase').textContent = textes.score.phrases[Math.min(Math.max(niveau, 1), textes.score.phrases.length) - 1];
+  document.querySelector('.score').setAttribute('aria-busy', 'false');
+  return libelle;
+}
+
+function mettreAJour(donnees, filtre, annoncer) {
+  const nombre = afficherEquipements(donnees, filtre);
+  const niveau = afficherScore(donnees, filtre);
+  if (!annoncer) return;
+  const { equipements, score } = donnees.diagnostic.textes;
+  const phrase = nombre === 1 ? equipements.annonceUn : equipements.annonceN.replace('{n}', String(nombre));
+  document.getElementById('annonce-diagnostic').textContent = `${phrase} ${score.annonce.replace('{niveau}', niveau)}`;
+}
+
 function afficherPastilles(donnees, etat) {
   const conteneur = document.getElementById('pastilles-alea');
   const modele = document.getElementById('modele-pastille');
@@ -40,6 +106,7 @@ function afficherPastilles(donnees, etat) {
   conteneur.addEventListener('change', (e) => {
     if (!e.target.matches('input[name="alea"]')) return;
     etat.filtre = aleaValide(donnees.diagnostic.aleas.map((a) => a.id), e.target.value) ?? TOUS;
+    mettreAJour(donnees, etat.filtre, true);
     document.dispatchEvent(new CustomEvent('diagnostic:filtre', { detail: { filtre: etat.filtre } }));
   });
 }
@@ -81,6 +148,7 @@ if (typeof document !== 'undefined') {
     const etat = { filtre: aleaValide(donnees.diagnostic.aleas.map((a) => a.id), lireSession(CLE_ALEA, true)) ?? TOUS };
     initialiserAdresse(donnees);
     afficherPastilles(donnees, etat);
+    mettreAJour(donnees, etat.filtre, false);
     document.dispatchEvent(new CustomEvent('diagnostic:filtre', { detail: { filtre: etat.filtre } }));
   });
 }

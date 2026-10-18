@@ -5,28 +5,32 @@
       "titre": "Inondations et crues",
       "court": "Inondations",
       "niveau": 3,
-      "calque": "inondation"
+      "calque": "inondation",
+      "icone": "inondation"
     },
     {
       "id": "grele-vents",
       "titre": "Grêle et vents violents",
       "court": "Grêle et vents",
       "niveau": 2,
-      "calque": "argile"
+      "calque": "argile",
+      "icone": "grele-vent"
     },
     {
       "id": "feux-de-foret",
       "titre": "Feux de forêt",
       "court": "Feux de forêt",
       "niveau": 1,
-      "calque": "feu"
+      "calque": "feu",
+      "icone": "feu"
     },
     {
       "id": "canicule",
       "titre": "Canicule et chaleur extrême",
       "court": "Canicule",
       "niveau": 2,
-      "calque": "chaleur"
+      "calque": "chaleur",
+      "icone": "chaleur"
     }
   ],
   "niveaux": [

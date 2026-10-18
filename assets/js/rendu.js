@@ -4,7 +4,7 @@
 // élément du tableau. Dans un gabarit, data-texte et data-icone sont relatifs à l'élément ("." = l'élément
 // lui-même, une chaîne) ; data-lien, data-aria-label, data-placeholder et data-texte-global restent globaux.
 // Une clé de liste commençant par « site. » est lue dans data/site.json ; data-lien-element lit le lien dans l'élément
-// (sans lien, l'<a> devient un <span>).
+// (sans lien, l'<a> devient un <span>). Un élément qui a une clé « id » reçoit data-id sur sa racine.
 
 const MESSAGE_ERREUR =
   "Le contenu de la page n'a pas pu être chargé. Rechargez la page ou réessayez plus tard.";
@@ -151,6 +151,11 @@ function remplirElement(clone, element, donnees) {
   }
 }
 
+// Identifiant d'un élément de liste (clé « id » de type texte), ou null : posé en data-id sur la racine de l'élément rendu.
+export function identifiantElement(element) {
+  return element !== null && typeof element === 'object' && typeof element.id === 'string' && element.id !== '' ? element.id : null;
+}
+
 // Clone le gabarit pour chaque élément de la liste ; les gabarits imbriqués sont rendus à leur tour.
 function instancier(modele, source, donnees, imbrique) {
   const cle = modele.getAttribute('data-liste');
@@ -159,6 +164,8 @@ function instancier(modele, source, donnees, imbrique) {
   for (const element of liste) {
     const clone = modele.content.cloneNode(true);
     remplirElement(clone, element, donnees);
+    const id = identifiantElement(element);
+    if (id !== null) clone.firstElementChild?.setAttribute('data-id', id);
     for (const sous of clone.querySelectorAll('template[data-liste]')) {
       instancier(sous, element, donnees, true);
     }

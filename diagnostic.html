@@ -110,9 +110,29 @@
       <section class="diag__bloc diag__equipements" data-bloc="E2-3" data-role="equipements" aria-labelledby="titre-equipements">
         <h2 id="titre-equipements" data-texte="diagnostic.textes.equipements.titre"></h2>
         <p class="diag__intro" data-texte="diagnostic.textes.equipements.intro"></p>
+        <ul class="equipements" id="liste-equipements" aria-busy="true">
+          <template id="modele-equipement">
+            <li class="equipement carte">
+              <div class="equipement__visuel" aria-hidden="true"><svg class="icone" viewBox="0 0 48 48" focusable="false"><use></use></svg></div>
+              <div class="equipement__corps">
+                <h3></h3>
+                <p class="equipement__ligne"><span class="equipement__etiquette"></span> <span class="equipement__alea"></span></p>
+                <p class="equipement__ligne"><span class="equipement__etiquette"></span> <span class="equipement__prix"></span> <span class="equipement__exemple"></span></p>
+                <a class="bouton bouton--secondaire"></a>
+              </div>
+            </li>
+          </template>
+        </ul>
+        <p class="visuellement-cache" id="annonce-diagnostic" role="status" aria-live="polite"></p>
       </section>
       <section class="diag__bloc diag__score" data-bloc="E2-4" data-role="score" aria-labelledby="titre-score">
         <h2 id="titre-score" data-texte="diagnostic.textes.score.titre"></h2>
+        <div class="score carte" aria-busy="true">
+          <ol class="jauge" id="jauge" aria-hidden="true"></ol>
+          <p class="score__niveau" id="score-niveau"></p>
+          <p class="score__phrase" id="score-phrase"></p>
+          <p class="diag__mention" data-texte="diagnostic.textes.score.mention"></p>
+        </div>
       </section>
       <section class="diag__bloc diag__carte" data-bloc="E2-5" data-role="carte" aria-labelledby="titre-carte">
         <h2 id="titre-carte" data-texte="diagnostic.textes.carte.titre"></h2>
