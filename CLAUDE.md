@@ -9,11 +9,12 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 - `accueil.html` : accueil Hi-Fi en cours, `noindex` jusqu'au lot 3, deviendra `index.html`
 - `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `attente.css`, `wireframe.css` (wireframes)
 - `data/` : `site.json`, `accueil.json` (tous les textes et liens visibles)
+- `scripts/lots/` : génération de la page Lots (sans dépendance ; logique pure dans `logique.mjs`)
 - `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js` (lot 2-C)
 - `wireframes/` : Lo-Fi publiés, `noindex` : écrans 1 à 13 (`accueil`, `diagnostic`, `produit`, `panier`, `pro`, `connexion`, `compte`, `achats`, `achat`, `sav`, `demandes`, `informations`, `sav-acces`) et `index.html`
 - `assets/fonts/` : polices woff2 (OFL)
 - `tests/` : tests Vitest ; `tests/e2e/` Playwright ; `tests/outils/` serveur local et Lighthouse
-- `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références)
+- `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références, dont `apercus.md` : aperçus et page Lots)
 - `.github/workflows/pages.yml` : vérifications (PR, push) et publication Pages (push sur `main` ou `lot-*`) : la racine du site est `main`, chaque branche `lot-N` est publiée sous `/lot-N/`, et `/lot-N/` redirige vers le chemin lu dans `apercu.txt` (racine de la branche, une ligne, ex. `wireframes/`) ; liste des aperçus sur `/apercus/`
 - `apercu.txt` : page principale du lot pour l'aperçu `/lot-N/`
 - `Docs/apercus.txt` : une ligne `lot-N|descriptif` par lot, affichée sous chaque lot sur `/apercus/` (à compléter à chaque nouveau lot)
@@ -32,6 +33,7 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 - Dépendances de développement seulement, versions exactes ; toute nouvelle dépendance est signalée et justifiée.
 - Rien de contenu en dur : textes, liens, réglages dans des fichiers de données ou de configuration. Exception : les wireframes sont jetables, les annotations en dur sont permises dans `wireframes/` seulement ; les vrais textes passent en `data/` à partir du lot 2 ; les jetons `--wf-*` sont réservés aux wireframes.
 - L'aperçu par lot `/lot-N/` (publication par branche, `apercu.txt`) reste en place pour tous les lots ; ne pas le retirer ni modifier le workflow ou les réglages GitHub sans accord explicite du propriétaire.
+- Page `/lots/` générée à chaque publication à partir des branches `lot-*` ; `apercus/` redirige vers elle. `apercu.txt` : cible sur la première ligne ; lignes optionnelles `type: wireframe|hifi|technique` et `titre: <court>`. Sans `type:`, une cible `wireframes/…` est un wireframe, toute autre cible un lot Hi-Fi. Chaque lot règle `apercu.txt` sur sa branche (`type: technique` pour un lot d'outillage). Les lots techniques n'apparaissent pas sur la page.
 - Aucune couleur en dur hors `css/tokens.css`.
 - Navigation commune : en-tête = Aléas, Comment ça marche, Vendre sur la plateforme, Mon compte, Panier ; pied = Mentions légales, À propos du démonstrateur, Service après-vente, rappel « aucune vente ». Comptes, connexion et formulaires sont simulés : mention démonstrateur sur chaque formulaire, valeurs fictives, rien envoyé ni enregistré (sessionStorage seulement dans la version interactive), jamais de données dans l'URL.
 - Wireframes : chaque bloc porte `data-bloc` (code visible, suit l'ordre de la page) et `data-role` (identifiant stable) ; les tests s'appuient sur `data-role` ; `Docs/lots/lot-1b.md` donne la correspondance anciens/nouveaux codes de l'accueil et du diagnostic.
@@ -45,6 +47,7 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 - Le push de tags est refusé depuis la session cloud (HTTP 403 constaté au lot 0) : créer `lot-N` en local est facultatif, tenter le push une seule fois sans insister. Le lot N-1 est considéré fusionné si `Docs/lots/lot-<N-1>.md` et `.github/workflows/pages.yml` existent sur `origin/main` et si `git merge-base --is-ancestor origin/lot-<N-1> origin/main` réussit (ou, si la branche a été supprimée, si `git log --oneline --grep="Lot <N-1>-C" origin/main` n'est pas vide). Le bilan `Docs/lots/lot-N.md` est inclus dans le dernier commit de partie : aucun commit après le tag, jamais de force-push.
 - Début de lot : `git fetch origin --prune --tags`, `git ls-remote --heads origin`, arbre propre, `git pull --ff-only origin main`, preuve que le lot N-1 est fusionné, `npm ci` puis lint et tests verts sur `main` avant de créer `lot-N`. Push : `git push -u origin refs/heads/lot-N:refs/heads/lot-N`, puis vérifier que `git ls-remote --heads origin lot-N` égale `git rev-parse HEAD`. Interdits : `--force`, `--force-with-lease`, `rebase`, `commit --amend` après un push. `gh`, s'il est disponible, sert à lire seulement ; jamais de `pr create` ni de `pr merge`. Fin de lot : afficher le lien de comparaison de Pull Request ; c'est le propriétaire qui la crée et la fusionne.
 - Le workflow ne se modifie que sur autorisation explicite du prompt du lot. Ne jamais supprimer une branche `lot-N` : l'aperçu `/lot-N/` en dépend.
+- Ne jamais pousser sur une ancienne branche de lot après la fusion du lot 2b : son ancien workflow régénérerait l'ancienne page.
 - Jamais de fusion dans `main` (le propriétaire fusionne par Pull Request).
 - Fin de lot : `Docs/lots/lot-N.md`.
 
@@ -66,5 +69,6 @@ Tant qu'elle est `noindex` : performance, accessibilité, bonnes pratiques seule
 - CLS : les textes remplis par JavaScript arrivent après le premier rendu ; réserver leur hauteur (`min-block-size`) pour ne pas décaler la page.
 - Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`.
 - Lighthouse ne fonctionne que sur http://localhost, pas sur file://.
+- La génération de la page Lots est tolérante aux pannes : en cas d'échec, page de repli et `::warning::`, la publication des aperçus `/lot-N/` continue.
 - Le réseau sortant est filtré par un proxy.
 - Le push de tag est refusé (403) : une seule tentative, le propriétaire pose le tag à la main (voir règles Git).

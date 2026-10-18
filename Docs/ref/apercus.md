@@ -1,0 +1,12 @@
+# Aperçus par lot et page Lots (référence durable)
+- Workflow `pages.yml`, job `deployer` (push sur `main` ou `lot-*`) : `actions/checkout` de la branche poussée avec `fetch-depth: 0` (historique complet, toutes les branches distantes).
+- Assemblage : `site/` reçoit `origin/main` (racine), puis chaque `origin/lot-*` (énumération automatique par `git for-each-ref`, aucune liste à la main) sous `site/lot-N/`, via `git archive` des seuls chemins publiés.
+- `/lot-N/index.html` est une redirection vers la première ligne de `apercu.txt` de la branche ; l'`index.html` d'origine du lot devient `attente.html`. Sans `apercu.txt` (lot 0) : pas de redirection.
+- Contrôle de la cible dans le workflow : caractères `A-Za-z0-9._/-` seulement, pas de `..`. `scripts/lots/logique.mjs` applique la même règle.
+- Scripts exécutés : ceux de la branche poussée (checkout de `github.ref`), pas ceux de `main`. Une ancienne branche qui reçoit un push régénère donc avec son ancien workflow.
+- `Docs/apercus.txt` (lignes `lot-N|descriptif`) est lu depuis la branche poussée par l'ancienne page `/apercus/` ; la page Lots ne s'en sert plus (fichier laissé en place).
+- Format de `apercu.txt` : ligne 1 = cible (chemin relatif ; fini par `/` = son `index.html`). Fichiers existants (lots 1, 1b, 1c, 2) : cible seule. Lignes optionnelles ensuite : `type: wireframe|hifi|technique`, `titre: <court>`.
+- Sans `type:` : cible `wireframes/…` = wireframe, autre cible = Hi-Fi. `technique` n'apparaît pas sur la page.
+- Titre : `titre:`, sinon premier titre de `Docs/lots/lot-<id>.md` sans `# Lot <id> — `, sinon « Lot <id> ».
+- Identifiant : `lot-<n><lettre?>` ; ordre `1 < 1b < 1c < 2 < 2b < 10`. « Fusionné » : `git merge-base --is-ancestor origin/<branche> origin/main`.
+- Code : `scripts/lots/logique.mjs` (pur, testé par `tests/lots.test.js`) ; rendu, génération et collecte aux parties B et C du lot 2b.
