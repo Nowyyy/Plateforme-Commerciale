@@ -1,9 +1,14 @@
 // Configurateur de cotes (E3-5) : seul le produit « complet » en dispose ; les autres produits affichent un message.
 // Saisie en entiers de millimètres, faisabilité évaluée à chaque frappe par evaluerCotes (logique pure).
 // Les textes issus des données sont posés par textContent seulement.
-import { CHAMPS, evaluerCotes, formaterMm, remplirGabarit, restaurerCotes } from './cotes-logique.js';
+import {
+  CHAMPS, construireCommande, evaluerCotes, formaterMm, peutAjouter, premierChampACorriger, remplirGabarit, restaurerCotes,
+} from './cotes-logique.js';
+import { modeValide } from './produit-logique.js';
 
 export const CLE_COTES = 'cotes';
+export const CLE_COMMANDE = 'commande';
+const CLE_MODE = 'mode';
 
 // Champ de saisie -> cote du schéma et de la liste « Où mesurer »
 const COTE_DU_CHAMP = { largeur: 'a', hauteur: 'b', tolerance: 'c' };
@@ -63,19 +68,21 @@ export function initialiserConfigurateur(donnees, produit) {
   const section = document.querySelector('[data-role="configurateur"]');
   if (!section) return;
   const outil = section.querySelector('.configurateur__outil');
-  const indisponible = section.querySelector('.configurateur__indisponible');
+  const nonComplet = section.querySelector('.configurateur__indisponible');
   if (!produit.complet || !produit.cotes) {
     outil.remove();
-    indisponible.hidden = false;
+    nonComplet.hidden = false;
     return;
   }
-  indisponible.remove();
+  nonComplet.remove();
 
   const textes = donnees.produit.configurateur;
   const limites = produit.cotes;
   const champs = Object.fromEntries(CHAMPS.map((nom) => [nom, section.querySelector(`#cote-${nom}`)]));
   const erreurs = Object.fromEntries(CHAMPS.map((nom) => [nom, section.querySelector(`#erreur-${nom}`)]));
   const faisabilite = section.querySelector('#cotes-faisabilite');
+  const indisponible = faisabilite.querySelector('#faisabilite-indisponible');
+  const ajouter = section.querySelector('#cotes-ajouter');
   const gabaritPlage = (nom) => remplirGabarit(textes.saisie.plage[nom], { min: formaterMm(limites[nom].min), max: formaterMm(limites[nom].max) });
   section.querySelector('#plage-largeur').textContent = gabaritPlage('largeur');
   section.querySelector('#plage-hauteur').textContent = gabaritPlage('hauteur');
@@ -116,14 +123,37 @@ export function initialiserConfigurateur(donnees, produit) {
     const evaluation = evaluerCotes(saisie, limites);
     afficherErreurs(evaluation);
     afficherFaisabilite(evaluation);
-    if (ecrire) ecrireSession(CLE_COTES, JSON.stringify({ produit: produit.id, ...saisie }));
+    // bouton jamais disabled : aria-disabled et classe (ambre seulement à l'état actif)
+    const actif = peutAjouter(evaluation);
+    ajouter.setAttribute('aria-disabled', actif ? 'false' : 'true');
+    ajouter.classList.toggle('bouton--action', actif);
+    ajouter.classList.toggle('bouton--secondaire', !actif);
+    if (ecrire) {
+      indisponible.textContent = '';
+      ecrireSession(CLE_COTES, JSON.stringify({ produit: produit.id, ...saisie }));
+    }
     return evaluation;
+  }
+
+  // Clic inactif : message dans la région de faisabilité, focus sur le premier champ à corriger.
+  // Clic actif : commande en sessionStorage (lue par le panier), puis navigation même si le stockage est refusé.
+  function ajouterAuPanier() {
+    const evaluation = evaluerCotes(lireSaisie(), limites);
+    if (!peutAjouter(evaluation)) {
+      indisponible.textContent = textes.action.indisponible;
+      champs[premierChampACorriger(evaluation)].focus();
+      return;
+    }
+    const commande = construireCommande(produit, modeValide(lireSession(CLE_MODE)), evaluation);
+    if (commande) ecrireSession(CLE_COMMANDE, JSON.stringify(commande));
+    window.location.assign(new URL(donnees.site.liens.panier, window.location.href));
   }
 
   const restaure = restaurerCotes(lireSession(CLE_COTES), produit.id);
   for (const nom of CHAMPS) champs[nom].value = restaure[nom];
   mettreAJour(false);
   section.querySelector('#cotes-saisie').addEventListener('input', () => mettreAJour(true));
+  ajouter.addEventListener('click', ajouterAuPanier);
   initialiserRepere(section);
   outil.setAttribute('aria-busy', 'false');
 }

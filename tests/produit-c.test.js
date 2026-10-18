@@ -39,15 +39,17 @@ describe('totalEstime et lignesPrix', () => {
 });
 
 describe('produit.html : mode de commande', () => {
-  it('contient un fieldset avec 2 boutons radio dans le bloc mode, et aucun bouton d\'action', () => {
-    const mode = html.slice(html.indexOf('data-role="mode"'), html.indexOf('<footer'));
+  it('contient un fieldset avec 2 boutons radio dans le bloc mode, et le bloc mode n\'a aucun bouton d\'action', () => {
+    const mode = html.slice(html.indexOf('data-role="mode"'), html.indexOf('data-role="configurateur"'));
     expect(mode).toMatch(/<h2[^>]*data-texte="produit\.textes\.mode\.titre"/);
     expect(mode).toMatch(/<fieldset[\s\S]*<legend[\s\S]*<\/fieldset>/);
     expect(mode.match(/<input[^>]*type="radio"[^>]*name="mode"/g)).toHaveLength(2);
     expect(mode).toMatch(/aria-live="polite"/);
     // le bouton « Menu » de l'en-tête partagé n'est pas un bouton d'action : seul le contenu de <main> est contrôlé
     const principal = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
-    expect(principal).not.toMatch(/<button[\s>]/);
+    // depuis le lot 6, le configurateur apporte le seul bouton de <main> : « Ajouter au panier » (type="button", jamais submit)
+    expect(principal.match(/<button[\s>]/g)).toHaveLength(1);
+    expect(principal).toMatch(/<button type="button"[^>]*id="cotes-ajouter"/);
     expect(principal).not.toMatch(/type="submit"/);
     expect(html).not.toContain('bouton--action');
     expect(lire('css/produit.css').replace(/\/\*[\s\S]*?\*\//g, '')).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);

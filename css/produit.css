@@ -397,48 +397,9 @@ html[data-rendu="erreur"] .configurateur {
   font-size: var(--text-sm);
 }
 
-/* Avant le remplissage : la place des blocs est réservée par point de rupture (CLS) ; mesures en mode DIY */
-.achat[aria-busy="true"] {
-  min-block-size: 21rem;
-}
-
-.mode[aria-busy="true"] {
-  min-block-size: 32.7rem;
-}
-
-@media (min-width: 400px) {
-  .achat[aria-busy="true"] {
-    min-block-size: 19.5rem;
-  }
-
-  .mode[aria-busy="true"] {
-    min-block-size: 29.8rem;
-  }
-}
-
-@media (min-width: 600px) {
-  .mode[aria-busy="true"] {
-    min-block-size: 27rem;
-  }
-}
-
 @media (min-width: 768px) {
   .mode__options {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .achat[aria-busy="true"] {
-    min-block-size: 14.2rem;
-  }
-
-  .mode[aria-busy="true"] {
-    min-block-size: 22.5rem;
-  }
-}
-
-@media (min-width: 1000px) {
-  .mode[aria-busy="true"] {
-    min-block-size: 20rem;
   }
 }
 
@@ -464,14 +425,6 @@ html[data-rendu="erreur"] .configurateur {
   .produit__mode {
     grid-column: 2;
     grid-row: 2;
-  }
-
-  .achat[aria-busy="true"] {
-    min-block-size: 16.3rem;
-  }
-
-  .mode[aria-busy="true"] {
-    min-block-size: 25.3rem;
   }
 }
 
@@ -875,5 +828,130 @@ html[data-rendu="erreur"] .configurateur {
 @media (min-width: 1200px) {
   .faisabilite {
     min-block-size: 9.75rem;
+  }
+}
+
+/* Avant le remplissage, la place de achat et de mode est réservée par largeur (CLS). Mesures du lot 6 : dix produits, modes DIY et pose,
+   de 360 à 1440 px (pas de 20 px). achat : hauteur mesurée, ou milieu de l'écart entre produits ; mode : milieu entre DIY et pose. */
+.achat[aria-busy="true"] {
+  min-block-size: 21.1rem;
+}
+
+.mode[aria-busy="true"] {
+  min-block-size: 35.8rem;
+}
+
+@media (min-width: 380px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 20.3rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 34.5rem;
+  }
+}
+
+@media (min-width: 420px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 19.5rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 32.2rem;
+  }
+}
+
+@media (min-width: 520px) {
+  .mode[aria-busy="true"] {
+    min-block-size: 29.4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 14.2rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 24.9rem;
+  }
+}
+
+@media (min-width: 820px) {
+  .mode[aria-busy="true"] {
+    min-block-size: 24.1rem;
+  }
+}
+
+@media (min-width: 1020px) {
+  .mode[aria-busy="true"] {
+    min-block-size: 22.7rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 17.4rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 27.7rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 16.1rem;
+  }
+}
+
+/* Action : « Ajouter au panier » (neutre tant que les cotes ne sont pas compatibles, ambre ensuite) et sa phrase d'aide */
+.action {
+  margin-block-start: var(--space-4);
+}
+
+.action__bouton {
+  inline-size: 100%;
+}
+
+.action__bouton[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.action__aide {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.faisabilite__indisponible {
+  margin: var(--space-2) 0 0;
+  font-weight: 600;
+}
+
+.faisabilite__indisponible:empty {
+  display: none;
+}
+
+/* Avant le remplissage, la place de l'outil est réservée (valeur la plus basse mesurée dans chaque plage, état « à saisir ») */
+.configurateur__outil[aria-busy="true"] {
+  min-block-size: 97rem;
+}
+
+@media (min-width: 768px) {
+  .configurateur__outil[aria-busy="true"] {
+    min-block-size: 56.7rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .configurateur__outil[aria-busy="true"] {
+    min-block-size: 55.3rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .configurateur__outil[aria-busy="true"] {
+    min-block-size: 52.5rem;
   }
 }
