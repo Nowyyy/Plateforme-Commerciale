@@ -151,7 +151,40 @@
         <p class="configurateur__intro" data-texte="produit.configurateur.intro"></p>
         <div class="configurateur__grille">
           <div class="configurateur__gauche">
-            <div class="configurateur__schema" id="cotes-schema"></div>
+            <div class="configurateur__schema" id="cotes-schema">
+              <svg class="schema" viewBox="0 0 400 300" role="img" aria-labelledby="schema-titre schema-desc" focusable="false">
+                <title id="schema-titre" data-texte="produit.configurateur.schema.title"></title>
+                <desc id="schema-desc" data-texte="produit.configurateur.schema.desc"></desc>
+                <defs>
+                  <pattern id="schema-hachure" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line class="schema__hachure" x1="0" y1="0" x2="0" y2="10"/>
+                  </pattern>
+                </defs>
+                <rect class="schema__mur" x="0" y="0" width="400" height="300"/>
+                <rect x="0" y="0" width="400" height="300" fill="url(#schema-hachure)"/>
+                <rect class="schema__ouverture" x="80" y="50" width="240" height="220"/>
+                <rect class="schema__barriere" x="80" y="160" width="240" height="110"/>
+                <rect class="schema__seuil" x="64" y="270" width="272" height="16"/>
+                <g id="cote-c" class="schema__cote">
+                  <rect class="schema__bande" x="48" y="80" width="32" height="50"/>
+                  <rect class="schema__bande" x="320" y="80" width="32" height="50"/>
+                  <circle class="schema__pastille" cx="64" cy="105" r="14"/>
+                  <text class="schema__lettre" x="64" y="105" data-texte="produit.configurateur.schema.lettres.c"></text>
+                </g>
+                <g id="cote-a" class="schema__cote">
+                  <path class="schema__fleche" d="M80 105H320M80 90v30M320 90v30"/>
+                  <path class="schema__pointe" d="M80 105l12-6v12zM320 105l-12-6v12z"/>
+                  <circle class="schema__pastille" cx="200" cy="105" r="14"/>
+                  <text class="schema__lettre" x="200" y="105" data-texte="produit.configurateur.schema.lettres.a"></text>
+                </g>
+                <g id="cote-b" class="schema__cote">
+                  <path class="schema__fleche" d="M120 160V270"/>
+                  <path class="schema__pointe" d="M120 160l-6 12h12zM120 270l-6-12h12z"/>
+                  <circle class="schema__pastille" cx="120" cy="215" r="14"/>
+                  <text class="schema__lettre" x="120" y="215" data-texte="produit.configurateur.schema.lettres.b"></text>
+                </g>
+              </svg>
+            </div>
             <h3 class="configurateur__sous-titre" id="titre-etapes" data-texte="produit.configurateur.etapesTitre"></h3>
             <ol class="etapes" aria-labelledby="titre-etapes" aria-busy="true">
               <template data-liste="configurateur.etapes">
@@ -162,8 +195,45 @@
           <div class="configurateur__droite">
             <fieldset class="saisie" id="cotes-saisie">
               <legend class="saisie__legende" data-texte="produit.configurateur.saisie.legende"></legend>
+              <div class="cote" data-cote="largeur">
+                <label class="etiquette cote__etiquette" for="cote-largeur" data-texte="produit.configurateur.saisie.champs.largeur.libelle"></label>
+                <input class="champ cote__champ" id="cote-largeur" type="text" inputmode="numeric" autocomplete="off" aria-describedby="aide-largeur erreur-largeur">
+                <p class="cote__aide" id="aide-largeur" data-texte="produit.configurateur.saisie.champs.largeur.aide"></p>
+                <p class="cote__erreur" id="erreur-largeur"></p>
+              </div>
+              <div class="cote" data-cote="hauteur">
+                <label class="etiquette cote__etiquette" for="cote-hauteur" data-texte="produit.configurateur.saisie.champs.hauteur.libelle"></label>
+                <input class="champ cote__champ" id="cote-hauteur" type="text" inputmode="numeric" autocomplete="off" aria-describedby="aide-hauteur erreur-hauteur">
+                <p class="cote__aide" id="aide-hauteur" data-texte="produit.configurateur.saisie.champs.hauteur.aide"></p>
+                <p class="cote__erreur" id="erreur-hauteur"></p>
+              </div>
+              <div class="cote" data-cote="tolerance">
+                <label class="etiquette cote__etiquette" for="cote-tolerance" data-texte="produit.configurateur.saisie.champs.tolerance.libelle"></label>
+                <input class="champ cote__champ" id="cote-tolerance" type="text" inputmode="numeric" autocomplete="off" aria-describedby="aide-tolerance erreur-tolerance">
+                <p class="cote__aide" id="aide-tolerance" data-texte="produit.configurateur.saisie.champs.tolerance.aide"></p>
+                <p class="cote__erreur" id="erreur-tolerance"></p>
+              </div>
+              <div class="plage">
+                <p class="plage__libelle"><span data-texte="produit.configurateur.saisie.plage.libelle"></span> <span class="plage__exemple" data-texte="produit.configurateur.saisie.plage.exemple"></span></p>
+                <ul class="plage__liste">
+                  <li id="plage-largeur"></li>
+                  <li id="plage-hauteur"></li>
+                </ul>
+              </div>
             </fieldset>
-            <div class="faisabilite" id="cotes-faisabilite" role="status" aria-live="polite"></div>
+            <div class="faisabilite" id="cotes-faisabilite" role="status" aria-live="polite" data-etat="saisir">
+              <svg class="faisabilite__icone" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle class="faisabilite__rond" cx="12" cy="12" r="10"/>
+                <path class="faisabilite__glyphe faisabilite__glyphe--saisir" d="M7.5 12h.01M12 12h.01M16.5 12h.01"/>
+                <path class="faisabilite__glyphe faisabilite__glyphe--compatible" d="m7.5 12.5 3 3 6-7"/>
+                <path class="faisabilite__glyphe faisabilite__glyphe--hors" d="M12 7v6.5M12 16.5v.01"/>
+              </svg>
+              <div class="faisabilite__corps">
+                <p class="faisabilite__titre" id="faisabilite-titre"></p>
+                <p class="faisabilite__texte" id="faisabilite-texte"></p>
+                <ul class="faisabilite__ecarts" id="faisabilite-ecarts"></ul>
+              </div>
+            </div>
             <div class="action" id="cotes-action"></div>
           </div>
         </div>
