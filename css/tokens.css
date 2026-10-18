@@ -27,13 +27,15 @@
   --color-amber-hover: #f59e0b;
   --color-focus-action: var(--color-navy);
   --color-avis-vide: #9aa8bd;
-  --color-hero-fin: #dde6f2;
+  --color-hero-debut: #d2e0f2;
   --color-illu-mur: #dde4ee;
   --color-illu-eau: #c9d6ea;
   --color-illu-dalle: #cbd5e1;
   --color-pastille: #e4ecf5;
   --color-puce: #64748b;
   --color-border-fort: #9aa8bd;
+  --color-relief: color-mix(in srgb, var(--color-navy) 10%, transparent);
+  --opacite-relief-mobile: 0.5;
 
   /* Polices */
   --font-heading: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;

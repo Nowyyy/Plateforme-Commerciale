@@ -105,7 +105,7 @@ test('carrousel des aléas à 1440 px : 3 cartes visibles, flèches cycliques', 
   const cartes = section.locator('.cartes > li');
   await expect(cartes).toHaveCount(4);
   await section.scrollIntoViewIfNeeded();
-  await page.evaluate(() => window.scrollTo(0, document.querySelector('#aleas').offsetTop));
+  await page.evaluate(() => window.scrollTo(0, window.scrollY + document.querySelector('#aleas').getBoundingClientRect().top));
   await expect(cartes.nth(2)).toBeInViewport({ ratio: 0.99 });
   await expect(cartes.nth(3)).not.toBeInViewport();
   await expect(precedent).toBeEnabled();

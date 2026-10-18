@@ -36,10 +36,10 @@ for (const largeur of [375, 1440]) {
     for (let i = 1; i < hauts.length; i++) {
       expect(hauts[i], `${ROLES[i]} sous ${ROLES[i - 1]}`).toBeGreaterThan(hauts[i - 1]);
     }
-    // aucun trou entre « comment », « reassurance » et « avis » (la réassurance s'intercale depuis le lot 3b)
-    const [comment, reassurance, avis] = await Promise.all(['comment', 'reassurance', 'avis'].map((r) => page.locator(`[data-role="${r}"]`).boundingBox()));
+    // aucun trou entre « comment », « reassurance » et « preuve » (la réassurance s'intercale depuis le lot 3b)
+    const [comment, reassurance, preuve] = await Promise.all(['comment', 'reassurance', 'preuve'].map((r) => page.locator(`[data-role="${r}"]`).boundingBox()));
     expect(Math.abs(reassurance.y - (comment.y + comment.height))).toBeLessThanOrEqual(1);
-    expect(Math.abs(avis.y - (reassurance.y + reassurance.height))).toBeLessThanOrEqual(1);
+    expect(Math.abs(preuve.y - (reassurance.y + reassurance.height))).toBeLessThanOrEqual(1);
   });
 
   for (const [libelle, cible] of [['Vendre sur la plateforme', /wireframes\/pro\.html$/], ['Mon compte', /wireframes\/connexion\.html$/]]) {

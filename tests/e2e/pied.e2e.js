@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const ROLES = ['en-tete', 'hero', 'recherche', 'aleas', 'protection', 'comment', 'reassurance', 'avis', 'preuve', 'pied'];
+const ROLES = ['en-tete', 'hero', 'recherche', 'aleas', 'protection', 'comment', 'reassurance', 'preuve', 'avis', 'pied'];
 
 for (const largeur of [375, 768, 1440]) {
   test(`page entière à ${largeur} px : console propre, aucun débordement, axe, ordre des 10 blocs`, async ({ page }, info) => {
@@ -52,12 +52,12 @@ test('pied : 1 colonne à 375 px, 3 colonnes à 1440 px, entrées « (à venir) 
     expect(await entree.evaluate((el) => el.tagName)).not.toBe('A');
     await expect(pied.getByRole('link', { name: libelle })).toHaveCount(0);
   }
-  await expect(pied.getByRole('link')).toHaveText(['Aléas', 'Comment ça marche', 'Vendre sur la plateforme', 'Mon compte', 'Panier', 'Service après-vente']);
+  await expect(pied.getByRole('link')).toHaveText(['Vendre sur la plateforme', 'Mon compte', 'Panier', 'Service après-vente']);
   await expect(pied.getByText('Démonstrateur : contenus fictifs, aucune vente')).toBeVisible();
 });
 
 for (const largeur of [375, 1440]) {
-  test(`parcours cliqués à ${largeur} px : pied, en-tête et ancre`, async ({ page }) => {
+  test(`parcours cliqués à ${largeur} px : pied et en-tête`, async ({ page }) => {
     await page.setViewportSize({ width: largeur, height: 900 });
     const ouvrir = async () => {
       await page.goto('/index.html');
@@ -77,10 +77,9 @@ for (const largeur of [375, 1440]) {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
     await ouvrir();
-    await page.locator('footer').getByRole('link', { name: 'Aléas', exact: true }).click();
-    const section = page.locator('[data-role="aleas"]');
-    await expect(section).toBeInViewport();
-    await expect(section).toBeFocused();
+    for (const libelle of ['Aléas', 'Comment ça marche']) {
+      await expect(page.locator('footer').getByRole('link', { name: libelle, exact: true })).toHaveCount(0);
+    }
   });
 }
 

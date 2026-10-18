@@ -37,7 +37,7 @@ describe('data/accueil.json : réassurance et preuve (lot 3b-B)', () => {
   });
 });
 
-describe('clés de index.html pour les blocs E1-7 et E1-9', () => {
+describe('clés de index.html pour les blocs E1-7 et E1-8', () => {
   const { hors, modeles } = extraire(html);
   it('toute clé data-liste, data-texte, data-texte-global, data-lien, data-icone se résout', () => {
     for (const [, cle] of cles(hors, 'data-texte|data-texte-global|data-lien|data-aria-label|data-placeholder')) {
@@ -63,11 +63,11 @@ describe('sprite et ordre des blocs', () => {
     expect(bouclier).not.toContain('<text');
     expect(sprite).not.toMatch(/<script/i);
   });
-  it('ordre relatif comment < reassurance < avis < preuve, avec les data-bloc E1-7, E1-8, E1-9', () => {
-    const pos = ['comment', 'reassurance', 'avis', 'preuve'].map((r) => html.indexOf(`data-role="${r}"`));
+  it('ordre relatif comment < reassurance < preuve < avis (avis juste avant le pied), avec les data-bloc E1-7, E1-8, E1-9', () => {
+    const pos = ['comment', 'reassurance', 'preuve', 'avis'].map((r) => html.indexOf(`data-role="${r}"`));
     for (const p of pos) expect(p).toBeGreaterThan(-1);
     expect([...pos].sort((a, b) => a - b)).toEqual(pos);
-    for (const [role, bloc] of [['reassurance', 'E1-7'], ['avis', 'E1-8'], ['preuve', 'E1-9']]) {
+    for (const [role, bloc] of [['reassurance', 'E1-7'], ['preuve', 'E1-8'], ['avis', 'E1-9']]) {
       expect(html).toMatch(new RegExp(`data-bloc="${bloc}" data-role="${role}"`));
     }
   });

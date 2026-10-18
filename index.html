@@ -20,6 +20,26 @@
   <script type="module" src="assets/js/carrousel.js"></script>
 </head>
 <body>
+  <div class="relief" aria-hidden="true">
+    <svg class="relief__groupe relief__groupe--1" viewBox="-190 -150 380 300" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <defs><path id="relief-blob" vector-effect="non-scaling-stroke" d="M-120 0C-125 -62 -45 -92 25 -82C105 -72 135 -12 112 42C90 94 22 104 -42 88C-100 72 -116 38 -120 0Z"/></defs>
+      <use href="#relief-blob" transform="scale(0.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.5)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.75)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.5)" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <svg class="relief__groupe relief__groupe--2" viewBox="-170 -170 340 340" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <g transform="rotate(30)">
+      <use href="#relief-blob" transform="scale(0.2)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.45)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.7)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.95)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.2)" vector-effect="non-scaling-stroke"/>
+      </g>
+    </svg>
+  </div>
   <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
   <a class="lien-evitement" href="#contenu" data-texte="site.evitement"></a>
   <svg class="sprite" aria-hidden="true" focusable="false">
@@ -112,7 +132,7 @@
         </figure>
       </div>
     </div>
-    <section class="bloc bloc--blanc" id="aleas" tabindex="-1" data-bloc="E1-4" data-role="aleas" aria-labelledby="titre-aleas">
+    <section class="bloc" id="aleas" tabindex="-1" data-bloc="E1-4" data-role="aleas" aria-labelledby="titre-aleas">
       <div class="conteneur">
         <h2 id="titre-aleas" data-texte="accueil.aleas.titre"></h2>
         <p class="bloc__intro" data-texte="accueil.aleas.intro"></p>
@@ -134,7 +154,7 @@
         </div>
       </div>
     </section>
-    <section class="bloc bloc--clair" id="protection" data-bloc="E1-5" data-role="protection" aria-labelledby="titre-protection">
+    <section class="bloc" id="protection" data-bloc="E1-5" data-role="protection" aria-labelledby="titre-protection">
       <div class="conteneur">
         <h2 id="titre-protection" data-texte="accueil.protection.titre"></h2>
         <p class="bloc__intro" data-texte="accueil.protection.intro"></p>
@@ -152,7 +172,7 @@
         </ul>
       </div>
     </section>
-    <section class="bloc bloc--blanc" id="comment" tabindex="-1" data-bloc="E1-6" data-role="comment" aria-labelledby="titre-comment">
+    <section class="bloc" id="comment" tabindex="-1" data-bloc="E1-6" data-role="comment" aria-labelledby="titre-comment">
       <div class="conteneur">
         <h2 id="titre-comment" data-texte="accueil.comment.titre"></h2>
         <ol class="etapes" aria-busy="true">
@@ -166,7 +186,7 @@
         </ol>
       </div>
     </section>
-    <section class="bloc bloc--clair reassurance" data-bloc="E1-7" data-role="reassurance" aria-labelledby="titre-reassurance">
+    <section class="bloc reassurance" data-bloc="E1-7" data-role="reassurance" aria-labelledby="titre-reassurance">
       <div class="conteneur">
         <h2 id="titre-reassurance" data-texte="accueil.reassurance.titre"></h2>
         <ul class="pastilles" aria-busy="true">
@@ -179,15 +199,7 @@
         </ul>
       </div>
     </section>
-    <section class="avis" data-bloc="E1-8" data-role="avis" data-aria-label="accueil.avis.aria">
-      <div class="conteneur avis__ligne">
-        <p class="avis__etoiles" aria-hidden="true"><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre avis__carre--partiel"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span></p>
-        <p class="avis__note" data-texte="accueil.avis.note"></p>
-        <p class="avis__nombre" data-texte="accueil.avis.nombre"></p>
-        <p class="avis__logo" data-texte="accueil.avis.logo"></p>
-      </div>
-    </section>
-    <section class="bloc bloc--blanc preuve" data-bloc="E1-9" data-role="preuve" aria-labelledby="titre-preuve">
+    <section class="bloc preuve" data-bloc="E1-8" data-role="preuve" aria-labelledby="titre-preuve">
       <div class="conteneur">
         <h2 id="titre-preuve" data-texte="accueil.preuve.titre"></h2>
         <p class="bloc__intro" data-texte="accueil.preuve.intro"></p>
@@ -206,6 +218,14 @@
           </dl>
         </div>
         <p class="preuve__note" data-texte="accueil.preuve.note"></p>
+      </div>
+    </section>
+    <section class="avis" data-bloc="E1-9" data-role="avis" data-aria-label="accueil.avis.aria">
+      <div class="conteneur avis__ligne">
+        <p class="avis__etoiles" aria-hidden="true"><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span><span class="avis__carre avis__carre--partiel"><svg viewBox="0 0 24 24" focusable="false"><path d="M12 3.2l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17.2l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg></span></p>
+        <p class="avis__note" data-texte="accueil.avis.note"></p>
+        <p class="avis__nombre" data-texte="accueil.avis.nombre"></p>
+        <p class="avis__logo" data-texte="accueil.avis.logo"></p>
       </div>
     </section>
   </main>

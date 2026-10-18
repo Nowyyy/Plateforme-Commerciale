@@ -21,14 +21,6 @@
         "titre": "Le site",
         "navigation": [
           {
-            "cle": "aleas",
-            "lien": "aleas"
-          },
-          {
-            "cle": "fonctionnement",
-            "lien": "comment"
-          },
-          {
             "cle": "pro",
             "lien": "pro"
           },

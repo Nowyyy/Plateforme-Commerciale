@@ -34,7 +34,7 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 - L'aperçu par lot `/lot-N/` (publication par branche, `apercu.txt`) reste en place pour tous les lots ; ne pas le retirer ni modifier le workflow ou les réglages GitHub sans accord explicite du propriétaire.
 - Page `/lots/` générée à chaque publication à partir des branches `lot-*` ; `apercus/` redirige vers elle. `apercu.txt` : cible sur la première ligne ; lignes optionnelles `type: wireframe|hifi|technique` et `titre: <court>`. Sans `type:`, une cible `wireframes/…` est un wireframe, toute autre cible un lot Hi-Fi. Chaque lot règle `apercu.txt` sur sa branche (`type: technique` pour un lot d'outillage). Les lots techniques n'apparaissent pas sur la page.
 - Aucune couleur en dur hors `css/tokens.css`.
-- Navigation commune : en-tête = Aléas, Comment ça marche, Vendre sur la plateforme, Mon compte, Panier ; pied = Mentions légales, À propos du démonstrateur, Service après-vente, rappel « aucune vente ». Comptes, connexion et formulaires sont simulés : mention démonstrateur sur chaque formulaire, valeurs fictives, rien envoyé ni enregistré (sessionStorage seulement dans la version interactive), jamais de données dans l'URL.
+- Navigation commune : en-tête = Vendre sur la plateforme, Mon compte, Panier ; pied = Vendre sur la plateforme, Mon compte, Panier, Mentions légales, À propos du démonstrateur, Service après-vente, rappel « aucune vente ». Comptes, connexion et formulaires sont simulés : mention démonstrateur sur chaque formulaire, valeurs fictives, rien envoyé ni enregistré (sessionStorage seulement dans la version interactive), jamais de données dans l'URL.
 - Wireframes : chaque bloc porte `data-bloc` (code visible, suit l'ordre de la page) et `data-role` (identifiant stable) ; les tests s'appuient sur `data-role` ; `Docs/lots/lot-1b.md` donne la correspondance anciens/nouveaux codes de l'accueil et du diagnostic.
 - Chemins relatifs partout (site servi sous `/<dépôt>/`).
 - Contenus fictifs, aucun vrai logo, aucun traceur, aucune police ni script externe.
@@ -51,14 +51,14 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 - Fin de lot : `Docs/lots/lot-N.md`.
 
 ## Règles du Hi-Fi (lot 2 et suivants)
-- Ordre final des blocs de l'accueil : en-tete, hero, recherche, aleas, protection, comment, reassurance, avis, preuve, pied ; les tests vérifient l'ordre relatif, jamais la liste exacte. Le pied de page est piloté par `data/site.json` (clé `pied`) ; une entrée sans `lien` est un texte non lié. L'en-tête ne contient plus Aléas ni Comment ça marche (ancres) : ils restent dans le pied.
+- Un seul fond de page pour toutes les sections de l'accueil (jeton de fond clair) ; les sections sont transparentes ; cartes, pastilles et blocs de données sont en fond blanc à bordure fine. Le dégradé du hero part d'une teinte bleutée et arrive exactement sur le fond de page.
+- Décor `.relief` (SVG en ligne, `aria-hidden`, `pointer-events: none`, couleur par le jeton `--color-relief`) : jamais de texte ni d'interaction dedans ; deux groupes à partir de 768 px, un seul en dessous.
+- Ordre final des blocs de l'accueil : en-tete, hero, recherche, aleas, protection, comment, reassurance, preuve, avis, pied (avis juste au-dessus du pied) ; les tests vérifient l'ordre relatif, jamais la liste exacte. Le pied de page est piloté par `data/site.json` (clé `pied`) ; une entrée sans `lien` est un texte non lié.
 - Listes (cartes, étapes) : elles viennent de `data/accueil.json` et sont rendues par des `<template data-liste="…">` ; clés relatives à l'élément (`data-texte`, `data-icone`), `.` pour une chaîne ; `data-lien` et `data-texte-global` restent globaux ; les nombres d'éléments ne sont jamais figés dans le HTML ou le CSS ; conteneurs en `aria-busy` jusqu'au remplissage.
-- Navigation Hi-Fi : en-tête = Aléas (`#aleas`), Comment ça marche (`#comment`), Vendre sur la plateforme, Mon compte, Panier ; les liens vers des pages pas encore en Hi-Fi pointent provisoirement vers `wireframes/` via `data/site.json` ; menu replié jusqu'à 1199 px ; le pied de page complet arrive au lot 3b.
+- Navigation Hi-Fi : les liens vers des pages pas encore en Hi-Fi pointent provisoirement vers `wireframes/` via `data/site.json` ; menu replié jusqu'à 1199 px.
 - Les textes visibles viennent de `data/*.json` par clés : `data-texte`, `data-lien` (ex. `site.liens.panier`), `data-aria-label`, `data-placeholder`. Exceptions en dur : `<title>`, meta description, message `noscript`, message d'erreur de chargement (dans `rendu.js`).
-- Liens temporaires vers `wireframes/` pilotés par `site.liens`, remplacés page par page (seules les données changent).
 - L'adresse saisie n'est jamais dans l'URL ni envoyée : `sessionStorage` seulement.
 - L'ambre est réservé aux boutons d'action ; texte sur fond ambre en bleu marine.
-- Aperçu de chaque lot : `apercu.txt` + branche `lot-N`.
 - `apercu.txt` : un lot de wireframes pointe vers `wireframes/`, un lot Hi-Fi vers une page Hi-Fi ; chaque lot règle ce fichier sur sa branche.
 
 ## Seuils Lighthouse des wireframes
@@ -68,12 +68,12 @@ Pour les pages de `wireframes/` : seulement performance, accessibilité et bonne
 Tant qu'elle est `noindex` : performance, accessibilité, bonnes pratiques seulement ; dès qu'elle devient indexable, la catégorie SEO s'applique avec son seuil.
 
 ## Pièges (voir `Docs/ref/environnement.md`)
-- Le pied de page, réutilisé sur d'autres pages, devra préfixer ses ancres (`index.html#aleas`) ; il n'est utilisé que sur l'accueil pour l'instant.
+- Le message d'erreur de la recherche d'adresse n'a plus de réserve de hauteur : son apparition suit une action de l'utilisateur, donc hors CLS ; ne pas la rétablir.
 - Un lot dont `apercu.txt` vise `index.html` : le workflow ne déplace plus l'`index.html` du lot (sinon boucle de redirection).
 - Les listes remplies par JavaScript (cartes, étapes) arrivent après le premier rendu : réserver leur hauteur (`min-block-size` par point de rupture), sinon le CLS dépasse 0,1.
 - CLS : les textes remplis par JavaScript arrivent après le premier rendu ; réserver leur hauteur (`min-block-size`) pour ne pas décaler la page.
 - Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`.
 - Lighthouse ne fonctionne que sur http://localhost, pas sur file://.
 - La génération de la page Lots est tolérante aux pannes : en cas d'échec, page de repli et `::warning::`, la publication des aperçus `/lot-N/` continue.
-- Le réseau sortant est filtré par un proxy.
+- Réseau sortant filtré par un proxy.
 - Le push de tag est refusé (403) : une seule tentative, le propriétaire pose le tag à la main (voir règles Git).
