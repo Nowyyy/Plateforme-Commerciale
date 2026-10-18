@@ -69,3 +69,13 @@ describe('workflow : page Lots (lot 2b)', () => {
     expect(lignesUses(workflow())).toEqual(lignesUses(main));
   });
 });
+
+describe('workflow : aperçu dont la cible est index.html', () => {
+  it('ne déplace ni ne remplace index.html quand la cible est index.html (pas de boucle)', () => {
+    const texte = readFileSync('.github/workflows/pages.yml', 'utf8');
+    const garde = texte.indexOf('if [ "$entree" = "index.html" ]');
+    expect(garde).toBeGreaterThan(-1);
+    expect(garde).toBeLessThan(texte.indexOf('mv "site/$nom/index.html"'));
+    expect(garde).toBeLessThan(texte.indexOf('printf \'<!doctype html>'));
+  });
+});
