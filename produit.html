@@ -123,7 +123,26 @@
       </section>
       <section class="produit__bloc produit__mode" data-bloc="E3-4" data-role="mode" aria-labelledby="titre-mode">
         <h2 id="titre-mode" data-texte="produit.textes.mode.titre"></h2>
-        <div class="mode" aria-busy="true"></div>
+        <div class="mode" aria-busy="true">
+          <fieldset class="mode__choix">
+            <legend class="mode__legende" data-texte="produit.textes.mode.legende"></legend>
+            <div class="mode__options">
+              <label class="mode__option">
+                <input class="mode__radio" type="radio" name="mode" value="diy">
+                <span class="mode__titre" data-texte="produit.modes.diy.titre"></span>
+                <span class="mode__aide" data-texte="produit.modes.diy.aide"></span>
+              </label>
+              <label class="mode__option">
+                <input class="mode__radio" type="radio" name="mode" value="pose">
+                <span class="mode__titre" data-texte="produit.modes.pose.titre"></span>
+                <span class="mode__aide" data-texte="produit.modes.pose.aide"></span>
+              </label>
+            </div>
+          </fieldset>
+          <div class="mode__detail" id="mode-detail" aria-live="polite"></div>
+          <dl class="mode__prix" id="mode-prix" data-aria-label="produit.textes.mode.recapitulatif"></dl>
+          <p class="mode__mention" data-texte="produit.textes.mode.mention"></p>
+        </div>
       </section>
     </div>
   </main>
