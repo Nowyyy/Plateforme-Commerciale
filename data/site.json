@@ -55,7 +55,7 @@
     "accueil": "index.html",
     "aleas": "#aleas",
     "comment": "#comment",
-    "diagnostic": "wireframes/diagnostic.html",
+    "diagnostic": "diagnostic.html",
     "pro": "wireframes/pro.html",
     "connexion": "wireframes/connexion.html",
     "panier": "wireframes/panier.html",

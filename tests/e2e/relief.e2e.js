@@ -66,7 +66,7 @@ for (const largeur of [375, 1440]) {
     await ouvrir(page, largeur);
     await page.fill('#adresse', ADRESSE);
     await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
-    await page.waitForURL('**/wireframes/diagnostic.html');
+    await page.waitForURL('**/diagnostic.html');
     expect(page.url()).not.toContain('Tilleuls');
     expect(decodeURIComponent(page.url())).not.toContain('Lyon');
   });
