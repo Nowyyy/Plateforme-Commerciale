@@ -5,6 +5,7 @@ import { valider, CLE_STOCKAGE } from './adresse-validation.js';
 import { TOUS, aleaValide, calquesParDefaut, filtrerEquipements, formaterPrix, libelleNiveau, niveauGlobal, segmentsJauge } from './diagnostic-logique.js';
 
 export const CLE_ALEA = 'alea';
+export const CLE_PRODUIT = 'produit';
 
 function lireSession(cle, retirer = false) {
   try {
@@ -43,6 +44,7 @@ function afficherEquipements(donnees, filtre) {
     etiquettePrix.textContent = textes.equipements.prix;
     carte.querySelector('.equipement__prix').textContent = formaterPrix(equipement.prix);
     carte.querySelector('.equipement__exemple').textContent = textes.equipements.exemple;
+    carte.querySelector('li').setAttribute('data-id', equipement.id);
     const lien = carte.querySelector('a');
     lien.textContent = textes.equipements.voirFiche;
     lien.setAttribute('href', lienProduit);
@@ -154,6 +156,14 @@ function afficherPastilles(donnees, etat) {
   });
 }
 
+// « Voir la fiche » : l'équipement de la carte est mémorisé en session (jamais dans l'URL) pour la fiche produit.
+function initialiserFiches() {
+  document.getElementById('liste-equipements').addEventListener('click', (e) => {
+    const id = e.target.closest('a')?.closest('li[data-id]')?.getAttribute('data-id');
+    if (id) ecrireSession(CLE_PRODUIT, id);
+  });
+}
+
 function initialiserAdresse(donnees) {
   const formulaire = document.getElementById('formulaire-adresse');
   const champ = document.getElementById('adresse-evaluee');
@@ -190,6 +200,7 @@ if (typeof document !== 'undefined') {
     // Aléa choisi sur l'accueil : lu une seule fois, puis supprimé ; absent ou inconnu = « Tous ».
     const etat = { filtre: aleaValide(donnees.diagnostic.aleas.map((a) => a.id), lireSession(CLE_ALEA, true)) ?? TOUS };
     initialiserAdresse(donnees);
+    initialiserFiches();
     afficherPastilles(donnees, etat);
     initialiserCalques(donnees);
     mettreAJour(donnees, etat.filtre, false);

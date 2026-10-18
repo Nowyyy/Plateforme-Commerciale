@@ -28,7 +28,7 @@ test('équipements : « Tous » donne 3 cartes complètes ; « Inondations » de
     await expect(carte).toContainText('Neutralise :');
     await expect(carte).toContainText('Prix indicatif TTC :');
     await expect(carte).toContainText('(exemple)');
-    await expect(carte.getByRole('link', { name: /Voir la fiche/ })).toHaveAttribute('href', 'wireframes/produit.html');
+    await expect(carte.getByRole('link', { name: /Voir la fiche/ })).toHaveAttribute('href', 'produit.html');
   }
   await page.getByRole('radio', { name: 'Inondations' }).check({ force: true });
   const n = await cartes(page).count();
@@ -115,8 +115,9 @@ for (const largeur of [375, 1440]) {
     expect(new URL(page.url()).search).toBe('');
     expect(await page.evaluate(() => sessionStorage.getItem('alea'))).toBeNull();
 
+    const titre = await cartes(page).first().getByRole('heading', { level: 3 }).textContent();
     await page.getByRole('link', { name: /Voir la fiche/ }).first().click();
-    await page.waitForURL('**/wireframes/produit.html');
-    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await page.waitForURL('**/produit.html');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(titre);
   });
 }

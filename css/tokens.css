@@ -77,6 +77,10 @@
   --diag-text-h2: 1.375rem;
   --diag-text-h3: 1.125rem;
 
+  /* Fiche produit (lot 5) : h1 28 px (36 px dès 768 px), h2 22 px */
+  --produit-text-h1: 1.75rem;
+  --produit-text-h2: 1.375rem;
+
   /* Espacements */
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -113,6 +117,7 @@
     --text-hero: 3rem;
     --text-h2: 2.25rem;
     --diag-text-h1: 2.25rem;
+    --produit-text-h1: 2.25rem;
   }
 }
 

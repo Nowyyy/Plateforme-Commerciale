@@ -1,0 +1,474 @@
+/* Fiche produit Hi-Fi, zone haute (écran 3). Mobile d'abord ; ruptures 768 et 1200 px.
+   L'en-tête, le pied et le relief viennent de accueil.css. */
+
+/* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
+html:not([data-rendu]) .fil__liste,
+html:not([data-rendu]) .produit {
+  visibility: hidden;
+}
+
+html[data-rendu="erreur"] .fil,
+html[data-rendu="erreur"] .produit {
+  display: none;
+}
+
+/* Fil d'Ariane (E3-1) */
+.fil {
+  padding-block: var(--space-3) 0;
+}
+
+.fil__liste {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+
+.fil__liste li {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  column-gap: var(--space-2);
+}
+
+.fil__liste li + li::before {
+  content: "›" / "";
+  color: var(--color-puce);
+}
+
+.fil__lien {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.fil__courant {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+/* Grille des blocs E3-2 à E3-4 : une colonne dans l'ordre du HTML (la mise en page à deux colonnes vient avec la partie C) */
+.produit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+  padding-block: var(--space-4) var(--space-7);
+}
+
+.produit__bloc {
+  min-inline-size: 0;
+}
+
+.produit h1 {
+  margin-block-end: var(--space-3);
+  font-size: var(--produit-text-h1);
+  /* hauteur d'une ligne réservée avant le remplissage (CLS) */
+  min-block-size: calc(var(--produit-text-h1) * var(--leading-tight));
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.produit h2 {
+  font-size: var(--produit-text-h2);
+}
+
+/* Galerie E3-2 : panneau 4:3 (espace réservé, jamais d'image réelle), légende, quatre vignettes radio */
+.galerie__panneau {
+  margin: 0;
+}
+
+.galerie__visuel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  background: var(--color-card);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-secondary);
+}
+
+.galerie__libelle {
+  position: relative;
+  z-index: 1;
+  padding-inline: var(--space-4);
+  text-align: center;
+  font-size: var(--text-sm);
+}
+
+/* Vue vidéo : rectangle 16:9 centré, glyphe de lecture en CSS, décoratif (aucun élément <video>) */
+.galerie__video {
+  display: none;
+  position: absolute;
+  inset-inline: var(--space-4);
+  inset-block: 50% auto;
+  aspect-ratio: 16 / 9;
+  transform: translateY(-50%);
+  background: var(--color-pastille);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  color: var(--color-navy);
+}
+
+.galerie__video::before {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  background: currentcolor;
+  clip-path: polygon(30% 15%, 90% 50%, 30% 85%);
+  transform: translate(-50%, -50%);
+}
+
+.galerie__panneau[data-type="video"] .galerie__video {
+  display: block;
+}
+
+.galerie__panneau[data-type="video"] .galerie__libelle {
+  align-self: end;
+  margin-block-end: var(--space-3);
+}
+
+.galerie__legende {
+  min-block-size: calc(2 * var(--leading-body) * 1em);
+  margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.galerie__vues {
+  min-inline-size: 0;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.galerie__liste {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  min-block-size: 3.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vignette {
+  min-inline-size: 0;
+}
+
+.vignette__choix {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 100%;
+  min-block-size: 3.5rem;
+  padding: var(--space-2);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  text-align: center;
+  cursor: pointer;
+}
+
+/* L'entrée radio reste dans l'arbre d'accessibilité et au clavier : seule la vignette est dessinée */
+.vignette__radio {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.vignette__court {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+/* Sélection : trait épais en bas et texte en gras ; focus : contour vert */
+.vignette__choix:has(:checked) {
+  border-color: var(--color-navy);
+  box-shadow: inset 0 -4px 0 var(--color-green);
+  background: var(--color-pastille);
+}
+
+.vignette__choix:has(:checked) .vignette__court {
+  font-weight: 800;
+}
+
+.vignette__choix:has(:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* Achat E3-3 */
+.achat__mention {
+  margin-block-end: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.achat__ligne {
+  min-block-size: calc(var(--leading-body) * 1em);
+  margin-block-end: var(--space-2);
+  overflow-wrap: anywhere;
+}
+
+.achat__etiquette {
+  color: var(--color-text-secondary);
+}
+
+.achat__exemple {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.achat__prix {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+
+.achat .achat__pastilles {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  min-block-size: calc(3 * var(--touch-min) + 2 * var(--space-2));
+  margin-block-start: var(--space-4);
+}
+
+.achat .achat__pastilles .pastille {
+  flex: none;
+}
+
+@media (min-width: 768px) {
+  .galerie__liste {
+    gap: var(--space-3);
+  }
+
+  .galerie__legende {
+    min-block-size: calc(var(--leading-body) * 1em);
+  }
+
+  .achat .achat__pastilles {
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-block-size: calc(var(--touch-min) + 2 * var(--space-3));
+  }
+
+  .achat .achat__pastilles .pastille {
+    flex: 1 1 12rem;
+  }
+}
+
+/* Mode de commande E3-4 : bascule radio (empilée, côte à côte dès 768 px), détail, récapitulatif de prix */
+.mode__choix {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.mode__legende {
+  padding: 0;
+  margin-block-end: var(--space-3);
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+.mode__options {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+.mode__option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+  padding: var(--space-4);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.mode__radio {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.mode__titre {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.mode__aide {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
+/* Sélection : trait épais en bas et titre en gras ; focus : contour vert */
+.mode__option:has(:checked) {
+  border-color: var(--color-navy);
+  background: var(--color-pastille);
+  box-shadow: inset 0 -4px 0 var(--color-green);
+}
+
+.mode__option:has(:checked) .mode__titre {
+  font-weight: 800;
+}
+
+.mode__option:has(:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.mode__detail {
+  margin-block-start: var(--space-4);
+}
+
+.mode__ligne {
+  margin-block-end: var(--space-2);
+  overflow-wrap: anywhere;
+}
+
+.mode__prix {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-2) 0;
+  margin: var(--space-4) 0 0;
+  padding: var(--space-4);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.mode__prix dt,
+.mode__prix dd {
+  margin: 0;
+}
+
+.mode__prix dd {
+  padding-inline-start: var(--space-4);
+  text-align: end;
+}
+
+.mode__total {
+  padding-block-start: var(--space-2);
+  border-block-start: 1px solid var(--color-border);
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+.mode__mention {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* Avant le remplissage : la place des blocs est réservée par point de rupture (CLS) ; mesures en mode DIY */
+.achat[aria-busy="true"] {
+  min-block-size: 21rem;
+}
+
+.mode[aria-busy="true"] {
+  min-block-size: 32.7rem;
+}
+
+@media (min-width: 400px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 19.5rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 29.8rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .mode[aria-busy="true"] {
+    min-block-size: 27rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .mode__options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .achat[aria-busy="true"] {
+    min-block-size: 14.2rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 22.5rem;
+  }
+}
+
+@media (min-width: 1000px) {
+  .mode[aria-busy="true"] {
+    min-block-size: 20rem;
+  }
+}
+
+/* Dès 1200 px : galerie à gauche (60 %) sur deux rangées, achat puis mode à droite (40 %) */
+@media (min-width: 1200px) {
+  .produit {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    grid-template-rows: auto 1fr;
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  .produit__galerie {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+  }
+
+  .produit__achat {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .produit__mode {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .achat[aria-busy="true"] {
+    min-block-size: 16.3rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 25.3rem;
+  }
+}
