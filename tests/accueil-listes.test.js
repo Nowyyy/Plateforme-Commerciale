@@ -145,3 +145,12 @@ describe('ordre des blocs de accueil.html', () => {
     expect(html).toMatch(/<section[^>]*id="comment"[^>]*tabindex="-1"/);
   });
 });
+
+describe('style des blocs (partie B)', () => {
+  it('css/accueil.css et css/composants.css sans couleur hexadécimale ; accueil.html sans style= hors sprite', () => {
+    for (const f of ['css/accueil.css', 'css/composants.css']) {
+      expect(lire(f).replace(/\/\*[\s\S]*?\*\//g, ''), f).not.toMatch(/#[0-9a-f]{3,8}\b/i);
+    }
+    expect(html.replace(sprite, '')).not.toMatch(/\sstyle=/i);
+  });
+});
