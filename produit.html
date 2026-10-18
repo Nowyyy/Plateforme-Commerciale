@@ -87,11 +87,39 @@
     <div class="conteneur produit">
       <section class="produit__bloc produit__galerie" data-bloc="E3-2" data-role="galerie" aria-labelledby="titre-galerie">
         <h2 class="visuellement-cache" id="titre-galerie" data-texte="produit.textes.galerie.titre"></h2>
-        <div class="galerie" aria-busy="true"></div>
+        <div class="galerie" aria-busy="true">
+          <figure class="galerie__panneau" id="galerie-panneau" data-type="image" aria-live="polite">
+            <div class="galerie__visuel">
+              <span class="galerie__libelle" data-texte="produit.textes.galerie.placeholder"></span>
+              <span class="galerie__video" aria-hidden="true"></span>
+            </div>
+            <figcaption class="galerie__legende" id="galerie-legende"></figcaption>
+          </figure>
+          <fieldset class="galerie__vues">
+            <legend class="visuellement-cache" data-texte="produit.textes.galerie.legendeVues"></legend>
+            <ul class="galerie__liste" aria-busy="true">
+              <template data-liste="galerie.vues">
+                <li class="vignette">
+                  <label class="vignette__choix"><input class="vignette__radio" type="radio" name="vue"><span class="vignette__court" data-texte="court"></span></label>
+                </li>
+              </template>
+            </ul>
+          </fieldset>
+        </div>
       </section>
       <section class="produit__bloc produit__achat" data-bloc="E3-3" data-role="achat" aria-labelledby="titre-achat">
         <h1 id="titre-achat"></h1>
-        <div class="achat" aria-busy="true"></div>
+        <div class="achat" aria-busy="true">
+          <p class="achat__mention" data-texte="produit.textes.achat.mention"></p>
+          <p class="achat__ligne"><span data-texte="produit.textes.achat.reference"></span> <span id="achat-reference"></span> <span class="achat__exemple" data-texte="produit.textes.achat.exemple"></span></p>
+          <p class="achat__ligne"><span class="achat__etiquette" data-texte="produit.textes.achat.prix"></span> <strong class="achat__prix" id="achat-prix"></strong></p>
+          <p class="achat__ligne"><span class="achat__etiquette" data-texte="produit.textes.achat.livraison"></span> <span id="achat-delai"></span> <span class="achat__exemple" data-texte="produit.textes.achat.exemple"></span></p>
+          <ul class="pastilles achat__pastilles" aria-busy="true">
+            <template data-liste="badges">
+              <li class="pastille" data-texte="titre"></li>
+            </template>
+          </ul>
+        </div>
       </section>
       <section class="produit__bloc produit__mode" data-bloc="E3-4" data-role="mode" aria-labelledby="titre-mode">
         <h2 id="titre-mode" data-texte="produit.textes.mode.titre"></h2>

@@ -66,8 +66,9 @@ describe('produit.html', () => {
     for (const [, attribut, cle] of [...html.matchAll(/data-(texte|lien|aria-label|placeholder)="([^"]+)"/g)].filter((m) => absolue(m[2]))) {
       try { resoudre(donnees, cle); } catch { echecs.push(`${attribut}=${cle}`); }
     }
-    for (const [, cle] of [...html.matchAll(/data-liste="([^"]+)"/g)].filter((m) => absolue(m[1]))) {
-      const valeur = cle.split('.').reduce((o, s) => o?.[s], donnees);
+    // listes du pied : « site.… » ; listes de la fiche : relatives à produit.json (« galerie.vues », « badges »)
+    for (const [, cle] of [...html.matchAll(/data-liste="([^"]+)"/g)].filter((m) => /^(site\.|galerie\.|badges$)/.test(m[1]))) {
+      const valeur = cle.split('.').reduce((o, s) => o?.[s], cle.startsWith('site.') ? donnees : produit);
       if (!Array.isArray(valeur)) echecs.push(`liste=${cle}`);
     }
     expect(echecs).toEqual([]);

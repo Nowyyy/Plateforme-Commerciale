@@ -35,6 +35,8 @@ const CLES_REQUISES = {
   'comment.liste': ['titre', 'texte'],
   'reassurance.liste': ['id', 'titre'],
   'preuve.chiffres': ['valeur', 'libelle'],
+  'galerie.vues': ['id', 'type', 'court', 'legende'],
+  badges: ['id', 'titre'],
   'site.pied.colonnes': ['titre', 'entrees'],
   entrees: ['texte'],
 };
@@ -247,7 +249,7 @@ export async function demarrer() {
     const erreurs = remplir(document, donnees);
     if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
     remplirLiensExternes(document, donnees);
-    remplirListes(document, donnees.accueil ?? {}, donnees);
+    remplirListes(document, donnees.accueil ?? donnees.produit ?? {}, donnees);
     if (typeof donnees.accueil?.titrePage === 'string') document.title = donnees.accueil.titrePage;
     racine.dataset.rendu = 'pret';
   } catch (e) {

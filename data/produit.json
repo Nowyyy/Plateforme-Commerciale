@@ -169,8 +169,7 @@
     "galerie": {
       "titre": "Vues du produit",
       "legendeVues": "Vues",
-      "placeholder": "Visuel à venir (exemple)",
-      "lecture": "Lecture"
+      "placeholder": "Visuel à venir (exemple)"
     },
     "achat": {
       "mention": "Produit fictif (exemple)",

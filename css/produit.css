@@ -39,6 +39,8 @@
 }
 
 .fil__courant {
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
   color: var(--color-text-secondary);
   font-weight: 600;
 }
@@ -64,4 +66,202 @@
 
 .produit h2 {
   font-size: var(--produit-text-h2);
+}
+
+/* Galerie E3-2 : panneau 4:3 (espace réservé, jamais d'image réelle), légende, quatre vignettes radio */
+.galerie__panneau {
+  margin: 0;
+}
+
+.galerie__visuel {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  background: var(--color-card);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-lg);
+  color: var(--color-text-secondary);
+}
+
+.galerie__libelle {
+  position: relative;
+  z-index: 1;
+  padding-inline: var(--space-4);
+  text-align: center;
+  font-size: var(--text-sm);
+}
+
+/* Vue vidéo : rectangle 16:9 centré, glyphe de lecture en CSS, décoratif (aucun élément <video>) */
+.galerie__video {
+  display: none;
+  position: absolute;
+  inset-inline: var(--space-4);
+  inset-block: 50% auto;
+  aspect-ratio: 16 / 9;
+  transform: translateY(-50%);
+  background: var(--color-pastille);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  color: var(--color-navy);
+}
+
+.galerie__video::before {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  background: currentcolor;
+  clip-path: polygon(30% 15%, 90% 50%, 30% 85%);
+  transform: translate(-50%, -50%);
+}
+
+.galerie__panneau[data-type="video"] .galerie__video {
+  display: block;
+}
+
+.galerie__panneau[data-type="video"] .galerie__libelle {
+  align-self: end;
+  margin-block-end: var(--space-3);
+}
+
+.galerie__legende {
+  min-block-size: calc(2 * var(--leading-body) * 1em);
+  margin-block-start: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.galerie__vues {
+  min-inline-size: 0;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.galerie__liste {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  min-block-size: 3.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.vignette {
+  min-inline-size: 0;
+}
+
+.vignette__choix {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  block-size: 100%;
+  min-block-size: 3.5rem;
+  padding: var(--space-2);
+  background: var(--color-card);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  text-align: center;
+  cursor: pointer;
+}
+
+/* L'entrée radio reste dans l'arbre d'accessibilité et au clavier : seule la vignette est dessinée */
+.vignette__radio {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.vignette__court {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+/* Sélection : trait épais en bas et texte en gras ; focus : contour vert */
+.vignette__choix:has(:checked) {
+  border-color: var(--color-navy);
+  box-shadow: inset 0 -4px 0 var(--color-green);
+  background: var(--color-pastille);
+}
+
+.vignette__choix:has(:checked) .vignette__court {
+  font-weight: 800;
+}
+
+.vignette__choix:has(:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* Achat E3-3 */
+.achat__mention {
+  margin-block-end: var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.achat__ligne {
+  min-block-size: calc(var(--leading-body) * 1em);
+  margin-block-end: var(--space-2);
+  overflow-wrap: anywhere;
+}
+
+.achat__etiquette {
+  color: var(--color-text-secondary);
+}
+
+.achat__exemple {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.achat__prix {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  font-weight: 800;
+}
+
+.achat .achat__pastilles {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--space-2);
+  min-block-size: calc(3 * var(--touch-min) + 2 * var(--space-2));
+  margin-block-start: var(--space-4);
+}
+
+.achat .achat__pastilles .pastille {
+  flex: none;
+}
+
+@media (min-width: 768px) {
+  .galerie__liste {
+    gap: var(--space-3);
+  }
+
+  .galerie__legende {
+    min-block-size: calc(var(--leading-body) * 1em);
+  }
+
+  .achat .achat__pastilles {
+    flex-direction: row;
+    flex-wrap: wrap;
+    min-block-size: calc(var(--touch-min) + 2 * var(--space-3));
+  }
+
+  .achat .achat__pastilles .pastille {
+    flex: 1 1 12rem;
+  }
 }
