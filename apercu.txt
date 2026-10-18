@@ -1,1 +1,3 @@
-wireframes/
+wireframes/index.html
+type: technique
+titre: Page Lots
