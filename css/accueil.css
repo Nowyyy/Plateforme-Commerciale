@@ -113,7 +113,7 @@
   font-size: var(--text-sm);
 }
 
-/* Panneau de navigation : replié sur mobile, en ligne dès 768 px */
+/* Panneau de navigation : replié (bouton Menu) jusqu'à 1199 px, en ligne dès 1200 px : cinq libellés ne tiennent pas en ligne à 768 px */
 .nav {
   flex-basis: 100%;
   display: none;
@@ -134,11 +134,25 @@
   display: flex;
   align-items: center;
   min-block-size: var(--touch-min);
-  padding-inline: var(--space-3);
   border-top: 1px solid var(--color-border-on-navy);
   color: var(--color-on-navy-muted);
   font-family: var(--font-heading);
   font-weight: 600;
+}
+
+.nav__lien {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-block-size: var(--touch-min);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-on-navy);
+  text-decoration: none;
+}
+
+.nav__lien:hover {
+  background: var(--color-navy-hover);
 }
 
 .nav .nav__panier {
@@ -162,7 +176,9 @@
   .hero__titre {
     min-block-size: calc(2 * var(--leading-hero) * 1em);
   }
+}
 
+@media (min-width: 1200px) {
   .entete__menu,
   .entete__panier-barre {
     display: none;
@@ -182,7 +198,6 @@
 
   .nav li {
     border-top: 0;
-    padding-inline: var(--space-3);
   }
 
   .nav .nav__panier {
@@ -516,4 +531,75 @@
 .pied p {
   margin: 0;
   min-block-size: 1lh;
+}
+
+/* Blocs E1-4 à E1-6 : squelette (mise en forme finale aux parties B et C) */
+.sprite {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+  overflow: hidden;
+}
+
+.visuellement-cache {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.bloc {
+  padding-block: var(--space-7);
+  scroll-margin-top: var(--space-4);
+}
+
+.bloc--blanc {
+  background: var(--color-card);
+}
+
+.bloc--clair {
+  background: var(--color-bg);
+}
+
+.bloc:focus {
+  outline: none;
+}
+
+.bloc:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: -3px;
+}
+
+.cartes,
+.etapes,
+.carte-bloc__familles {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cartes {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.icone {
+  inline-size: 3rem;
+  block-size: 3rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

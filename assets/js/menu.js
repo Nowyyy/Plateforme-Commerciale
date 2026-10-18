@@ -1,5 +1,17 @@
 // Menu mobile : bouton avec aria-expanded / aria-controls, fermé par défaut.
 const OUVERT = 'est-ouvert';
+// Même seuil que la navigation en ligne dans css/accueil.css.
+const SEUIL_BUREAU = '(min-width: 1200px)';
+
+// Ancre interne : après le défilement natif, la section reçoit le focus (tabindex="-1").
+export function gererAncres(racine = document) {
+  racine.addEventListener('click', (e) => {
+    const lien = e.target.closest('a[href^="#"]');
+    const cible = lien && racine.getElementById(lien.getAttribute('href').slice(1));
+    if (!cible) return;
+    requestAnimationFrame(() => cible.focus({ preventScroll: true }));
+  });
+}
 
 export function initialiser(racine = document) {
   const bouton = racine.querySelector('[data-menu-bouton]');
@@ -25,9 +37,12 @@ export function initialiser(racine = document) {
     if (e.target.closest('a')) regler(false);
   });
 
-  window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+  window.matchMedia(SEUIL_BUREAU).addEventListener('change', (e) => {
     if (e.matches) regler(false);
   });
 }
 
-if (typeof document !== 'undefined') initialiser();
+if (typeof document !== 'undefined') {
+  initialiser();
+  gererAncres();
+}

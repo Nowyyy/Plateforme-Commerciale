@@ -6,7 +6,7 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 
 ## Arborescence
 - `index.html` : page d'attente (lot 0)
-- `accueil.html` : accueil Hi-Fi en cours, `noindex` jusqu'au lot 3, deviendra `index.html`
+- `accueil.html` : accueil Hi-Fi en cours (blocs E1-1 à E1-6 et E1-8 ; pictogrammes dans un sprite SVG en ligne), `noindex` jusqu'au lot 3, deviendra `index.html`
 - `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `attente.css`, `wireframe.css` (wireframes)
 - `data/` : `site.json`, `accueil.json` (tous les textes et liens visibles)
 - `scripts/lots/` : génération de la page Lots (sans dépendance ; logique pure dans `logique.mjs`)
@@ -52,6 +52,8 @@ Performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (
 - Fin de lot : `Docs/lots/lot-N.md`.
 
 ## Règles du Hi-Fi (lot 2 et suivants)
+- Listes (cartes, étapes) : elles viennent de `data/accueil.json` et sont rendues par des `<template data-liste="…">` ; clés relatives à l'élément (`data-texte`, `data-icone`), `.` pour une chaîne ; `data-lien` et `data-texte-global` restent globaux ; les nombres d'éléments ne sont jamais figés dans le HTML ou le CSS ; conteneurs en `aria-busy` jusqu'au remplissage.
+- Navigation Hi-Fi : en-tête = Aléas (`#aleas`), Comment ça marche (`#comment`), Vendre sur la plateforme, Mon compte, Panier ; les liens vers des pages pas encore en Hi-Fi pointent provisoirement vers `wireframes/` via `data/site.json` ; menu replié jusqu'à 1199 px ; le pied de page complet arrive au lot 3b.
 - Les textes visibles viennent de `data/*.json` par clés : `data-texte`, `data-lien` (ex. `site.liens.panier`), `data-aria-label`, `data-placeholder`. Exceptions en dur : `<title>`, meta description, message `noscript`, message d'erreur de chargement (dans `rendu.js`).
 - Liens temporaires vers `wireframes/` pilotés par `site.liens`, remplacés page par page (seules les données changent).
 - L'adresse saisie n'est jamais dans l'URL ni envoyée : `sessionStorage` seulement.
@@ -66,6 +68,7 @@ Pour les pages de `wireframes/` : seulement performance, accessibilité et bonne
 Tant qu'elle est `noindex` : performance, accessibilité, bonnes pratiques seulement ; dès qu'elle devient indexable, la catégorie SEO s'applique avec son seuil.
 
 ## Pièges (voir `Docs/ref/environnement.md`)
+- Les listes remplies par JavaScript (cartes, étapes) arrivent après le premier rendu : réserver leur hauteur (`min-block-size` par point de rupture), sinon le CLS dépasse 0,1.
 - CLS : les textes remplis par JavaScript arrivent après le premier rendu ; réserver leur hauteur (`min-block-size`) pour ne pas décaler la page.
 - Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`.
 - Lighthouse ne fonctionne que sur http://localhost, pas sur file://.

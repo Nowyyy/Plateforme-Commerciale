@@ -21,5 +21,104 @@
     "bouton": "Évaluer mon exposition",
     "microtexte": "Démonstrateur : l'adresse reste dans votre navigateur et n'est ni envoyée ni enregistrée ailleurs.",
     "erreur": "Saisissez une adresse d'au moins 5 caractères."
+  },
+  "aleas": {
+    "titre": "Quatre aléas, des solutions adaptées",
+    "intro": "Choisissez l'aléa qui vous concerne pour découvrir les équipements adaptés.",
+    "lien": "Voir les solutions",
+    "liste": [
+      {
+        "id": "inondations",
+        "icone": "inondation",
+        "titre": "Inondations et crues",
+        "familles": [
+          "Batardeaux",
+          "Clapets anti-retour",
+          "Pompes"
+        ]
+      },
+      {
+        "id": "grele-vents",
+        "icone": "grele-vent",
+        "titre": "Grêle et vents violents",
+        "familles": [
+          "Boucliers",
+          "Volets extrudés",
+          "Filets de toiture"
+        ]
+      },
+      {
+        "id": "feux-de-foret",
+        "icone": "feu",
+        "titre": "Feux de forêt",
+        "familles": [
+          "Sprinklers de toiture",
+          "Grilles pare-braises"
+        ]
+      },
+      {
+        "id": "canicule",
+        "icone": "chaleur",
+        "titre": "Canicule et chaleur extrême",
+        "familles": [
+          "Cool roofing",
+          "Isolants réflecteurs"
+        ]
+      }
+    ]
+  },
+  "protection": {
+    "titre": "Protéger aussi les personnes",
+    "intro": "Des équipements pour se prémunir du froid, de la chaleur et des chutes.",
+    "lien": "Voir les solutions",
+    "liste": [
+      {
+        "id": "froid",
+        "icone": "froid",
+        "titre": "Froid",
+        "familles": [
+          "Gilets chauffants",
+          "Gants chauffants",
+          "Sous-vêtements thermiques"
+        ]
+      },
+      {
+        "id": "chaleur",
+        "icone": "chaleur",
+        "titre": "Chaleur",
+        "familles": [
+          "Gilets refroidissants",
+          "Casquettes",
+          "Bandanas"
+        ]
+      },
+      {
+        "id": "chutes",
+        "icone": "chute",
+        "titre": "Chutes",
+        "familles": [
+          "Gilets anti-chute",
+          "Harnais",
+          "Longes"
+        ]
+      }
+    ]
+  },
+  "comment": {
+    "titre": "Comment ça marche",
+    "liste": [
+      {
+        "titre": "Diagnostic du bien",
+        "texte": "Indiquez votre adresse ou vos cotes pour évaluer l'exposition de votre maison."
+      },
+      {
+        "titre": "Recommandation d'équipements",
+        "texte": "Des équipements certifiés d'usine, adaptés aux aléas détectés."
+      },
+      {
+        "titre": "Choix de la pose",
+        "texte": "Posez vous-même avec un tutoriel, ou confiez la pose à un artisan certifié."
+      }
+    ]
   }
 }
