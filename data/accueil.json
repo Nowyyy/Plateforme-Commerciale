@@ -23,9 +23,11 @@
     "erreur": "Saisissez une adresse d'au moins 5 caractères."
   },
   "aleas": {
-    "titre": "Quatre aléas, des solutions adaptées",
+    "titre": "À chaque aléa immobilier sa solution",
     "intro": "Choisissez l'aléa qui vous concerne pour découvrir les équipements adaptés.",
     "lien": "Voir les solutions",
+    "precedent": "Aléas précédents",
+    "suivant": "Aléas suivants",
     "liste": [
       {
         "id": "inondations",

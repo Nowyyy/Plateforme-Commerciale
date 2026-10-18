@@ -625,6 +625,7 @@ html:not([data-rendu]) .bloc__intro {
 }
 
 .carte-bloc {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-inline-size: 0;
@@ -713,6 +714,10 @@ html:not([data-rendu]) .bloc__intro {
 }
 
 /* Hauteurs mesurées avec les données actuelles (4 aléas, 3 protections), appliquées avant le remplissage seulement */
+.carrousel__fleche {
+  display: none;
+}
+
 .cartes--aleas[aria-busy="true"] {
   min-block-size: 77.5rem;
 }
@@ -732,8 +737,81 @@ html:not([data-rendu]) .bloc__intro {
 }
 
 @media (min-width: 1200px) {
+  /* Aléas : 3 cartes visibles, les suivantes défilent (flèches) ; la piste reste une grille à une rangée */
   .cartes--aleas {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - 2 * var(--space-4)) / 3);
+    margin-block: calc(-1 * var(--space-2));
+    padding-block: var(--space-2);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .cartes--aleas::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cartes--aleas > li {
+    scroll-snap-align: start;
+  }
+
+  .carrousel {
+    position: relative;
+  }
+
+  .carrousel__fleche {
+    position: absolute;
+    inset-block-start: 50%;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    inline-size: var(--touch-min);
+    block-size: var(--touch-min);
+    margin-block-start: calc(var(--touch-min) / -2);
+    padding: 0;
+    border: 1px solid var(--color-border-fort);
+    border-radius: 50%;
+    background: var(--color-card);
+    color: var(--color-navy);
+    box-shadow: var(--shadow-md);
+    font-family: var(--font-heading);
+    font-size: var(--text-lg);
+    font-weight: 800;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .carrousel__fleche[hidden] {
+    display: none;
+  }
+
+  .carrousel__fleche:hover:not(:disabled) {
+    background: var(--color-pastille);
+  }
+
+  .carrousel__fleche:disabled {
+    opacity: 0.4;
+    box-shadow: none;
+    cursor: default;
+  }
+
+  .carrousel__fleche--precedent {
+    inset-inline-start: calc(var(--touch-min) / -2);
+  }
+
+  .carrousel__fleche--suivant {
+    inset-inline-end: calc(var(--touch-min) / -2);
+  }
+
+  .carrousel__fleche--precedent::before {
+    content: "←" / "";
+  }
+
+  .carrousel__fleche--suivant::before {
+    content: "→" / "";
   }
 
   .cartes--aleas[aria-busy="true"],
@@ -743,6 +821,119 @@ html:not([data-rendu]) .bloc__intro {
 
   .cartes--protection {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Comment ça marche E1-6 : liste ordonnée, numéros ronds (décoratifs), filet de liaison */
+.etapes {
+  margin-block-start: var(--space-5);
+  counter-reset: etape;
+}
+
+.etape {
+  position: relative;
+  min-inline-size: 0;
+  padding-block-end: var(--space-6);
+  padding-inline-start: 3.5rem;
+  counter-increment: etape;
+}
+
+.etape:last-of-type {
+  padding-block-end: 0;
+}
+
+.etape__numero {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: grid;
+  place-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.etape__numero::before {
+  content: counter(etape) / "";
+}
+
+.etape:not(:last-of-type)::after {
+  content: "";
+  position: absolute;
+  inset-block: 2.75rem calc(0.25rem - var(--space-1));
+  inset-inline-start: calc(1.25rem - 1px);
+  inline-size: 2px;
+  background: var(--color-border-fort);
+}
+
+.etape h3 {
+  margin-block: var(--space-2) var(--space-2);
+  font-size: var(--text-h3);
+}
+
+.etape p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+/* Réserve de hauteur avant remplissage (mesurée) */
+.etapes[aria-busy="true"] {
+  min-block-size: 27.3rem;
+}
+
+@media (min-width: 414px) {
+  .etapes[aria-busy="true"] {
+    min-block-size: 24.1rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .etapes[aria-busy="true"] {
+    min-block-size: 21rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .etapes[aria-busy="true"] {
+    min-block-size: 17.8rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .etapes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+
+  .etapes[aria-busy="true"] {
+    min-block-size: 8.7rem;
+  }
+
+  .etape {
+    padding: 3.5rem 0 0;
+  }
+
+  .etape:last-of-type {
+    padding: 3.5rem 0 0;
+  }
+
+  .etape:not(:last-of-type)::after {
+    inset-block: 1.25rem auto;
+    inset-inline: 3rem calc(0.5rem - var(--space-6));
+    inline-size: auto;
+    block-size: 2px;
+  }
+
+  .etape h3 {
+    margin-block-start: 0;
   }
 }
 

@@ -3,8 +3,13 @@ import { test, expect } from '@playwright/test';
 const ATTENDU = { aleas: 4, protection: 3 };
 
 // Nombre de colonnes déduit des positions (left) des cartes
+// (seules les cartes visibles dans la piste comptent : les autres du carrousel défilent)
 const colonnes = (page, role) => page.evaluate((r) => {
-  const lefts = [...document.querySelectorAll(`[data-role="${r}"] .cartes > li`)].map((li) => Math.round(li.getBoundingClientRect().left));
+  const piste = document.querySelector(`[data-role="${r}"] .cartes`).getBoundingClientRect();
+  const lefts = [...document.querySelectorAll(`[data-role="${r}"] .cartes > li`)]
+    .map((li) => li.getBoundingClientRect())
+    .filter((b) => b.left < piste.right - 1 && b.right > piste.left + 1)
+    .map((b) => Math.round(b.left));
   return new Set(lefts).size;
 }, role);
 
@@ -32,7 +37,7 @@ for (const largeur of [375, 1440]) {
 
 test('colonnes mesurées par les positions des cartes', async ({ page }) => {
   await page.goto('/accueil.html');
-  const attendu = [[375, 1, 1], [768, 2, 1], [1440, 4, 3]];
+  const attendu = [[375, 1, 1], [768, 2, 1], [1440, 3, 3]];
   for (const [largeur, aleas, protection] of attendu) {
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.waitForSelector('html[data-rendu="pret"]');
@@ -74,7 +79,7 @@ test('robustesse : 5 aléas, aucun débordement et retour à la ligne', async ({
     }));
     expect(scroll, `débordement à ${largeur}`).toBeLessThanOrEqual(client);
     const rangees = await page.evaluate(() => new Set([...document.querySelectorAll('[data-role="aleas"] .cartes > li')].map((li) => Math.round(li.getBoundingClientRect().top))).size);
-    expect(rangees, `rangées à ${largeur}`).toBe({ 375: 5, 768: 3, 1440: 2 }[largeur]);
+    expect(rangees, `rangées à ${largeur}`).toBe({ 375: 5, 768: 3, 1440: 1 }[largeur]);
     if (largeur === 768) await page.screenshot({ path: 'test-results/accueil-5-aleas-768.png', fullPage: true });
   }
 });
@@ -89,3 +94,38 @@ for (const largeur of [375, 1440]) {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 }
+
+test('carrousel des aléas à 1440 px : 3 cartes visibles, flèches pour faire défiler', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto('/accueil.html');
+  await page.waitForSelector('html[data-rendu="pret"]');
+  const section = page.locator('[data-role="aleas"]');
+  const precedent = section.getByRole('button', { name: 'Aléas précédents' });
+  const suivant = section.getByRole('button', { name: 'Aléas suivants' });
+  const cartes = section.locator('.cartes > li');
+  await expect(cartes).toHaveCount(4);
+  await section.scrollIntoViewIfNeeded();
+  await page.evaluate(() => window.scrollTo(0, document.querySelector('#aleas').offsetTop));
+  await expect(cartes.nth(2)).toBeInViewport({ ratio: 0.99 });
+  await expect(cartes.nth(3)).not.toBeInViewport();
+  await expect(precedent).toBeDisabled();
+  await expect(suivant).toBeEnabled();
+  expect((await suivant.boundingBox()).width).toBeGreaterThanOrEqual(44);
+  await suivant.click();
+  await expect(cartes.nth(3)).toBeInViewport({ ratio: 0.99 });
+  await expect(cartes.nth(0)).not.toBeInViewport();
+  await expect(suivant).toBeDisabled();
+  await precedent.click();
+  await expect(cartes.nth(0)).toBeInViewport({ ratio: 0.99 });
+  await expect(precedent).toBeDisabled();
+  await page.screenshot({ path: 'test-results/accueil-carrousel-1440.png' });
+});
+
+test('carrousel : flèches masquées sous 1200 px où toutes les cartes sont visibles', async ({ page }) => {
+  for (const largeur of [375, 768]) {
+    await page.setViewportSize({ width: largeur, height: 900 });
+    await page.goto('/accueil.html');
+    await page.waitForSelector('html[data-rendu="pret"]');
+    for (const fleche of await page.locator('.carrousel__fleche').all()) await expect(fleche).toBeHidden();
+  }
+});

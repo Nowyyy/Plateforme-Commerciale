@@ -17,6 +17,7 @@
   <script type="module" src="assets/js/rendu.js"></script>
   <script type="module" src="assets/js/menu.js"></script>
   <script type="module" src="assets/js/adresse.js"></script>
+  <script type="module" src="assets/js/carrousel.js"></script>
 </head>
 <body>
   <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
@@ -116,6 +117,8 @@
       <div class="conteneur">
         <h2 id="titre-aleas" data-texte="accueil.aleas.titre"></h2>
         <p class="bloc__intro" data-texte="accueil.aleas.intro"></p>
+        <div class="carrousel" data-carrousel>
+        <button type="button" class="carrousel__fleche carrousel__fleche--precedent" data-carrousel-precedent data-aria-label="accueil.aleas.precedent" hidden></button>
         <ul class="cartes cartes--aleas" aria-busy="true">
           <template data-liste="aleas.liste">
             <li class="carte-bloc">
@@ -128,6 +131,8 @@
             </li>
           </template>
         </ul>
+        <button type="button" class="carrousel__fleche carrousel__fleche--suivant" data-carrousel-suivant data-aria-label="accueil.aleas.suivant" hidden></button>
+        </div>
       </div>
     </section>
     <section class="bloc bloc--clair" id="protection" data-bloc="E1-5" data-role="protection" aria-labelledby="titre-protection">

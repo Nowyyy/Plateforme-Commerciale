@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { resoudre, resoudreDans, validerListe } from '../assets/js/rendu.js';
+import { etatFleches } from '../assets/js/carrousel.js';
 import { extraire } from './outils/gabarits.mjs';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
@@ -152,5 +153,31 @@ describe('style des blocs (partie B)', () => {
       expect(lire(f).replace(/\/\*[\s\S]*?\*\//g, ''), f).not.toMatch(/#[0-9a-f]{3,8}\b/i);
     }
     expect(html.replace(sprite, '')).not.toMatch(/\sstyle=/i);
+  });
+});
+
+describe('carrousel des aléas', () => {
+  it('etatFleches : rien à faire défiler, début, milieu, fin', () => {
+    expect(etatFleches(0, 900, 900)).toEqual({ visible: false, precedent: false, suivant: false });
+    expect(etatFleches(0, 900, 1200)).toEqual({ visible: true, precedent: false, suivant: true });
+    expect(etatFleches(150, 900, 1500)).toEqual({ visible: true, precedent: true, suivant: true });
+    expect(etatFleches(300, 900, 1200)).toEqual({ visible: true, precedent: true, suivant: false });
+  });
+
+  it('le titre des aléas et les libellés des flèches viennent des données', () => {
+    expect(accueil.aleas.titre).toBe('À chaque aléa immobilier sa solution');
+    expect(texte(accueil.aleas.precedent) && texte(accueil.aleas.suivant)).toBe(true);
+    expect(html).toContain('data-aria-label="accueil.aleas.precedent"');
+    expect(html).toContain('data-aria-label="accueil.aleas.suivant"');
+  });
+});
+
+describe('comment ça marche (partie C)', () => {
+  it('les trois étapes sont dans le gabarit d\'une liste ordonnée <ol>, numéro visuel aria-hidden', () => {
+    expect(accueil.comment.liste).toHaveLength(3);
+    const bloc = html.match(/<section[^>]*data-role="comment"[\s\S]*?<\/section>/)[0];
+    expect(bloc).toMatch(/<ol class="etapes"[^>]*>\s*<template data-liste="comment\.liste">[\s\S]*<\/template>\s*<\/ol>/);
+    expect(bloc).toMatch(/<span class="etape__numero" aria-hidden="true"><\/span>/);
+    expect(bloc).toMatch(/<h3 data-texte="titre">/);
   });
 });
