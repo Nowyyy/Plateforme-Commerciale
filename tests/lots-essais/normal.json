@@ -1,0 +1,46 @@
+{
+  "entrees": [
+    {
+      "branche": "lot-0",
+      "apercu": null,
+      "bilan": null,
+      "fusionne": true
+    },
+    {
+      "branche": "lot-1c",
+      "apercu": "wireframes/",
+      "bilan": "# Lot 1c — Wireframes écrans 5 à 13",
+      "fusionne": true
+    },
+    {
+      "branche": "lot-2",
+      "apercu": "accueil.html",
+      "bilan": "# Lot 2 — Accueil Hi-Fi, partie haute",
+      "fusionne": true
+    },
+    {
+      "branche": "lot-3a",
+      "apercu": "accueil.html\ntitre: Aléas et protection",
+      "bilan": null,
+      "fusionne": true
+    },
+    {
+      "branche": "lot-3b",
+      "apercu": "accueil.html\ntitre: Comment ça marche",
+      "bilan": null,
+      "fusionne": true
+    },
+    {
+      "branche": "lot-4",
+      "apercu": "accueil.html\ntitre: Diagnostic en cours",
+      "bilan": null,
+      "fusionne": false
+    },
+    {
+      "branche": "lot-5",
+      "apercu": "wireframes/index.html\ntype: technique\ntitre: Outillage",
+      "bilan": null,
+      "fusionne": false
+    }
+  ]
+}

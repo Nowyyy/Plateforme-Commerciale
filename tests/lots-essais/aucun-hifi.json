@@ -1,0 +1,16 @@
+{
+  "entrees": [
+    {
+      "branche": "lot-1",
+      "apercu": "wireframes/",
+      "bilan": null,
+      "fusionne": true
+    },
+    {
+      "branche": "lot-1c",
+      "apercu": "wireframes/",
+      "bilan": null,
+      "fusionne": false
+    }
+  ]
+}

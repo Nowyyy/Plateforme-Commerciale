@@ -56,7 +56,6 @@ jobs:
             git archive "$ref" $chemins | tar -x -C "$cible"
           }
           copier origin/main site
-          liens=""
           for ref in $(git for-each-ref --format='%(refname:short)' 'refs/remotes/origin/lot-*'); do
             nom="${ref#origin/}"
             copier "$ref" "site/$nom"
@@ -70,12 +69,10 @@ jobs:
               fi
               printf '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0; url=%s"><title>Aperçu du %s</title></head><body><p><a href="%s">Aperçu du %s</a></p></body></html>' "$entree" "$nom" "$entree" "$nom" > "site/$nom/index.html"
             fi
-            # descriptif du lot : ligne « lot-N|texte » de Docs/apercus.txt (échappé pour le HTML)
-            desc="$(grep -m1 "^$nom|" Docs/apercus.txt 2>/dev/null | cut -d'|' -f2- | tr -d '\r' | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g' || true)"
-            liens="$liens<li><a href=\"../$nom/\">$nom</a><p>$desc</p></li>"
           done
-          mkdir -p site/apercus
-          printf '<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Aperçus par lot</title></head><body><main><h1>Aperçus par lot</h1><p>Démonstrateur : contenus fictifs, aucune vente</p><ul>%s</ul></main></body></html>' "$liens" > site/apercus/index.html
+      - name: "Générer la page Lots (tolérant aux pannes, la publication continue en cas d'échec)"
+        continue-on-error: true
+        run: node scripts/lots/generer.mjs site --git
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
