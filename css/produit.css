@@ -3,12 +3,14 @@
 
 /* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
 html:not([data-rendu]) .fil__liste,
-html:not([data-rendu]) .produit {
+html:not([data-rendu]) .produit,
+html:not([data-rendu]) .configurateur {
   visibility: hidden;
 }
 
 html[data-rendu="erreur"] .fil,
-html[data-rendu="erreur"] .produit {
+html[data-rendu="erreur"] .produit,
+html[data-rendu="erreur"] .configurateur {
   display: none;
 }
 
@@ -395,48 +397,9 @@ html[data-rendu="erreur"] .produit {
   font-size: var(--text-sm);
 }
 
-/* Avant le remplissage : la place des blocs est réservée par point de rupture (CLS) ; mesures en mode DIY */
-.achat[aria-busy="true"] {
-  min-block-size: 21rem;
-}
-
-.mode[aria-busy="true"] {
-  min-block-size: 32.7rem;
-}
-
-@media (min-width: 400px) {
-  .achat[aria-busy="true"] {
-    min-block-size: 19.5rem;
-  }
-
-  .mode[aria-busy="true"] {
-    min-block-size: 29.8rem;
-  }
-}
-
-@media (min-width: 600px) {
-  .mode[aria-busy="true"] {
-    min-block-size: 27rem;
-  }
-}
-
 @media (min-width: 768px) {
   .mode__options {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .achat[aria-busy="true"] {
-    min-block-size: 14.2rem;
-  }
-
-  .mode[aria-busy="true"] {
-    min-block-size: 22.5rem;
-  }
-}
-
-@media (min-width: 1000px) {
-  .mode[aria-busy="true"] {
-    min-block-size: 20rem;
   }
 }
 
@@ -463,12 +426,532 @@ html[data-rendu="erreur"] .produit {
     grid-column: 2;
     grid-row: 2;
   }
+}
 
+/* Configurateur de cotes E3-5 : pleine largeur, sous la grille de la zone haute */
+.configurateur {
+  padding-block: 0 var(--space-7);
+}
+
+.configurateur h2 {
+  margin-block-end: var(--space-3);
+  font-size: var(--produit-text-h2);
+}
+
+.configurateur__intro {
+  margin-block-end: var(--space-4);
+}
+
+.configurateur__grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+}
+
+.configurateur__gauche,
+.configurateur__droite {
+  min-inline-size: 0;
+}
+
+.configurateur__message {
+  max-inline-size: 40rem;
+  margin-block-end: var(--space-3);
+}
+
+.configurateur__retour {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-text);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+@media (min-width: 1200px) {
+  .configurateur__grille {
+    gap: var(--space-4);
+  }
+}
+
+/* Schéma E3-5 : vue de face (SVG en ligne, rapport 4:3) ; couleurs par jetons, aucun texte hors les lettres A, B, C */
+.configurateur__schema {
+  margin: 0 0 var(--space-4);
+  overflow: hidden;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.schema {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 4 / 3;
+}
+
+.schema__mur {
+  fill: var(--color-illu-mur);
+}
+
+.schema__hachure {
+  stroke: var(--color-border-fort);
+  stroke-width: 1.5;
+}
+
+.schema__ouverture {
+  fill: var(--color-card);
+  stroke: var(--color-navy);
+  stroke-width: 2;
+}
+
+.schema__barriere {
+  fill: var(--color-pastille);
+  stroke: var(--color-navy);
+  stroke-width: 2;
+  stroke-dasharray: 8 5;
+}
+
+.schema__seuil {
+  fill: var(--color-illu-dalle);
+  stroke: var(--color-navy);
+  stroke-width: 2;
+}
+
+.schema__bande {
+  fill: var(--color-card);
+  stroke: var(--color-navy);
+  stroke-width: 2;
+  stroke-dasharray: 5 4;
+}
+
+.schema__fleche {
+  fill: none;
+  stroke: var(--color-navy);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+
+.schema__pointe {
+  fill: var(--color-navy);
+  stroke: var(--color-navy);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.schema__pastille {
+  fill: var(--color-card);
+  stroke: var(--color-navy);
+  stroke-width: 2;
+}
+
+.schema__lettre {
+  fill: var(--color-navy);
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 800;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+/* Cote active (champ ou survol) : trait plus épais et pastille pleine, jamais la couleur seule */
+.schema__cote.est-actif .schema__fleche {
+  stroke-width: 6;
+}
+
+.schema__cote.est-actif .schema__pointe {
+  stroke-width: 4;
+}
+
+.schema__cote.est-actif .schema__bande {
+  stroke-width: 5;
+  stroke-dasharray: none;
+}
+
+.schema__cote.est-actif .schema__pastille {
+  fill: var(--color-navy);
+}
+
+.schema__cote.est-actif .schema__lettre {
+  fill: var(--color-on-navy);
+}
+
+/* Liste « Où mesurer » */
+.configurateur__sous-titre {
+  margin-block-end: var(--space-3);
+  font-size: var(--diag-text-h3);
+}
+
+.etapes {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.etapes__item {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-3);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-inline-start: 4px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+}
+
+.etapes__lettre {
+  display: grid;
+  place-items: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border: 2px solid var(--color-navy);
+  border-radius: 50%;
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+.etapes__texte {
+  overflow-wrap: anywhere;
+}
+
+.etapes__item[aria-current="true"] {
+  background: var(--color-pastille);
+  border-inline-start-color: var(--color-navy);
+}
+
+.etapes__item[aria-current="true"] .etapes__lettre {
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+}
+
+/* Saisie : trois champs en millimètres */
+.saisie {
+  min-inline-size: 0;
+  margin: 0;
+  padding: var(--space-4);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.saisie__legende {
+  padding-inline: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 800;
+}
+
+.cote {
+  margin-block-end: var(--space-4);
+}
+
+.cote__etiquette {
+  margin-block-end: var(--space-2);
+}
+
+.cote__champ {
+  font-variant-numeric: tabular-nums;
+}
+
+.cote__aide {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* Erreur de saisie : texte, icône « ! » et filet marine, sans rouge ; sans réserve de hauteur (suite à une action de l'utilisateur, hors CLS) */
+.cote__erreur {
+  margin: var(--space-2) 0 0;
+  padding-inline-start: var(--space-3);
+  border-inline-start: 4px solid var(--color-navy);
+  font-weight: 600;
+}
+
+.cote__erreur:empty {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.cote__erreur:empty::before {
+  content: none;
+}
+
+.cote__erreur::before {
+  content: "!" / "";
+  display: inline-block;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin-inline-end: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  line-height: 1.25rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.plage {
+  padding: var(--space-3);
+  background: var(--color-pastille);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.plage__libelle {
+  margin: 0 0 var(--space-1);
+  font-weight: 600;
+}
+
+.plage__exemple {
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.plage__liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Faisabilité : région d'état (aria-live) ; état donné par l'icône et le texte, jamais par la couleur seule */
+.faisabilite {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+  min-block-size: 13rem;
+  margin-block-start: var(--space-4);
+  padding: var(--space-4);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-inline-start: 4px solid var(--color-navy);
+  border-radius: var(--radius-md);
+  font-variant-numeric: tabular-nums;
+}
+
+.faisabilite__icone {
+  inline-size: 2rem;
+  block-size: 2rem;
+  fill: none;
+  stroke: var(--color-navy);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.faisabilite__rond {
+  fill: var(--color-card);
+}
+
+.faisabilite__glyphe {
+  display: none;
+}
+
+.faisabilite[data-etat="saisir"] .faisabilite__glyphe--saisir,
+.faisabilite[data-etat="compatible"] .faisabilite__glyphe--compatible,
+.faisabilite[data-etat="hors"] .faisabilite__glyphe--hors {
+  display: inline;
+}
+
+.faisabilite[data-etat="compatible"] .faisabilite__rond {
+  fill: var(--color-navy);
+}
+
+.faisabilite[data-etat="compatible"] .faisabilite__glyphe {
+  stroke: var(--color-on-navy);
+}
+
+.faisabilite[data-etat="hors"] .faisabilite__rond {
+  stroke-width: 3;
+}
+
+.faisabilite__corps {
+  min-inline-size: 0;
+}
+
+.faisabilite__titre {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 800;
+}
+
+.faisabilite__texte {
+  margin: var(--space-1) 0 0;
+}
+
+.faisabilite__ecarts {
+  margin: var(--space-2) 0 0;
+  padding-inline-start: var(--space-5);
+  font-weight: 600;
+}
+
+@media (min-width: 768px) {
+  .configurateur__grille {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+}
+
+/* Hauteur réservée à la faisabilité (état « hors tolérance » avec un écart) : le pied ne bouge pas quand l'état change ; mesures par largeur */
+@media (min-width: 480px) {
+  .faisabilite {
+    min-block-size: 11.25rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .faisabilite {
+    min-block-size: 9.75rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .faisabilite {
+    min-block-size: 13rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .faisabilite {
+    min-block-size: 11.25rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .faisabilite {
+    min-block-size: 9.75rem;
+  }
+}
+
+/* Avant le remplissage, la place de achat et de mode est réservée par largeur (CLS). Mesures du lot 6 : dix produits, modes DIY et pose,
+   de 360 à 1440 px (pas de 20 px). achat : hauteur mesurée, ou milieu de l'écart entre produits ; mode : milieu entre DIY et pose. */
+.achat[aria-busy="true"] {
+  min-block-size: 21.1rem;
+}
+
+.mode[aria-busy="true"] {
+  min-block-size: 35.8rem;
+}
+
+@media (min-width: 380px) {
   .achat[aria-busy="true"] {
-    min-block-size: 16.3rem;
+    min-block-size: 20.3rem;
   }
 
   .mode[aria-busy="true"] {
-    min-block-size: 25.3rem;
+    min-block-size: 34.5rem;
+  }
+}
+
+@media (min-width: 420px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 19.5rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 32.2rem;
+  }
+}
+
+@media (min-width: 520px) {
+  .mode[aria-busy="true"] {
+    min-block-size: 29.4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 14.2rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 24.9rem;
+  }
+}
+
+@media (min-width: 820px) {
+  .mode[aria-busy="true"] {
+    min-block-size: 24.1rem;
+  }
+}
+
+@media (min-width: 1020px) {
+  .mode[aria-busy="true"] {
+    min-block-size: 22.7rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 17.4rem;
+  }
+
+  .mode[aria-busy="true"] {
+    min-block-size: 27.7rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .achat[aria-busy="true"] {
+    min-block-size: 16.1rem;
+  }
+}
+
+/* Action : « Ajouter au panier » (neutre tant que les cotes ne sont pas compatibles, ambre ensuite) et sa phrase d'aide */
+.action {
+  margin-block-start: var(--space-4);
+}
+
+.action__bouton {
+  inline-size: 100%;
+}
+
+.action__bouton[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.action__aide {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.faisabilite__indisponible {
+  margin: var(--space-2) 0 0;
+  font-weight: 600;
+}
+
+.faisabilite__indisponible:empty {
+  display: none;
+}
+
+/* Avant le remplissage, la place de l'outil est réservée (valeur la plus basse mesurée dans chaque plage, état « à saisir ») */
+.configurateur__outil[aria-busy="true"] {
+  min-block-size: 97rem;
+}
+
+@media (min-width: 768px) {
+  .configurateur__outil[aria-busy="true"] {
+    min-block-size: 56.7rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .configurateur__outil[aria-busy="true"] {
+    min-block-size: 55.3rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .configurateur__outil[aria-busy="true"] {
+    min-block-size: 52.5rem;
   }
 }

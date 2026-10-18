@@ -5,3 +5,5 @@ lot-1c|Wireframes Lo-Fi des écrans 5 à 13 : espace professionnel, compte clien
 lot-3b|Accueil Hi-Fi complet : réassurance, preuve crash-test, pied de page ; accueil en index.html, page d'attente en attente.html.
 lot-3c|Accueil Hi-Fi : fond de page unique, hero fondu, relief décoratif en courbes de niveau, carte de recherche resserrée.
 lot-4|Diagnostic Hi-Fi : adresse, filtre par aléa, équipements recommandés, score illustratif et carte schématique à quatre calques.
+lot-5|Fiche produit Hi-Fi, zone haute : fil d'Ariane, galerie, achat, bascule DIY / pose.
+lot-6|Fiche produit Hi-Fi : configurateur de cotes (schéma, saisie, faisabilité) et bouton « Ajouter au panier ».

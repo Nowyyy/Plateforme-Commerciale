@@ -8,7 +8,18 @@
       "delaiLivraison": "2 à 3 semaines",
       "pose": 280,
       "delaiPose": "sous 2 semaines après livraison",
-      "complet": true
+      "complet": true,
+      "cotes": {
+        "largeur": {
+          "min": 700,
+          "max": 1600
+        },
+        "hauteur": {
+          "min": 300,
+          "max": 600
+        },
+        "toleranceMax": 50
+      }
     },
     {
       "id": "bouclier-de-baie",
@@ -188,6 +199,97 @@
       "recapitulatif": "Récapitulatif de prix",
       "mention": "Estimation indicative, aucun achat n'est possible dans ce démonstrateur.",
       "annonce": "{mode} choisi. Total estimé : {total}."
+    }
+  },
+  "configurateur": {
+    "titre": "Configurateur de cotes",
+    "intro": "Mesurez votre ouverture pour vérifier que ce produit convient.",
+    "schema": {
+      "title": "Schéma d'une ouverture vue de face (exemple)",
+      "desc": "Une ouverture dans un mur, avec son seuil et la barrière déployée en repère. A est la largeur du tableau, B la hauteur du seuil, C la marge de mesure de part et d'autre de la largeur.",
+      "lettres": {
+        "a": "A",
+        "b": "B",
+        "c": "C"
+      }
+    },
+    "etapesTitre": "Où mesurer",
+    "etapes": [
+      {
+        "id": "a",
+        "lettre": "A",
+        "texte": "Mesurez la largeur entre les deux montants, à l'endroit le plus étroit (exemple)"
+      },
+      {
+        "id": "b",
+        "lettre": "B",
+        "texte": "Mesurez la hauteur du seuil, du sol fini au bord supérieur à protéger (exemple)"
+      },
+      {
+        "id": "c",
+        "lettre": "C",
+        "texte": "Indiquez la marge d'erreur de vos mesures, en mm : laissez vide si vous ne savez pas (exemple)"
+      }
+    ],
+    "saisie": {
+      "legende": "Vos cotes",
+      "champs": {
+        "largeur": {
+          "libelle": "Largeur du tableau (A), en mm",
+          "aide": "Entre les deux montants, à l'endroit le plus étroit (exemple)."
+        },
+        "hauteur": {
+          "libelle": "Hauteur du seuil (B), en mm",
+          "aide": "Du sol fini au bord supérieur à protéger (exemple)."
+        },
+        "tolerance": {
+          "libelle": "Tolérance de mesure (C), en mm (facultatif)",
+          "aide": "Votre marge d'erreur de mesure. Laissez vide si vous ne savez pas (exemple)."
+        }
+      },
+      "plage": {
+        "libelle": "Plage du produit",
+        "largeur": "Largeur : de {min} à {max} mm",
+        "hauteur": "Hauteur : de {min} à {max} mm",
+        "exemple": "(exemple)"
+      }
+    },
+    "etats": {
+      "saisir": {
+        "titre": "Cotes à saisir",
+        "texte": "Renseignez la largeur et la hauteur pour vérifier que le produit convient (exemple)."
+      },
+      "compatible": {
+        "titre": "Compatible",
+        "texte": "Vos cotes entrent dans la plage du produit (exemple)."
+      },
+      "hors": {
+        "titre": "Hors tolérance",
+        "texte": "Vos cotes sortent de la plage du produit (exemple)."
+      }
+    },
+    "ecarts": {
+      "largeur": {
+        "trop-petite": "La largeur est trop petite de {ecart} mm par rapport à la plage du produit.",
+        "trop-grande": "La largeur est trop grande de {ecart} mm par rapport à la plage du produit."
+      },
+      "hauteur": {
+        "trop-petite": "La hauteur est trop petite de {ecart} mm par rapport à la plage du produit.",
+        "trop-grande": "La hauteur est trop grande de {ecart} mm par rapport à la plage du produit."
+      }
+    },
+    "erreurs": {
+      "nombre": "Entrez un nombre entier de millimètres, par exemple 1 200.",
+      "toleranceMax": "La tolérance ne peut pas dépasser {max} mm."
+    },
+    "action": {
+      "bouton": "Ajouter au panier",
+      "aide": "Disponible dès que vos cotes sont compatibles.",
+      "indisponible": "Corrigez vos cotes pour continuer."
+    },
+    "nonComplet": {
+      "message": "Configurateur disponible seulement pour la fiche complète du batardeau modulable dans ce démonstrateur.",
+      "lien": "Retour au diagnostic"
     }
   }
 }
