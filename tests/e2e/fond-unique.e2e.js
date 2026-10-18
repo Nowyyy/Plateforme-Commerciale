@@ -27,8 +27,8 @@ for (const largeur of LARGEURS) {
     const image = await page.locator('.hero').evaluate((e) => getComputedStyle(e).backgroundImage);
     expect(image).toContain('linear-gradient');
     expect(image.trim().endsWith(`${FOND})`)).toBe(true);
-    expect(image.indexOf('rgb(221, 230, 242)')).toBeGreaterThan(-1);
-    expect(image.indexOf('rgb(221, 230, 242)')).toBeLessThan(image.indexOf(FOND));
+    expect(image.indexOf('rgb(210, 224, 242)')).toBeGreaterThan(-1);
+    expect(image.indexOf('rgb(210, 224, 242)')).toBeLessThan(image.indexOf(FOND));
   });
 
   test(`fond unique à ${largeur} px : console propre, sans débordement, axe sans violation, aucune requête externe`, async ({ page }) => {

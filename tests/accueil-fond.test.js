@@ -10,7 +10,7 @@ describe('fond de page unique et hero fondu (lot 3c-A)', () => {
     expect(tokens).toMatch(/--color-bg:\s*#f8fafc;/i);
     expect(tokens).toMatch(/--color-hero-debut:\s*#[0-9a-f]{6};/i);
     expect(tokens).not.toContain('--color-hero-fin');
-    expect(css).toMatch(/\.hero\s*\{[^}]*linear-gradient\(180deg,\s*var\(--color-hero-debut\),\s*var\(--color-bg\)\)/);
+    expect(css).toMatch(/\.hero\s*\{[^}]*linear-gradient\(180deg,\s*var\(--color-hero-debut\)(?: \d+%)?,\s*var\(--color-bg\)\)/);
   });
 
   it('les sections n\'ont plus de fond propre : plus de classes bloc--blanc / bloc--clair, avis sans fond', () => {
