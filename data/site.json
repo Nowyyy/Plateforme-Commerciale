@@ -15,7 +15,49 @@
     "panier": "Panier"
   },
   "pied": {
-    "texte": "Démonstrateur : contenus fictifs, aucune vente"
+    "presentation": "Un démonstrateur de place de marché d'équipements de protection de l'habitat.",
+    "colonnes": [
+      {
+        "titre": "Le site",
+        "navigation": [
+          {
+            "cle": "aleas",
+            "lien": "aleas"
+          },
+          {
+            "cle": "fonctionnement",
+            "lien": "comment"
+          },
+          {
+            "cle": "pro",
+            "lien": "pro"
+          },
+          {
+            "cle": "compte",
+            "lien": "connexion"
+          },
+          {
+            "cle": "panier",
+            "lien": "panier"
+          }
+        ]
+      },
+      {
+        "titre": "Aide et informations",
+        "entrees": [
+          {
+            "texte": "Service après-vente",
+            "lien": "savAcces"
+          },
+          {
+            "texte": "Mentions légales (à venir)"
+          },
+          {
+            "texte": "À propos du démonstrateur (à venir)"
+          }
+        ]
+      }
+    ]
   },
   "liens": {
     "accueil": "index.html",
@@ -24,6 +66,7 @@
     "diagnostic": "wireframes/diagnostic.html",
     "pro": "wireframes/pro.html",
     "connexion": "wireframes/connexion.html",
-    "panier": "wireframes/panier.html"
+    "panier": "wireframes/panier.html",
+    "savAcces": "wireframes/sav-acces.html"
   }
 }

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
-import { resoudre, resoudreDans, validerListe } from '../assets/js/rendu.js';
+import { resoudre, resoudreDans, validerListe, resoudrePied } from '../assets/js/rendu.js';
 import { flechesVisibles, cibleDefilement } from '../assets/js/carrousel.js';
 import { extraire } from './outils/gabarits.mjs';
 
@@ -42,14 +42,17 @@ describe('listes de data/accueil.json', () => {
 
 describe('clés des attributs de index.html', () => {
   it('chaque clé se résout : relative au premier élément dans un gabarit, globale ailleurs', () => {
-    expect(modeles.map((m) => m.cle)).toEqual(['aleas.liste', 'protection.liste', 'comment.liste', 'reassurance.liste', 'preuve.chiffres']);
+    expect(modeles.map((m) => m.cle)).toEqual(['aleas.liste', 'protection.liste', 'comment.liste', 'reassurance.liste', 'preuve.chiffres', 'site.pied.colonnes']);
 
     const globales = cles(hors, 'data-texte|data-texte-global|data-lien|data-aria-label|data-placeholder');
     expect(globales.length).toBeGreaterThan(10);
     for (const [, cle] of globales) expect(() => resoudre(donnees, cle), cle).not.toThrow();
 
     for (const { cle, contenu } of modeles) {
-      const liste = validerListe(cle.split('.').reduce((o, k) => o[k], accueil), cle);
+      const source = cle.startsWith('site.')
+        ? { site: { ...site, pied: { ...site.pied, colonnes: resoudrePied(site) } } }
+        : accueil;
+      const liste = validerListe(cle.split('.').reduce((o, k) => o[k], source), cle);
       const premier = liste[0];
       const interne = extraire(contenu);
       for (const [attribut, k] of cles(interne.hors, 'data-texte|data-icone')) {

@@ -69,7 +69,7 @@ test('desktop : navigation en ligne, bouton Menu absent, Panier en dernier', asy
   await expect(page.locator('[data-menu-bouton]')).toBeHidden();
   const items = await page.locator('header nav li').allInnerTexts();
   expect(items.map((t) => t.trim())).toEqual(['Vendre sur la plateforme', 'Mon compte', 'Panier']);
-  await expect(page.getByRole('link', { name: 'Panier' })).toHaveAttribute('href', 'wireframes/panier.html');
+  await expect(page.locator('header').getByRole('link', { name: 'Panier' })).toHaveAttribute('href', 'wireframes/panier.html');
 });
 
 test('JavaScript désactivé : aucun texte visible hors message noscript', async ({ browser }) => {

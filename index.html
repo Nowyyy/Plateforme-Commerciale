@@ -209,9 +209,25 @@
       </div>
     </section>
   </main>
-  <footer class="pied">
+  <footer class="pied" data-bloc="E1-10" data-role="pied">
     <div class="conteneur">
-      <p data-texte="site.pied.texte"></p>
+      <div class="pied__grille" aria-busy="true">
+        <template data-liste="site.pied.colonnes">
+          <div class="pied__colonne">
+            <h2 class="pied__titre" data-texte="titre"></h2>
+            <ul class="pied__liste">
+              <template data-liste="entrees">
+                <li><a class="pied__lien" data-lien-element="lien" data-texte="texte"></a></li>
+              </template>
+            </ul>
+          </div>
+        </template>
+        <div class="pied__colonne pied__marque">
+          <p class="pied__nom" data-texte="site.nom"></p>
+          <p class="pied__presentation" data-texte="site.pied.presentation"></p>
+        </div>
+      </div>
+      <p class="pied__bas" data-texte="site.bandeau"></p>
     </div>
   </footer>
 </body>

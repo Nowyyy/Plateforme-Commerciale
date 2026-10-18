@@ -533,17 +533,118 @@
   }
 }
 
-/* Pied minimal */
+/* Pied de page E1-10 : fond marine, texte clair ; colonnes pilotées par data/site.json (clé pied) */
 .pied {
-  padding-block: var(--space-5);
-  border-top: 1px solid var(--color-border);
-  color: var(--color-text-secondary);
+  background: var(--color-navy);
+  color: var(--color-on-navy);
   font-size: var(--text-sm);
 }
 
-.pied p {
-  margin: 0;
+.pied__grille {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: minmax(0, 1fr);
+  padding-block: var(--space-7) var(--space-6);
+}
+
+.pied__colonne {
+  min-inline-size: 0;
+}
+
+.pied__titre {
+  margin-block-end: var(--space-2);
+  color: var(--color-on-navy);
+  font-size: var(--text-base);
   min-block-size: 1lh;
+}
+
+.pied__liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pied__lien {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-on-navy);
+  font-size: var(--text-base);
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.pied__lien:hover,
+.pied__lien:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+.pied :focus-visible {
+  outline: 3px solid var(--color-focus-on-navy);
+  outline-offset: 2px;
+}
+
+/* entrée sans lien : texte simple, plus discret */
+span.pied__lien {
+  color: var(--color-on-navy-muted);
+}
+
+.pied__nom {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  min-block-size: 1lh;
+}
+
+.pied__presentation {
+  max-inline-size: 28rem;
+  margin: 0;
+  color: var(--color-on-navy-muted);
+  font-size: var(--text-base);
+  min-block-size: 3lh;
+}
+
+.pied__bas {
+  margin: 0;
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--color-border-on-navy);
+  color: var(--color-on-navy-muted);
+  min-block-size: calc(1lh + var(--space-5));
+}
+
+.pied__grille[aria-busy="true"] {
+  min-block-size: 41.7rem;
+}
+
+@media (min-width: 768px) {
+  .pied__grille {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pied__marque {
+    grid-column: 1 / -1;
+  }
+
+  .pied__grille[aria-busy="true"] {
+    min-block-size: 29.7rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .pied__grille {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-7);
+  }
+
+  .pied__marque {
+    grid-column: auto;
+  }
+
+  .pied__grille[aria-busy="true"] {
+    min-block-size: 20.4rem;
+  }
 }
 
 /* Blocs E1-4 à E1-6 (E1-6 : mise en forme finale à la partie C) */
