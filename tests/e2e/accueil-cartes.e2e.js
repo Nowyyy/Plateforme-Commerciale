@@ -95,7 +95,7 @@ for (const largeur of [375, 1440]) {
   });
 }
 
-test('carrousel des aléas à 1440 px : 3 cartes visibles, flèches pour faire défiler', async ({ page }) => {
+test('carrousel des aléas à 1440 px : 3 cartes visibles, flèches cycliques', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/accueil.html');
   await page.waitForSelector('html[data-rendu="pret"]');
@@ -108,16 +108,22 @@ test('carrousel des aléas à 1440 px : 3 cartes visibles, flèches pour faire d
   await page.evaluate(() => window.scrollTo(0, document.querySelector('#aleas').offsetTop));
   await expect(cartes.nth(2)).toBeInViewport({ ratio: 0.99 });
   await expect(cartes.nth(3)).not.toBeInViewport();
-  await expect(precedent).toBeDisabled();
+  await expect(precedent).toBeEnabled();
   await expect(suivant).toBeEnabled();
   expect((await suivant.boundingBox()).width).toBeGreaterThanOrEqual(44);
   await suivant.click();
   await expect(cartes.nth(3)).toBeInViewport({ ratio: 0.99 });
   await expect(cartes.nth(0)).not.toBeInViewport();
-  await expect(suivant).toBeDisabled();
+  // cyclique : la flèche de droite reste active en fin de piste et revient à la première carte
+  await expect(suivant).toBeEnabled();
+  await suivant.click();
+  await expect(cartes.nth(0)).toBeInViewport({ ratio: 0.99 });
+  await expect(cartes.nth(3)).not.toBeInViewport();
+  // la flèche de gauche, au début, passe à la dernière carte
+  await precedent.click();
+  await expect(cartes.nth(3)).toBeInViewport({ ratio: 0.99 });
   await precedent.click();
   await expect(cartes.nth(0)).toBeInViewport({ ratio: 0.99 });
-  await expect(precedent).toBeDisabled();
   await page.screenshot({ path: 'test-results/accueil-carrousel-1440.png' });
 });
 

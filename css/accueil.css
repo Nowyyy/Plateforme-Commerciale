@@ -788,14 +788,8 @@ html:not([data-rendu]) .bloc__intro {
     display: none;
   }
 
-  .carrousel__fleche:hover:not(:disabled) {
+  .carrousel__fleche:hover {
     background: var(--color-pastille);
-  }
-
-  .carrousel__fleche:disabled {
-    opacity: 0.4;
-    box-shadow: none;
-    cursor: default;
   }
 
   .carrousel__fleche--precedent {

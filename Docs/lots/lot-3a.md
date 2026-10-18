@@ -1,6 +1,6 @@
 # Lot 3a — Hi-Fi de l'accueil : aléas, protection de la personne, comment ça marche et navigation à cinq libellés
 
-**Livré** : sections E1-4 `aleas`, E1-5 `protection`, E1-6 `comment` (entre `recherche` et `avis`) ; listes par `<template data-liste>` (`rendu.js`) ; sprite de 6 pictogrammes ; navigation à cinq libellés avec ancres et focus ; carrousel des aléas (demande du propriétaire en cours de lot) ; aperçu `/lot-3a/` (`apercu.txt`, hifi).
+**Livré** : sections E1-4 `aleas`, E1-5 `protection`, E1-6 `comment` (entre `recherche` et `avis`) ; listes par `<template data-liste>` (`rendu.js`) ; sprite de 6 pictogrammes ; navigation à cinq libellés avec ancres et focus ; carrousel cyclique des aléas (demande du propriétaire en cours de lot) ; aperçu `/lot-3a/` (`apercu.txt`, hifi).
 **Choix** : `data-liste` se lit relativement à `accueil.json` ; `data-texte-global` pour un texte global dans un gabarit ; numéros des étapes par compteur CSS (aucun numéro en données) ; réserves de hauteur appliquées seulement tant que `aria-busy="true"` ; carrousel (`carrousel.js`, logique pure `etatFleches`) dès 1200 px seulement ; deux réserves du hero ajoutées (accroche sous 375 px, de 1200 à 1279 px).
 **Écart voulu** : titre des aléas « À chaque aléa immobilier sa solution » (demandé, avec accent) ; 3 cartes d'aléas visibles dès 1200 px avec flèches (au lieu de 4 colonnes) ; sous 1200 px toutes les cartes restent visibles (1 puis 2 colonnes).
 

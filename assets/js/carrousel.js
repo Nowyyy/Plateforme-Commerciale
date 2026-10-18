@@ -1,17 +1,20 @@
-// Carrousel des cartes d'aléas (dès 1200 px : 3 cartes visibles, flèches pour faire défiler).
+// Carrousel cyclique des cartes d'aléas (dès 1200 px : 3 cartes visibles, flèches toujours actives).
 // Sous 1200 px la grille affiche toutes les cartes et les flèches restent masquées (css/accueil.css).
 import { donneesPretes } from './rendu.js';
 
 const TOLERANCE = 2;
 
-// Fonction pure : état des flèches d'après la position de défilement de la piste.
-export function etatFleches(defilement, largeurVisible, largeurTotale) {
-  const deborde = largeurTotale - largeurVisible > TOLERANCE;
-  return {
-    visible: deborde,
-    precedent: deborde && defilement > TOLERANCE,
-    suivant: deborde && defilement + largeurVisible < largeurTotale - TOLERANCE,
-  };
+// Fonctions pures. Les flèches sont visibles dès que des cartes dépassent de la piste.
+export function flechesVisibles(largeurVisible, largeurTotale) {
+  return largeurTotale - largeurVisible > TOLERANCE;
+}
+
+// Position cible d'un clic : le défilement est cyclique (après la dernière carte on revient à la première,
+// avant la première on passe à la dernière).
+export function cibleDefilement(sens, defilement, largeurVisible, largeurTotale, pas) {
+  const max = Math.max(0, largeurTotale - largeurVisible);
+  if (sens > 0) return defilement >= max - TOLERANCE ? 0 : Math.min(max, defilement + pas);
+  return defilement <= TOLERANCE ? max : Math.max(0, defilement - pas);
 }
 
 function initialiser(racine) {
@@ -21,11 +24,9 @@ function initialiser(racine) {
   if (!piste || !precedent || !suivant) return;
 
   const mettreAJour = () => {
-    const etat = etatFleches(piste.scrollLeft, piste.clientWidth, piste.scrollWidth);
-    precedent.hidden = !etat.visible;
-    suivant.hidden = !etat.visible;
-    precedent.disabled = !etat.precedent;
-    suivant.disabled = !etat.suivant;
+    const visibles = flechesVisibles(piste.clientWidth, piste.scrollWidth);
+    precedent.hidden = !visibles;
+    suivant.hidden = !visibles;
   };
 
   const pas = () => {
@@ -34,12 +35,12 @@ function initialiser(racine) {
   };
   const defiler = (sens) => {
     const doux = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    piste.scrollBy({ left: sens * pas(), behavior: doux ? 'smooth' : 'auto' });
+    const left = cibleDefilement(sens, piste.scrollLeft, piste.clientWidth, piste.scrollWidth, pas());
+    piste.scrollTo({ left, behavior: doux ? 'smooth' : 'auto' });
   };
 
   precedent.addEventListener('click', () => defiler(-1));
   suivant.addEventListener('click', () => defiler(1));
-  piste.addEventListener('scroll', mettreAJour, { passive: true });
   new ResizeObserver(mettreAJour).observe(piste);
   mettreAJour();
 }

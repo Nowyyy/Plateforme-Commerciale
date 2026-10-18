@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { resoudre, resoudreDans, validerListe } from '../assets/js/rendu.js';
-import { etatFleches } from '../assets/js/carrousel.js';
+import { flechesVisibles, cibleDefilement } from '../assets/js/carrousel.js';
 import { extraire } from './outils/gabarits.mjs';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
@@ -157,11 +157,21 @@ describe('style des blocs (partie B)', () => {
 });
 
 describe('carrousel des aléas', () => {
-  it('etatFleches : rien à faire défiler, début, milieu, fin', () => {
-    expect(etatFleches(0, 900, 900)).toEqual({ visible: false, precedent: false, suivant: false });
-    expect(etatFleches(0, 900, 1200)).toEqual({ visible: true, precedent: false, suivant: true });
-    expect(etatFleches(150, 900, 1500)).toEqual({ visible: true, precedent: true, suivant: true });
-    expect(etatFleches(300, 900, 1200)).toEqual({ visible: true, precedent: true, suivant: false });
+  it('fleches visibles seulement si des cartes dépassent', () => {
+    expect(flechesVisibles(900, 900)).toBe(false);
+    expect(flechesVisibles(900, 1200)).toBe(true);
+  });
+
+  it('cibleDefilement : cyclique dans les deux sens', () => {
+    // piste de 1200 px dont 900 visibles, pas de 300
+    expect(cibleDefilement(1, 0, 900, 1200, 300)).toBe(300);
+    expect(cibleDefilement(1, 300, 900, 1200, 300)).toBe(0);
+    expect(cibleDefilement(-1, 0, 900, 1200, 300)).toBe(300);
+    expect(cibleDefilement(-1, 300, 900, 1200, 300)).toBe(0);
+    // pas plus grand que le reste : on s'arrête à la fin
+    expect(cibleDefilement(1, 0, 900, 1500, 400)).toBe(400);
+    expect(cibleDefilement(1, 400, 900, 1500, 400)).toBe(600);
+    expect(cibleDefilement(1, 600, 900, 1500, 400)).toBe(0);
   });
 
   it('le titre des aléas et les libellés des flèches viennent des données', () => {
