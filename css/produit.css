@@ -4,13 +4,17 @@
 /* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
 html:not([data-rendu]) .fil__liste,
 html:not([data-rendu]) .produit,
-html:not([data-rendu]) .configurateur {
+html:not([data-rendu]) .configurateur,
+html:not([data-rendu]) .specs,
+html:not([data-rendu]) .documents {
   visibility: hidden;
 }
 
 html[data-rendu="erreur"] .fil,
 html[data-rendu="erreur"] .produit,
-html[data-rendu="erreur"] .configurateur {
+html[data-rendu="erreur"] .configurateur,
+html[data-rendu="erreur"] .specs,
+html[data-rendu="erreur"] .documents {
   display: none;
 }
 
@@ -954,4 +958,21 @@ html[data-rendu="erreur"] .configurateur {
   .configurateur__outil[aria-busy="true"] {
     min-block-size: 52.5rem;
   }
+}
+
+/* Spécifications E3-6 et documents E3-7 : pleine largeur, sous le configurateur (fiche complète seulement) */
+.specs,
+.documents {
+  padding-block: 0 var(--space-7);
+}
+
+.specs[hidden],
+.documents[hidden] {
+  display: none;
+}
+
+.specs h2,
+.documents h2 {
+  margin-block-end: var(--space-3);
+  font-size: var(--produit-text-h2);
 }

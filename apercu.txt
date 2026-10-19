@@ -1,3 +1,3 @@
 index.html
 type: hifi
-titre: Fiche produit Hi-Fi, configurateur de cotes
+titre: Fiche produit Hi-Fi, spécifications et documents

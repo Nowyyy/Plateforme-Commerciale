@@ -58,6 +58,17 @@ function initialiserGalerie(vues) {
   document.querySelector('.galerie').setAttribute('aria-busy', 'false');
 }
 
+// Spécifications (E3-6) et documents (E3-7) : seule la fiche complète les affiche, les autres produits les masquent.
+const BLOCS_COMPLETS = ['specs', 'documents'];
+
+function afficherBlocsComplets(produit) {
+  const complet = Boolean(produit?.complet);
+  for (const role of BLOCS_COMPLETS) {
+    const section = document.querySelector(`[data-role="${role}"]`);
+    if (section) section.hidden = !complet;
+  }
+}
+
 function ligne(classe, ...enfants) {
   const p = document.createElement('p');
   p.className = classe;
@@ -117,6 +128,7 @@ if (typeof document !== 'undefined') {
     if (!donnees) return;
     const { produits, produitParDefaut } = donnees.produit;
     const produit = produitValide(produits, lireSession(CLE_PRODUIT), produitParDefaut);
+    afficherBlocsComplets(produit);
     if (produit) afficherProduit(produit);
     initialiserGalerie(donnees.produit.galerie.vues);
     if (produit) {

@@ -267,7 +267,7 @@ describe('données et squelette du bloc E3-5', () => {
       expect(c.saisie.plage[champ]).toMatch(/\{min\}.*\{max\}/);
     }
     expect(c.erreurs.toleranceMax).toContain('{max}');
-    expect(c.nonComplet.message).toBe('Configurateur disponible seulement pour la fiche complète du batardeau modulable dans ce démonstrateur.');
+    expect(c.nonComplet.message).toBe('Configurateur, spécifications et documents disponibles seulement pour la fiche complète du batardeau modulable dans ce démonstrateur.');
   });
 
   it('produit.html : section configurateur E3-5 une fois, entre « mode » et « pied », clés résolues', () => {

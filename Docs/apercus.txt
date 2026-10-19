@@ -7,3 +7,4 @@ lot-3c|Accueil Hi-Fi : fond de page unique, hero fondu, relief décoratif en cou
 lot-4|Diagnostic Hi-Fi : adresse, filtre par aléa, équipements recommandés, score illustratif et carte schématique à quatre calques.
 lot-5|Fiche produit Hi-Fi, zone haute : fil d'Ariane, galerie, achat, bascule DIY / pose.
 lot-6|Fiche produit Hi-Fi : configurateur de cotes (schéma, saisie, faisabilité) et bouton « Ajouter au panier ».
+lot-7|Fiche produit Hi-Fi : spécifications d'ingénierie (tableau) et documents PDF d'exemple à télécharger, réservés au produit complet.
