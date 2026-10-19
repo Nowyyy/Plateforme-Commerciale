@@ -263,7 +263,17 @@
     <section class="conteneur documents" data-bloc="E3-7" data-role="documents" aria-labelledby="titre-documents">
       <h2 id="titre-documents" data-texte="produit.documentsTextes.titre"></h2>
       <p class="documents__intro" data-texte="produit.documentsTextes.introduction"></p>
-      <ul class="documents__liste"></ul>
+      <ul class="documents__liste" aria-busy="true">
+        <template data-liste-produit="documents">
+          <li class="documents__element">
+            <a class="documents__lien" data-lien-element="fichier" download type="application/pdf">
+              <svg class="icone documents__icone" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><use href="#telecharger"></use></svg>
+              <span class="documents__libelle" data-texte="titre"></span>
+            </a>
+            <p class="documents__aide" data-texte="aide"></p>
+          </li>
+        </template>
+      </ul>
       <p class="documents__mention" data-texte="produit.documentsTextes.mention"></p>
     </section>
   </main>
