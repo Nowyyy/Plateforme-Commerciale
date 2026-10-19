@@ -39,7 +39,7 @@ test('produit non complet : message et lien « Retour au diagnostic », ni champ
   await ouvrir(page, 375, { produit: 'bouclier-de-baie' });
   const bloc = page.locator('[data-role="configurateur"]');
   await expect(bloc).toBeVisible();
-  await expect(bloc.getByText('Configurateur disponible seulement pour la fiche complète du batardeau modulable dans ce démonstrateur.')).toBeVisible();
+  await expect(bloc.getByText('Configurateur, spécifications et documents disponibles seulement pour la fiche complète du batardeau modulable dans ce démonstrateur.')).toBeVisible();
   await expect(bloc.locator('input, button, fieldset, svg')).toHaveCount(0);
   const lien = bloc.getByRole('link', { name: 'Retour au diagnostic' });
   await expect(lien).toHaveAttribute('href', 'diagnostic.html');

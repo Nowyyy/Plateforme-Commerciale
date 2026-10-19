@@ -19,7 +19,49 @@
           "max": 600
         },
         "toleranceMax": 50
-      }
+      },
+      "specs": [
+        {
+          "id": "pression",
+          "icone": "pression",
+          "titre": "Résistance hydrostatique certifiée",
+          "valeur": "60 cm d'eau retenue (exemple)"
+        },
+        {
+          "id": "deploiement",
+          "icone": "chrono",
+          "titre": "Temps de déploiement",
+          "valeur": "12 minutes (exemple)"
+        },
+        {
+          "id": "anticorrosion",
+          "icone": "anticorrosion",
+          "titre": "Garantie anticorrosion",
+          "valeur": "10 ans (exemple)"
+        },
+        {
+          "id": "conformite",
+          "icone": "conformite",
+          "titre": "Conformité aux normes",
+          "valeur": "Norme française (exemple) et marquage européen (exemple)"
+        }
+      ],
+      "documents": [
+        {
+          "id": "pv-essais",
+          "titre": "PV d'essais en laboratoire",
+          "fichier": "assets/documents/pv-essais-exemple.pdf",
+          "format": "PDF",
+          "aide": "Procès-verbal d'essais fictif, exemple de présentation."
+        },
+        {
+          "id": "notice-technique",
+          "titre": "Notice technique",
+          "fichier": "assets/documents/notice-technique-exemple.pdf",
+          "format": "PDF",
+          "aide": "Notice technique fictive, exemple de présentation."
+        }
+      ]
     },
     {
       "id": "bouclier-de-baie",
@@ -288,8 +330,24 @@
       "indisponible": "Corrigez vos cotes pour continuer."
     },
     "nonComplet": {
-      "message": "Configurateur disponible seulement pour la fiche complète du batardeau modulable dans ce démonstrateur.",
+      "message": "Configurateur, spécifications et documents disponibles seulement pour la fiche complète du batardeau modulable dans ce démonstrateur.",
       "lien": "Retour au diagnostic"
     }
+  },
+  "specifications": {
+    "titre": "Spécifications d'ingénierie",
+    "introduction": "Valeurs d'exemple du démonstrateur : les valeurs réelles figureront sur le procès-verbal d'essais.",
+    "caption": "Spécifications d'ingénierie du produit (valeurs d'exemple)",
+    "colonnes": {
+      "caracteristique": "Caractéristique",
+      "valeur": "Valeur"
+    },
+    "note": "Aucune valeur de ce tableau n'a de valeur contractuelle ou réglementaire."
+  },
+  "documentsTextes": {
+    "titre": "Documents officiels (exemples)",
+    "introduction": "Fichiers fictifs du démonstrateur, fournis à titre d'illustration.",
+    "libelle": "{titre} (PDF, exemple)",
+    "mention": "Aucune valeur de ces documents n'a de valeur contractuelle ou réglementaire."
   }
 }

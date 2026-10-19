@@ -38,6 +38,8 @@ const CLES_REQUISES = {
   'galerie.vues': ['id', 'type', 'court', 'legende'],
   badges: ['id', 'titre'],
   'configurateur.etapes': ['id', 'lettre', 'texte'],
+  specs: ['id', 'icone', 'titre', 'valeur'],
+  documents: ['id', 'titre', 'fichier', 'format', 'aide'],
   'site.pied.colonnes': ['titre', 'entrees'],
   entrees: ['texte'],
 };
@@ -195,8 +197,7 @@ export function identifiantElement(element) {
 }
 
 // Clone le gabarit pour chaque élément de la liste ; les gabarits imbriqués sont rendus à leur tour.
-function instancier(modele, source, donnees, imbrique) {
-  const cle = modele.getAttribute('data-liste');
+function instancier(modele, source, donnees, imbrique, cle = modele.getAttribute('data-liste')) {
   const liste = validerListe(parcourir(cle.startsWith('site.') ? donnees : source, cle), cle);
   const rendu = document.createDocumentFragment();
   for (const element of liste) {
@@ -217,6 +218,16 @@ export function remplirListes(racine, donneesAccueil, donnees) {
   for (const modele of racine.querySelectorAll('template[data-liste]')) {
     instancier(modele, donneesAccueil, donnees, false);
     modele.parentElement.setAttribute('aria-busy', 'false');
+  }
+}
+
+// Liste propre au produit courant : <template data-liste-produit="specs"> rendu depuis l'objet du produit (clé relative à lui).
+export function remplirListeProduit(racine, produit, donnees) {
+  for (const modele of racine.querySelectorAll('template[data-liste-produit]')) {
+    const parent = modele.parentElement;
+    instancier(modele, produit, donnees, false, modele.getAttribute('data-liste-produit'));
+    modele.remove();
+    parent.setAttribute('aria-busy', 'false');
   }
 }
 

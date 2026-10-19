@@ -1,6 +1,7 @@
 // Fiche produit Hi-Fi : produit choisi au diagnostic (sessionStorage, clé « produit », lue sans être supprimée).
 // Les textes issus des données sont posés par textContent seulement.
-import { donneesPretes } from './rendu.js';
+import { donneesPretes, remplirListeProduit } from './rendu.js';
+import { remplirGabarit } from './cotes-logique.js';
 import { lignesPrixFormatees, modeValide, produitValide, totalEstime } from './produit-logique.js';
 import { formaterPrix } from './diagnostic-logique.js';
 import { initialiserConfigurateur } from './configurateur.js';
@@ -56,6 +57,27 @@ function initialiserGalerie(vues) {
     if (e.target.matches('input[name="vue"]')) choisir(e.target.value);
   });
   document.querySelector('.galerie').setAttribute('aria-busy', 'false');
+}
+
+// Spécifications (E3-6) et documents (E3-7) : seule la fiche complète les affiche, les autres produits les masquent.
+const BLOCS_COMPLETS = ['specs', 'documents'];
+
+function afficherBlocsComplets(produit) {
+  const complet = Boolean(produit?.complet);
+  for (const role of BLOCS_COMPLETS) {
+    const section = document.querySelector(`[data-role="${role}"]`);
+    if (section) section.hidden = !complet;
+  }
+}
+
+// Documents (E3-7) : libellé de lien = gabarit « {titre} (PDF, exemple) » rempli depuis les données.
+function afficherDocuments(donnees, produit) {
+  const section = document.querySelector('[data-role="documents"]');
+  const { libelle } = donnees.produit.documentsTextes;
+  for (const item of section.querySelectorAll('.documents__element')) {
+    const doc = produit.documents.find((d) => d.id === item.dataset.id);
+    item.querySelector('.documents__libelle').textContent = remplirGabarit(libelle, { titre: doc.titre });
+  }
 }
 
 function ligne(classe, ...enfants) {
@@ -117,6 +139,11 @@ if (typeof document !== 'undefined') {
     if (!donnees) return;
     const { produits, produitParDefaut } = donnees.produit;
     const produit = produitValide(produits, lireSession(CLE_PRODUIT), produitParDefaut);
+    afficherBlocsComplets(produit);
+    if (produit?.complet) {
+      remplirListeProduit(document, produit, donnees); // specs (E3-6) et documents (E3-7)
+      afficherDocuments(donnees, produit);
+    }
     if (produit) afficherProduit(produit);
     initialiserGalerie(donnees.produit.galerie.vues);
     if (produit) {

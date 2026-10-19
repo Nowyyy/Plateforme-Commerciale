@@ -3,16 +3,18 @@
 ## Projet
 Démonstrateur statique hébergé sur GitHub Pages, 4 écrans (accueil, diagnostic, fiche produit, panier), données fictives.
 Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
+Avant de modifier le diagnostic, la fiche produit, le relief ou les listes, lis `Docs/ref/conventions.md`.
 
 ## Arborescence
-- Racine : `index.html` (accueil Hi-Fi E1-1 à E1-10), `diagnostic.html` (E2-1 à E2-6), `produit.html` (fiche Hi-Fi : E3-1 à E3-5 et E3-8), tous `noindex` jusqu'au lot 10 ; `attente.html` (ancienne page d'attente) ; `accueil.html` (redirection vers `index.html`)
+- Racine : `index.html` (accueil Hi-Fi E1-1 à E1-10), `diagnostic.html` (E2-1 à E2-6), `produit.html` (fiche Hi-Fi : E3-1 à E3-8), tous `noindex` jusqu'au lot 10 ; `attente.html` (ancienne page d'attente) ; `accueil.html` (redirection vers `index.html`)
 - `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `diagnostic.css`, `produit.css`, `attente.css`, `wireframe.css`
-- `data/` : `site.json`, `accueil.json`, `diagnostic.json`, `produit.json` (dont `cotes` et `configurateur`) : tous les textes et liens visibles
-- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js`, `diagnostic-logique.js`, `produit-logique.js` et `cotes-logique.js` (faisabilité des cotes) : purs ; `diagnostic.js`, `produit.js`, `configurateur.js` (E3-5), `alea.js` ; `assets/fonts/` : woff2 (OFL)
+- `data/` : `site.json`, `accueil.json`, `diagnostic.json`, `produit.json` (dont `cotes`, `configurateur`, `specs`, `documents`) : tous les textes et liens visibles
+- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js`, `diagnostic-logique.js`, `produit-logique.js` et `cotes-logique.js` : purs ; `diagnostic.js`, `produit.js`, `configurateur.js`, `alea.js` ; `assets/fonts/` : woff2 (OFL)
 - `scripts/lots/` : génération de la page Lots (sans dépendance ; logique pure dans `logique.mjs`)
+- `scripts/documents/` : générateur de PDF d'exemple, sans dépendance ; `assets/documents/` : PDF fictifs générés, versionnés
 - `wireframes/` : Lo-Fi publiés, `noindex` : écrans 1 à 13 (`accueil`… `sav-acces`) et `index.html`
 - `tests/` : Vitest ; `tests/e2e/` Playwright ; `tests/outils/` serveur local et Lighthouse
-- `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références, dont `apercus.md`), `apercus.txt` (lignes `lot-N|descriptif`, à compléter à chaque lot)
+- `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références : `apercus.md`, `environnement.md`, `conventions.md` = règles détaillées par page), `apercus.txt` (lignes `lot-N|descriptif`, à compléter à chaque lot)
 - `.github/workflows/pages.yml` : vérifications (PR, push) et publication Pages (push sur `main` ou `lot-*`) : racine = `main`, chaque `lot-N` sous `/lot-N/`, liste sur `/lots/`
 - `apercu.txt` : cible sur la première ligne ; lignes optionnelles `type: wireframe|hifi|technique` et `titre: <court>`. Sans `type:`, une cible `wireframes/…` est un wireframe, toute autre un lot Hi-Fi ; les lots techniques n'apparaissent pas sur la page. Chaque lot règle ce fichier sur sa branche.
 
@@ -29,19 +31,7 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 - Wireframes : chaque bloc porte `data-bloc` (code visible) et `data-role` (identifiant stable) ; les tests s'appuient sur `data-role` ; `Docs/lots/lot-1b.md` donne la correspondance des anciens codes.
 - Chemins relatifs partout (site servi sous `/<dépôt>/`). Contenus fictifs, aucun vrai logo ni traceur, aucune police ni script externe.
 - Un réglage qui résiste après trois essais : documenter et s'arrêter. Ne jamais modifier un critère non atteint (le signaler) ni simuler un résultat.
-- Pages Hi-Fi : en-tête, pied et décor `.relief` sont copiés à l'identique entre les pages (un test compare) ; toute nouvelle page de la racine s'ajoute à la liste publiée du workflow (autorisation explicite du lot).
-- Diagnostic : adresse en `sessionStorage` (clé `adresse`), aléa de l'accueil (clé `alea`, lu une fois) ; jamais dans l'URL ; score et équipements illustratifs, jamais calculés sur l'adresse ; carte schématique en SVG, calques distingués par des motifs ; aucun bouton ambre sur cette page.
-- Fiche produit : produit choisi (clé `produit`, lue sans être supprimée) et mode DIY ou pose (clé `mode`) en `sessionStorage` ; `data/produit.json` reprend les `id`, titres et prix de `data/diagnostic.json` (un test les compare) ; prix et totaux par `formaterPrix` ; aucun `<video>` ni `<img>` : visuels = espaces réservés ; les blocs E3-6 et E3-7 s'insèrent après E3-5 sans déplacer les autres.
-- Liens externes : seuls ceux de `liensExternes` (`data/site.json`) : `https://`, domaine déclaré, nouvel onglet, `rel="noopener noreferrer"`, aucune donnée du visiteur dans le lien ; aucune requête vers un autre site avant le lot optionnel 4b.
-- Configurateur : seul le produit `complet` (batardeau) a `cotes` ; faisabilité = `evaluerCotes` (valeur ± tolérance dans la plage, bornes comprises, tolérance vide = 0) ; entiers en mm uniquement ; `sessionStorage.cotes` (saisie, par produit) et `commande` (écrite au clic actif de « Ajouter au panier », lue au lot 8) ; le bouton n'est jamais `disabled` (`aria-disabled`) et c'est le seul bouton ambre ; le schéma n'a que les lettres A, B, C comme texte.
-
-## Règles du Hi-Fi
-- Un seul fond de page (jeton de fond clair), sections transparentes ; cartes, pastilles et blocs de données en fond blanc à bordure fine. Le dégradé du hero part d'une teinte bleutée et arrive exactement sur le fond de page.
-- Décor `.relief` (SVG en ligne, `aria-hidden`, `pointer-events: none`, jeton `--color-relief`) : jamais de texte ni d'interaction dedans ; deux groupes dès 768 px, un seul en dessous.
-- Accueil, ordre des blocs : en-tete, hero, recherche, aleas, protection, comment, reassurance, preuve, avis, pied ; les tests vérifient l'ordre relatif, jamais la liste exacte. Le pied vient de `data/site.json` (clé `pied`) ; une entrée sans `lien` est un texte non lié.
-- Listes (cartes, étapes) : elles viennent des données et sont rendues par des `<template data-liste="…">` ; clés relatives à l'élément (`data-texte`, `data-icone`), `.` pour une chaîne ; `data-lien` et `data-texte-global` restent globaux ; jamais de nombre d'éléments figé dans le HTML ou le CSS ; conteneurs en `aria-busy` jusqu'au remplissage.
-- Navigation : liens vers les pages pas encore en Hi-Fi = `wireframes/` via `data/site.json` ; menu replié jusqu'à 1199 px.
-- Clés `data-texte`, `data-lien` (ex. `site.liens.panier`), `data-aria-label`, `data-placeholder`. En dur : `<title>`, meta description, `noscript`, erreur de chargement (`rendu.js`).
+- Fiche produit complète : E3-1 à E3-8 ; `specs` et `documents` n'existent que pour le produit `complet` (masqués sinon) ; PDF d'exemple regénérables par `node scripts/documents/generer.mjs`, identiques octet à octet à ceux du dépôt (un test le vérifie) ; aucun vrai document, aucune vraie norme.
 
 ## Git
 - Branche `lot-N` ; un commit « Lot N-X — titre » par partie ; push après chaque commit ; bilan `Docs/lots/lot-N.md` dans le dernier commit de partie (aucun commit après le tag).
@@ -54,5 +44,5 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 - Le message d'erreur de la recherche d'adresse n'a pas de réserve de hauteur (apparition suivant une action de l'utilisateur, hors CLS) : ne pas la rétablir.
 - Lot dont `apercu.txt` vise `index.html` : le workflow ne déplace plus l'`index.html` du lot (sinon boucle de redirection).
 - Textes et listes remplis par JavaScript arrivent après le premier rendu : réserver leur hauteur (`min-block-size`, par point de rupture), sinon le CLS dépasse 0,1. Le CLS des blocs `achat` et `mode` dépend du titre le plus long et du mode (DIY ou pose) : toute modification de ces blocs impose de remesurer de 360 à 1440 px.
+- PDF d'exemple : texte en WinAnsi, un caractère non supporté lève une erreur ; tout nouveau document passe par `scripts/documents/contenus.json`.
 - Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`. Lighthouse : http://localhost seulement. Réseau sortant filtré par un proxy.
-- Le diagnostic Hi-Fi est `wireframes/diagnostic.html` pour le gabarit seulement ; les tests des wireframes ne doivent pas être confondus avec ceux de `diagnostic.html`.

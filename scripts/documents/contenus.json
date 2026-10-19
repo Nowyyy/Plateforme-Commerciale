@@ -1,0 +1,50 @@
+{
+  "documents": [
+    {
+      "id": "pv-essais",
+      "fichier": "pv-essais-exemple.pdf",
+      "titre": "PV d'essais en laboratoire (exemple)",
+      "lignes": [
+        "DOCUMENT FICTIF — EXEMPLE",
+        "",
+        "Produit : Batardeau modulable, référence BAT-120 (exemple)",
+        "Laboratoire : organisme fictif du démonstrateur (exemple)",
+        "Date de l'essai : non applicable (exemple)",
+        "",
+        "Résultats d'essai (valeurs d'exemple) :",
+        "- Résistance hydrostatique certifiée : 60 cm d'eau retenue (exemple)",
+        "- Temps de déploiement : 12 minutes (exemple)",
+        "- Garantie anticorrosion : 10 ans (exemple)",
+        "- Conformité aux normes : norme française (exemple) et marquage européen (exemple)",
+        "",
+        "Ce document illustre la présentation d'un procès-verbal d'essais. Il n'émane d'aucun laboratoire réel.",
+        "",
+        "Aucune valeur de ce document n'a de valeur contractuelle ou réglementaire."
+      ]
+    },
+    {
+      "id": "notice-technique",
+      "fichier": "notice-technique-exemple.pdf",
+      "titre": "Notice technique (exemple)",
+      "lignes": [
+        "DOCUMENT FICTIF — EXEMPLE",
+        "",
+        "Produit : Batardeau modulable, référence BAT-120 (exemple)",
+        "",
+        "1. Avant l'installation",
+        "Mesurez l'ouverture à protéger : largeur de 700 à 1 600 mm, hauteur de 300 à 600 mm (exemple).",
+        "",
+        "2. Déploiement",
+        "Le déploiement prend environ 12 minutes pour une personne (exemple).",
+        "",
+        "3. Entretien",
+        "Rincez les joints à l'eau claire après chaque usage. La garantie anticorrosion est de 10 ans (exemple).",
+        "",
+        "4. Limites d'usage",
+        "Retient jusqu'à 60 cm d'eau (exemple). Au-delà, évacuez les lieux.",
+        "",
+        "Aucune valeur de ce document n'a de valeur contractuelle ou réglementaire."
+      ]
+    }
+  ]
+}
