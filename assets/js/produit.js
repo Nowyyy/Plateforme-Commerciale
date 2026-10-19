@@ -73,7 +73,6 @@ function afficherBlocsComplets(produit) {
 // Documents (E3-7) : libellé de lien = gabarit « {titre} (PDF, exemple) » rempli depuis les données.
 function afficherDocuments(donnees, produit) {
   const section = document.querySelector('[data-role="documents"]');
-  remplirListeProduit(section, produit, donnees);
   const { libelle } = donnees.produit.documentsTextes;
   for (const item of section.querySelectorAll('.documents__element')) {
     const doc = produit.documents.find((d) => d.id === item.dataset.id);
@@ -141,7 +140,10 @@ if (typeof document !== 'undefined') {
     const { produits, produitParDefaut } = donnees.produit;
     const produit = produitValide(produits, lireSession(CLE_PRODUIT), produitParDefaut);
     afficherBlocsComplets(produit);
-    if (produit?.complet) afficherDocuments(donnees, produit);
+    if (produit?.complet) {
+      remplirListeProduit(document, produit, donnees); // specs (E3-6) et documents (E3-7)
+      afficherDocuments(donnees, produit);
+    }
     if (produit) afficherProduit(produit);
     initialiserGalerie(donnees.produit.galerie.vues);
     if (produit) {

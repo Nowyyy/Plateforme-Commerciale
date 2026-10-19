@@ -257,7 +257,25 @@
     <section class="conteneur specs" data-bloc="E3-6" data-role="specs" aria-labelledby="titre-specs">
       <h2 id="titre-specs" data-texte="produit.specifications.titre"></h2>
       <p class="specs__intro" data-texte="produit.specifications.introduction"></p>
-      <div class="specs__tableau"></div>
+      <div class="specs__tableau">
+        <table class="specs__table">
+          <caption class="visuellement-cache" data-texte="produit.specifications.caption"></caption>
+          <thead>
+            <tr>
+              <th scope="col" data-texte="produit.specifications.colonnes.caracteristique"></th>
+              <th scope="col" data-texte="produit.specifications.colonnes.valeur"></th>
+            </tr>
+          </thead>
+          <tbody aria-busy="true">
+            <template data-liste-produit="specs">
+              <tr>
+                <th scope="row"><span class="specs__cellule"><svg class="icone specs__icone" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><use data-icone="icone"></use></svg><span data-texte="titre"></span></span></th>
+                <td class="specs__valeur" data-texte="valeur"></td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
       <p class="specs__note" data-texte="produit.specifications.note"></p>
     </section>
     <section class="conteneur documents" data-bloc="E3-7" data-role="documents" aria-labelledby="titre-documents">

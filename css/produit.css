@@ -1038,3 +1038,82 @@ html[data-rendu="erreur"] .documents {
     gap: var(--space-4);
   }
 }
+
+/* Spécifications E3-6 : tableau sémantique à deux colonnes, sans défilement horizontal ; 64 rem au plus, aligné à gauche */
+.specs__intro {
+  margin-block-end: var(--space-4);
+}
+
+.specs__tableau {
+  max-inline-size: 64rem;
+  margin-block-end: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  overflow: hidden;
+}
+
+.specs__table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-variant-numeric: tabular-nums;
+}
+
+.specs__table th,
+.specs__table td {
+  padding: var(--space-3);
+  text-align: start;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+
+.specs__table thead th {
+  border-block-end: 1px solid var(--color-border-fort);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.specs__table tbody tr + tr > * {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.specs__table th[scope="col"]:first-child,
+.specs__table th[scope="row"] {
+  inline-size: 50%;
+}
+
+.specs__table th[scope="row"] {
+  font-weight: 600;
+}
+
+.specs__cellule {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.specs__icone {
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+}
+
+.specs__note {
+  margin: 0 0 var(--space-6);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+@media (min-width: 768px) {
+  .specs__table th,
+  .specs__table td {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .specs__table th[scope="col"]:first-child,
+  .specs__table th[scope="row"] {
+    inline-size: 45%;
+  }
+}
