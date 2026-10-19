@@ -161,7 +161,7 @@ describe('panier.html', () => {
     expect(html.slice(nav, html.indexOf('>', nav))).not.toContain('data-role');
   });
   it('aria-labelledby valides ; toute clé data-texte, data-lien, data-liste se résout', () => {
-    for (const [, id] of html.matchAll(/aria-labelledby="([^"]+)"/g)) expect(html, id).toContain(`id="${id}"`);
+    for (const [, ids] of html.matchAll(/aria-labelledby="([^"]+)"/g)) for (const id of ids.split(' ')) expect(html, id).toContain(`id="${id}"`);
     const donnees = { site, produit };
     const echecs = [];
     for (const [, attribut, cle] of [...html.matchAll(/data-(texte|lien|aria-label|placeholder)="([^"]+)"/g)].filter((m) => /^(site|produit)\./.test(m[2]))) {

@@ -126,14 +126,70 @@
         </section>
         <section class="panier__bloc" data-bloc="E4-3" data-role="responsabilite" aria-labelledby="titre-responsabilite" hidden>
           <h2 id="titre-responsabilite" data-texte="produit.panier.responsabilite.titre"></h2>
+          <div class="panier__carte">
+            <p class="responsabilite__aide" data-texte="produit.panier.responsabilite.aide"></p>
+            <figure class="apercu">
+              <div class="apercu__schema">
+                <svg class="schema" viewBox="0 0 400 300" role="img" aria-labelledby="schema-titre schema-desc" focusable="false">
+                  <title id="schema-titre" data-texte="produit.panier.responsabilite.schema.title"></title>
+                  <desc id="schema-desc" data-texte="produit.panier.responsabilite.schema.desc"></desc>
+                  <defs>
+                    <pattern id="schema-hachure" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                      <line class="schema__hachure" x1="0" y1="0" x2="0" y2="10"/>
+                    </pattern>
+                  </defs>
+                  <rect class="schema__mur" x="0" y="0" width="400" height="300"/>
+                  <rect x="0" y="0" width="400" height="300" fill="url(#schema-hachure)"/>
+                  <rect class="schema__ouverture" x="80" y="50" width="240" height="220"/>
+                  <rect class="schema__barriere" x="80" y="160" width="240" height="110"/>
+                  <rect class="schema__seuil" x="64" y="270" width="272" height="16"/>
+                  <g id="cote-a" class="schema__cote">
+                    <path class="schema__fleche" d="M80 105H320M80 90v30M320 90v30"/>
+                    <path class="schema__pointe" d="M80 105l12-6v12zM320 105l-12-6v12z"/>
+                    <circle class="schema__pastille" cx="200" cy="105" r="14"/>
+                    <text class="schema__lettre" x="200" y="105" data-texte="produit.panier.responsabilite.schema.lettres.a"></text>
+                  </g>
+                  <g id="cote-b" class="schema__cote">
+                    <path class="schema__fleche" d="M120 160V270"/>
+                    <path class="schema__pointe" d="M120 160l-6 12h12zM120 270l-6-12h12z"/>
+                    <circle class="schema__pastille" cx="120" cy="215" r="14"/>
+                    <text class="schema__lettre" x="120" y="215" data-texte="produit.panier.responsabilite.schema.lettres.b"></text>
+                  </g>
+                  <text class="schema__valeur" id="apercu-valeur-a" x="200" y="82"></text>
+                  <text class="schema__valeur schema__valeur--b" id="apercu-valeur-b" x="140" y="215"></text>
+                </svg>
+              </div>
+              <figcaption class="apercu__legende" data-texte="produit.panier.responsabilite.legende"></figcaption>
+            </figure>
+            <p class="responsabilite__avertissement" id="responsabilite-avertissement" data-texte="produit.panier.responsabilite.avertissement"></p>
+            <label class="case" for="responsabilite-case">
+              <input class="case__champ" type="checkbox" id="responsabilite-case" autocomplete="off" aria-describedby="responsabilite-avertissement">
+              <span class="case__texte" data-texte="produit.panier.responsabilite.case"></span>
+            </label>
+          </div>
         </section>
       </div>
       <div class="panier__colonne">
         <section class="panier__bloc" data-bloc="E4-4" data-role="total" aria-labelledby="titre-total" hidden>
           <h2 id="titre-total" data-texte="produit.panier.total.titre"></h2>
+          <div class="panier__carte">
+            <dl class="total__lignes" id="total-lignes"></dl>
+            <div class="total__delais" id="total-delais"></div>
+            <p class="total__mention" data-texte="produit.panier.total.mention"></p>
+            <button type="button" class="bouton bouton--secondaire total__bouton" id="total-valider" aria-disabled="true" aria-describedby="total-etat" data-texte="produit.panier.total.bouton"></button>
+            <div class="total__etat" id="total-etat" role="status" tabindex="-1"></div>
+          </div>
         </section>
         <section class="panier__bloc" data-bloc="E4-5" data-role="paiement" aria-labelledby="titre-paiement" hidden>
           <h2 id="titre-paiement" data-texte="produit.panier.paiement.titre"></h2>
+          <div class="panier__carte">
+            <p class="pastille paiement__pastille">
+              <svg class="icone pastille__icone" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><use href="#bouclier"></use></svg>
+              <span data-texte="produit.panier.paiement.pastille"></span>
+            </p>
+            <p class="paiement__texte" data-texte="produit.panier.paiement.paiement"></p>
+            <p class="paiement__texte" data-texte="produit.panier.paiement.sav"></p>
+          </div>
         </section>
       </div>
     </div>
