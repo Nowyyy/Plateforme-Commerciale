@@ -6,10 +6,10 @@ Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 Avant de modifier le diagnostic, la fiche produit, le relief ou les listes, lis `Docs/ref/conventions.md`.
 
 ## Arborescence
-- Racine : `index.html` (accueil Hi-Fi E1-1 à E1-10), `diagnostic.html` (E2-1 à E2-6), `produit.html` (fiche Hi-Fi : E3-1 à E3-8), tous `noindex` jusqu'au lot 10 ; `attente.html` (ancienne page d'attente) ; `accueil.html` (redirection vers `index.html`)
-- `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `diagnostic.css`, `produit.css`, `attente.css`, `wireframe.css`
-- `data/` : `site.json`, `accueil.json`, `diagnostic.json`, `produit.json` (dont `cotes`, `configurateur`, `specs`, `documents`) : tous les textes et liens visibles
-- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js`, `diagnostic-logique.js`, `produit-logique.js` et `cotes-logique.js` : purs ; `diagnostic.js`, `produit.js`, `configurateur.js`, `alea.js` ; `assets/fonts/` : woff2 (OFL)
+- Racine : `index.html` (accueil Hi-Fi E1-1 à E1-10), `diagnostic.html` (E2-1 à E2-6), `produit.html` (fiche Hi-Fi : E3-1 à E3-8), `panier.html` (panier Hi-Fi : E4-1 à E4-6), tous `noindex` jusqu'au lot 10 ; `attente.html` (ancienne page d'attente) ; `accueil.html` (redirection vers `index.html`)
+- `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `diagnostic.css`, `produit.css`, `panier.css`, `attente.css`, `wireframe.css`
+- `data/` : `site.json`, `accueil.json`, `diagnostic.json`, `produit.json` (dont `cotes`, `configurateur`, `specs`, `documents`, `panier`) : tous les textes et liens visibles
+- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js`, `diagnostic-logique.js`, `produit-logique.js`, `cotes-logique.js` et `panier-logique.js` : purs ; `diagnostic.js`, `produit.js`, `configurateur.js`, `panier.js`, `alea.js` ; `assets/fonts/` : woff2 (OFL)
 - `scripts/lots/` : génération de la page Lots (sans dépendance ; logique pure dans `logique.mjs`)
 - `scripts/documents/` : générateur de PDF d'exemple, sans dépendance ; `assets/documents/` : PDF fictifs générés, versionnés
 - `wireframes/` : Lo-Fi publiés, `noindex` : écrans 1 à 13 (`accueil`… `sav-acces`) et `index.html`
@@ -20,7 +20,7 @@ Avant de modifier le diagnostic, la fiche produit, le relief ou les listes, lis 
 
 ## Commandes vérifiées
 - `npm ci` ; `npm run lint` (ESLint) ; `npm test` (Vitest) ; `npm run e2e` (Playwright, captures dans `test-results/`) ; `npm run lighthouse` (mobile)
-- Seuils Lighthouse mobile : performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (`tests/outils/seuils-lighthouse.json`) ; wireframes, `index.html`, `diagnostic.html` et `produit.html` tant qu'ils sont `noindex` : sans SEO.
+- Seuils Lighthouse mobile : performance ≥ 90, accessibilité ≥ 95, bonnes pratiques ≥ 95, SEO ≥ 90 (`tests/outils/seuils-lighthouse.json`) ; wireframes, `index.html`, `diagnostic.html`, `produit.html` et `panier.html` tant qu'ils sont `noindex` : sans SEO.
 
 ## Règles durables
 - Dépendances de développement seulement, versions exactes ; toute nouvelle dépendance est signalée et justifiée.
@@ -32,6 +32,7 @@ Avant de modifier le diagnostic, la fiche produit, le relief ou les listes, lis 
 - Chemins relatifs partout (site servi sous `/<dépôt>/`). Contenus fictifs, aucun vrai logo ni traceur, aucune police ni script externe.
 - Un réglage qui résiste après trois essais : documenter et s'arrêter. Ne jamais modifier un critère non atteint (le signaler) ni simuler un résultat.
 - Fiche produit complète : E3-1 à E3-8 ; `specs` et `documents` n'existent que pour le produit `complet` (masqués sinon) ; PDF d'exemple regénérables par `node scripts/documents/generer.mjs`, identiques octet à octet à ceux du dépôt (un test le vérifie) ; aucun vrai document, aucune vraie norme.
+- Panier : `sessionStorage.commande` est relue sans être supprimée, puis revalidée par `validerCommande` (cotes réévaluées, prix recalculés à partir des données ; le `prix` de la session est ignoré) ; la case de responsabilité n'est jamais mémorisée ; « Valider ma commande » affiche une confirmation simulée et supprime `commande` ; aucun paiement ; seuls boutons ambre : « Ajouter au panier » et « Valider ma commande » à l'état actif.
 
 ## Git
 - Branche `lot-N` ; un commit « Lot N-X — titre » par partie ; push après chaque commit ; bilan `Docs/lots/lot-N.md` dans le dernier commit de partie (aucun commit après le tag).
@@ -46,3 +47,4 @@ Avant de modifier le diagnostic, la fiche produit, le relief ou les listes, lis 
 - Textes et listes remplis par JavaScript arrivent après le premier rendu : réserver leur hauteur (`min-block-size`, par point de rupture), sinon le CLS dépasse 0,1. Le CLS des blocs `achat` et `mode` dépend du titre le plus long et du mode (DIY ou pose) : toute modification de ces blocs impose de remesurer de 360 à 1440 px.
 - PDF d'exemple : texte en WinAnsi, un caractère non supporté lève une erreur ; tout nouveau document passe par `scripts/documents/contenus.json`.
 - Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`. Lighthouse : http://localhost seulement. Réseau sortant filtré par un proxy.
+- Le panier n'est pas un stockage : toute donnée lue en session doit être revalidée avant affichage ; toute modification des limites de cotes ou des prix de `data/produit.json` change le résultat de la revalidation.

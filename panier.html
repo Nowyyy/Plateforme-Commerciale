@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="fr" data-donnees="produit">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Panier : récapitulatif, validation des mesures et total (exemple)</title>
+  <meta name="description" content="Démonstrateur : panier d'un équipement de protection de l'habitat, récapitulatif technique, validation des mesures et total. Contenus fictifs, aucune vente.">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/composants.css">
+  <link rel="stylesheet" href="css/accueil.css">
+  <link rel="stylesheet" href="css/diagnostic.css">
+  <link rel="stylesheet" href="css/produit.css">
+  <link rel="stylesheet" href="css/panier.css">
+  <script type="module" src="assets/js/rendu.js"></script>
+  <script type="module" src="assets/js/menu.js"></script>
+  <script type="module" src="assets/js/panier.js"></script>
+</head>
+<body>
+  <div class="relief" aria-hidden="true">
+    <svg class="relief__groupe relief__groupe--1" viewBox="-190 -150 380 300" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <defs><path id="relief-blob" vector-effect="non-scaling-stroke" d="M-120 0C-125 -62 -45 -92 25 -82C105 -72 135 -12 112 42C90 94 22 104 -42 88C-100 72 -116 38 -120 0Z"/></defs>
+      <use href="#relief-blob" transform="scale(0.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.5)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.75)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.5)" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <svg class="relief__groupe relief__groupe--2" viewBox="-170 -170 340 340" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <g transform="rotate(30)">
+      <use href="#relief-blob" transform="scale(0.2)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.45)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.7)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.95)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.2)" vector-effect="non-scaling-stroke"/>
+      </g>
+    </svg>
+  </div>
+  <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
+  <a class="lien-evitement" href="#contenu" data-texte="site.evitement"></a>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="inondation" viewBox="0 0 48 48"><path d="M9 23 24 9l15 14M13 20v10M35 20v10"/><path d="M5 36q4.5-4 9 0t9 0t9 0t9 0t4 0M5 43q4.5-4 9 0t9 0t9 0t9 0t4 0"/></symbol>
+    <symbol id="grele-vent" viewBox="0 0 48 48"><path d="M14 28a6 6 0 0 1 0-12 9 9 0 0 1 17-1 6 6 0 0 1 2 13z"/><circle cx="15" cy="37" r="1.8"/><circle cx="25" cy="42" r="1.8"/><circle cx="35" cy="37" r="1.8"/></symbol>
+    <symbol id="feu" viewBox="0 0 48 48"><path d="M24 6c2 7 11 11 11 22a11 11 0 0 1-22 0c0-5 3-8 5-10 0 4 2 6 4 6 0-6-1-11 2-18z"/><path d="M24 42a5 5 0 0 1-5-5c0-3 2-5 5-8 3 3 5 5 5 8a5 5 0 0 1-5 5z"/></symbol>
+    <symbol id="chaleur" viewBox="0 0 48 48"><circle cx="24" cy="24" r="8"/><path d="M24 5v6M24 37v6M5 24h6M37 24h6M10.6 10.6l4.2 4.2M33.2 33.2l4.2 4.2M10.6 37.4l4.2-4.2M33.2 14.8l4.2-4.2"/></symbol>
+    <symbol id="froid" viewBox="0 0 48 48"><path d="M24 6v36M8.4 15l31.2 18M8.4 33l31.2-18M19 9l5 4 5-4M19 39l5-4 5 4"/></symbol>
+    <symbol id="bouclier" viewBox="0 0 48 48"><path d="M24 5 9 11v11c0 10 6 17 15 21 9-4 15-11 15-21V11z"/><path d="m17 24 5 5 9-10"/></symbol>
+    <symbol id="chute" viewBox="0 0 48 48"><path d="M24 8v26M14 24l10 10 10-10M10 41h28"/></symbol>
+  </svg>
+  <aside class="bandeau-demo" data-aria-label="site.aria.bandeau">
+    <p class="conteneur" data-texte="site.bandeau"></p>
+  </aside>
+  <header class="entete" data-bloc="E4-1" data-role="en-tete">
+    <div class="conteneur entete__ligne">
+      <a class="marque" data-lien="site.liens.accueil">
+        <svg class="marque__pictogramme" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path class="marque__toit" d="M4 15 16 5l12 10"/>
+          <path class="marque__goutte" d="M16 13c0 0 6 6 6 10a6 6 0 0 1-12 0c0-4 6-10 6-10z"/>
+        </svg>
+        <span data-texte="site.nom"></span>
+      </a>
+      <a class="lien-entete entete__panier-barre" data-lien="site.liens.panier">
+        <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+        <span data-texte="site.navigation.panier"></span>
+      </a>
+      <button type="button" class="bouton bouton--discret entete__menu" data-menu-bouton aria-expanded="false" aria-controls="menu-navigation" data-texte="site.navigation.menu"></button>
+      <nav class="nav" id="menu-navigation" data-aria-label="site.aria.navigation">
+        <ul>
+          <li><a class="nav__lien" data-lien="site.liens.pro" data-texte="site.navigation.pro"></a></li>
+          <li><a class="nav__lien" data-lien="site.liens.connexion" data-texte="site.navigation.compte"></a></li>
+          <li class="nav__panier">
+            <a class="lien-entete" data-lien="site.liens.panier">
+              <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+              <span data-texte="site.navigation.panier"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="contenu" tabindex="-1">
+    <nav class="etapes-commande" data-aria-label="produit.panier.etapesAria">
+      <div class="conteneur">
+        <ol class="etapes-commande__liste" aria-busy="true">
+          <template data-liste="panier.etapes">
+            <li class="etapes-commande__item"><span class="etapes-commande__numero" aria-hidden="true"></span><span class="etapes-commande__titre" data-texte="titre"></span></li>
+          </template>
+        </ol>
+      </div>
+    </nav>
+    <div class="conteneur panier">
+      <div class="panier__colonne">
+        <section class="panier__bloc" data-bloc="E4-2" data-role="recapitulatif" aria-labelledby="titre-panier">
+          <h1 id="titre-panier" data-texte="produit.panier.titre"></h1>
+          <div class="recap" id="recap" aria-busy="true">
+            <div class="recap__plein" id="recap-plein" hidden>
+              <div class="recap__article">
+                <div class="recap__visuel" aria-hidden="true">
+                  <svg class="icone recap__pictogramme" viewBox="0 0 48 48" focusable="false"><use href="#inondation"></use></svg>
+                </div>
+                <div class="recap__identite">
+                  <h2 class="recap__produit" id="recap-produit"></h2>
+                  <p class="recap__ligne"><span data-texte="produit.textes.achat.reference"></span> <span id="recap-reference"></span></p>
+                  <p class="recap__ligne"><span class="recap__etiquette" data-texte="produit.panier.recapitulatif.mode"></span> <strong id="recap-mode"></strong></p>
+                </div>
+              </div>
+              <dl class="recap__liste" id="recap-cotes" data-aria-label="produit.panier.recapitulatif.cotesAria">
+                <dt data-texte="produit.panier.recapitulatif.cotes.largeur"></dt><dd id="recap-largeur"></dd>
+                <dt data-texte="produit.panier.recapitulatif.cotes.hauteur"></dt><dd id="recap-hauteur"></dd>
+                <dt data-texte="produit.panier.recapitulatif.cotes.tolerance"></dt><dd id="recap-tolerance"></dd>
+              </dl>
+              <dl class="recap__liste" data-aria-label="produit.panier.recapitulatif.prixAria">
+                <dt data-texte="produit.modes.lignes.materiel"></dt><dd class="recap__prix" id="recap-prix"></dd>
+              </dl>
+              <dl class="recap__liste" id="recap-delais" data-aria-label="produit.panier.recapitulatif.delaisAria"></dl>
+              <a class="recap__modifier" data-lien="site.liens.produit" data-texte="produit.panier.recapitulatif.modifier"></a>
+            </div>
+            <div class="recap__etat" id="recap-etat" role="status"></div>
+          </div>
+        </section>
+        <section class="panier__bloc" data-bloc="E4-3" data-role="responsabilite" aria-labelledby="titre-responsabilite" hidden>
+          <h2 id="titre-responsabilite" data-texte="produit.panier.responsabilite.titre"></h2>
+        </section>
+      </div>
+      <div class="panier__colonne">
+        <section class="panier__bloc" data-bloc="E4-4" data-role="total" aria-labelledby="titre-total" hidden>
+          <h2 id="titre-total" data-texte="produit.panier.total.titre"></h2>
+        </section>
+        <section class="panier__bloc" data-bloc="E4-5" data-role="paiement" aria-labelledby="titre-paiement" hidden>
+          <h2 id="titre-paiement" data-texte="produit.panier.paiement.titre"></h2>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="pied" data-bloc="E4-6" data-role="pied">
+    <div class="conteneur">
+      <div class="pied__grille" aria-busy="true">
+        <template data-liste="site.pied.colonnes">
+          <div class="pied__colonne">
+            <h2 class="pied__titre" data-texte="titre"></h2>
+            <ul class="pied__liste">
+              <template data-liste="entrees">
+                <li><a class="pied__lien" data-lien-element="lien" data-texte="texte"></a></li>
+              </template>
+            </ul>
+          </div>
+        </template>
+        <div class="pied__colonne pied__marque">
+          <p class="pied__nom" data-texte="site.nom"></p>
+          <p class="pied__presentation" data-texte="site.pied.presentation"></p>
+        </div>
+      </div>
+      <p class="pied__bas" data-texte="site.bandeau"></p>
+    </div>
+  </footer>
+</body>
+</html>

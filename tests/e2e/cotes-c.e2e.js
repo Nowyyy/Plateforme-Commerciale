@@ -66,7 +66,7 @@ test('bouton actif (cotes compatibles) : ambre, texte marine ; le clic écrit la
   expect(styles).toEqual({ fond: AMBRE, texte: MARINE });
   await page.screenshot({ path: 'test-results/cotes-C-actif-1440.png' });
   await b.click({ force: true });
-  await page.waitForURL('**/wireframes/panier.html');
+  await page.waitForURL((u) => u.pathname === '/panier.html');
   expect(new URL(page.url()).search).toBe('');
   expect(await commande(page)).toEqual({
     v: 1, produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 1200, hauteur: 400, tolerance: 10 },
@@ -80,7 +80,7 @@ test('mode pose : commande avec pose et total ; retour au mode DIY : pose nulle'
   await saisir(page, '1200', '400');
   await page.getByRole('radio', { name: /Matériel \+ pose/ }).check({ force: true });
   await bouton(page).click();
-  await page.waitForURL('**/wireframes/panier.html');
+  await page.waitForURL((u) => u.pathname === '/panier.html');
   const pose = await commande(page);
   expect(pose.mode).toBe('pose');
   expect(pose.prix).toEqual({ materiel: 690, pose: 280, total: 970 });
@@ -90,7 +90,7 @@ test('mode pose : commande avec pose et total ; retour au mode DIY : pose nulle'
   await expect(page.locator('#cote-largeur')).toHaveValue('1200');
   await page.getByRole('radio', { name: /Matériel seul/ }).check({ force: true });
   await bouton(page).click();
-  await page.waitForURL('**/wireframes/panier.html');
+  await page.waitForURL((u) => u.pathname === '/panier.html');
   const diy = await commande(page);
   expect(diy.mode).toBe('diy');
   expect(diy.prix).toEqual({ materiel: 690, pose: null, total: 690 });
@@ -107,7 +107,7 @@ test('stockage indisponible : la navigation a lieu quand même, sans erreur de c
   await saisir(page, '1200', '400');
   await expect(bouton(page)).toHaveAttribute('aria-disabled', 'false');
   await bouton(page).click();
-  await page.waitForURL('**/wireframes/panier.html');
+  await page.waitForURL((u) => u.pathname === '/panier.html');
   expect(messages).toEqual([]);
 });
 
@@ -132,7 +132,7 @@ for (const largeur of [375, 1440]) {
     await saisir(page, '1 200', '400');
     await page.getByRole('radio', { name: /Matériel \+ pose/ }).check({ force: true });
     await bouton(page).click();
-    await page.waitForURL('**/wireframes/panier.html');
+    await page.waitForURL((u) => u.pathname === '/panier.html');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     expect((await commande(page)).mode).toBe('pose');
     expect(new URL(page.url()).search).toBe('');

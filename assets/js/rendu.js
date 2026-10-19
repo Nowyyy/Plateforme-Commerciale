@@ -37,6 +37,7 @@ const CLES_REQUISES = {
   'preuve.chiffres': ['valeur', 'libelle'],
   'galerie.vues': ['id', 'type', 'court', 'legende'],
   badges: ['id', 'titre'],
+  'panier.etapes': ['id', 'titre'],
   'configurateur.etapes': ['id', 'lettre', 'texte'],
   specs: ['id', 'icone', 'titre', 'valeur'],
   documents: ['id', 'titre', 'fichier', 'format', 'aide'],

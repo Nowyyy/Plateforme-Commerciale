@@ -1,0 +1,215 @@
+/* Panier Hi-Fi (écran 4). Mobile d'abord ; ruptures 768 et 1200 px.
+   L'en-tête, le pied et le relief viennent de accueil.css ; le bouton, de composants.css. */
+
+/* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
+html:not([data-rendu]) .etapes-commande,
+html:not([data-rendu]) .panier {
+  visibility: hidden;
+}
+
+html[data-rendu="erreur"] .etapes-commande,
+html[data-rendu="erreur"] .panier {
+  display: none;
+}
+
+/* La page occupe au moins un écran : le pied reste sous la ligne de flottaison quel que soit l'état (CLS) */
+main {
+  min-block-size: 100svh;
+}
+
+/* Indicateur d'étapes (E4-1) */
+.etapes-commande {
+  padding-block: var(--space-4) 0;
+}
+
+.etapes-commande__liste {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: etape;
+  min-block-size: var(--touch-min);
+}
+
+.etapes-commande__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--touch-min);
+  color: var(--color-text-secondary);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  counter-increment: etape;
+}
+
+.etapes-commande__numero::before {
+  content: counter(etape) / "";
+}
+
+.etapes-commande__numero {
+  display: grid;
+  place-items: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border: 2px solid var(--color-border-fort);
+  border-radius: 50%;
+  font-size: var(--text-sm);
+}
+
+.etapes-commande__item[aria-current="step"] {
+  color: var(--color-text);
+}
+
+.etapes-commande__item[aria-current="step"] .etapes-commande__numero {
+  border-color: var(--color-navy);
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+}
+
+/* Grille : une colonne dans l'ordre du HTML ; deux colonnes 60 / 40 dès 1200 px */
+.panier {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-5);
+  padding-block: var(--space-4) var(--space-7);
+}
+
+.panier__colonne {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+  min-inline-size: 0;
+}
+
+.panier__bloc {
+  min-inline-size: 0;
+}
+
+.panier__bloc[hidden] {
+  display: none;
+}
+
+.panier h1 {
+  margin-block-end: var(--space-3);
+  font-size: var(--produit-text-h1);
+  /* hauteur d'une ligne réservée avant le remplissage (CLS) */
+  min-block-size: calc(var(--produit-text-h1) * var(--leading-tight));
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.panier h2 {
+  font-size: var(--produit-text-h2);
+}
+
+@media (min-width: 1200px) {
+  .panier {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--space-4);
+    align-items: start;
+  }
+}
+
+/* Récapitulatif (E4-2) */
+.recap {
+  padding: var(--space-5);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.recap[aria-busy="true"] {
+  min-block-size: 30rem;
+}
+
+.recap__plein[hidden] {
+  display: none;
+}
+
+.recap__article {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+  margin-block-end: var(--space-5);
+}
+
+.recap__visuel {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  background: var(--color-pastille);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+}
+
+.recap__pictogramme {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+}
+
+.recap__produit {
+  margin-block-end: var(--space-2);
+  overflow-wrap: anywhere;
+}
+
+.recap__ligne {
+  margin-block-end: var(--space-1);
+  overflow-wrap: anywhere;
+}
+
+.recap__etiquette {
+  color: var(--color-text-secondary);
+}
+
+.recap__liste {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-2) var(--space-4);
+  margin: 0 0 var(--space-4);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.recap__liste dt {
+  color: var(--color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.recap__liste dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.recap__prix {
+  font-size: var(--text-lg);
+}
+
+.recap__modifier {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.recap__etat:empty {
+  display: none;
+}
+
+.recap__titre-etat {
+  margin-block-end: var(--space-3);
+}
+
+.recap__retour {
+  text-decoration: none;
+}

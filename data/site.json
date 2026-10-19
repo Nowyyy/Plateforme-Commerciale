@@ -58,7 +58,7 @@
     "diagnostic": "diagnostic.html",
     "pro": "wireframes/pro.html",
     "connexion": "wireframes/connexion.html",
-    "panier": "wireframes/panier.html",
+    "panier": "panier.html",
     "savAcces": "wireframes/sav-acces.html",
     "produit": "produit.html"
   },
