@@ -95,17 +95,85 @@
       </ol>
     </section>
     <section class="conteneur pro__bloc" data-bloc="E5-4" data-role="formulaire" aria-labelledby="titre-formulaire">
-      <div class="pro__carte carte">
+      <div class="pro__carte pro__carte--formulaire carte">
         <h2 id="titre-formulaire" tabindex="-1" data-texte="pro.formulaire.titre"></h2>
         <p data-texte="pro.formulaire.phrase"></p>
         <form class="formulaire" novalidate hidden aria-labelledby="titre-formulaire">
-          <fieldset class="formulaire__groupe">
-            <div class="formulaire__cases" aria-busy="true">
-              <template data-liste="aleas">
-                <label class="formulaire__case"><input type="checkbox"><span data-texte="titre"></span></label>
-              </template>
+          <p class="formulaire__demo" data-texte="pro.formulaire.demo"></p>
+          <div class="formulaire__resume" role="alert" tabindex="-1" data-resume hidden>
+            <p class="formulaire__resume-titre" data-resume-titre></p>
+            <ul class="formulaire__resume-liste" data-resume-liste></ul>
+            <template data-resume-modele><li><a class="formulaire__lien" href="#"></a></li></template>
+          </div>
+          <div class="formulaire__grille">
+            <div class="formulaire__champ">
+              <label class="etiquette" for="societe" data-texte="pro.formulaire.champs.societe.libelle"></label>
+              <input class="champ" type="text" id="societe" autocomplete="organization" aria-describedby="aide-societe erreur-societe">
+              <p class="formulaire__aide" id="aide-societe" data-texte="pro.formulaire.champs.societe.aide"></p>
+              <p class="formulaire__erreur" id="erreur-societe" hidden></p>
             </div>
-          </fieldset>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="siret" data-texte="pro.formulaire.champs.siret.libelle"></label>
+              <input class="champ" type="text" id="siret" inputmode="numeric" autocomplete="off" aria-describedby="aide-siret erreur-siret">
+              <p class="formulaire__aide" id="aide-siret" data-texte="pro.formulaire.champs.siret.aide"></p>
+              <p class="formulaire__erreur" id="erreur-siret" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="contact" data-texte="pro.formulaire.champs.contact.libelle"></label>
+              <input class="champ" type="text" id="contact" autocomplete="name" aria-describedby="aide-contact erreur-contact">
+              <p class="formulaire__aide" id="aide-contact" data-texte="pro.formulaire.champs.contact.aide"></p>
+              <p class="formulaire__erreur" id="erreur-contact" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="email" data-texte="pro.formulaire.champs.email.libelle"></label>
+              <input class="champ" type="email" id="email" autocomplete="email" aria-describedby="aide-email erreur-email">
+              <p class="formulaire__aide" id="aide-email" data-texte="pro.formulaire.champs.email.aide"></p>
+              <p class="formulaire__erreur" id="erreur-email" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="telephone" data-texte="pro.formulaire.champs.telephone.libelle"></label>
+              <input class="champ" type="tel" id="telephone" autocomplete="tel" aria-describedby="aide-telephone erreur-telephone">
+              <p class="formulaire__aide" id="aide-telephone" data-texte="pro.formulaire.champs.telephone.aide"></p>
+              <p class="formulaire__erreur" id="erreur-telephone" hidden></p>
+            </div>
+            <fieldset class="formulaire__groupe formulaire__champ--pleine" id="aleas" aria-describedby="aide-aleas erreur-aleas">
+              <legend class="etiquette" data-texte="pro.formulaire.champs.aleas.libelle"></legend>
+              <p class="formulaire__aide" id="aide-aleas" data-texte="pro.formulaire.champs.aleas.aide"></p>
+              <div class="formulaire__cases" aria-busy="true">
+                <template data-liste="aleas">
+                  <label class="formulaire__case"><input type="checkbox" aria-describedby="aide-aleas erreur-aleas"><span data-texte="titre"></span></label>
+                </template>
+              </div>
+              <p class="formulaire__erreur" id="erreur-aleas" hidden></p>
+            </fieldset>
+            <div class="formulaire__champ formulaire__champ--pleine">
+              <label class="etiquette" for="description" data-texte="pro.formulaire.champs.description.libelle"></label>
+              <textarea class="champ" id="description" rows="5" maxlength="1000" aria-describedby="aide-description erreur-description"></textarea>
+              <p class="formulaire__aide" id="aide-description" data-texte="pro.formulaire.champs.description.aide"></p>
+              <p class="formulaire__erreur" id="erreur-description" hidden></p>
+            </div>
+            <div class="formulaire__champ formulaire__champ--pleine formulaire__certifications">
+              <p class="etiquette" id="titre-certifications" data-texte="pro.formulaire.champs.certifications.libelle"></p>
+              <ul class="formulaire__emplacements" aria-labelledby="titre-certifications" aria-busy="true">
+                <template data-liste="formulaire.champs.certifications.emplacements">
+                  <li class="formulaire__emplacement" data-texte="."></li>
+                </template>
+              </ul>
+              <p class="formulaire__aide" data-texte="pro.formulaire.champs.certifications.aide"></p>
+            </div>
+            <div class="formulaire__champ formulaire__champ--pleine">
+              <label class="etiquette" for="message" data-texte="pro.formulaire.champs.message.libelle"></label>
+              <textarea class="champ" id="message" rows="3" maxlength="1000" aria-describedby="aide-message erreur-message"></textarea>
+              <p class="formulaire__aide" id="aide-message" data-texte="pro.formulaire.champs.message.aide"></p>
+              <p class="formulaire__erreur" id="erreur-message" hidden></p>
+            </div>
+            <div class="formulaire__champ formulaire__champ--pleine">
+              <label class="formulaire__case" for="consentement"><input type="checkbox" id="consentement" aria-describedby="erreur-consentement"><span data-texte="pro.formulaire.champs.consentement.libelle"></span></label>
+              <p class="formulaire__erreur" id="erreur-consentement" hidden></p>
+            </div>
+          </div>
+          <button type="submit" class="bouton bouton--action formulaire__bouton" data-texte="pro.formulaire.bouton"></button>
+          <p class="formulaire__demo" data-texte="pro.formulaire.demo"></p>
         </form>
       </div>
     </section>

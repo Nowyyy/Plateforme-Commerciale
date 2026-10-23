@@ -84,7 +84,7 @@ describe('lot 8b-A : pro.html', () => {
       const liste = cle.split('.').reduce((o, k) => o[k], cle.startsWith('site.') ? donnees : pro);
       expect(Array.isArray(liste) && liste.length > 0, cle).toBe(true);
       if (cle.startsWith('site.')) continue; // pied : déjà couvert par les tests du pied
-      for (const [, relative] of contenu.matchAll(/ data-texte="([^"]+)"/g)) expect(liste[0][relative], `${cle} ${relative}`).toBeTypeOf('string');
+      for (const [, relative] of contenu.matchAll(/ data-texte="([^"]+)"/g)) expect(relative === '.' ? liste[0] : liste[0][relative], `${cle} ${relative}`).toBeTypeOf('string');
     }
   });
 
