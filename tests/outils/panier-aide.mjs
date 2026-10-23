@@ -1,6 +1,16 @@
-// Aide des tests du panier : commande type et ouverture de panier.html avec session, console et requêtes suivies.
-export const COMMANDE = {
-  v: 1, produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 1200, hauteur: 400, tolerance: 0 }, prix: { materiel: 690, pose: null, total: 690 },
+// Aide des tests du panier : sessions types (clé « panier », v 2) et ouverture de panier.html avec session, console et requêtes suivies.
+export const LIGNE = { produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 1200, hauteur: 400, tolerance: 0 }, quantite: 1 };
+export const UNE_LIGNE = { v: 2, lignes: [LIGNE] };
+export const panierAvec = (surcharge = {}) => ({ v: 2, lignes: [{ ...LIGNE, ...surcharge }] });
+
+// Trois lignes : batardeau en pose x 2, batardeau en DIY d'autres cotes x 1, clapet anti-retour x 3 (6 articles).
+export const TROIS_LIGNES = {
+  v: 2,
+  lignes: [
+    { produit: 'batardeau-modulable', mode: 'pose', cotes: { largeur: 1200, hauteur: 400, tolerance: 0 }, quantite: 2 },
+    { produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 900, hauteur: 350, tolerance: 10 }, quantite: 1 },
+    { produit: 'clapet-anti-retour', mode: 'diy', cotes: null, quantite: 3 },
+  ],
 };
 
 // Écoute console et requêtes, pose la session avant le chargement (une seule fois par onglet), ouvre panier.html.
@@ -13,7 +23,7 @@ export async function ouvrirPanier(page, largeur, session = null) {
   if (session !== null) {
     await page.addInitScript((brut) => {
       if (sessionStorage.getItem('__init')) return;
-      sessionStorage.setItem('commande', brut);
+      sessionStorage.setItem('panier', brut);
       sessionStorage.setItem('__init', '1');
     }, typeof session === 'string' ? session : JSON.stringify(session));
   }

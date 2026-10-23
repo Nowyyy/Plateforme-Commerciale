@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
-import { evaluerCotes, construireCommande } from '../assets/js/cotes-logique.js';
-import { lignesPrix } from '../assets/js/produit-logique.js';
+import { evaluerCotes } from '../assets/js/cotes-logique.js';
+import { construireLigne } from '../assets/js/lignes-logique.js';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const html = lire('produit.html');
@@ -22,38 +22,37 @@ describe('bouton « Ajouter au panier »', () => {
     expect(bouton).toContain('data-texte="produit.configurateur.action.bouton"');
     // l'ambre n'est posé que par le script, à l'état actif : aucun autre bouton d'action dans la page
     expect(html).not.toContain('bouton--action');
-    expect(boutons.filter((b) => !b.includes('id="cotes-ajouter"'))).toHaveLength(1); // bouton du menu
+    // autres boutons : menu, quatre boutons de quantité (« − », « + » x 2) et « Ajouter au panier » des produits non complets (lot 8a)
+    expect(boutons.filter((b) => !b.includes('id="cotes-ajouter"'))).toHaveLength(6);
     expect(html).not.toMatch(/\sdisabled(\s|=|>)/);
   });
 });
 
-describe('commande', () => {
+describe('ligne de panier construite depuis la fiche (remplace la commande du lot 8)', () => {
   const limites = produits.find((p) => p.complet).cotes;
   const compatible = evaluerCotes({ largeur: '1200', hauteur: '400', tolerance: '10' }, limites);
 
-  it('dix produits, deux modes : null hors produit complet ; sinon total égal à la somme des lignes', () => {
+  it('dix produits, deux modes : cotes null hors produit complet ; sinon cotes entiers et aucun prix', () => {
     expect(produits).toHaveLength(10);
     for (const produit of produits) {
       for (const mode of ['diy', 'pose']) {
-        const commande = construireCommande(produit, mode, compatible);
+        const ligne = construireLigne(produit, mode, compatible);
+        expect(ligne, `${produit.id} ${mode}`).toMatchObject({ produit: produit.id, mode, quantite: 1 });
         if (!produit.complet) {
-          expect(commande, `${produit.id} ${mode}`).toBeNull();
+          expect(ligne.cotes).toBeNull();
           continue;
         }
-        const lignes = lignesPrix(produit, mode).filter((l) => l.cle !== 'total');
-        expect(commande.prix.total).toBe(lignes.reduce((somme, l) => somme + l.montant, 0));
-        expect(commande.prix.materiel).toBe(produit.prix);
-        expect(commande.prix.pose).toBe(mode === 'pose' ? produit.pose : null);
-        expect(commande).toMatchObject({ v: 1, produit: produit.id, mode, cotes: { largeur: 1200, hauteur: 400, tolerance: 10 } });
-        expect(JSON.parse(JSON.stringify(commande))).toEqual(commande);
+        expect(ligne.cotes).toEqual({ largeur: 1200, hauteur: 400, tolerance: 10 });
+        expect(JSON.stringify(ligne)).not.toMatch(/prix|total|materiel/);
+        expect(JSON.parse(JSON.stringify(ligne))).toEqual(ligne);
       }
     }
   });
 
-  it('les cotes non compatibles ne donnent jamais de commande', () => {
+  it('les cotes non compatibles ne donnent jamais de cotes dans la ligne', () => {
     const complet = produits.find((p) => p.complet);
     for (const saisie of [{ largeur: '699', hauteur: '400', tolerance: '' }, { largeur: '', hauteur: '', tolerance: '' }, { largeur: 'x', hauteur: '400', tolerance: '' }]) {
-      expect(construireCommande(complet, 'pose', evaluerCotes(saisie, limites))).toBeNull();
+      expect(construireLigne(complet, 'pose', evaluerCotes(saisie, limites)).cotes).toBeNull();
     }
   });
 });

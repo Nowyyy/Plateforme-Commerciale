@@ -5,6 +5,7 @@ import { remplirGabarit } from './cotes-logique.js';
 import { lignesPrixFormatees, modeValide, produitValide, totalEstime } from './produit-logique.js';
 import { formaterPrix } from './diagnostic-logique.js';
 import { initialiserConfigurateur } from './configurateur.js';
+import { initialiserZoneMode } from './ajout.js';
 
 export const CLE_PRODUIT = 'produit';
 export const CLE_MODE = 'mode';
@@ -149,6 +150,7 @@ if (typeof document !== 'undefined') {
     if (produit) {
       initialiserMode(donnees, produit);
       initialiserConfigurateur(donnees, produit);
+      initialiserZoneMode(donnees, produit);
     }
   });
 }

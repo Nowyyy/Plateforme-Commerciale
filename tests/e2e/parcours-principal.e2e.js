@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { formaterPrix } from '../../assets/js/diagnostic-logique.js';
-import { COMMANDE, ouvrirPanier } from '../outils/panier-aide.mjs';
+import { LIGNE, TROIS_LIGNES, UNE_LIGNE, ouvrirPanier, panierAvec } from '../outils/panier-aide.mjs';
 
 const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const AMBRE = 'rgb(217, 119, 6)';
@@ -57,6 +57,8 @@ async function parcourir(page, largeur, mode) {
   const ajouter = page.getByRole('button', { name: 'Ajouter au panier' });
   await expect(ajouter).toHaveAttribute('aria-disabled', 'false');
   await ajouter.click();
+  await expect(page.locator('#cotes-action .ajout__confirmation')).toContainText('Ajouté au panier : Batardeau modulable × 1.');
+  await page.getByRole('link', { name: 'Voir le panier' }).click();
   await page.waitForURL((u) => u.pathname === '/panier.html');
   await page.waitForSelector('#recap[aria-busy="false"]');
 
@@ -64,7 +66,8 @@ async function parcourir(page, largeur, mode) {
   const recap = page.locator('[data-role="recapitulatif"]');
   await expect(recap).toContainText('Batardeau modulable');
   await expect(recap).toContainText('Réf. BAT-120');
-  expect((await recap.locator('dd').allInnerTexts()).map(sansEspaces).slice(0, 3)).toEqual(['1 200 mm', '400 mm', '0 mm']);
+  await page.locator('#recap-deplier').click();
+  expect((await recap.locator('.ligne__liste-cotes dd').allInnerTexts()).map(sansEspaces)).toEqual(['1 200 mm', '400 mm', '0 mm']);
   const caseConfirmation = page.getByLabel("Je confirme l'exactitude des mesures fournies.");
   await expect(caseConfirmation).not.toBeChecked();
   const total = page.locator('[data-role="total"]');
@@ -91,7 +94,7 @@ async function parcourir(page, largeur, mode) {
   await expect(confirmation).toBeFocused();
   await confirmation.getByRole('link', { name: "Retour à l'accueil" }).click();
   await page.waitForURL((u) => u.pathname === '/index.html');
-  expect(await page.evaluate(() => sessionStorage.getItem('commande'))).toBeNull();
+  expect(await page.evaluate(() => sessionStorage.getItem('panier'))).toBeNull();
 
   controlerUrls(suivi);
   expect(suivi.externes).toEqual([]);
@@ -107,37 +110,40 @@ for (const mode of ['diy', 'pose']) {
   }
 }
 
-test('aller-retour : cotes restaurées, cotes hors tolérance, panier tel qu\'enregistré, puis commande écrasée refusée', async ({ page }) => {
+test('aller-retour : cotes restaurées, cotes hors tolérance, panier tel qu\'enregistré, puis ligne écrasée refusée', async ({ page }) => {
   const suivi = surveiller(page);
   await page.setViewportSize({ width: 375, height: 900 });
   await page.goto('/produit.html');
   await page.waitForSelector('html[data-rendu="pret"]');
   await saisir(page, '1 200', '400');
   await page.getByRole('button', { name: 'Ajouter au panier' }).click();
+  await page.getByRole('link', { name: 'Voir le panier' }).click();
   await page.waitForURL((u) => u.pathname === '/panier.html');
   await page.waitForSelector('#recap[aria-busy="false"]');
-  await page.getByRole('link', { name: 'Modifier mes cotes' }).click();
+  await page.locator('#recap-deplier').click();
+  await page.getByRole('button', { name: 'Reprendre ces cotes à la fiche' }).click();
   await page.waitForURL((u) => u.pathname === '/produit.html');
   await page.waitForSelector('html[data-rendu="pret"]');
-  await expect(page.locator('#cote-largeur')).toHaveValue('1 200');
+  await expect(page.locator('#cote-largeur')).toHaveValue('1200'); // la reprise écrit les entiers de la ligne
   await expect(page.locator('#cote-hauteur')).toHaveValue('400');
   const ajouter = page.getByRole('button', { name: 'Ajouter au panier' });
   await expect(ajouter).toHaveAttribute('aria-disabled', 'false');
   await page.locator('#cote-largeur').fill('1700');
   await expect(ajouter).toHaveAttribute('aria-disabled', 'true');
-  // retour au panier par l'en-tête : la commande enregistrée est inchangée
+  // retour au panier par l'en-tête : le panier enregistré est inchangé
   await page.locator('header .entete__panier-barre').click();
   await page.waitForURL((u) => u.pathname === '/panier.html');
   await page.waitForSelector('#recap[aria-busy="false"]');
-  expect((await page.locator('[data-role="recapitulatif"] dd').allInnerTexts()).map(sansEspaces).slice(0, 2)).toEqual(['1 200 mm', '400 mm']);
-  // commande écrasée par des cotes invalides (non forcé : le test écrit la session) : état invalide
-  await page.evaluate(() => sessionStorage.setItem('commande', JSON.stringify({
-    v: 1, produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 699, hauteur: 400, tolerance: 0 },
+  await page.locator('#recap-deplier').click();
+  expect((await page.locator('[data-role="recapitulatif"] .ligne__liste-cotes dd').allInnerTexts()).map(sansEspaces).slice(0, 2)).toEqual(['1 200 mm', '400 mm']);
+  // ligne écrasée par des cotes invalides (non forcé : le test écrit la session) : ligne à vérifier, validation neutre
+  await page.evaluate(() => sessionStorage.setItem('panier', JSON.stringify({
+    v: 2, lignes: [{ produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 699, hauteur: 400, tolerance: 0 }, quantite: 1 }],
   })));
   await page.reload();
   await page.waitForSelector('#recap[aria-busy="false"]');
-  await expect(page.locator('#recap-etat').getByRole('heading', { level: 2 })).toHaveText('Commande à vérifier');
-  await expect(page.locator('[data-role="total"]')).toBeHidden();
+  await expect(page.locator('.ligne')).toContainText('À vérifier');
+  await expect(page.getByRole('button', { name: 'Valider ma commande' })).toHaveAttribute('aria-disabled', 'true');
   controlerUrls(suivi);
   expect(suivi.messages).toEqual([]);
   expect(suivi.externes).toEqual([]);
@@ -145,10 +151,10 @@ test('aller-retour : cotes restaurées, cotes hors tolérance, panier tel qu\'en
 
 const ETATS = {
   vide: { session: null },
-  invalide: { session: { ...COMMANDE, cotes: { ...COMMANDE.cotes, largeur: 699 } } },
-  'plein décoché': { session: COMMANDE },
-  'plein coché': { session: COMMANDE, cocher: true },
-  confirmé: { session: COMMANDE, valider: true },
+  invalide: { session: panierAvec({ cotes: { largeur: 699, hauteur: 400, tolerance: 0 } }) },
+  'plein décoché': { session: UNE_LIGNE },
+  'plein coché': { session: UNE_LIGNE, cocher: true },
+  confirmé: { session: UNE_LIGNE, valider: true },
 };
 for (const largeur of [375, 768, 1440]) {
   test(`page entière à ${largeur} px : états vide, invalide, plein (décoché, coché) et confirmé ; console propre, axe, sans débordement`, async ({ browser }) => {
@@ -176,10 +182,16 @@ test('JavaScript désactivé : seul le message noscript est visible', async ({ b
   await contexte.close();
 });
 
-// CLS de 360 à 1440 px, JSON retardés de 400 ms ; DIY, pose, vide, invalide
+// CLS de 360 à 1440 px, JSON retardés de 400 ms (compteur d'en-tête compris) ; 1, 3 et 10 lignes, pose, invalide, vide, illisible
 const CLS_MAX = 0.08;
 const CLS_CAS = {
-  DIY: COMMANDE, pose: { ...COMMANDE, mode: 'pose' }, vide: null, invalide: 'illisible',
+  'une ligne': UNE_LIGNE,
+  pose: panierAvec({ mode: 'pose' }),
+  'trois lignes': TROIS_LIGNES,
+  'dix lignes': { v: 2, lignes: Array.from({ length: 10 }, (_, i) => ({ ...LIGNE, cotes: { largeur: 800 + i * 50, hauteur: 400, tolerance: 0 }, quantite: i + 1 })) },
+  invalide: panierAvec({ cotes: { largeur: 699, hauteur: 400, tolerance: 0 } }),
+  vide: null,
+  illisible: 'illisible',
 };
 for (const [nom, session] of Object.entries(CLS_CAS)) {
   test(`CLS du panier (${nom}) de 360 à 1440 px, JSON retardés de 400 ms : au plus ${CLS_MAX}`, async ({ browser }) => {
@@ -189,7 +201,7 @@ for (const [nom, session] of Object.entries(CLS_CAS)) {
       const page = await contexte.newPage();
       await page.route('**/data/*.json', async (route) => { await new Promise((r) => setTimeout(r, 400)); await route.continue(); });
       await page.addInitScript((brut) => {
-        if (brut !== null) sessionStorage.setItem('commande', brut);
+        if (brut !== null) sessionStorage.setItem('panier', brut);
         globalThis.__cls = 0;
         new PerformanceObserver((l) => { for (const e of l.getEntries()) if (!e.hadRecentInput) globalThis.__cls += e.value; }).observe({ type: 'layout-shift', buffered: true });
       }, session === null ? null : (typeof session === 'string' ? session : JSON.stringify(session)));

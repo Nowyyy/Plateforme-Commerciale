@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <title>Panier : récapitulatif, validation des mesures et total (exemple)</title>
-  <meta name="description" content="Démonstrateur : panier d'un équipement de protection de l'habitat, récapitulatif technique, validation des mesures et total. Contenus fictifs, aucune vente.">
+  <title>Panier : lignes, validation des mesures et total (exemple)</title>
+  <meta name="description" content="Démonstrateur : panier à plusieurs lignes d'équipements de protection de l'habitat, quantités, validation des mesures et total. Contenus fictifs, aucune vente.">
   <link rel="icon" href="data:,">
   <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="css/panier.css">
   <script type="module" src="assets/js/rendu.js"></script>
   <script type="module" src="assets/js/menu.js"></script>
+  <script type="module" src="assets/js/compteur.js"></script>
   <script type="module" src="assets/js/panier.js"></script>
 </head>
 <body>
@@ -99,68 +100,81 @@
         <section class="panier__bloc" data-bloc="E4-2" data-role="recapitulatif" aria-labelledby="titre-panier">
           <h1 id="titre-panier" data-texte="produit.panier.titre"></h1>
           <div class="recap" id="recap" aria-busy="true">
-            <div class="recap__plein" id="recap-plein" hidden>
-              <div class="recap__article">
-                <div class="recap__visuel" aria-hidden="true">
-                  <svg class="icone recap__pictogramme" viewBox="0 0 48 48" focusable="false"><use href="#inondation"></use></svg>
-                </div>
-                <div class="recap__identite">
-                  <h2 class="recap__produit" id="recap-produit"></h2>
-                  <p class="recap__ligne"><span data-texte="produit.textes.achat.reference"></span> <span id="recap-reference"></span></p>
-                  <p class="recap__ligne"><span class="recap__etiquette" data-texte="produit.panier.recapitulatif.mode"></span> <strong id="recap-mode"></strong></p>
-                </div>
-              </div>
-              <dl class="recap__liste" id="recap-cotes" data-aria-label="produit.panier.recapitulatif.cotesAria">
-                <dt data-texte="produit.panier.recapitulatif.cotes.largeur"></dt><dd id="recap-largeur"></dd>
-                <dt data-texte="produit.panier.recapitulatif.cotes.hauteur"></dt><dd id="recap-hauteur"></dd>
-                <dt data-texte="produit.panier.recapitulatif.cotes.tolerance"></dt><dd id="recap-tolerance"></dd>
-              </dl>
-              <dl class="recap__liste" data-aria-label="produit.panier.recapitulatif.prixAria">
-                <dt data-texte="produit.modes.lignes.materiel"></dt><dd class="recap__prix" id="recap-prix"></dd>
-              </dl>
-              <dl class="recap__liste" id="recap-delais" data-aria-label="produit.panier.recapitulatif.delaisAria"></dl>
-              <a class="recap__modifier" data-lien="site.liens.produit" data-texte="produit.panier.recapitulatif.modifier"></a>
+            <div class="recap__entete" id="recap-entete" hidden>
+              <p class="recap__sous-titre" id="recap-sous-titre" aria-live="polite"></p>
+              <button type="button" class="bouton bouton--secondaire recap__deplier" id="recap-deplier"></button>
             </div>
             <div class="recap__etat" id="recap-etat" role="status"></div>
+            <div class="recap__vide" id="recap-vide" hidden></div>
+            <ul class="lignes" id="recap-lignes">
+              <template data-gabarit="ligne">
+                <li class="ligne">
+                  <article class="ligne__article">
+                    <div class="ligne__visuel" aria-hidden="true">
+                      <svg class="icone ligne__pictogramme" viewBox="0 0 48 48" focusable="false"><use></use></svg>
+                    </div>
+                    <div class="ligne__corps">
+                      <h2 class="ligne__nom"></h2>
+                      <p class="ligne__texte ligne__reference"></p>
+                      <p class="ligne__texte ligne__mode"></p>
+                      <p class="ligne__texte ligne__cotes"></p>
+                      <p class="ligne__texte ligne__prix"></p>
+                      <p class="ligne__texte ligne__total"></p>
+                      <p class="ligne__texte ligne__invalide"></p>
+                    </div>
+                    <div class="ligne__actions">
+                      <div class="quantite" role="group">
+                        <span class="quantite__libelle"></span>
+                        <button type="button" class="bouton bouton--secondaire quantite__bouton" data-quantite="moins"></button>
+                        <output class="quantite__valeur" aria-live="polite">1</output>
+                        <button type="button" class="bouton bouton--secondaire quantite__bouton" data-quantite="plus"></button>
+                      </div>
+                      <button type="button" class="bouton bouton--secondaire ligne__retirer"></button>
+                      <button type="button" class="bouton bouton--secondaire ligne__reprendre-seul"></button>
+                    </div>
+                    <details class="ligne__details">
+                      <summary class="ligne__resume"></summary>
+                      <div class="ligne__details-corps">
+                        <dl class="ligne__definitions ligne__liste-cotes"></dl>
+                        <div class="ligne__apercu"></div>
+                        <dl class="ligne__definitions ligne__liste-delais"></dl>
+                        <button type="button" class="ligne__reprendre"></button>
+                        <p class="ligne__aide"></p>
+                      </div>
+                    </details>
+                  </article>
+                </li>
+              </template>
+            </ul>
+            <template data-gabarit="apercu">
+              <svg class="schema apercu__svg" viewBox="0 0 400 300" role="img" focusable="false">
+                <rect class="schema__mur" x="0" y="0" width="400" height="300"/>
+                <rect class="schema__ouverture" x="80" y="50" width="240" height="220"/>
+                <rect class="schema__barriere" x="80" y="160" width="240" height="110"/>
+                <rect class="schema__seuil" x="64" y="270" width="272" height="16"/>
+                <g class="schema__cote cote-a">
+                  <path class="schema__fleche" d="M80 105H320M80 90v30M320 90v30"/>
+                  <path class="schema__pointe" d="M80 105l12-6v12zM320 105l-12-6v12z"/>
+                  <circle class="schema__pastille" cx="200" cy="105" r="14"/>
+                  <text class="schema__lettre" x="200" y="105"></text>
+                </g>
+                <g class="schema__cote cote-b">
+                  <path class="schema__fleche" d="M120 160V270"/>
+                  <path class="schema__pointe" d="M120 160l-6 12h12zM120 270l-6-12h12z"/>
+                  <circle class="schema__pastille" cx="120" cy="215" r="14"/>
+                  <text class="schema__lettre" x="120" y="215"></text>
+                </g>
+                <text class="schema__valeur schema__valeur--a" x="200" y="82"></text>
+                <text class="schema__valeur schema__valeur--b" x="140" y="215"></text>
+              </svg>
+            </template>
           </div>
         </section>
         <section class="panier__bloc" data-bloc="E4-3" data-role="responsabilite" aria-labelledby="titre-responsabilite" hidden>
           <h2 id="titre-responsabilite" data-texte="produit.panier.responsabilite.titre"></h2>
           <div class="panier__carte">
-            <p class="responsabilite__aide" data-texte="produit.panier.responsabilite.aide"></p>
-            <figure class="apercu">
-              <div class="apercu__schema">
-                <svg class="schema" viewBox="0 0 400 300" role="img" aria-labelledby="schema-titre schema-desc" focusable="false">
-                  <title id="schema-titre" data-texte="produit.panier.responsabilite.schema.title"></title>
-                  <desc id="schema-desc" data-texte="produit.panier.responsabilite.schema.desc"></desc>
-                  <defs>
-                    <pattern id="schema-hachure" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                      <line class="schema__hachure" x1="0" y1="0" x2="0" y2="10"/>
-                    </pattern>
-                  </defs>
-                  <rect class="schema__mur" x="0" y="0" width="400" height="300"/>
-                  <rect x="0" y="0" width="400" height="300" fill="url(#schema-hachure)"/>
-                  <rect class="schema__ouverture" x="80" y="50" width="240" height="220"/>
-                  <rect class="schema__barriere" x="80" y="160" width="240" height="110"/>
-                  <rect class="schema__seuil" x="64" y="270" width="272" height="16"/>
-                  <g id="cote-a" class="schema__cote">
-                    <path class="schema__fleche" d="M80 105H320M80 90v30M320 90v30"/>
-                    <path class="schema__pointe" d="M80 105l12-6v12zM320 105l-12-6v12z"/>
-                    <circle class="schema__pastille" cx="200" cy="105" r="14"/>
-                    <text class="schema__lettre" x="200" y="105" data-texte="produit.panier.responsabilite.schema.lettres.a"></text>
-                  </g>
-                  <g id="cote-b" class="schema__cote">
-                    <path class="schema__fleche" d="M120 160V270"/>
-                    <path class="schema__pointe" d="M120 160l-6 12h12zM120 270l-6-12h12z"/>
-                    <circle class="schema__pastille" cx="120" cy="215" r="14"/>
-                    <text class="schema__lettre" x="120" y="215" data-texte="produit.panier.responsabilite.schema.lettres.b"></text>
-                  </g>
-                  <text class="schema__valeur" id="apercu-valeur-a" x="200" y="82"></text>
-                  <text class="schema__valeur schema__valeur--b" id="apercu-valeur-b" x="140" y="215"></text>
-                </svg>
-              </div>
-              <figcaption class="apercu__legende" data-texte="produit.panier.responsabilite.legende"></figcaption>
-            </figure>
+            <p class="responsabilite__aide" id="responsabilite-phrase"></p>
+            <button type="button" class="bouton bouton--secondaire responsabilite__voir" id="responsabilite-voir" data-texte="produit.panier.responsabilite.voirCotes"></button>
             <p class="responsabilite__avertissement" id="responsabilite-avertissement" data-texte="produit.panier.responsabilite.avertissement"></p>
             <label class="case" for="responsabilite-case">
               <input class="case__champ" type="checkbox" id="responsabilite-case" autocomplete="off" aria-describedby="responsabilite-avertissement">
