@@ -643,8 +643,7 @@
       "produit": {
         "titre": "Votre commande",
         "date": "Date d'achat : {date}",
-        "groupe": "Produit concerné",
-        "visuel": "[Visuel exemple]"
+        "groupe": "Produit concerné"
       },
       "motif": {
         "groupe": "Motif",

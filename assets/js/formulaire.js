@@ -4,6 +4,8 @@
 // champs : { champ: { ancre, zone, erreur, controles: () => [éléments] } } dans l'ordre du formulaire.
 // lire() : saisie brute ; valider(saisie) : { ok, erreurs: [{ champ, raison }] } ; texte(champ, raison) : message ;
 // resume : { titre(n), liens(erreurs) → [{ champ, libelle }] } ; apres() : appelé après un envoi sans erreur (champs déjà vidés).
+// champs[champ].focus (facultatif) : () => élément à focaliser depuis le lien du récapitulatif (groupe de boutons radio : le premier
+// radio ; sans cette option, le premier contrôle). Un groupe de radios déclare son fieldset comme zone et comme contrôle (aria-invalid).
 // valeursInitiales (facultatif) : [{ controle, valeur }] ; la réinitialisation remet ces valeurs (texte, ou booléen pour une case)
 // au lieu du vide ; sans cette option le comportement est inchangé.
 export function brancherFormulaire({ formulaire, champs, lire, valider, texte, resume, apres, valeursInitiales = [] }) {
@@ -98,7 +100,8 @@ export function brancherFormulaire({ formulaire, champs, lire, valider, texte, r
     const lien = evenement.target.closest('a[data-champ]');
     if (!lien) return;
     evenement.preventDefault();
-    champs[lien.getAttribute('data-champ')].controles()[0].focus();
+    const { focus, controles } = champs[lien.getAttribute('data-champ')];
+    (focus ? focus() : controles()[0]).focus();
   });
 
   formulaire.hidden = false;
