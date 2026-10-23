@@ -105,7 +105,27 @@
     <section class="conteneur compte__bloc" data-bloc="E11-3" data-role="liste" aria-labelledby="titre-liste">
       <h2 id="titre-liste" data-texte="compte.sav.suivi.liste"></h2>
       <p class="achats__vide" role="status"></p>
-      <ul class="demandes sav__demandes" aria-busy="true"></ul>
+      <ul class="demandes sav__demandes" aria-busy="true">
+        <template data-gabarit="carte-demande-sav">
+          <li class="demande carte sav__demande">
+            <div class="sav__infos">
+              <h3 class="demande__numero"></h3>
+              <p class="demande__produit"></p>
+              <p class="demande__date"></p>
+              <p class="demande__motif"></p>
+              <p class="demande__statut"><span class="demande__statut-libelle"></span> <span class="statut" data-statut=""><span class="statut__icone" aria-hidden="true"></span><span class="statut__texte"></span></span></p>
+            </div>
+            <ol class="sav__etapes"></ol>
+          </li>
+        </template>
+        <template data-gabarit="etape-sav">
+          <li class="sav__etape" data-etat="">
+            <span class="sav__pastille" aria-hidden="true"></span>
+            <span class="sav__etape-titre"></span>
+            <span class="visuellement-cache sav__etape-etat"></span>
+          </li>
+        </template>
+      </ul>
     </section>
   </main>
   <footer class="pied" data-bloc="E11-4" data-role="pied">

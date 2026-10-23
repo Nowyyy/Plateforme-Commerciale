@@ -256,3 +256,106 @@ html:not([data-formulaire]) .sav__carte-formulaire {
     min-block-size: 103.8rem;
   }
 }
+
+/* Suivi des demandes (E11) : cartes empilées sous 768 px, lignes (infos puis étapes) dès 768 px */
+.sav__demande {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.sav__infos {
+  min-inline-size: 0;
+}
+
+/* Indicateur d'étapes : pastille dessinée en CSS (forme et remplissage par état) + titre + texte masqué ; jamais la couleur seule */
+.sav__etapes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sav__etape {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  min-block-size: var(--touch-min);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  overflow-wrap: break-word;
+}
+
+.sav__pastille {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  border: 2px solid var(--color-navy);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-on-navy);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.sav__etape[data-etat="terminee"] .sav__pastille {
+  background: var(--color-navy);
+}
+
+.sav__etape[data-etat="terminee"] .sav__pastille::before {
+  content: "✓" / "";
+}
+
+.sav__etape[data-etat="actuelle"] {
+  border: 3px solid var(--color-navy);
+  padding: calc(var(--space-2) - 2px) calc(var(--space-3) - 2px);
+  background: var(--color-pastille);
+  font-weight: 800;
+}
+
+.sav__etape[data-etat="actuelle"] .sav__pastille {
+  background: radial-gradient(circle, var(--color-navy) 40%, transparent 45%);
+}
+
+.sav__etape[data-etat="a-venir"] {
+  color: var(--color-text-secondary);
+  border-style: dashed;
+}
+
+@media (min-width: 768px) {
+  .sav__demande {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: center;
+  }
+
+}
+
+/* Réserve de hauteur de la liste avant son remplissage (CLS) : quatre demandes, valeurs mesurées de 360 à 1440 px */
+.sav__demandes[aria-busy="true"] {
+  min-block-size: 94.6rem;
+}
+
+@media (min-width: 390px) {
+  .sav__demandes[aria-busy="true"] {
+    min-block-size: 93rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .sav__demandes[aria-busy="true"] {
+    min-block-size: 86.7rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .sav__demandes[aria-busy="true"] {
+    min-block-size: 57.7rem;
+  }
+}
