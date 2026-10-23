@@ -63,7 +63,7 @@ for (const largeur of [375, 1440]) {
       await page.goto('/index.html');
       await page.waitForSelector('html[data-rendu="pret"]');
     };
-    for (const [libelle, cible] of [['Service après-vente', 'wireframes/sav-acces.html'], ['Vendre sur la plateforme', 'pro.html'], ['Panier', 'panier.html']]) {
+    for (const [libelle, cible] of [['Service après-vente', 'sav-acces.html'], ['Vendre sur la plateforme', 'pro.html'], ['Panier', 'panier.html']]) {
       await ouvrir();
       await page.locator('footer').getByRole('link', { name: libelle, exact: true }).click();
       await page.waitForURL((u) => u.pathname === `/${cible}`);

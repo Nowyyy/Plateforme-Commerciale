@@ -38,7 +38,7 @@ describe('data/site.json : pied de page', () => {
       else expect(existsSync(lien), lien).toBe(true);
     }
     const sav = resoudrePied(site)[1].entrees;
-    expect(sav[0]).toEqual({ texte: 'Service après-vente', lien: 'wireframes/sav-acces.html' });
+    expect(sav[0]).toEqual({ texte: 'Service après-vente', lien: 'sav-acces.html' });
     expect(sav.slice(1).every((e) => e.lien === undefined && e.texte.includes('(à venir)'))).toBe(true);
   });
   it('un lien inconnu fait échouer le rendu du pied', () => {

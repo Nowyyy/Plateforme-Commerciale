@@ -1,3 +1,3 @@
 index.html
 type: hifi
-titre: Compte client simulé
+titre: Service après-vente simulé

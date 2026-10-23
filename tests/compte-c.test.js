@@ -77,10 +77,10 @@ describe('lot 8c-C : documents, liens et styles', () => {
     expect(compte.pages.achat.documentsTextes.libelle).toBe('{titre} (PDF, exemple)');
     expect(gabarit(html, 'document')).toMatch(/<a [^>]*download[^>]*type="application\/pdf"/);
   });
-  it('liens : achat et les autres existent ; sav et demandes pointent vers les wireframes', () => {
+  it('liens : achat et les autres existent ; sav et demandes pointent vers les pages Hi-Fi du lot 8d (avant : wireframes)', () => {
     for (const cle of ['connexion', 'compte', 'achats', 'achat', 'informations']) expect(existsSync(site.liens[cle]), cle).toBe(true);
-    expect(site.liens.sav).toBe('wireframes/sav.html');
-    expect(site.liens.demandes).toBe('wireframes/demandes.html');
+    expect(site.liens.sav).toBe('sav.html');
+    expect(site.liens.demandes).toBe('demandes.html');
     expect(existsSync(site.liens.sav) && existsSync(site.liens.demandes)).toBe(true);
   });
   it('css/compte.css sans valeur hexadécimale ; modules du lot sans appel réseau ni stockage hors compte et achat', () => {

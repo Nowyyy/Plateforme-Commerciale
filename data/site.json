@@ -62,10 +62,10 @@
     "achats": "achats.html",
     "achat": "achat.html",
     "informations": "informations.html",
-    "demandes": "wireframes/demandes.html",
-    "sav": "wireframes/sav.html",
+    "demandes": "demandes.html",
+    "sav": "sav.html",
     "panier": "panier.html",
-    "savAcces": "wireframes/sav-acces.html",
+    "savAcces": "sav-acces.html",
     "produit": "produit.html"
   },
   "liensExternes": {

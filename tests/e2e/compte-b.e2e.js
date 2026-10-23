@@ -52,11 +52,11 @@ test('compte.html : bonjour, 3 commandes les plus récentes avec statut, résum�
   await expect(demandes.nth(0)).toContainText('SAV-1001 (exemple)');
   await expect(demandes.nth(1)).toContainText('SAV-1002 (exemple)');
   await expect(page.getByRole('link', { name: 'Voir tous mes achats' })).toHaveAttribute('href', 'achats.html');
-  await expect(page.getByRole('link', { name: 'Voir toutes mes demandes' })).toHaveAttribute('href', 'wireframes/demandes.html');
+  await expect(page.getByRole('link', { name: 'Voir toutes mes demandes' })).toHaveAttribute('href', 'demandes.html');
   expect(suivi.messages).toEqual([]);
   expect(suivi.externes).toEqual([]);
   await page.getByRole('link', { name: 'Voir toutes mes demandes' }).click();
-  await page.waitForURL((u) => u.pathname === '/wireframes/demandes.html');
+  await page.waitForURL((u) => u.pathname === '/demandes.html');
 });
 
 test('« Voir le détail » écrit achat dans la session et ouvre achat.html, sans paramètre dans l\'adresse', async ({ page }) => {

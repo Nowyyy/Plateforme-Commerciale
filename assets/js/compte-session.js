@@ -1,10 +1,13 @@
-// Session du compte simulé : deux clés seulement, « compte » ({ v: 1, connecte: true }) et « achat » (identifiant de commande).
-// Aucun e-mail, mot de passe ni saisie n'est conservé. Tous les accès à sessionStorage sont protégés (stockage indisponible :
+// Session du compte simulé : trois clés seulement, « compte » ({ v: 1, connecte: true }), « achat » (identifiant de commande) et
+// « acces-sav » (identifiant d'une commande d'exemple, écrit par l'accès au SAV sans compte). Aucun e-mail, mot de passe, numéro
+// saisi ni autre saisie n'est conservé. Tous les accès à sessionStorage sont protégés (stockage indisponible :
 // non connecté, aucune exception). Les fonctions acceptent un stockage en paramètre pour être testées sans navigateur.
 import { compteConnecte, VERSION_COMPTE } from './compte-logique.js';
+import { FORMAT_ACCES } from './sav-logique.js';
 
 export const CLE_COMPTE = 'compte';
 export const CLE_ACHAT = 'achat';
+export const CLE_ACCES_SAV = 'acces-sav';
 export const EVENEMENT = 'compte:modifie';
 
 const stockageDefaut = () => globalThis.sessionStorage;
@@ -52,6 +55,7 @@ export function ouvrirSession(stockage) {
 export function fermerSession(stockage) {
   supprimer(CLE_COMPTE, stockage);
   supprimer(CLE_ACHAT, stockage);
+  supprimer(CLE_ACCES_SAV, stockage);
   prevenir();
 }
 
@@ -64,6 +68,22 @@ export function ecrireAchat(identifiant, stockage) {
 export function lireAchat(stockage) {
   const valeur = lire(CLE_ACHAT, stockage);
   return typeof valeur === 'string' && valeur !== '' ? valeur : null;
+}
+
+// Accès au SAV sans compte : identifiant « CMD- » suivi de 3 à 8 chiffres (jamais le numéro saisi), lu sans être supprimé ;
+// toute autre valeur est lue comme absente.
+export function ecrireAccesSav(identifiant, stockage) {
+  if (typeof identifiant !== 'string' || !FORMAT_ACCES.test(identifiant)) return false;
+  return ecrire(CLE_ACCES_SAV, identifiant, stockage);
+}
+
+export function lireAccesSav(stockage) {
+  const valeur = lire(CLE_ACCES_SAV, stockage);
+  return typeof valeur === 'string' && FORMAT_ACCES.test(valeur) ? valeur : null;
+}
+
+export function supprimerAccesSav(stockage) {
+  supprimer(CLE_ACCES_SAV, stockage);
 }
 
 // Remplace le contenu de <main> par un état : h1, phrase et lien (en-tête et pied inchangés) ; masque la navigation du compte

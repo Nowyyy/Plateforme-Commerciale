@@ -1,0 +1,56 @@
+/* Service après-vente simulé (écrans 10, 11 et 13). Mobile d'abord ; ruptures 768 et 1200 px.
+   Le décor, l'en-tête et le pied viennent d'accueil.css ; boutons et cartes, de composants.css ; formulaire, de pro.css ;
+   fil d'Ariane, navigation du compte, statuts et listes, de compte.css ; pastilles, de diagnostic.css. */
+
+.sav__phrase {
+  max-inline-size: 40rem;
+  margin-block: 0 var(--space-4);
+}
+
+.sav__liens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block: var(--space-4) 0;
+}
+
+.sav__connecte {
+  margin-block: var(--space-4) 0;
+  overflow-wrap: anywhere;
+}
+
+.sav__connecte[hidden],
+.sav__section[hidden],
+.sav__liens a[hidden] {
+  display: none;
+}
+
+/* Accès sans compte (E13) : colonne de 30 rem au plus, centrée ; hauteur réservée tant que le formulaire est masqué (CLS) */
+html:not([data-formulaire]) .sav__carte-acces {
+  min-block-size: 29.2rem;
+}
+
+@media (min-width: 480px) {
+  html:not([data-formulaire]) .sav__carte-acces {
+    min-block-size: 27.8rem;
+  }
+}
+
+/* Demande (E10) et confirmation : carte de 56 rem au plus */
+.sav__carte {
+  max-inline-size: var(--compte-carte-max);
+  margin-inline-end: auto;
+}
+
+.sav__etat h2:focus,
+.sav__confirmation h2:focus {
+  outline: none;
+}
+
+.sav__section + .sav__section {
+  margin-block-start: var(--space-6);
+}
+
+.sav__section h2 {
+  margin-block: 0 var(--space-3);
+}

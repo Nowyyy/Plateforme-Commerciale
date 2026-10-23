@@ -11,3 +11,4 @@ lot-7|Fiche produit Hi-Fi : spécifications d'ingénierie (tableau) et documents
 lot-8|Panier Hi-Fi : récapitulatif technique, validation de responsabilité, total, paiement et SAV, parcours principal de bout en bout.
 lot-8a|Panier à plusieurs lignes : ajout pour les dix produits, aperçus repliables, quantités, retrait avec annulation, compteur d'en-tête.
 lot-8c|Espace client simulé : connexion, tableau de bord, achats, détail d'une commande et informations, sans rien enregistrer.
+lot-8d|Service après-vente simulé : accès sans compte, demande d'intervention, suivi des demandes, sans rien enregistrer.

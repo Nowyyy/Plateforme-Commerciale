@@ -41,6 +41,14 @@
     },
     "motDePasse": {
       "max": 128
+    },
+    "numero": {
+      "min": 3,
+      "max": 8
+    },
+    "description": {
+      "min": 20,
+      "max": 1000
     }
   },
   "statuts": [
@@ -224,28 +232,32 @@
       "commande": "CMD-1029",
       "titre": "Volet extrudé renforcé",
       "statut": "recue",
-      "date": "2026-10-20"
+      "date": "2026-10-20",
+      "motif": "livraison"
     },
     {
       "id": "SAV-1002 (exemple)",
       "commande": "CMD-1044",
       "titre": "Batardeau modulable",
       "statut": "en-analyse",
-      "date": "2026-10-15"
+      "date": "2026-10-15",
+      "motif": "fonctionnement"
     },
     {
       "id": "SAV-1003 (exemple)",
       "commande": "CMD-1037",
       "titre": "Batardeau modulable",
       "statut": "intervention-planifiee",
-      "date": "2026-10-05"
+      "date": "2026-10-05",
+      "motif": "pose"
     },
     {
       "id": "SAV-1004 (exemple)",
       "commande": "CMD-1029",
       "titre": "Volet extrudé renforcé",
       "statut": "cloturee",
-      "date": "2026-09-10"
+      "date": "2026-09-10",
+      "motif": "piece"
     }
   ],
   "documents": [
@@ -530,5 +542,275 @@
     "produit": "Produit : {titre}",
     "statut": "Statut :",
     "commande": "Commande n° {id} (exemple)"
+  },
+  "motifs": [
+    {
+      "id": "livraison",
+      "titre": "Défaut à la livraison"
+    },
+    {
+      "id": "fonctionnement",
+      "titre": "Défaut de fonctionnement"
+    },
+    {
+      "id": "pose",
+      "titre": "Problème de pose"
+    },
+    {
+      "id": "piece",
+      "titre": "Pièce manquante"
+    },
+    {
+      "id": "autre",
+      "titre": "Autre"
+    }
+  ],
+  "sav": {
+    "acces": {
+      "titre": "Service après-vente sans compte",
+      "phrase": "Retrouvez votre commande pour demander une intervention. Aucun compte n'est nécessaire.",
+      "champs": {
+        "numero": {
+          "libelle": "Numéro de commande",
+          "aide": "Exemple : CMD-1037"
+        },
+        "email": {
+          "libelle": "E-mail de la commande",
+          "aide": "Exemple : client.demo@exemple.test"
+        }
+      },
+      "bouton": "Continuer",
+      "mention": "Démonstrateur : tout numéro et tout e-mail bien formés ouvrent une commande d'exemple. Rien n'est conservé.",
+      "connexion": "J'ai un compte : me connecter",
+      "connecte": {
+        "phrase": "Vous êtes connecté : vos commandes se trouvent dans votre compte.",
+        "lien": "Voir mes achats"
+      },
+      "stockage": "La session du navigateur est indisponible : l'accès au service après-vente ne peut pas s'ouvrir."
+    },
+    "resume": {
+      "liens": {
+        "numero": "Numéro de commande",
+        "email": "E-mail",
+        "ligne": "Produit concerné",
+        "motif": "Motif",
+        "description": "Description",
+        "prenom": "Prénom",
+        "nom": "Nom",
+        "telephone": "Téléphone",
+        "adresse": "Adresse d'intervention",
+        "codePostal": "Code postal",
+        "ville": "Ville",
+        "consentement": "Consentement"
+      }
+    },
+    "demande": {
+      "titre": "Demande de service après-vente",
+      "phrase": "Décrivez le problème rencontré : nous reprenons les informations de votre commande.",
+      "fil": {
+        "aria": "Fil d'Ariane",
+        "compte": [
+          {
+            "texte": "Mon compte",
+            "lien": "compte"
+          },
+          {
+            "texte": "Mes achats",
+            "lien": "achats"
+          },
+          {
+            "texte": "Commande n° {id}",
+            "lien": "achat"
+          },
+          {
+            "texte": "Demande de SAV"
+          }
+        ],
+        "sansCompte": [
+          {
+            "texte": "Accueil",
+            "lien": "accueil"
+          },
+          {
+            "texte": "Service après-vente",
+            "lien": "savAcces"
+          },
+          {
+            "texte": "Demande de SAV"
+          }
+        ]
+      },
+      "produit": {
+        "titre": "Votre commande",
+        "date": "Date d'achat : {date}",
+        "groupe": "Produit concerné",
+        "visuel": "[Visuel exemple]"
+      },
+      "motif": {
+        "groupe": "Motif",
+        "titre": "Votre demande"
+      },
+      "description": {
+        "libelle": "Description",
+        "aide": "Précisez ce qui s'est passé et depuis quand (20 à 1 000 caractères)."
+      },
+      "photos": {
+        "titre": "Photos",
+        "aide": "Aucun fichier n'est demandé dans ce démonstrateur.",
+        "taille": "5 Mo au plus par fichier (exemple).",
+        "emplacements": [
+          "[Fichier exemple] Photo 1 (exemple)",
+          "[Fichier exemple] Photo 2 (exemple)",
+          "[Fichier exemple] Photo 3 (exemple)"
+        ]
+      },
+      "coordonnees": {
+        "titre": "Vos coordonnées",
+        "champs": {
+          "prenom": "Prénom",
+          "nom": "Nom",
+          "email": "E-mail",
+          "telephone": "Téléphone (facultatif)",
+          "adresse": "Adresse d'intervention",
+          "codePostal": "Code postal",
+          "ville": "Ville"
+        }
+      },
+      "envoi": {
+        "titre": "Envoi",
+        "consentement": "J'accepte d'être recontacté à propos de cette demande.",
+        "bouton": "Envoyer ma demande"
+      }
+    },
+    "etats": {
+      "achatManquant": {
+        "titre": "Aucun achat sélectionné",
+        "phrase": "Choisissez une commande dans la liste de vos achats pour demander une intervention.",
+        "lien": "Voir mes achats"
+      },
+      "accesRequis": {
+        "titre": "Accès au SAV requis",
+        "phrase": "Indiquez votre numéro de commande pour demander une intervention, ou connectez-vous à votre compte.",
+        "lien": "Accéder au service après-vente",
+        "lienConnexion": "Me connecter"
+      }
+    },
+    "confirmation": {
+      "titre": "Demande reçue (exemple)",
+      "numero": "Numéro : SAV-000 (exemple)",
+      "delai": "Réponse sous 2 jours ouvrés (exemple).",
+      "concerne": "Demande concernant : {titre} (commande {id})",
+      "etapesTitre": "Prochaines étapes",
+      "etapes": [
+        {
+          "id": "analyse",
+          "titre": "Analyse de votre demande"
+        },
+        {
+          "id": "contact",
+          "titre": "Prise de contact par un conseiller"
+        },
+        {
+          "id": "intervention",
+          "titre": "Intervention sur place"
+        }
+      ],
+      "mention": "Aucune donnée n'a été envoyée ni enregistrée.",
+      "retourDemandes": "Retour à mes demandes",
+      "retourAccueil": "Retour à l'accueil"
+    },
+    "suivi": {
+      "titre": "Mes demandes de service après-vente",
+      "filtre": "Statut",
+      "liste": "Liste des demandes",
+      "filtres": [
+        {
+          "id": "tous",
+          "libelle": "Toutes"
+        },
+        {
+          "id": "recue",
+          "libelle": "Reçue"
+        },
+        {
+          "id": "en-analyse",
+          "libelle": "En analyse"
+        },
+        {
+          "id": "intervention-planifiee",
+          "libelle": "Intervention planifiée"
+        },
+        {
+          "id": "cloturee",
+          "libelle": "Clôturée"
+        }
+      ],
+      "motif": "Motif : {motif}",
+      "date": "Déposée le {date}",
+      "statut": "Statut :",
+      "etapes": {
+        "aria": "Avancement de la demande",
+        "terminee": "terminée",
+        "actuelle": "étape actuelle",
+        "avenir": "à venir"
+      },
+      "vide": "Aucune demande avec ce statut"
+    },
+    "messages": {
+      "numero": {
+        "vide": "Saisissez votre numéro de commande.",
+        "format": "Le numéro de commande doit compter de 3 à 8 chiffres, avec ou sans « CMD- ». Exemple : CMD-1037."
+      },
+      "ligne": {
+        "vide": "Choisissez le produit concerné.",
+        "invalide": "Ce produit ne fait pas partie de la commande : choisissez-en un dans la liste."
+      },
+      "motif": {
+        "vide": "Choisissez un motif.",
+        "invalide": "Ce motif est inconnu : choisissez-en un dans la liste."
+      },
+      "description": {
+        "vide": "Décrivez le problème rencontré.",
+        "caractere": "La description contient un caractère non autorisé.",
+        "court": "La description est trop courte (20 caractères au moins).",
+        "long": "La description est trop longue (1 000 caractères au plus)."
+      },
+      "prenom": {
+        "vide": "Indiquez votre prénom.",
+        "caractere": "Le prénom contient un caractère non autorisé.",
+        "longueur": "Le prénom est trop long (50 caractères au plus)."
+      },
+      "nom": {
+        "vide": "Indiquez votre nom.",
+        "caractere": "Le nom contient un caractère non autorisé.",
+        "longueur": "Le nom est trop long (50 caractères au plus)."
+      },
+      "email": {
+        "vide": "Saisissez l'adresse e-mail.",
+        "format": "L'adresse e-mail n'est pas valide. Exemple : client.demo@exemple.test.",
+        "longueur": "L'adresse e-mail est trop longue (254 caractères au plus, 64 avant l'arobase)."
+      },
+      "telephone": {
+        "format": "Le numéro de téléphone n'est pas valide (9 à 15 chiffres)."
+      },
+      "adresse": {
+        "vide": "Indiquez l'adresse d'intervention.",
+        "caractere": "L'adresse contient un caractère non autorisé.",
+        "longueur": "L'adresse doit compter de 2 à 100 caractères."
+      },
+      "codePostal": {
+        "vide": "Indiquez le code postal.",
+        "format": "Le code postal compte exactement 5 chiffres."
+      },
+      "ville": {
+        "vide": "Indiquez la ville.",
+        "caractere": "La ville contient un caractère non autorisé.",
+        "longueur": "La ville doit compter de 2 à 60 caractères."
+      },
+      "consentement": {
+        "vide": "Acceptez d'être recontacté pour envoyer la demande."
+      },
+      "repli": "Ce champ est à corriger."
+    }
   }
 }

@@ -101,10 +101,10 @@ describe('lot 8c-A : en-tête, pied, décor et chargement des modules', () => {
       expect(sansCode(bloc(html, '<header', '</header>')), page).not.toContain('compte.html');
     }
   });
-  it('liens de site.json : connexion et pages du compte à la racine, demandes et sav provisoirement en wireframe', () => {
+  it('liens de site.json : connexion, pages du compte et pages du SAV à la racine (avant 8d : demandes, sav et savAcces en wireframe)', () => {
     expect(site.liens).toMatchObject({
       connexion: 'connexion.html', compte: 'compte.html', achats: 'achats.html', achat: 'achat.html', informations: 'informations.html',
-      demandes: 'wireframes/demandes.html', sav: 'wireframes/sav.html', savAcces: 'wireframes/sav-acces.html',
+      demandes: 'demandes.html', sav: 'sav.html', savAcces: 'sav-acces.html',
     });
   });
   it('compte-lien.js et compte-session.js : ni réseau, ni cookie, ni stockage hors compte et achat, aucun texte visible en dur', () => {
