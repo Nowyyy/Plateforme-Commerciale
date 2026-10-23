@@ -37,9 +37,13 @@
         "libelle": "Numéro SIRET",
         "aide": "14 chiffres, espaces autorisés. Format vérifié seulement : aucune vérification réelle. Exemple : 000 000 000 00000."
       },
-      "contact": {
-        "libelle": "Prénom et nom du contact",
-        "aide": "2 à 80 caractères."
+      "prenom": {
+        "libelle": "Prénom",
+        "aide": "1 à 50 caractères."
+      },
+      "nom": {
+        "libelle": "Nom",
+        "aide": "1 à 50 caractères."
       },
       "email": {
         "libelle": "E-mail professionnel",
@@ -80,7 +84,8 @@
       "liens": {
         "societe": "Société",
         "siret": "Numéro SIRET",
-        "contact": "Prénom et nom du contact",
+        "prenom": "Prénom",
+        "nom": "Nom",
         "email": "E-mail professionnel",
         "telephone": "Téléphone",
         "aleas": "Aléas couverts par vos produits",
@@ -113,9 +118,13 @@
       "min": 2,
       "max": 100
     },
-    "contact": {
-      "min": 2,
-      "max": 80
+    "prenom": {
+      "min": 1,
+      "max": 50
+    },
+    "nom": {
+      "min": 1,
+      "max": 50
     },
     "description": {
       "min": 20,
@@ -139,10 +148,15 @@
       "vide": "Indiquez le numéro SIRET.",
       "format": "Le numéro SIRET doit comporter exactement 14 chiffres (les espaces sont autorisés)."
     },
-    "contact": {
-      "vide": "Indiquez le prénom et le nom du contact.",
-      "longueur": "Le prénom et le nom doivent compter de 2 à 80 caractères.",
-      "caractere": "Le prénom et le nom contiennent un caractère non autorisé."
+    "prenom": {
+      "vide": "Indiquez le prénom du contact.",
+      "longueur": "Le prénom doit compter de 1 à 50 caractères.",
+      "caractere": "Le prénom contient un caractère non autorisé."
+    },
+    "nom": {
+      "vide": "Indiquez le nom du contact.",
+      "longueur": "Le nom doit compter de 1 à 50 caractères.",
+      "caractere": "Le nom contient un caractère non autorisé."
     },
     "email": {
       "vide": "Indiquez une adresse e-mail professionnelle.",

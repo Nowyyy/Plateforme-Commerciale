@@ -2,13 +2,14 @@
 // Aucun accès au DOM, au réseau ni au stockage ; aucun argument n'est modifié ; jamais d'exception.
 // Les bornes viennent de data/pro.json (clé « limites »).
 
-export const CHAMPS = ['societe', 'siret', 'contact', 'email', 'telephone', 'aleas', 'description', 'message', 'consentement'];
+export const CHAMPS = ['societe', 'siret', 'prenom', 'nom', 'email', 'telephone', 'aleas', 'description', 'message', 'consentement'];
 
 // Raisons de refus possibles, par champ : source unique pour les tests et pour la complétude de data/pro.json (« messages »).
 export const RAISONS = {
   societe: ['vide', 'longueur', 'caractere'],
   siret: ['vide', 'format'],
-  contact: ['vide', 'longueur', 'caractere'],
+  prenom: ['vide', 'longueur', 'caractere'],
+  nom: ['vide', 'longueur', 'caractere'],
   email: ['vide', 'format', 'longueur'],
   telephone: ['format'],
   aleas: ['vide', 'invalide'],
@@ -17,7 +18,7 @@ export const RAISONS = {
   consentement: ['vide'],
 };
 
-const MONO_LIGNE = ['societe', 'contact', 'email', 'telephone'];
+const MONO_LIGNE = ['societe', 'prenom', 'nom', 'email', 'telephone'];
 const ZONES = ['description', 'message'];
 const ESPACES = /[ \u00a0\u202f]+/g;
 const BORDS = /^[ \u00a0\u202f]+|[ \u00a0\u202f]+$/g;
@@ -25,7 +26,8 @@ const BORDS_ZONE = /^[ \u00a0\u202f\n]+|[ \u00a0\u202f\n]+$/g;
 
 const DEFAUTS = {
   societe: { min: 2, max: 100 },
-  contact: { min: 2, max: 80 },
+  prenom: { min: 1, max: 50 },
+  nom: { min: 1, max: 50 },
   description: { min: 20, max: 1000 },
   message: { max: 1000 },
   email: { max: 254, localMax: 64 },
@@ -99,7 +101,7 @@ function validerTexte(valeur, limites, champ, { obligatoire, zone }) {
   return null;
 }
 
-// saisie = { societe, siret, contact, email, telephone, aleas, description, message, consentement }
+// saisie = { societe, siret, prenom, nom, email, telephone, aleas, description, message, consentement }
 // Renvoie { ok, erreurs: [{ champ, raison }] (ordre du formulaire, une raison par champ), valeurs (normalisées, jamais stockées) }.
 export function valider(saisie, limites, aleasValides) {
   const source = saisie !== null && typeof saisie === 'object' ? saisie : {};
@@ -108,7 +110,8 @@ export function valider(saisie, limites, aleasValides) {
   const valeurs = {
     societe: normaliser('societe', source.societe),
     siret: normaliser('siret', source.siret),
-    contact: normaliser('contact', source.contact),
+    prenom: normaliser('prenom', source.prenom),
+    nom: normaliser('nom', source.nom),
     email: normaliser('email', source.email),
     telephone: normaliser('telephone', source.telephone),
     aleas,
@@ -119,7 +122,8 @@ export function valider(saisie, limites, aleasValides) {
   const raisons = {
     societe: validerTexte(valeurs.societe, limites, 'societe', { obligatoire: true, zone: false }),
     siret: valeurs.siret === '' ? 'vide' : /^[0-9]{14}$/.test(valeurs.siret) ? null : 'format',
-    contact: validerTexte(valeurs.contact, limites, 'contact', { obligatoire: true, zone: false }),
+    prenom: validerTexte(valeurs.prenom, limites, 'prenom', { obligatoire: true, zone: false }),
+    nom: validerTexte(valeurs.nom, limites, 'nom', { obligatoire: true, zone: false }),
     email: validerEmail(valeurs.email, limites),
     telephone: validerTelephone(valeurs.telephone),
     aleas: aleas.length === 0 ? 'vide' : aleas.every((a) => connus.includes(a)) ? null : 'invalide',

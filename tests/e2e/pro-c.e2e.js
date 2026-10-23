@@ -5,7 +5,7 @@ const champ = (page, nom) => page.getByLabel(nom, { exact: true });
 const envoyer = (page) => page.getByRole('button', { name: 'Envoyer ma candidature' });
 const confirmation = (page) => page.locator('[data-role="confirmation"]');
 const formulaire = (page) => page.locator('form.formulaire');
-const SAISIES = { societe: 'Zorglub Exemple SARL', siret: '12345678901234', contact: 'Zébulon Dupondt', email: 'zebulon@zorglub-exemple.fr', telephone: '0612345678', description: 'Des clapets anti-retour (exemple).' };
+const SAISIES = { societe: 'Zorglub Exemple SARL', siret: '12345678901234', prenom: 'Zébulon', nom: 'Dupondt', email: 'zebulon@zorglub-exemple.fr', telephone: '0612345678', description: 'Des clapets anti-retour (exemple).' };
 
 async function ouvrir(page, largeur = 1440, avantChargement = null) {
   const suivi = { requetes: [], externes: [], messages: [] };
@@ -27,7 +27,8 @@ async function ouvrir(page, largeur = 1440, avantChargement = null) {
 async function remplir(page, { telephone = true, message = '' } = {}) {
   await champ(page, 'Société').fill(SAISIES.societe);
   await champ(page, 'Numéro SIRET').fill(SAISIES.siret);
-  await champ(page, 'Prénom et nom du contact').fill(SAISIES.contact);
+  await champ(page, 'Prénom').fill(SAISIES.prenom);
+  await champ(page, 'Nom').fill(SAISIES.nom);
   await champ(page, 'E-mail professionnel').fill(SAISIES.email);
   if (telephone) await champ(page, 'Téléphone (facultatif)').fill(SAISIES.telephone);
   await page.getByLabel('Inondations et crues').check();
@@ -80,7 +81,7 @@ test('« Déposer une autre candidature » : formulaire vide et visible, focus s
   await expect(confirmation(page)).toBeHidden();
   await expect(formulaire(page)).toBeVisible();
   await expect(page.locator('#titre-formulaire')).toBeFocused();
-  for (const nom of ['Société', 'Numéro SIRET', 'Prénom et nom du contact', 'E-mail professionnel', 'Téléphone (facultatif)', 'Description de vos produits', 'Message (facultatif)']) {
+  for (const nom of ['Société', 'Numéro SIRET', 'Prénom', 'Nom', 'E-mail professionnel', 'Téléphone (facultatif)', 'Description de vos produits', 'Message (facultatif)']) {
     await expect(champ(page, nom), nom).toHaveValue('');
   }
   await expect(page.locator('form.formulaire input[type="checkbox"]:checked')).toHaveCount(0);

@@ -6,7 +6,7 @@ const pro = JSON.parse(readFileSync('data/pro.json', 'utf8'));
 const LIM = pro.limites;
 const ALEAS = pro.aleas.map((a) => a.id);
 const PARFAITE = {
-  societe: 'Société Exemple', siret: '000 000 000 00000', contact: 'Claire Exemple', email: 'claire@exemple.fr',
+  societe: 'Société Exemple', siret: '000 000 000 00000', prenom: 'Claire', nom: 'Exemple', email: 'claire@exemple.fr',
   telephone: '+33 6 12 34 56 78', aleas: [ALEAS[0]], description: 'Des batardeaux modulables (exemple).', message: '', consentement: true,
 };
 const v = (surcharge) => valider({ ...PARFAITE, ...surcharge }, LIM, ALEAS);
@@ -60,13 +60,14 @@ describe('pro-logique : champs', () => {
     expect(v({ siret: '000 000 000 00000' }).valeurs.siret).toBe('00000000000000');
   });
 
-  it('contact : bornes 2 et 80, caractère interdit', () => {
-    expect(raison({ contact: 'a' }, 'contact')).toBe('longueur');
-    expect(raison({ contact: 'ab' }, 'contact')).toBeNull();
-    expect(raison({ contact: 'a'.repeat(80) }, 'contact')).toBeNull();
-    expect(raison({ contact: 'a'.repeat(81) }, 'contact')).toBe('longueur');
-    expect(raison({ contact: 'ab\u0007' }, 'contact')).toBe('caractere');
-    expect(raison({ contact: '' }, 'contact')).toBe('vide');
+  it('prénom et nom : bornes 1 et 50, caractère interdit, vide', () => {
+    for (const champ of ['prenom', 'nom']) {
+      expect(raison({ [champ]: '' }, champ)).toBe('vide');
+      expect(raison({ [champ]: 'a' }, champ)).toBeNull();
+      expect(raison({ [champ]: 'a'.repeat(50) }, champ)).toBeNull();
+      expect(raison({ [champ]: 'a'.repeat(51) }, champ)).toBe('longueur');
+      expect(raison({ [champ]: 'ab\u0007' }, champ)).toBe('caractere');
+    }
   });
 
   it('e-mail : adresses valides', () => {
@@ -152,17 +153,18 @@ describe('pro-logique : valider', () => {
   it('toutes les erreurs ensemble : une raison par champ, dans l\'ordre du formulaire', () => {
     const r = valider({}, LIM, ALEAS);
     expect(r.ok).toBe(false);
-    expect(r.erreurs.map((e) => e.champ)).toEqual(['societe', 'siret', 'contact', 'email', 'aleas', 'description', 'consentement']);
-    expect(r.erreurs.map((e) => e.raison)).toEqual(['vide', 'vide', 'vide', 'vide', 'vide', 'vide', 'vide']);
-    const tous = valider({ societe: 'a', siret: 'x', contact: 'b', email: 'c', telephone: 'd', aleas: ['z'], description: 'e', message: 'm\u0000', consentement: false }, LIM, ALEAS);
+    expect(r.erreurs.map((e) => e.champ)).toEqual(['societe', 'siret', 'prenom', 'nom', 'email', 'aleas', 'description', 'consentement']);
+    expect(r.erreurs.map((e) => e.raison)).toEqual(['vide', 'vide', 'vide', 'vide', 'vide', 'vide', 'vide', 'vide']);
+    const tous = valider({ societe: 'a', siret: 'x', prenom: '', nom: 'x'.repeat(51), email: 'c', telephone: 'd', aleas: ['z'], description: 'e', message: 'm\u0000', consentement: false }, LIM, ALEAS);
     expect(tous.erreurs.map((e) => e.champ)).toEqual(CHAMPS);
     expect(new Set(tous.erreurs.map((e) => e.champ)).size).toBe(CHAMPS.length);
   });
 
   it('valeurs normalisées : espaces compactés, SIRET à 14 chiffres, bords retirés', () => {
-    const r = v({ societe: `  Société${NBSP}${FINE}  Exemple  `, contact: ' Claire   Exemple ', email: ' a@b.fr ', telephone: ' 06 12  34 56 78 ' });
+    const r = v({ societe: `  Société${NBSP}${FINE}  Exemple  `, prenom: ' Claire  ', nom: ' Exemple ', email: ' a@b.fr ', telephone: ' 06 12  34 56 78 ' });
     expect(r.valeurs.societe).toBe('Société Exemple');
-    expect(r.valeurs.contact).toBe('Claire Exemple');
+    expect(r.valeurs.prenom).toBe('Claire');
+    expect(r.valeurs.nom).toBe('Exemple');
     expect(r.valeurs.email).toBe('a@b.fr');
     expect(r.valeurs.telephone).toBe('06 12 34 56 78');
     expect(normaliser('societe', 42)).toBe('');
@@ -181,7 +183,7 @@ describe('pro-logique : valider', () => {
   });
 
   it('ne lève jamais d\'exception, quelle que soit l\'entrée', () => {
-    const entrees = [undefined, null, 42, 'texte', true, [], [1, 2], {}, { societe: 5, siret: {}, contact: [], email: null, telephone: 3, aleas: 'x', description: 9, message: [], consentement: {} },
+    const entrees = [undefined, null, 42, 'texte', true, [], [1, 2], {}, { societe: 5, siret: {}, prenom: [], nom: {}, email: null, telephone: 3, aleas: 'x', description: 9, message: [], consentement: {} },
       { aleas: [1, null, {}, 'a'] }, { societe: Symbol.iterator.toString(), email: '@' }];
     for (const entree of entrees) {
       for (const limites of [undefined, null, 'x', {}, LIM, { societe: { min: 'a' } }]) {
@@ -208,7 +210,7 @@ describe('pro-logique : valider', () => {
     let n = 0;
     for (const societe of societes) for (const siret of sirets) for (const email of emails) for (const description of descriptions) for (const autre of divers) {
       n += 1;
-      const saisie = { societe, siret, contact: 'Claire Exemple', email, description, ...autre };
+      const saisie = { societe, siret, prenom: 'Claire', nom: 'Exemple', email, description, ...autre };
       const r = valider(saisie, LIM, ALEAS);
       expect(r.ok).toBe(r.erreurs.length === 0);
       for (const { champ, raison: motif } of r.erreurs) expect(RAISONS[champ]).toContain(motif);

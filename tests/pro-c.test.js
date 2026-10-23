@@ -43,7 +43,7 @@ describe('lot 8b-C : données et confirmation', () => {
 
   it('css/pro.css sans valeur hexadécimale ; la confirmation n\'affiche aucune clé de saisie', () => {
     expect(lire('css/pro.css')).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
-    for (const cle of ['societe', 'siret', 'contact', 'email', 'telephone', 'description', 'message']) {
+    for (const cle of ['societe', 'siret', 'prenom', 'nom', 'email', 'telephone', 'description', 'message']) {
       expect(confirmation, cle).not.toContain(`pro.formulaire.champs.${cle}`);
     }
   });

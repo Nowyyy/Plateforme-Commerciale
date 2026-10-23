@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const ORDRE = ['societe', 'siret', 'contact', 'email', 'aleas', 'description', 'consentement'];
-const LIBELLES = ['Société', 'Numéro SIRET', 'Prénom et nom du contact', 'E-mail professionnel', 'Aléas couverts par vos produits', 'Description de vos produits', 'Consentement à être recontacté'];
+const ORDRE = ['societe', 'siret', 'prenom', 'nom', 'email', 'aleas', 'description', 'consentement'];
+const LIBELLES = ['Société', 'Numéro SIRET', 'Prénom', 'Nom', 'E-mail professionnel', 'Aléas couverts par vos produits', 'Description de vos produits', 'Consentement à être recontacté'];
 const champ = (page, nom) => page.getByLabel(nom, { exact: true });
 const envoyer = (page) => page.getByRole('button', { name: 'Envoyer ma candidature' });
 const resume = (page) => page.locator('[data-resume]');
@@ -21,14 +21,14 @@ async function ouvrir(page, largeur = 1440) {
   return suivi;
 }
 
-test('envoi à vide : récapitulatif focalisé, 7 erreurs, champs invalides reliés à leur message, liens dans l\'ordre du formulaire', async ({ page }) => {
+test('envoi à vide : récapitulatif focalisé, 8 erreurs, champs invalides reliés à leur message, liens dans l\'ordre du formulaire', async ({ page }) => {
   await ouvrir(page);
   await expect(resume(page)).toBeHidden();
   await envoyer(page).click();
   await expect(resume(page)).toBeVisible();
   await expect(resume(page)).toBeFocused();
   await expect(resume(page)).toHaveAttribute('role', 'alert');
-  await expect(resume(page)).toContainText('Le formulaire contient 7 erreurs à corriger :');
+  await expect(resume(page)).toContainText('Le formulaire contient 8 erreurs à corriger :');
   await expect(resume(page).getByRole('link')).toHaveText(LIBELLES);
   for (const nom of ORDRE) {
     const controle = nom === 'aleas' ? page.locator('#aleas input').first() : page.locator(`#${nom}`);
@@ -60,14 +60,15 @@ test('revalidation à la saisie après le premier envoi ; le récapitulatif se m
   await expect(erreur(page, 'societe')).toBeHidden(); // aucune validation avant le premier envoi
   await champ(page, 'Société').fill('');
   await envoyer(page).click();
-  await expect(resume(page)).toContainText('7 erreurs');
+  await expect(resume(page)).toContainText('8 erreurs');
   await champ(page, 'Société').fill('Société Exemple');
   await expect(erreur(page, 'societe')).toBeHidden();
   await expect(page.locator('#societe')).not.toHaveAttribute('aria-invalid', /.*/);
-  await expect(resume(page)).toContainText('6 erreurs');
-  await expect(resume(page).getByRole('link')).toHaveCount(6);
+  await expect(resume(page)).toContainText('7 erreurs');
+  await expect(resume(page).getByRole('link')).toHaveCount(7);
   await champ(page, 'Numéro SIRET').fill('000 000 000 00000');
-  await champ(page, 'Prénom et nom du contact').fill('Claire Exemple');
+  await champ(page, 'Prénom').fill('Claire');
+  await champ(page, 'Nom').fill('Exemple');
   await champ(page, 'E-mail professionnel').fill('claire@exemple.fr');
   await page.getByLabel('Inondations et crues').check();
   await champ(page, 'Description de vos produits').fill('Des batardeaux modulables (exemple).');
@@ -121,8 +122,8 @@ test('clavier : Entrée dans un champ valide, Tab suit l\'ordre du formulaire, l
     }));
     await page.keyboard.press('Tab');
   }
-  expect(vus).toEqual(['societe', 'siret', 'contact', 'email', 'telephone', 'Inondations et crues', 'Grêle et vents violents', 'Feux de forêt',
-    'Canicule et chaleur extrême', 'description', 'message', 'consentement', 'Envoyer ma candidature', vus[13], vus[14]]);
+  expect(vus).toEqual(['societe', 'siret', 'prenom', 'nom', 'email', 'telephone', 'Inondations et crues', 'Grêle et vents violents', 'Feux de forêt',
+    'Canicule et chaleur extrême', 'description', 'message', 'consentement', 'Envoyer ma candidature', vus[14]]);
 
   for (const touche of ['Enter', 'Space']) {
     await page.reload();
@@ -154,12 +155,14 @@ test('mise en page : carte de 56 rem au plus, paires côte à côte à 1440 px, 
   await ouvrir(page, 1440);
   const boite = (sel) => page.locator(sel).evaluate((el) => { const r = el.getBoundingClientRect(); return { x: r.x, y: r.y, w: r.width }; });
   expect((await boite('.pro__carte--formulaire')).w).toBeLessThanOrEqual(896);
-  const [societe, siret, contact, email, telephone] = await Promise.all(['#societe', '#siret', '#contact', '#email', '#telephone'].map(boite));
+  const [societe, siret, prenom, nom, email, telephone] = await Promise.all(['#societe', '#siret', '#prenom', '#nom', '#email', '#telephone'].map(boite));
   expect(Math.abs(societe.y - siret.y)).toBeLessThan(2);
   expect(siret.x).toBeGreaterThan(societe.x + societe.w - 1);
-  expect(Math.abs(contact.y - email.y)).toBeLessThan(2);
-  expect(email.x).toBeGreaterThan(contact.x + contact.w - 1);
-  expect(telephone.y).toBeGreaterThan(contact.y);
+  expect(Math.abs(prenom.y - nom.y)).toBeLessThan(2);
+  expect(nom.x).toBeGreaterThan(prenom.x + prenom.w - 1);
+  expect(Math.abs(email.y - telephone.y)).toBeLessThan(2);
+  expect(telephone.x).toBeGreaterThan(email.x + email.w - 1);
+  expect(email.y).toBeGreaterThan(prenom.y);
   console.log(`1440 px : carte ${Math.round((await boite('.pro__carte--formulaire')).w)} px, société x=${Math.round(societe.x)} SIRET x=${Math.round(siret.x)}`);
   await page.setViewportSize({ width: 375, height: 900 });
   const [s2, si2] = await Promise.all(['#societe', '#siret'].map(boite));
@@ -171,7 +174,8 @@ for (const largeur of [375, 768, 1440]) {
   test(`aucun débordement à ${largeur} px avec des saisies longues et des messages d'erreur`, async ({ page }) => {
     await ouvrir(page, largeur);
     await champ(page, 'Société').fill('S'.repeat(100));
-    await champ(page, 'Prénom et nom du contact').fill('C'.repeat(80));
+    await champ(page, 'Prénom').fill('P'.repeat(50));
+    await champ(page, 'Nom').fill('N'.repeat(50));
     await champ(page, 'E-mail professionnel').fill(`${'e'.repeat(60)}@${'d'.repeat(60)}.${'d'.repeat(60)}.${'d'.repeat(60)}.fr`.slice(0, 254));
     await champ(page, 'Description de vos produits').fill('D'.repeat(1000));
     await envoyer(page).click();

@@ -9,7 +9,7 @@ import { valider, construireResume } from './pro-logique.js';
 // Identifiants d'aléas acceptés par la validation : ceux de data/pro.json (mêmes que ceux de l'accueil).
 export const idsAleas = (donnees) => donnees.pro.aleas.map((alea) => alea.id);
 
-const CHAMPS_TEXTE = ['societe', 'siret', 'contact', 'email', 'telephone', 'description', 'message'];
+const CHAMPS_TEXTE = ['societe', 'siret', 'prenom', 'nom', 'email', 'telephone', 'description', 'message'];
 
 export function initialiser(donnees, racine = document) {
   const formulaire = racine.querySelector('.formulaire');
@@ -31,7 +31,7 @@ export function initialiser(donnees, racine = document) {
   };
 
   const champs = {};
-  for (const nom of ['societe', 'siret', 'contact', 'email', 'telephone', 'aleas', 'description', 'message', 'consentement']) {
+  for (const nom of ['societe', 'siret', 'prenom', 'nom', 'email', 'telephone', 'aleas', 'description', 'message', 'consentement']) {
     const ancre = nom;
     const zone = nom === 'aleas' ? controle('aleas') : controle(nom).closest('.formulaire__champ');
     champs[nom] = {

@@ -36,7 +36,8 @@ describe('lot 8b-B : balisage du formulaire', () => {
     expect(de('societe')).toContain('autocomplete="organization"');
     expect(de('siret')).toContain('inputmode="numeric"');
     expect(de('siret')).toContain('autocomplete="off"');
-    expect(de('contact')).toContain('autocomplete="name"');
+    expect(de('prenom')).toContain('autocomplete="given-name"');
+    expect(de('nom')).toContain('autocomplete="family-name"');
     expect(de('email')).toContain('type="email"');
     expect(de('email')).toContain('autocomplete="email"');
     expect(de('telephone')).toContain('type="tel"');
@@ -48,7 +49,7 @@ describe('lot 8b-B : balisage du formulaire', () => {
   });
 
   it('chaque champ a une aide et une erreur d\'id unique reliées par aria-describedby ; aucun id dupliqué ni dans les gabarits', () => {
-    for (const champ of ['societe', 'siret', 'contact', 'email', 'telephone', 'aleas', 'description', 'message']) {
+    for (const champ of ['societe', 'siret', 'prenom', 'nom', 'email', 'telephone', 'aleas', 'description', 'message']) {
       expect(html, champ).toContain(`id="aide-${champ}"`);
       expect(html, champ).toContain(`id="erreur-${champ}"`);
     }

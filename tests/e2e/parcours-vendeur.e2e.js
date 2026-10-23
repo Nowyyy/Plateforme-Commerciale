@@ -26,7 +26,9 @@ for (const largeur of [375, 1440]) {
     await page.keyboard.press('Tab');
     await page.keyboard.type('000 000 000 00000');
     await page.keyboard.press('Tab');
-    await page.keyboard.type('Claire Exemple');
+    await page.keyboard.type('Claire');
+    await page.keyboard.press('Tab');
+    await page.keyboard.type('Exemple');
     await page.keyboard.press('Tab');
     await page.keyboard.type('claire@exemple.fr');
     await page.keyboard.press('Tab');

@@ -77,7 +77,7 @@ html[data-rendu="erreur"] .pro__bloc {
   display: none;
 }
 
-/* Formulaire E5-4 : une colonne ; deux colonnes dès 768 px pour les champs courts (société/SIRET, contact/e-mail) */
+/* Formulaire E5-4 : une colonne ; deux colonnes dès 768 px pour les champs courts (société/SIRET, prénom/nom, e-mail/téléphone) */
 .formulaire__demo {
   margin-block: var(--space-4) 0;
   color: var(--color-text-secondary);
@@ -258,18 +258,18 @@ html[data-rendu="erreur"] .pro__bloc {
 
 /* Réserve de hauteur du formulaire tant qu'il est masqué (avant le branchement) : valeurs mesurées de 360 à 1440 px (CLS) */
 html:not([data-formulaire]) .pro__carte--formulaire {
-  min-block-size: 130rem;
+  min-block-size: 139rem;
 }
 
 @media (min-width: 390px) {
   html:not([data-formulaire]) .pro__carte--formulaire {
-    min-block-size: 129rem;
+    min-block-size: 137rem;
   }
 }
 
 @media (min-width: 600px) {
   html:not([data-formulaire]) .pro__carte--formulaire {
-    min-block-size: 124rem;
+    min-block-size: 132rem;
   }
 }
 
