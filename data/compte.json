@@ -397,23 +397,138 @@
       "titre": "Bonjour, {prenom}",
       "mention": "Compte de démonstration — données fictives",
       "commandes": "Mes dernières commandes",
-      "savEnCours": "Demandes de service après-vente en cours"
+      "savEnCours": "Demandes de service après-vente en cours",
+      "voirTous": "Voir tous mes achats",
+      "voirDemandes": "Voir toutes mes demandes",
+      "aucuneCommande": "Aucune commande pour le moment.",
+      "aucuneDemande": "Aucune demande en cours."
     },
     "achats": {
       "titre": "Mes achats",
-      "liste": "Liste des achats"
+      "liste": "Liste des achats",
+      "filtre": "Statut",
+      "filtres": [
+        {
+          "id": "tous",
+          "libelle": "Tous"
+        },
+        {
+          "id": "en-preparation",
+          "libelle": "En préparation"
+        },
+        {
+          "id": "expedie",
+          "libelle": "Expédié"
+        },
+        {
+          "id": "livre",
+          "libelle": "Livré"
+        },
+        {
+          "id": "pose-planifiee",
+          "libelle": "Pose planifiée"
+        }
+      ]
     },
     "achat": {
       "titre": "Détail de ma commande",
       "lignes": "Articles de la commande",
-      "livraison": "Livraison",
+      "sav": "Service après-vente",
+      "fil": {
+        "aria": "Fil d'Ariane",
+        "compte": "Mon compte",
+        "achats": "Mes achats"
+      },
+      "resume": {
+        "date": "Date",
+        "statut": "Statut",
+        "materiel": "Matériel",
+        "pose": "Pose estimée",
+        "total": "Total TTC"
+      },
+      "ligne": {
+        "reference": "Réf. {reference}",
+        "mode": "Mode : {mode}",
+        "surMesure": "Sur mesure : {largeur} × {hauteur} mm",
+        "sansMesure": "Prêt à poser, sans mesure",
+        "prixUnitaire": "{prix} × {quantite}",
+        "totalLigne": "Total de la ligne : {total}",
+        "resume": "Détails : cotes et délais",
+        "cotes": {
+          "largeur": "Largeur du tableau (A)",
+          "hauteur": "Hauteur du seuil (B)",
+          "tolerance": "Tolérance de mesure (C)"
+        },
+        "cotesAria": "Cotes saisies",
+        "delaisAria": "Délais",
+        "delais": {
+          "livraison": "Livraison directe usine :",
+          "pose": "Intervention de l'artisan :"
+        },
+        "apercuAria": "Aperçu des cotes : largeur {largeur} mm, hauteur {hauteur} mm (exemple)",
+        "lettres": {
+          "a": "A",
+          "b": "B"
+        },
+        "quantite": "Quantité :"
+      },
+      "savPhrase": "Un problème avec cette commande ? Vous pouvez demander une intervention.",
+      "savBouton": "Demander une intervention",
+      "documentsTextes": {
+        "libelle": "{titre} (PDF, exemple)",
+        "mention": "Fichiers fictifs du démonstrateur : aucune valeur contractuelle ou réglementaire."
+      },
+      "livraisonTextes": {
+        "statut": "Statut",
+        "delai": "Délai de livraison",
+        "artisan": "Artisan",
+        "intervention": "Date d'intervention"
+      },
       "documents": "Documents",
-      "sav": "Service après-vente"
+      "livraison": "Livraison"
     },
     "informations": {
       "titre": "Mes informations",
       "adresse": "Adresse de livraison",
-      "preferences": "Préférences"
+      "preferences": "Préférences",
+      "champs": {
+        "prenom": "Prénom",
+        "nom": "Nom",
+        "email": "E-mail",
+        "telephone": "Téléphone (facultatif)",
+        "adresse": "Adresse",
+        "complement": "Complément d'adresse (facultatif)",
+        "codePostal": "Code postal",
+        "ville": "Ville"
+      },
+      "rgpd": "L'export et la suppression de vos données ne sont pas actifs dans ce démonstrateur ; mention RGPD prévue au lot 10.",
+      "bouton": "Enregistrer",
+      "confirmation": "Enregistrement simulé : rien n'a été conservé (exemple).",
+      "prefs": {
+        "legende": "Préférences de communication",
+        "suiviCommandes": "Suivi de mes commandes par e-mail",
+        "infosSav": "Informations sur mes demandes de SAV par e-mail"
+      }
     }
+  },
+  "commande": {
+    "numero": "Commande n° {id} (exemple)",
+    "date": "Passée le {date}",
+    "statut": "Statut :",
+    "total": "Total TTC : {total}",
+    "mode": "Mode : {mode}",
+    "modes": {
+      "diy": "DIY (matériel seul)",
+      "pose": "Pose par un artisan",
+      "mixte": "Modes mixtes"
+    },
+    "detail": "Voir le détail",
+    "detailAria": "Voir le détail de la commande {id}"
+  },
+  "demande": {
+    "numero": "Demande {id}",
+    "produit": "Produit : {titre}",
+    "statut": "Statut :",
+    "commande": "Commande n° {id} (exemple)"
   }
 }

@@ -97,9 +97,34 @@
     <div class="conteneur compte__colonnes">
       <section class="compte__bloc compte__colonne-principale" data-bloc="E7-3" data-role="commandes" aria-labelledby="titre-commandes">
         <h2 id="titre-commandes" data-texte="compte.pages.compte.commandes"></h2>
+        <ul class="commandes" aria-busy="true">
+          <template data-gabarit="carte-commande">
+            <li class="commande carte">
+              <h3 class="commande__numero"></h3>
+              <p class="commande__date"></p>
+              <p class="commande__statut"><span class="commande__statut-libelle"></span> <span class="statut" data-statut=""><span class="statut__icone" aria-hidden="true"></span><span class="statut__texte"></span></span></p>
+              <ul class="commande__lignes"></ul>
+              <p class="commande__total"></p>
+              <p class="commande__mode"></p>
+              <button type="button" class="bouton bouton--secondaire commande__detail"></button>
+            </li>
+          </template>
+        </ul>
+        <p><a class="bouton bouton--secondaire" data-lien="site.liens.achats" data-texte="compte.pages.compte.voirTous"></a></p>
       </section>
       <section class="compte__bloc compte__colonne-secondaire" data-bloc="E7-4" data-role="sav-en-cours" aria-labelledby="titre-sav-en-cours">
         <h2 id="titre-sav-en-cours" data-texte="compte.pages.compte.savEnCours"></h2>
+        <ul class="demandes" aria-busy="true">
+          <template data-gabarit="carte-demande">
+            <li class="demande carte">
+              <h3 class="demande__numero"></h3>
+              <p class="demande__produit"></p>
+              <p class="demande__statut"><span class="demande__statut-libelle"></span> <span class="statut" data-statut=""><span class="statut__icone" aria-hidden="true"></span><span class="statut__texte"></span></span></p>
+            </li>
+          </template>
+        </ul>
+        <p class="demandes__vide" data-texte="compte.pages.compte.aucuneDemande" hidden></p>
+        <p><a class="bouton bouton--secondaire" data-lien="site.liens.demandes" data-texte="compte.pages.compte.voirDemandes"></a></p>
       </section>
     </div>
   </main>

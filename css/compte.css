@@ -3,7 +3,8 @@
 
 /* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
 html:not([data-rendu]) .compte__bloc,
-html:not([data-rendu]) .nav-compte {
+html:not([data-rendu]) .nav-compte,
+html:not([data-rendu]) .fil {
   visibility: hidden;
 }
 
@@ -59,13 +60,19 @@ html[data-rendu="erreur"] .compte__bloc {
 }
 
 .nav-compte__liste {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: center;
   gap: var(--space-1) var(--space-4);
   margin: 0;
   padding: var(--space-2) 0;
   list-style: none;
+}
+
+.nav-compte__liste li {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
 }
 
 .nav-compte__lien {
@@ -96,6 +103,20 @@ html[data-rendu="erreur"] .compte__bloc {
 
 .nav-compte[hidden] {
   display: none;
+}
+
+@media (max-width: 767px) {
+  .nav-compte__liste li:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Dès 768 px : une seule ligne ; en dessous, deux colonnes, pour que la hauteur ne dépende pas du remplissage (CLS) */
+@media (min-width: 768px) {
+  .nav-compte__liste {
+    display: flex;
+    flex-wrap: nowrap;
+  }
 }
 
 /* Garde « Connexion requise » : remplace le contenu de la page */
@@ -162,4 +183,413 @@ html[data-rendu="erreur"] .compte__bloc {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
     align-items: start;
   }
+}
+
+/* Cartes de commande et de demande (E7, E8) */
+.commandes,
+.demandes {
+  display: grid;
+  gap: var(--space-4);
+  margin: var(--space-4) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.commande,
+.demande {
+  min-inline-size: 0;
+}
+
+.commande h3,
+.demande h3 {
+  margin-block: 0 var(--space-2);
+  font-size: var(--text-lg);
+  overflow-wrap: anywhere;
+}
+
+.commande p,
+.demande p {
+  margin-block: 0 var(--space-2);
+  overflow-wrap: anywhere;
+}
+
+.commande__lignes {
+  margin: 0 0 var(--space-2);
+  padding-inline-start: var(--space-5);
+  overflow-wrap: anywhere;
+}
+
+.commande__total {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.commande__detail {
+  margin-block-start: var(--space-2);
+}
+
+/* Statut : icône dessinée en CSS (forme différente par statut) et texte ; jamais la couleur seule */
+.statut {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+}
+
+.statut__icone {
+  flex: none;
+  inline-size: 1rem;
+  block-size: 1rem;
+  border: 2px solid var(--color-navy);
+  border-radius: 50%;
+  background: transparent;
+}
+
+.statut[data-statut="expedie"] .statut__icone,
+.statut[data-statut="en-analyse"] .statut__icone {
+  background: linear-gradient(90deg, var(--color-navy) 50%, transparent 50%);
+}
+
+.statut[data-statut="livre"] .statut__icone,
+.statut[data-statut="cloturee"] .statut__icone {
+  background: var(--color-navy);
+}
+
+.statut[data-statut="pose-planifiee"] .statut__icone,
+.statut[data-statut="intervention-planifiee"] .statut__icone {
+  border-radius: 2px;
+  transform: rotate(45deg) scale(0.85);
+}
+
+.demandes__vide[hidden] {
+  display: none;
+}
+
+/* Filtre des achats (E8-2) : pastilles du diagnostic, en ligne qui passe à la ligne */
+.achats__filtre {
+  min-inline-size: 0;
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.achats__filtre legend {
+  padding: 0;
+}
+
+.achats__filtre .diag__pastilles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.achats__vide {
+  margin: 0;
+  font-weight: 600;
+}
+
+.achats__vide:not(:empty) {
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 4px solid var(--color-navy);
+  background: var(--color-pastille);
+}
+
+.compte--liste .compte__bloc {
+  max-inline-size: calc(var(--compte-liste-max) + 2 * var(--gutter));
+  margin-inline-end: auto;
+}
+
+/* Réserve de hauteur des listes avant leur remplissage (CLS) : valeurs mesurées de 360 à 1440 px, trois commandes, deux demandes, quatre achats */
+.compte__colonne-principale .commandes[aria-busy="true"] {
+  min-block-size: 67.1rem;
+}
+
+.compte__colonne-secondaire .demandes[aria-busy="true"] {
+  min-block-size: 23rem;
+}
+
+.compte--liste .commandes[aria-busy="true"] {
+  min-block-size: 88.7rem;
+}
+
+.achats__filtre {
+  min-block-size: 8.1rem;
+}
+
+@media (min-width: 390px) {
+  .compte__colonne-secondaire .demandes[aria-busy="true"] {
+    min-block-size: 20rem;
+  }
+}
+
+@media (min-width: 480px) {
+  .compte__colonne-principale .commandes[aria-busy="true"] {
+    min-block-size: 62.6rem;
+  }
+
+  .compte--liste .commandes[aria-busy="true"] {
+    min-block-size: 82.7rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .achats__filtre {
+    min-block-size: 4.9rem;
+  }
+}
+
+/* Informations (E12) : carte de 56 rem au plus, paires côte à côte dès 768 px */
+.compte__informations {
+  padding-block: var(--space-4);
+}
+
+.compte__carte-info {
+  max-inline-size: var(--compte-carte-max);
+  margin-inline-end: auto;
+}
+
+.compte__section + .compte__section {
+  margin-block-start: var(--space-6);
+  padding-block-start: var(--space-5);
+  border-block-start: 1px solid var(--color-border);
+}
+
+.compte__section h2 {
+  margin-block: 0 var(--space-3);
+}
+
+.compte__rgpd {
+  max-inline-size: 40rem;
+  margin-block: var(--space-4) 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.compte__enregistre {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 4px solid var(--color-navy);
+  background: var(--color-pastille);
+  font-weight: 600;
+}
+
+.compte__enregistre:focus {
+  outline: none;
+}
+
+.compte__enregistre:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.compte__enregistre[hidden] {
+  display: none;
+}
+
+/* Réserve de hauteur de la carte avant le branchement du formulaire : valeurs mesurées de 360 à 1440 px (CLS) */
+html:not([data-formulaire]) .compte__carte-info {
+  min-block-size: 93.8rem;
+}
+
+@media (min-width: 414px) {
+  html:not([data-formulaire]) .compte__carte-info {
+    min-block-size: 93.3rem;
+  }
+}
+
+@media (min-width: 600px) {
+  html:not([data-formulaire]) .compte__carte-info {
+    min-block-size: 91.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  html:not([data-formulaire]) .compte__carte-info {
+    min-block-size: 70.1rem;
+  }
+}
+
+/* Fil d'Ariane (E9-1) */
+.fil {
+  border-block-end: 1px solid var(--color-border);
+  background: var(--color-card);
+}
+
+.fil__liste {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--space-2);
+  margin: 0;
+  padding: var(--space-2) 0;
+  list-style: none;
+}
+
+.fil__liste li {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  min-inline-size: 0;
+}
+
+.fil__liste li + li::before {
+  content: ">" / "";
+  margin-inline-end: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.fil__liste a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.fil__courant {
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.fil[hidden] {
+  display: none;
+}
+
+/* Détail d'une commande (E9) : une colonne ; dès 1200 px deux colonnes 3 / 2 (résumé et lignes à gauche) */
+.achat__definitions {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+}
+
+.achat__definitions dt {
+  font-weight: 600;
+}
+
+.achat__definitions dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.compte--achat .compte__bloc {
+  padding-block: var(--space-4);
+}
+
+.compte--achat .ligne__article {
+  grid-template-columns: 4rem minmax(0, 1fr);
+}
+
+.compte--achat .ligne__nom {
+  font-size: var(--text-lg);
+  overflow-wrap: anywhere;
+}
+
+.compte--achat .ligne__corps {
+  min-inline-size: 0;
+}
+
+.compte--achat .ligne__details {
+  grid-column: 1 / -1;
+}
+
+.documents {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-3) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.documents__lien {
+  justify-content: flex-start;
+  inline-size: 100%;
+  text-align: start;
+}
+
+.documents__mention {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* Réserves de hauteur avant le remplissage (CLS) : valeurs mesurées de 360 à 1440 px pour la commande la plus longue (CMD-1037) */
+.achat__resume {
+  min-block-size: 10rem;
+}
+
+.achat__livraison {
+  min-block-size: 9.5rem;
+}
+
+.lignes[aria-busy="true"] {
+  min-block-size: 40.2rem;
+}
+
+.documents[aria-busy="true"] {
+  min-block-size: 18.3rem;
+}
+
+.compte--achat h1 {
+  min-block-size: 4.2rem;
+}
+
+.fil {
+  min-block-size: 7.3rem;
+}
+
+@media (min-width: 375px) {
+  .achat__livraison {
+    min-block-size: 7.9rem;
+  }
+
+  .lignes[aria-busy="true"] {
+    min-block-size: 38.6rem;
+  }
+}
+
+@media (min-width: 390px) {
+  .documents[aria-busy="true"] {
+    min-block-size: 17.1rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .compte--achat h1 {
+    min-block-size: calc(var(--compte-text-h1) * var(--leading-tight));
+  }
+
+  .fil {
+    min-block-size: 4.6rem;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .compte--achat h1 {
+    min-block-size: 5.4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .compte--achat .ligne__article {
+    grid-template-columns: 5rem minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .compte__colonnes--achat {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+/* Délais d'une ligne : libellé au-dessus de la valeur (la valeur longue ne doit pas écraser le libellé à 375 px) */
+.compte--achat .ligne__liste-delais {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.compte--achat .ligne__liste-delais dd {
+  margin-block-end: var(--space-2);
+  text-align: start;
 }

@@ -66,24 +66,30 @@ export function lireAchat(stockage) {
   return typeof valeur === 'string' && valeur !== '' ? valeur : null;
 }
 
-// Garde d'interface (pas de la sécurité) : non connecté, le contenu de <main> est remplacé par « Connexion requise » ;
-// l'en-tête et le pied restent inchangés. Renvoie vrai si la page peut s'afficher.
+// Remplace le contenu de <main> par un état : h1, phrase et lien (en-tête et pied inchangés) ; masque la navigation du compte
+// et le fil d'Ariane.
+export function remplacerContenu({ titre, phrase, lien, adresse }, racine = document) {
+  const section = racine.createElement('section');
+  section.className = 'conteneur compte__bloc compte__garde';
+  const h1 = racine.createElement('h1');
+  h1.textContent = titre;
+  const p = racine.createElement('p');
+  p.textContent = phrase;
+  const a = racine.createElement('a');
+  a.className = 'bouton bouton--secondaire';
+  a.setAttribute('href', adresse);
+  a.textContent = lien;
+  section.append(h1, p, a);
+  racine.querySelector('main').replaceChildren(section);
+  for (const element of racine.querySelectorAll('.nav-compte, .fil')) element.hidden = true;
+}
+
+// Garde d'interface (pas de la sécurité) : non connecté, le contenu est remplacé par « Connexion requise ».
+// Renvoie vrai si la page peut s'afficher.
 export function appliquerGarde(donnees, racine = document) {
   if (estConnecte()) return true;
   const textes = donnees.compte.gardes.connexionRequise;
-  const section = racine.createElement('section');
-  section.className = 'conteneur compte__bloc compte__garde';
-  const titre = racine.createElement('h1');
-  titre.textContent = textes.titre;
-  const phrase = racine.createElement('p');
-  phrase.textContent = textes.phrase;
-  const lien = racine.createElement('a');
-  lien.className = 'bouton bouton--secondaire';
-  lien.setAttribute('href', donnees.site.liens.connexion);
-  lien.textContent = textes.lien;
-  section.append(titre, phrase, lien);
-  racine.querySelector('main').replaceChildren(section);
-  for (const navigation of racine.querySelectorAll('.nav-compte')) navigation.hidden = true;
+  remplacerContenu({ titre: textes.titre, phrase: textes.phrase, lien: textes.lien, adresse: donnees.site.liens.connexion }, racine);
   racine.documentElement.dataset.compte = 'garde';
   return false;
 }
