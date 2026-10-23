@@ -42,7 +42,7 @@ for (const largeur of [375, 1440]) {
     expect(Math.abs(preuve.y - (reassurance.y + reassurance.height))).toBeLessThanOrEqual(1);
   });
 
-  for (const [libelle, cible] of [['Vendre sur la plateforme', /\/pro\.html$/], ['Mon compte', /wireframes\/connexion\.html$/]]) {
+  for (const [libelle, cible] of [['Vendre sur la plateforme', /\/pro\.html$/], ['Mon compte', /:4173\/connexion\.html$/]]) {
     test(`parcours à ${largeur} px : « ${libelle} »`, async ({ page }) => {
       await page.setViewportSize({ width: largeur, height: 900 });
       await page.goto('/index.html');

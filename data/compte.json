@@ -1,0 +1,419 @@
+{
+  "client": {
+    "prenom": "Camille",
+    "nom": "Exemple",
+    "email": "client.demo@exemple.test",
+    "telephone": "01 00 00 00 00",
+    "adresse": {
+      "ligne1": "1 rue de l'Exemple",
+      "complement": "Bâtiment A (exemple)",
+      "codePostal": "00000",
+      "ville": "Exempleville"
+    },
+    "preferences": {
+      "suiviCommandes": true,
+      "infosSav": false
+    }
+  },
+  "limites": {
+    "prenom": {
+      "min": 1,
+      "max": 50
+    },
+    "nom": {
+      "min": 1,
+      "max": 50
+    },
+    "email": {
+      "max": 254,
+      "localMax": 64
+    },
+    "adresse": {
+      "min": 2,
+      "max": 100
+    },
+    "complement": {
+      "max": 100
+    },
+    "ville": {
+      "min": 2,
+      "max": 60
+    },
+    "motDePasse": {
+      "max": 128
+    }
+  },
+  "statuts": [
+    {
+      "id": "en-preparation",
+      "libelle": "En préparation"
+    },
+    {
+      "id": "expedie",
+      "libelle": "Expédié"
+    },
+    {
+      "id": "livre",
+      "libelle": "Livré"
+    },
+    {
+      "id": "pose-planifiee",
+      "libelle": "Pose planifiée"
+    }
+  ],
+  "commandes": [
+    {
+      "id": "CMD-1051",
+      "date": "2026-10-14",
+      "statut": "en-preparation",
+      "lignes": [
+        {
+          "produit": "clapet-anti-retour",
+          "titre": "Clapet anti-retour",
+          "reference": "CAR-050",
+          "icone": "inondation",
+          "mode": "diy",
+          "cotes": null,
+          "quantite": 1,
+          "prixUnitaire": {
+            "materiel": 149,
+            "pose": 60
+          }
+        },
+        {
+          "produit": "pompe-de-relevage",
+          "titre": "Pompe de relevage",
+          "reference": "PDR-090",
+          "icone": "inondation",
+          "mode": "diy",
+          "cotes": null,
+          "quantite": 2,
+          "prixUnitaire": {
+            "materiel": 420,
+            "pose": 170
+          }
+        }
+      ],
+      "livraison": {
+        "delaiLivraison": "2 à 3 semaines",
+        "delaiPose": null
+      },
+      "artisan": null
+    },
+    {
+      "id": "CMD-1044",
+      "date": "2026-09-28",
+      "statut": "expedie",
+      "lignes": [
+        {
+          "produit": "batardeau-modulable",
+          "titre": "Batardeau modulable",
+          "reference": "BAT-120",
+          "icone": "inondation",
+          "mode": "diy",
+          "cotes": {
+            "largeur": 800,
+            "hauteur": 400,
+            "tolerance": 0
+          },
+          "quantite": 1,
+          "prixUnitaire": {
+            "materiel": 690,
+            "pose": 280
+          }
+        }
+      ],
+      "livraison": {
+        "delaiLivraison": "2 à 3 semaines",
+        "delaiPose": null
+      },
+      "artisan": null
+    },
+    {
+      "id": "CMD-1037",
+      "date": "2026-09-02",
+      "statut": "pose-planifiee",
+      "lignes": [
+        {
+          "produit": "batardeau-modulable",
+          "titre": "Batardeau modulable",
+          "reference": "BAT-120",
+          "icone": "inondation",
+          "mode": "pose",
+          "cotes": {
+            "largeur": 1200,
+            "hauteur": 400,
+            "tolerance": 0
+          },
+          "quantite": 1,
+          "prixUnitaire": {
+            "materiel": 690,
+            "pose": 280
+          }
+        },
+        {
+          "produit": "grille-pare-braises",
+          "titre": "Grille pare-braises",
+          "reference": "GPB-060",
+          "icone": "feu",
+          "mode": "pose",
+          "cotes": null,
+          "quantite": 2,
+          "prixUnitaire": {
+            "materiel": 260,
+            "pose": 100
+          }
+        }
+      ],
+      "livraison": {
+        "delaiLivraison": "2 à 3 semaines",
+        "delaiPose": "sous 2 semaines après livraison"
+      },
+      "artisan": {
+        "nom": "Artisan Exemple (fictif)",
+        "date": "2026-11-05"
+      }
+    },
+    {
+      "id": "CMD-1029",
+      "date": "2026-08-11",
+      "statut": "livre",
+      "lignes": [
+        {
+          "produit": "volet-extrude",
+          "titre": "Volet extrudé renforcé",
+          "reference": "VEX-180",
+          "icone": "grele-vent",
+          "mode": "diy",
+          "cotes": null,
+          "quantite": 1,
+          "prixUnitaire": {
+            "materiel": 980,
+            "pose": 390
+          }
+        }
+      ],
+      "livraison": {
+        "delaiLivraison": "3 à 4 semaines",
+        "delaiPose": null
+      },
+      "artisan": null
+    }
+  ],
+  "statutsDemande": [
+    {
+      "id": "recue",
+      "libelle": "Reçue"
+    },
+    {
+      "id": "en-analyse",
+      "libelle": "En analyse"
+    },
+    {
+      "id": "intervention-planifiee",
+      "libelle": "Intervention planifiée"
+    },
+    {
+      "id": "cloturee",
+      "libelle": "Clôturée"
+    }
+  ],
+  "demandes": [
+    {
+      "id": "SAV-1001 (exemple)",
+      "commande": "CMD-1029",
+      "titre": "Volet extrudé renforcé",
+      "statut": "recue",
+      "date": "2026-10-20"
+    },
+    {
+      "id": "SAV-1002 (exemple)",
+      "commande": "CMD-1044",
+      "titre": "Batardeau modulable",
+      "statut": "en-analyse",
+      "date": "2026-10-15"
+    },
+    {
+      "id": "SAV-1003 (exemple)",
+      "commande": "CMD-1037",
+      "titre": "Batardeau modulable",
+      "statut": "intervention-planifiee",
+      "date": "2026-10-05"
+    },
+    {
+      "id": "SAV-1004 (exemple)",
+      "commande": "CMD-1029",
+      "titre": "Volet extrudé renforcé",
+      "statut": "cloturee",
+      "date": "2026-09-10"
+    }
+  ],
+  "documents": [
+    {
+      "id": "facture",
+      "titre": "Facture",
+      "fichier": "assets/documents/facture-exemple.pdf"
+    },
+    {
+      "id": "notice",
+      "titre": "Notice technique",
+      "fichier": "assets/documents/notice-technique-exemple.pdf"
+    },
+    {
+      "id": "pv",
+      "titre": "PV d'essais en laboratoire",
+      "fichier": "assets/documents/pv-essais-exemple.pdf"
+    },
+    {
+      "id": "attestation-pose",
+      "titre": "Attestation de pose",
+      "fichier": "assets/documents/attestation-pose-exemple.pdf"
+    },
+    {
+      "id": "garantie-decennale",
+      "titre": "Garantie décennale",
+      "fichier": "assets/documents/garantie-decennale-exemple.pdf"
+    }
+  ],
+  "navigationCompte": {
+    "aria": "Mon compte",
+    "pageActuelle": "(page actuelle)",
+    "tableauDeBord": "Tableau de bord",
+    "achats": "Mes achats",
+    "demandes": "Mes demandes",
+    "informations": "Mes informations",
+    "deconnexion": "Se déconnecter"
+  },
+  "formulaire": {
+    "demo": "Démonstrateur : saisissez des données fictives, rien n'est envoyé ni enregistré.",
+    "resume": {
+      "singulier": "Le formulaire contient {n} erreur à corriger :",
+      "pluriel": "Le formulaire contient {n} erreurs à corriger :",
+      "liens": {
+        "email": "E-mail",
+        "motDePasse": "Mot de passe",
+        "prenom": "Prénom",
+        "nom": "Nom",
+        "telephone": "Téléphone",
+        "adresse": "Adresse",
+        "complement": "Complément d'adresse",
+        "codePostal": "Code postal",
+        "ville": "Ville"
+      }
+    }
+  },
+  "messages": {
+    "email": {
+      "vide": "Saisissez votre adresse e-mail.",
+      "format": "L'adresse e-mail n'est pas valide. Exemple : prenom.nom@exemple.test.",
+      "longueur": "L'adresse e-mail est trop longue (254 caractères au plus, 64 avant l'arobase)."
+    },
+    "motDePasse": {
+      "vide": "Saisissez votre mot de passe.",
+      "longueur": "Le mot de passe est trop long (128 caractères au plus).",
+      "caractere": "Le mot de passe contient un caractère de contrôle non autorisé."
+    },
+    "prenom": {
+      "vide": "Indiquez votre prénom.",
+      "longueur": "Le prénom est trop long (50 caractères au plus).",
+      "caractere": "Le prénom contient un caractère non autorisé."
+    },
+    "nom": {
+      "vide": "Indiquez votre nom.",
+      "longueur": "Le nom est trop long (50 caractères au plus).",
+      "caractere": "Le nom contient un caractère non autorisé."
+    },
+    "telephone": {
+      "format": "Le numéro de téléphone n'est pas valide (9 à 15 chiffres)."
+    },
+    "adresse": {
+      "vide": "Indiquez votre adresse.",
+      "longueur": "L'adresse doit compter de 2 à 100 caractères.",
+      "caractere": "L'adresse contient un caractère non autorisé."
+    },
+    "complement": {
+      "longueur": "Le complément d'adresse est trop long (100 caractères au plus).",
+      "caractere": "Le complément d'adresse contient un caractère non autorisé."
+    },
+    "codePostal": {
+      "vide": "Indiquez votre code postal.",
+      "format": "Le code postal compte exactement 5 chiffres."
+    },
+    "ville": {
+      "vide": "Indiquez votre ville.",
+      "longueur": "La ville doit compter de 2 à 60 caractères.",
+      "caractere": "La ville contient un caractère non autorisé."
+    },
+    "repli": "Ce champ est à corriger."
+  },
+  "gardes": {
+    "connexionRequise": {
+      "titre": "Connexion requise",
+      "phrase": "Cette page est réservée au compte de démonstration. Connectez-vous pour la consulter.",
+      "lien": "Aller à la connexion"
+    },
+    "aucunAchat": {
+      "titre": "Aucun achat sélectionné",
+      "phrase": "Choisissez une commande dans la liste de vos achats pour en voir le détail.",
+      "lien": "Voir mes achats"
+    },
+    "aucunAchatStatut": {
+      "titre": "Aucun achat avec ce statut",
+      "phrase": "Choisissez un autre statut ou revenez à tous vos achats."
+    }
+  },
+  "connexion": {
+    "titre": "Connexion à mon compte",
+    "formulaire": {
+      "mention": "Connexion simulée : tout e-mail valide ouvre le compte de démonstration. Ne saisissez jamais un vrai mot de passe.",
+      "champs": {
+        "email": {
+          "libelle": "E-mail"
+        },
+        "motDePasse": {
+          "libelle": "Mot de passe"
+        }
+      },
+      "bouton": "Se connecter"
+    },
+    "stockage": "La session du navigateur est indisponible : la connexion de démonstration ne peut pas s'ouvrir.",
+    "dejaConnecte": {
+      "phrase": "Vous êtes connecté (compte de démonstration)",
+      "tableau": "Aller au tableau de bord",
+      "deconnexion": "Se déconnecter"
+    },
+    "demo": {
+      "titre": "Compte de démonstration",
+      "emailLibelle": "E-mail :",
+      "bouton": "Accéder au compte de démonstration"
+    },
+    "savSansCompte": {
+      "titre": "Pas de compte ?",
+      "lien": "Service après-vente sans compte"
+    }
+  },
+  "pages": {
+    "compte": {
+      "titre": "Bonjour, {prenom}",
+      "mention": "Compte de démonstration — données fictives",
+      "commandes": "Mes dernières commandes",
+      "savEnCours": "Demandes de service après-vente en cours"
+    },
+    "achats": {
+      "titre": "Mes achats",
+      "liste": "Liste des achats"
+    },
+    "achat": {
+      "titre": "Détail de ma commande",
+      "lignes": "Articles de la commande",
+      "livraison": "Livraison",
+      "documents": "Documents",
+      "sav": "Service après-vente"
+    },
+    "informations": {
+      "titre": "Mes informations",
+      "adresse": "Adresse de livraison",
+      "preferences": "Préférences"
+    }
+  }
+}

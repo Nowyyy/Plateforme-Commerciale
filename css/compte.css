@@ -1,0 +1,165 @@
+/* Espace client simulé (écrans 6, 7, 8, 9 et 12). Mobile d'abord ; ruptures 768 et 1200 px.
+   L'en-tête, le pied et le relief viennent de accueil.css ; boutons et cartes, de composants.css ; formulaire, de pro.css. */
+
+/* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
+html:not([data-rendu]) .compte__bloc,
+html:not([data-rendu]) .nav-compte {
+  visibility: hidden;
+}
+
+html[data-rendu="erreur"] .compte__bloc {
+  display: none;
+}
+
+/* La page occupe au moins un écran : le pied reste sous la ligne de flottaison quel que soit l'état (CLS) */
+.compte {
+  min-block-size: 100svh;
+  padding-block: var(--space-4) var(--space-7);
+}
+
+.compte__bloc {
+  padding-block: var(--space-4);
+}
+
+.compte h1 {
+  margin-block-end: var(--space-3);
+  font-size: var(--compte-text-h1);
+  /* hauteur d'une ligne réservée avant le remplissage (CLS) */
+  min-block-size: calc(var(--compte-text-h1) * var(--leading-tight));
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.compte h2 {
+  font-size: var(--compte-text-h2);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.compte h1:focus,
+.compte h2:focus {
+  outline: none;
+}
+
+.compte h1:focus-visible,
+.compte h2:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.compte__mention {
+  max-inline-size: 40rem;
+  color: var(--color-text-secondary);
+}
+
+/* Navigation du compte : juste sous l'en-tête, page courante repérée par le texte masqué, le soulignement et le poids */
+.nav-compte {
+  border-block-end: 1px solid var(--color-border);
+  background: var(--color-card);
+}
+
+.nav-compte__liste {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+  padding: var(--space-2) 0;
+  list-style: none;
+}
+
+.nav-compte__lien {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.nav-compte__lien:hover {
+  text-decoration: underline;
+}
+
+.nav-compte__lien[aria-current="page"] {
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+}
+
+.nav-compte__lien:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.nav-compte[hidden] {
+  display: none;
+}
+
+/* Garde « Connexion requise » : remplace le contenu de la page */
+.compte__garde {
+  max-inline-size: var(--compte-carte-max);
+  margin-inline-end: auto;
+}
+
+.compte__garde p {
+  max-inline-size: 40rem;
+}
+
+/* Connexion (E6) : colonne unique de 30 rem au plus, centrée */
+.compte__etroit {
+  max-inline-size: calc(var(--compte-connexion-max) + 2 * var(--gutter));
+}
+
+.compte__carte {
+  max-inline-size: var(--compte-connexion-max);
+  margin-inline: auto;
+}
+
+.compte__grille {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.formulaire[hidden],
+.compte__carte[hidden],
+.compte__bloc[hidden],
+.formulaire__erreur[hidden],
+.formulaire__resume[hidden] {
+  display: none;
+}
+
+.compte__connecte {
+  margin-block-start: 0;
+  font-family: var(--font-heading);
+  font-weight: 800;
+}
+
+.compte__connecte:focus {
+  outline: none;
+}
+
+.compte__identifiant {
+  overflow-wrap: anywhere;
+}
+
+.compte__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+/* Tableau de bord : une colonne ; dès 1200 px deux colonnes 2 / 1 (commandes à gauche) */
+.compte__colonnes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0 var(--space-6);
+}
+
+@media (min-width: 1200px) {
+  .compte__colonnes {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}

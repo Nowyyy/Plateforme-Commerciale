@@ -44,7 +44,7 @@ function borne(limites, champ, cle) {
 }
 
 // Contrôles C0 (hors saut de ligne dans les zones de texte), U+007F, contrôles bidirectionnels.
-function contientInterdit(texte, zone) {
+export function contientInterdit(texte, zone) {
   for (const c of texte) {
     const p = c.codePointAt(0);
     if (p === 0x0a && zone) continue;
@@ -65,7 +65,7 @@ export function normaliser(champ, valeur) {
   return valeur;
 }
 
-function validerEmail(email, limites) {
+export function validerEmail(email, limites) {
   const max = borne(limites, 'email', 'max');
   const localMax = borne(limites, 'email', 'localMax');
   if (email === '') return 'vide';
@@ -84,7 +84,7 @@ function validerEmail(email, limites) {
   return null;
 }
 
-function validerTelephone(telephone) {
+export function validerTelephone(telephone) {
   if (telephone === '') return null;
   const chiffres = telephone.replace(/[ \u00a0\u202f.\-()]/g, '');
   return /^\+?[0-9]{9,15}$/.test(chiffres) ? null : 'format';

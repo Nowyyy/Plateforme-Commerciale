@@ -66,8 +66,8 @@ describe('encodage WinAnsi', () => {
 
 describe('fichiers générés', () => {
   const contenus = lireContenus();
-  it('les deux PDF existent, pèsent moins de 50 Ko, sont identiques à la génération et marqués fictifs', () => {
-    expect(contenus).toHaveLength(2);
+  it('les cinq PDF existent, pèsent moins de 50 Ko, sont identiques à la génération et marqués fictifs', () => {
+    expect(contenus).toHaveLength(5);
     for (const { fichier, octets } of contenus) {
       const chemin = `assets/documents/${fichier}`;
       expect(existsSync(chemin), chemin).toBe(true);
