@@ -349,5 +349,88 @@
     "introduction": "Fichiers fictifs du démonstrateur, fournis à titre d'illustration.",
     "libelle": "{titre} (PDF, exemple)",
     "mention": "Aucune valeur de ces documents n'a de valeur contractuelle ou réglementaire."
+  },
+  "panier": {
+    "titre": "Récapitulatif de votre commande",
+    "etapesAria": "Étapes de la commande",
+    "etapes": [
+      {
+        "id": "panier",
+        "titre": "Panier"
+      },
+      {
+        "id": "validation",
+        "titre": "Validation"
+      },
+      {
+        "id": "paiement",
+        "titre": "Paiement"
+      }
+    ],
+    "etapeEnCours": {
+      "id": "panier",
+      "texte": "(étape en cours)"
+    },
+    "recapitulatif": {
+      "mode": "Mode choisi :",
+      "cotesAria": "Cotes saisies",
+      "cotes": {
+        "largeur": "Largeur du tableau (A)",
+        "hauteur": "Hauteur du seuil (B)",
+        "tolerance": "Tolérance de mesure (C)"
+      },
+      "prixAria": "Prix du matériel",
+      "delais": {
+        "livraison": "Livraison directe usine :",
+        "pose": "Intervention de l'artisan :"
+      },
+      "delaisAria": "Délais",
+      "modifier": "Modifier mes cotes"
+    },
+    "vide": {
+      "titre": "Votre panier est vide",
+      "phrase": "Ajoutez un produit depuis sa fiche, après avoir saisi vos cotes.",
+      "lien": "Retour au diagnostic"
+    },
+    "invalide": {
+      "titre": "Commande à vérifier",
+      "phrase": "Les cotes enregistrées ne conviennent plus ou la commande est illisible. Retournez à la fiche pour les saisir de nouveau.",
+      "lien": "Retour à la fiche"
+    },
+    "responsabilite": {
+      "titre": "Validation des mesures",
+      "aide": "Contrôlez les cotes reprises sur le schéma, puis confirmez-les pour activer la validation (exemple).",
+      "legende": "Aperçu des cotes saisies (exemple)",
+      "avertissement": "Les cotes saisies engagent votre responsabilité : vérifiez-les avant de valider (exemple).",
+      "case": "Je confirme l'exactitude des mesures fournies.",
+      "schema": {
+        "title": "Aperçu des cotes saisies (exemple)",
+        "desc": "Une ouverture dans un mur, avec son seuil et la barrière déployée en repère. A est la largeur du tableau saisie, B la hauteur du seuil saisie.",
+        "lettres": {
+          "a": "A",
+          "b": "B"
+        }
+      }
+    },
+    "total": {
+      "titre": "Total de la commande",
+      "livraison": "Livraison estimée :",
+      "intervention": "Intervention estimée :",
+      "mention": "Aucun paiement réel : ce démonstrateur ne prend aucune commande.",
+      "bouton": "Valider ma commande",
+      "aideInactif": "Cochez la case de confirmation pour continuer.",
+      "confirmation": {
+        "titre": "Commande simulée (exemple)",
+        "numero": "Numéro : CMD-000 (exemple)",
+        "message": "Aucun paiement n'a été demandé et rien n'a été enregistré.",
+        "lien": "Retour à l'accueil"
+      }
+    },
+    "paiement": {
+      "titre": "Paiement sécurisé et service après-vente",
+      "pastille": "Logo exemple",
+      "paiement": "Paiement sécurisé par un tiers de confiance bancaire (exemple).",
+      "sav": "Garantie de prise en charge du service après-vente par la plateforme (exemple)."
+    }
   }
 }

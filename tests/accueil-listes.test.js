@@ -129,9 +129,9 @@ describe('liens et navigation', () => {
       'Vendre sur la plateforme', 'Mon compte', 'Panier',
     ]);
     expect(liens.map((m) => site.liens[m[0]])).toEqual([
-      'wireframes/pro.html', 'wireframes/connexion.html', 'wireframes/panier.html',
+      'wireframes/pro.html', 'wireframes/connexion.html', 'panier.html',
     ]);
-    expect(resoudre(donnees, barre)).toBe('wireframes/panier.html');
+    expect(resoudre(donnees, barre)).toBe('panier.html');
   });
 });
 
