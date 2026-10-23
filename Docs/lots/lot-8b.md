@@ -2,7 +2,7 @@
 **Livré** : `pro.html` (E5-1 à E5-6, `noindex`), `data/pro.json`, `css/pro.css`, `assets/js/pro-logique.js` (logique pure), `formulaire.js` (module générique, contrat dans `conventions.md`, section « Formulaires »), `pro.js`. Introduction, 3 étapes (composant de l'accueil réutilisé), formulaire simulé (9 champs, récapitulatif d'erreurs, revalidation à la saisie), confirmation simulée. `liens.pro` = `pro.html`. Workflow : seul ajout de `pro.html` à la liste publiée. Tailles : h1 28 px (36 px dès 768), h2 22 px, corps 16 px.
 **Critères (chiffres)**
 - Vitest 394 (356 + 38 nouveaux : 18 logique, 11 données/page, 6 formulaire, 3 confirmation) ; Playwright 385 (345 + 40 : 9 + 14 + 15 + 2 parcours) ; lint propre. Aucun test supprimé ; trois tests adaptés (`wireframes/pro.html` devient `pro.html`).
-- Logique : 14 champs-règles testés, grille déterministe de 600 saisies (`ok` ⇔ aucune erreur, raisons dans `RAISONS`, idempotence), jamais d'exception.
+- Logique : toutes les règles par champ testées, grille déterministe de 1 500 saisies (`ok` ⇔ aucune erreur, raisons dans `RAISONS`, idempotence), jamais d'exception.
 - Largeurs vues : 375, 768, 1440 px (vide, erreurs, confirmation) : console propre, axe sans violation, aucun débordement, aucune requête externe.
 - 1440 px : carte du formulaire 896 px (56 rem) ; paires côte à côte (société x=153, SIRET x=588) ; étapes en 3 colonnes (x=128, 525, 923) ; une colonne à 375 et 768 px.
 - Lighthouse mobile `pro.html` : performance 96, accessibilité 100, bonnes pratiques 100 ; récapitulatif et confirmation : 100 / 100 ; CLS 0,002. CLS de 360 à 1440 px, JSON retardés de 400 ms : 0,005 au plus (réserve de hauteur du formulaire mesurée : 130, 129, 124, 100, 99 rem).
@@ -10,7 +10,7 @@
 - Parcours vendeur cliqué : 1,8 s à 375 px, 1,8 s à 1440 px ; aucune donnée dans les URL. `CLAUDE.md` : 8 681 → 7 883 (consolidé) → 8 808 caractères.
 **Points ouverts**
 - `diagnostic.html` passe sous le seuil de performance (77 < 90) de façon intermittente : CLS 0,441 dû au chargement tardif de la police Inter 600 (non préchargée). Mesuré aussi sur `main` (77 puis 97 selon les passes) : non causé par ce lot, page non modifiée.
-- Fonts et relief : le décor chevauche parfois du texte à 375 et 768 px (comme les autres pages, axe sans violation).
+- Relief : le décor chevauche parfois du texte à 375 et 768 px (comme les autres pages, axe sans violation).
 - Le prompt du lot était tronqué (liste des tests Vitest de la partie C) : appliqué selon la spécification entière. Les trois parties ont été faites dans la même session sur demande.
 **Choix à valider**
 - Bornes : société 2–100, contact 2–80, description 20–1 000, message 0–1 000, e-mail 254 (partie locale 64) ; SIRET : 14 chiffres, format seulement ; téléphone facultatif (9 à 15 chiffres).
