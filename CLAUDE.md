@@ -1,22 +1,22 @@
 # CLAUDE.md — Plateforme de protection de l'habitat
 
 ## Projet
-Démonstrateur statique hébergé sur GitHub Pages, 4 écrans (accueil, diagnostic, fiche produit, panier), données fictives.
+Démonstrateur statique hébergé sur GitHub Pages, données fictives.
 Piliers, périmètre et plan en lots : `Docs/seed.md` (ne jamais le modifier).
 Avant de modifier le diagnostic, la fiche produit, le relief ou les listes, lis `Docs/ref/conventions.md`.
 
 ## Arborescence
-- Racine : `index.html` (accueil Hi-Fi E1-1 à E1-10), `diagnostic.html` (E2-1 à E2-6), `produit.html` (fiche Hi-Fi : E3-1 à E3-8), `panier.html` (panier Hi-Fi : E4-1 à E4-6), `pro.html` (espace professionnel Hi-Fi : E5-1 à E5-6), tous `noindex` jusqu'au lot 10 ; `attente.html` (ancienne page d'attente) ; `accueil.html` (redirection vers `index.html`)
-- `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `diagnostic.css`, `produit.css`, `panier.css`, `pro.css`, `attente.css`, `wireframe.css`
-- `data/` : `site.json`, `accueil.json`, `diagnostic.json`, `pro.json`, `produit.json` (dont `cotes`, `configurateur`, `specs`, `documents`, `panier`, `ajout`) : tous les textes et liens visibles ; `site.json` porte aussi la clé `compteur`
-- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js`, `diagnostic-logique.js`, `produit-logique.js`, `cotes-logique.js`, `lignes-logique.js` (lignes de panier) et `panier-logique.js`, `pro-logique.js` (validation de la candidature) : purs ; `diagnostic.js`, `produit.js`, `configurateur.js`, `ajout.js` (quantité et ajout depuis la fiche), `panier.js`, `compteur.js` (compteur d'articles de l'en-tête), `pro.js`, `formulaire.js` (module générique de formulaire simulé), `alea.js` ; `assets/fonts/` : woff2 (OFL)
+- Racine : `index.html` (E1-1 à E1-10), `diagnostic.html` (E2), `produit.html` (E3-1 à E3-8), `panier.html` (E4), `pro.html` (E5), espace client simulé : `connexion.html` (E6), `compte.html` (E7), `achats.html` (E8), `achat.html` (E9), `informations.html` (E12), tous `noindex` jusqu'au lot 10 ; `attente.html` (ancienne page d'attente) ; `accueil.html` (redirection vers `index.html`)
+- `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `diagnostic.css`, `produit.css`, `panier.css`, `pro.css`, `compte.css`, `attente.css`, `wireframe.css`
+- `data/` : `site.json`, `accueil.json`, `diagnostic.json`, `pro.json`, `compte.json`, `produit.json` : tous les textes et liens visibles
+- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js`, modules purs `*-logique.js` (`diagnostic`, `produit`, `cotes`, `lignes`, `panier`, `pro`, `compte`) ; un module par page (`diagnostic.js`, `produit.js`, `configurateur.js`, `ajout.js`, `panier.js`, `pro.js`, `connexion.js`, `compte.js`, `achats.js`, `achat.js`, `informations.js`) ; `compteur.js` (compteur du panier), `compte-lien.js` et `compte-session.js` (session du compte), `formulaire.js` (formulaire simulé générique), `alea.js` ; `assets/fonts/` : woff2 (OFL)
 - `scripts/lots/` : génération de la page Lots (sans dépendance ; logique pure dans `logique.mjs`)
-- `scripts/documents/` : générateur de PDF d'exemple, sans dépendance ; `assets/documents/` : PDF fictifs générés, versionnés
+- `scripts/documents/` : générateur de PDF d'exemple, sans dépendance ; `assets/documents/` : cinq PDF fictifs générés, versionnés
 - `wireframes/` : Lo-Fi publiés, `noindex` : écrans 1 à 13 (`accueil`… `sav-acces`) et `index.html`
 - `tests/` : Vitest ; `tests/e2e/` Playwright ; `tests/outils/` serveur local et Lighthouse
 - `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (références : `apercus.md`, `environnement.md`, `conventions.md` = règles détaillées par page), `apercus.txt` (lignes `lot-N|descriptif`, à compléter à chaque lot)
 - `.github/workflows/pages.yml` : vérifications (PR, push) et publication Pages (push sur `main` ou `lot-*`) : racine = `main`, chaque `lot-N` sous `/lot-N/`, liste sur `/lots/`
-- `apercu.txt` : cible sur la première ligne ; lignes optionnelles `type: wireframe|hifi|technique` et `titre: <court>`. Sans `type:`, une cible `wireframes/…` est un wireframe, toute autre un lot Hi-Fi ; les lots techniques n'apparaissent pas sur la page. Chaque lot règle ce fichier sur sa branche.
+- `apercu.txt` : cible (ligne 1), puis `type: wireframe|hifi|technique` et `titre:` facultatifs (voir `Docs/ref/apercus.md`) ; chaque lot règle ce fichier sur sa branche.
 
 ## Commandes vérifiées
 - `npm ci` ; `npm run lint` (ESLint) ; `npm test` (Vitest) ; `npm run e2e` (Playwright, captures dans `test-results/`) ; `npm run lighthouse` (mobile)
@@ -26,14 +26,16 @@ Avant de modifier le diagnostic, la fiche produit, le relief ou les listes, lis 
 - Dépendances de développement seulement, versions exactes ; toute nouvelle dépendance est signalée et justifiée.
 - Rien de contenu en dur : textes, liens, réglages dans `data/` ou des fichiers de configuration (annotations de `wireframes/` exceptées ; jetons `--wf-*` réservés).
 - Aucune couleur en dur hors `css/tokens.css`. Pas de rouge. L'ambre est réservé aux boutons d'action (texte marine dessus).
-- Le workflow et les réglages GitHub ne se modifient que sur autorisation explicite du prompt du lot ; l'aperçu `/lot-N/` reste en place pour tous les lots. La page `/lots/` est générée à chaque publication à partir des branches `lot-*`, tolérante aux pannes (page de repli, `::warning::`).
+- Workflow et réglages GitHub : sur autorisation explicite du prompt du lot seulement ; l'aperçu `/lot-N/` reste en place pour tous les lots ; `/lots/` est générée à chaque publication (détail : `Docs/ref/apercus.md`).
 - Navigation commune : en-tête = Vendre sur la plateforme, Mon compte, Panier ; pied = les mêmes plus Mentions légales, À propos du démonstrateur, Service après-vente, rappel « aucune vente ». Comptes, connexion et formulaires sont simulés : mention démonstrateur sur chaque formulaire, valeurs fictives, rien envoyé ni enregistré (sessionStorage seulement), jamais de données dans l'URL.
 - Wireframes : chaque bloc porte `data-bloc` (code visible) et `data-role` (identifiant stable) ; les tests s'appuient sur `data-role` ; `Docs/lots/lot-1b.md` donne la correspondance des anciens codes.
 - Chemins relatifs partout (site servi sous `/<dépôt>/`). Contenus fictifs, aucun vrai logo ni traceur, aucune police ni script externe.
 - Un réglage qui résiste après trois essais : documenter et s'arrêter. Ne jamais modifier un critère non atteint (le signaler) ni simuler un résultat.
-- Fiche produit : E3-1 à E3-8 ; `specs` et `documents` seulement pour le produit `complet` ; PDF d'exemple regénérables par `node scripts/documents/generer.mjs` (identiques octet à octet, testé) ; aucun vrai document ni norme.
-- Panier : `sessionStorage.panier` (v 2, sans prix) lu par `lireListe` puis `validerPanier` ; prix et délais recalculés depuis `data/produit.json` ; case de responsabilité jamais mémorisée ; aucun paiement ; détail dans `conventions.md` (Panier).
-- Formulaires simulés : champs sans attribut `name`, `<form novalidate>` sans `action`, masqué jusqu'au branchement du gestionnaire ; validation à l'envoi seulement (puis à la saisie), récapitulatif d'erreurs `role="alert"` focalisé ; aucune saisie conservée, répétée ni transmise ; textes dans `data/<page>.json`, un message par couple champ et raison (`RAISONS`) ; seuls boutons ambre : « Ajouter au panier », « Valider ma commande » actifs, « Envoyer ma candidature ».
+- Fiche produit : E3-1 à E3-8 ; `specs` et `documents` pour le produit `complet` seulement ; PDF d'exemple : `node scripts/documents/generer.mjs` (octet à octet, testé).
+- Panier : `sessionStorage.panier` (v 2, sans prix), revalidé à la lecture ; prix et délais recalculés depuis `data/produit.json` ; aucun paiement (détail : `conventions.md`).
+- Formulaires simulés : champs sans `name`, `<form novalidate>` sans `action`, masqué jusqu'au branchement ; validation à l'envoi puis à la saisie, récapitulatif `role="alert"` focalisé ; aucune saisie conservée ni transmise ; un message par couple champ et raison (`RAISONS`, détail : `conventions.md`).
+- Compte simulé : session `compte` (`{ v: 1, connecte }`) et `achat` (id de commande) seulement ; aucun e-mail, mot de passe ni saisie conservés ; garde d'interface « Connexion requise » ; les liens « Mon compte » sont réécrits par `compte-lien.js` ; commandes de `compte.json` = instantanés vérifiés contre `produit.json`.
+- Boutons ambre : « Ajouter au panier », « Valider ma commande » (actif), « Envoyer ma candidature », « Se connecter », « Enregistrer ».
 
 ## Git
 - Branche `lot-N` ; un commit « Lot N-X — titre » par partie ; push après chaque commit ; bilan `Docs/lots/lot-N.md` dans le dernier commit de partie (aucun commit après le tag).
@@ -48,7 +50,7 @@ Avant de modifier le diagnostic, la fiche produit, le relief ou les listes, lis 
 - Textes et listes remplis par JavaScript arrivent après le premier rendu : réserver leur hauteur (`min-block-size`, par point de rupture), sinon le CLS dépasse 0,1.
 - PDF d'exemple : texte en WinAnsi, un caractère non supporté lève une erreur ; tout nouveau document passe par `scripts/documents/contenus.json`.
 - Chromium préinstallé : `executablePath: '/opt/pw-browsers/chromium'`, pas de `playwright install`. Lighthouse : http://localhost seulement. Réseau sortant filtré par un proxy.
-- Le panier n'est pas un stockage : toute donnée lue en session est revalidée avant affichage ; modifier cotes, prix ou délais de `data/produit.json` change la revalidation et les totaux.
+- Toute donnée lue en session est revalidée avant affichage. Modifier prix ou cotes de `produit.json` change les totaux du panier et casse la cohérence des commandes de `compte.json` (un test le signale) ; les pages du compte ne chargent que `site.json` et `compte.json`.
 - Sous `prefers-reduced-motion`, `base.css` met les transitions à 0,01 ms : pas de `getComputedStyle` juste après une action ; `toHaveCSS` ou `expect.poll`. Le formulaire masqué (`hidden`) doit réserver sa hauteur au chargement (CLS).
 - Aucun `id` dans les gabarits clonés (les listes de lignes dupliquent le balisage) ; les zones d'ajout de la fiche sont écrites deux fois dans `produit.html` : classes seulement, sauf `cotes-ajouter` et son aide.
 - Playwright : défilement doux d'`accueil.css` = clics instables : `page.emulateMedia({ reducedMotion: 'reduce' })` dans les tests de clics.

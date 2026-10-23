@@ -264,7 +264,7 @@ export async function demarrer() {
     const erreurs = remplir(document, donnees);
     if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
     remplirLiensExternes(document, donnees);
-    remplirListes(document, donnees.accueil ?? donnees.produit ?? donnees.pro ?? {}, donnees);
+    remplirListes(document, donnees.accueil ?? donnees.produit ?? donnees.pro ?? donnees.compte ?? {}, donnees);
     if (typeof donnees.accueil?.titrePage === 'string') document.title = donnees.accueil.titrePage;
     racine.dataset.rendu = 'pret';
   } catch (e) {

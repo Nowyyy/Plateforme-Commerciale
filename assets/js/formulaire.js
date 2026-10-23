@@ -4,7 +4,9 @@
 // champs : { champ: { ancre, zone, erreur, controles: () => [éléments] } } dans l'ordre du formulaire.
 // lire() : saisie brute ; valider(saisie) : { ok, erreurs: [{ champ, raison }] } ; texte(champ, raison) : message ;
 // resume : { titre(n), liens(erreurs) → [{ champ, libelle }] } ; apres() : appelé après un envoi sans erreur (champs déjà vidés).
-export function brancherFormulaire({ formulaire, champs, lire, valider, texte, resume, apres }) {
+// valeursInitiales (facultatif) : [{ controle, valeur }] ; la réinitialisation remet ces valeurs (texte, ou booléen pour une case)
+// au lieu du vide ; sans cette option le comportement est inchangé.
+export function brancherFormulaire({ formulaire, champs, lire, valider, texte, resume, apres, valeursInitiales = [] }) {
   const noms = Object.keys(champs);
   const zoneResume = formulaire.querySelector('[data-resume]');
   const titre = zoneResume.querySelector('[data-resume-titre]');
@@ -51,6 +53,10 @@ export function brancherFormulaire({ formulaire, champs, lire, valider, texte, r
 
   const reinitialiser = () => {
     formulaire.reset();
+    for (const { controle, valeur } of valeursInitiales) {
+      if (typeof valeur === 'boolean') controle.checked = valeur;
+      else controle.value = valeur;
+    }
     for (const champ of noms) effacer(champ);
     majResume();
     soumis = false;

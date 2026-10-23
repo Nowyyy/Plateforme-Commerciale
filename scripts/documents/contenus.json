@@ -45,6 +45,68 @@
         "",
         "Aucune valeur de ce document n'a de valeur contractuelle ou réglementaire."
       ]
+    },
+    {
+      "id": "facture",
+      "fichier": "facture-exemple.pdf",
+      "titre": "Facture (exemple)",
+      "lignes": [
+        "DOCUMENT FICTIF — EXEMPLE",
+        "",
+        "Facture n° FACT-0000 (exemple)",
+        "Client : Camille Exemple (exemple)",
+        "Date de facturation : non applicable (exemple)",
+        "",
+        "Lignes de la facture (valeurs d'exemple) :",
+        "- Matériel : voir le détail de la commande (exemple)",
+        "- Pose estimée : voir le détail de la commande (exemple)",
+        "- Total TTC : voir le récapitulatif de la commande (exemple)",
+        "",
+        "Ce document illustre la présentation d'une facture. Il n'émane d'aucune société réelle.",
+        "",
+        "Aucune valeur de ce document n'a de valeur contractuelle ou réglementaire."
+      ]
+    },
+    {
+      "id": "attestation-pose",
+      "fichier": "attestation-pose-exemple.pdf",
+      "titre": "Attestation de pose (exemple)",
+      "lignes": [
+        "DOCUMENT FICTIF — EXEMPLE",
+        "",
+        "Produit : voir le détail de la commande (exemple)",
+        "Intervenant : artisan partenaire fictif du démonstrateur (exemple)",
+        "Date d'intervention : non applicable (exemple)",
+        "",
+        "Constat de pose (valeurs d'exemple) :",
+        "- Installation conforme à la notice technique (exemple)",
+        "- Contrôle visuel des joints et des fixations (exemple)",
+        "- Essai de mise en place réalisé (exemple)",
+        "",
+        "Ce document illustre la présentation d'une attestation de pose. Il n'émane d'aucun artisan réel.",
+        "",
+        "Aucune valeur de ce document n'a de valeur contractuelle ou réglementaire."
+      ]
+    },
+    {
+      "id": "garantie-decennale",
+      "fichier": "garantie-decennale-exemple.pdf",
+      "titre": "Garantie décennale (exemple)",
+      "lignes": [
+        "DOCUMENT FICTIF — EXEMPLE",
+        "",
+        "Objet : garantie décennale liée à la pose par un artisan partenaire (exemple)",
+        "Assureur : assureur fictif du démonstrateur (exemple)",
+        "Durée : 10 ans à compter de la réception (exemple)",
+        "",
+        "Étendue de la garantie (valeurs d'exemple) :",
+        "- Désordres affectant la solidité de l'ouvrage posé (exemple)",
+        "- Conditions et exclusions : non applicables (exemple)",
+        "",
+        "Ce document illustre la présentation d'une garantie décennale. Il n'émane d'aucun assureur réel.",
+        "",
+        "Aucune valeur de ce document n'a de valeur contractuelle ou réglementaire."
+      ]
     }
   ]
 }

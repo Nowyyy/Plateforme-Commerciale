@@ -129,7 +129,7 @@ describe('liens et navigation', () => {
       'Vendre sur la plateforme', 'Mon compte', 'Panier',
     ]);
     expect(liens.map((m) => site.liens[m[0]])).toEqual([
-      'pro.html', 'wireframes/connexion.html', 'panier.html',
+      'pro.html', 'connexion.html', 'panier.html',
     ]);
     expect(resoudre(donnees, barre)).toBe('panier.html');
   });

@@ -73,7 +73,7 @@ for (const largeur of [375, 1440]) {
     await ouvrir();
     if (largeur === 375) await page.locator('[data-menu-bouton]').click();
     await page.locator('header').getByRole('link', { name: 'Mon compte', exact: true }).click();
-    await page.waitForURL('**/wireframes/connexion.html');
+    await page.waitForURL('**/connexion.html');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 
     await ouvrir();

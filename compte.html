@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="fr" data-donnees="compte">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Mon compte : tableau de bord (exemple)</title>
+  <meta name="description" content="Démonstrateur : tableau de bord du compte client de démonstration. Contenus fictifs, aucune vente.">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/composants.css">
+  <link rel="stylesheet" href="css/accueil.css">
+  <link rel="stylesheet" href="css/diagnostic.css">
+  <link rel="stylesheet" href="css/produit.css">
+  <link rel="stylesheet" href="css/pro.css">
+  <link rel="stylesheet" href="css/compte.css">
+  <script type="module" src="assets/js/rendu.js"></script>
+  <script type="module" src="assets/js/menu.js"></script>
+  <script type="module" src="assets/js/compteur.js"></script>
+  <script type="module" src="assets/js/compte-lien.js"></script>
+  <script type="module" src="assets/js/compte.js"></script>
+</head>
+<body>
+  <div class="relief" aria-hidden="true">
+    <svg class="relief__groupe relief__groupe--1" viewBox="-190 -150 380 300" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <defs><path id="relief-blob" vector-effect="non-scaling-stroke" d="M-120 0C-125 -62 -45 -92 25 -82C105 -72 135 -12 112 42C90 94 22 104 -42 88C-100 72 -116 38 -120 0Z"/></defs>
+      <use href="#relief-blob" transform="scale(0.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.5)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.75)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.5)" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <svg class="relief__groupe relief__groupe--2" viewBox="-170 -170 340 340" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <g transform="rotate(30)">
+      <use href="#relief-blob" transform="scale(0.2)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.45)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.7)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.95)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.2)" vector-effect="non-scaling-stroke"/>
+      </g>
+    </svg>
+  </div>
+  <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
+  <a class="lien-evitement" href="#contenu" data-texte="site.evitement"></a>
+  <aside class="bandeau-demo" data-aria-label="site.aria.bandeau">
+    <p class="conteneur" data-texte="site.bandeau"></p>
+  </aside>
+    <header class="entete" data-bloc="E7-1" data-role="en-tete">
+    <div class="conteneur entete__ligne">
+      <a class="marque" data-lien="site.liens.accueil">
+        <svg class="marque__pictogramme" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path class="marque__toit" d="M4 15 16 5l12 10"/>
+          <path class="marque__goutte" d="M16 13c0 0 6 6 6 10a6 6 0 0 1-12 0c0-4 6-10 6-10z"/>
+        </svg>
+        <span data-texte="site.nom"></span>
+      </a>
+      <a class="lien-entete entete__panier-barre" data-lien="site.liens.panier">
+        <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+        <span data-texte="site.navigation.panier"></span>
+      </a>
+      <button type="button" class="bouton bouton--discret entete__menu" data-menu-bouton aria-expanded="false" aria-controls="menu-navigation" data-texte="site.navigation.menu"></button>
+      <nav class="nav" id="menu-navigation" data-aria-label="site.aria.navigation">
+        <ul>
+          <li><a class="nav__lien" data-lien="site.liens.pro" data-texte="site.navigation.pro"></a></li>
+          <li><a class="nav__lien" data-lien="site.liens.connexion" data-texte="site.navigation.compte"></a></li>
+          <li class="nav__panier">
+            <a class="lien-entete" data-lien="site.liens.panier">
+              <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+              <span data-texte="site.navigation.panier"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <nav class="nav-compte" data-aria-label="compte.navigationCompte.aria">
+    <div class="conteneur">
+      <ul class="nav-compte__liste">
+        <li><a class="nav-compte__lien" data-lien="site.liens.compte" aria-current="page"><span data-texte="compte.navigationCompte.tableauDeBord"></span> <span class="visuellement-cache" data-texte="compte.navigationCompte.pageActuelle"></span></a></li>
+        <li><a class="nav-compte__lien" data-lien="site.liens.achats" data-texte="compte.navigationCompte.achats"></a></li>
+        <li><a class="nav-compte__lien" data-lien="site.liens.demandes" data-texte="compte.navigationCompte.demandes"></a></li>
+        <li><a class="nav-compte__lien" data-lien="site.liens.informations" data-texte="compte.navigationCompte.informations"></a></li>
+        <li><button type="button" class="bouton bouton--secondaire nav-compte__deconnexion" data-deconnexion data-texte="compte.navigationCompte.deconnexion"></button></li>
+      </ul>
+    </div>
+  </nav>
+  <main id="contenu" class="compte" tabindex="-1">
+    <section class="conteneur compte__bloc compte__bienvenue" data-bloc="E7-2" data-role="bienvenue" aria-labelledby="titre-bienvenue">
+      <h1 id="titre-bienvenue"></h1>
+      <p class="compte__mention" data-texte="compte.pages.compte.mention"></p>
+    </section>
+    <div class="conteneur compte__colonnes">
+      <section class="compte__bloc compte__colonne-principale" data-bloc="E7-3" data-role="commandes" aria-labelledby="titre-commandes">
+        <h2 id="titre-commandes" data-texte="compte.pages.compte.commandes"></h2>
+      </section>
+      <section class="compte__bloc compte__colonne-secondaire" data-bloc="E7-4" data-role="sav-en-cours" aria-labelledby="titre-sav-en-cours">
+        <h2 id="titre-sav-en-cours" data-texte="compte.pages.compte.savEnCours"></h2>
+      </section>
+    </div>
+  </main>
+  <footer class="pied" data-bloc="E7-5" data-role="pied">
+    <div class="conteneur">
+      <div class="pied__grille" aria-busy="true">
+        <template data-liste="site.pied.colonnes">
+          <div class="pied__colonne">
+            <h2 class="pied__titre" data-texte="titre"></h2>
+            <ul class="pied__liste">
+              <template data-liste="entrees">
+                <li><a class="pied__lien" data-lien-element="lien" data-texte="texte"></a></li>
+              </template>
+            </ul>
+          </div>
+        </template>
+        <div class="pied__colonne pied__marque">
+          <p class="pied__nom" data-texte="site.nom"></p>
+          <p class="pied__presentation" data-texte="site.pied.presentation"></p>
+        </div>
+      </div>
+      <p class="pied__bas" data-texte="site.bandeau"></p>
+    </div>
+  </footer>
+</body>
+</html>
