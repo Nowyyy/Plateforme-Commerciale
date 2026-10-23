@@ -22,7 +22,8 @@ describe('bouton « Ajouter au panier »', () => {
     expect(bouton).toContain('data-texte="produit.configurateur.action.bouton"');
     // l'ambre n'est posé que par le script, à l'état actif : aucun autre bouton d'action dans la page
     expect(html).not.toContain('bouton--action');
-    expect(boutons.filter((b) => !b.includes('id="cotes-ajouter"'))).toHaveLength(1); // bouton du menu
+    // autres boutons : menu, quatre boutons de quantité (« − », « + » x 2) et « Ajouter au panier » des produits non complets (lot 8a)
+    expect(boutons.filter((b) => !b.includes('id="cotes-ajouter"'))).toHaveLength(6);
     expect(html).not.toMatch(/\sdisabled(\s|=|>)/);
   });
 });

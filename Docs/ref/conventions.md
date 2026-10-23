@@ -36,7 +36,7 @@ Règles déplacées de `CLAUDE.md` au lot 7, sans changement de fond. À lire av
 
 ## Cotes (configurateur)
 - Seul le produit `complet` (batardeau) a `cotes` ; faisabilité = `evaluerCotes` (valeur ± tolérance dans la plage, bornes comprises, tolérance vide = 0) ; entiers en mm uniquement.
-- `sessionStorage.cotes` (saisie, par produit) et `commande` (écrite au clic actif de « Ajouter au panier », lue au lot 8).
+- `sessionStorage.cotes` (saisie, par produit) ; le clic actif de « Ajouter au panier » écrit `panier` (lot 8a) et, jusqu'à la partie 8a-B, la copie héritée `commande` du lot 8.
 - Le bouton n'est jamais `disabled` (`aria-disabled`) et c'est le seul bouton ambre ; le schéma n'a que les lettres A, B, C comme texte.
 
 ## Panier
@@ -47,6 +47,15 @@ Règles déplacées de `CLAUDE.md` au lot 7, sans changement de fond. À lire av
 - Aperçu des cotes : SVG copié de `produit.html` (mur, ouverture, seuil, barrière, flèches A et B, sans C) ; le tracé des groupes `cote-a` et `cote-b` est comparé par un test ; valeurs écrites par `textContent`.
 - « Valider ma commande » : jamais `disabled` ; `aria-disabled` ; classe `bouton--action` seulement à l'état actif ; clic inactif = aide dans la région d'état et focus sur la case ; clic actif = confirmation (CMD-000, exemple), `commande` supprimée.
 - Parcours principal : fichier de test `tests/e2e/parcours-principal.e2e.js` (accueil, adresse, diagnostic, fiche, cotes, mode, panier, validation) à 375 et 1440 px, DIY et pose ; aucune donnée dans les URL.
+
+## Panier à plusieurs lignes (lot 8a)
+- Modèle : `sessionStorage.panier` = `{ v: 2, lignes: [{ produit, mode: "diy"|"pose", cotes: { largeur, hauteur, tolerance }|null, quantite }] }`, jamais de prix, de titre ni de délai. `cotes` est `null` pour les produits sans configurateur. Logique pure : `assets/js/lignes-logique.js`.
+- Identité : `cleLigne` = `produit|mode|largeur|hauteur|tolerance` (`produit|mode|-` sans cotes) ; la quantité n'en fait pas partie. Même clé = fusion, clé différente = nouvelle ligne.
+- Lecture : `lireListe(brut, limites)` (JSON sûr, `v` 2 seulement, lignes de forme invalide écartées et comptées, doublons fusionnés, quantité plafonnée, `lignesMax` premières lignes), puis `validerPanier` ; raisons de refus d'une ligne : `produit`, `mode`, `cotes`. `compterArticles(brut, plafond = 99)` ne dépend pas des données.
+- Limites (exemples, `panier.limites`) : `quantiteMax` 10, `lignesMax` 10. `ajouterLigne` : `ajoutee`, `fusionnee`, `plafonnee` (le total demandé dépasse `quantiteMax`), `pleine` (état inchangé), `refusee`. Retrait / restauration : `retirerLigne` rend la ligne et son index, `restaurerLigne` réinsère à `min(index, longueur)`.
+- Totaux : lignes valides seulement ; pose seulement en mode pose ; délai le plus long = produit au `livraisonSemainesMax` (ou `poseSemainesMax`) le plus grand, égalité : première ligne.
+- Fiche : groupe « Quantité » (`role="group"`, sortie `aria-live`, boutons `aria-disabled` aux bornes) ; batardeau : zone `#cotes-action` sous la faisabilité ; autres produits : zone `data-ajout="mode"` dans le bloc `mode`, bouton ambre d'emblée (classe posée par `ajout.js`). Confirmation : région `role="status"` `tabindex="-1"` qui reçoit le focus, deux liens (« Voir le panier », « Continuer mes achats ») sauf si le panier est plein ou le stockage indisponible.
+- Tests de clics : `emulateMedia({ reducedMotion: 'reduce' })` (défilement doux de `accueil.css`).
 
 ## Liens externes
 - Seuls ceux de `liensExternes` (`data/site.json`) : `https://`, domaine déclaré, nouvel onglet, `rel="noopener noreferrer"`, aucune donnée du visiteur dans le lien.

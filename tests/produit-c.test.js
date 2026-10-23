@@ -47,8 +47,10 @@ describe('produit.html : mode de commande', () => {
     expect(mode).toMatch(/aria-live="polite"/);
     // le bouton « Menu » de l'en-tête partagé n'est pas un bouton d'action : seul le contenu de <main> est contrôlé
     const principal = html.slice(html.indexOf('<main'), html.indexOf('</main>'));
-    // depuis le lot 6, le configurateur apporte le seul bouton de <main> : « Ajouter au panier » (type="button", jamais submit)
-    expect(principal.match(/<button[\s>]/g)).toHaveLength(1);
+    // lot 6 : le configurateur apporte « Ajouter au panier » ; lot 8a : quatre boutons de quantité et l'ajout des produits non complets
+    // (type="button", jamais submit)
+    expect(principal.match(/<button[\s>]/g)).toHaveLength(6);
+    expect(principal.match(/class="bouton bouton--secondaire quantite__bouton"/g)).toHaveLength(4);
     expect(principal).toMatch(/<button type="button"[^>]*id="cotes-ajouter"/);
     expect(principal).not.toMatch(/type="submit"/);
     expect(html).not.toContain('bouton--action');

@@ -57,6 +57,8 @@ async function parcourir(page, largeur, mode) {
   const ajouter = page.getByRole('button', { name: 'Ajouter au panier' });
   await expect(ajouter).toHaveAttribute('aria-disabled', 'false');
   await ajouter.click();
+  await expect(page.locator('#cotes-action .ajout__confirmation')).toContainText('Ajouté au panier : Batardeau modulable × 1.');
+  await page.getByRole('link', { name: 'Voir le panier' }).click();
   await page.waitForURL((u) => u.pathname === '/panier.html');
   await page.waitForSelector('#recap[aria-busy="false"]');
 
@@ -114,6 +116,7 @@ test('aller-retour : cotes restaurées, cotes hors tolérance, panier tel qu\'en
   await page.waitForSelector('html[data-rendu="pret"]');
   await saisir(page, '1 200', '400');
   await page.getByRole('button', { name: 'Ajouter au panier' }).click();
+  await page.getByRole('link', { name: 'Voir le panier' }).click();
   await page.waitForURL((u) => u.pathname === '/panier.html');
   await page.waitForSelector('#recap[aria-busy="false"]');
   await page.getByRole('link', { name: 'Modifier mes cotes' }).click();

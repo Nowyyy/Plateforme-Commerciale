@@ -61,7 +61,10 @@
           "format": "PDF",
           "aide": "Notice technique fictive, exemple de présentation."
         }
-      ]
+      ],
+      "livraisonSemainesMax": 3,
+      "poseSemainesMax": 2,
+      "icone": "inondation"
     },
     {
       "id": "bouclier-de-baie",
@@ -71,7 +74,10 @@
       "delaiLivraison": "3 à 4 semaines",
       "pose": 500,
       "delaiPose": "sous 3 semaines après livraison",
-      "complet": false
+      "complet": false,
+      "livraisonSemainesMax": 4,
+      "poseSemainesMax": 3,
+      "icone": "grele-vent"
     },
     {
       "id": "sprinkler-de-toiture",
@@ -81,7 +87,10 @@
       "delaiLivraison": "4 à 6 semaines",
       "pose": 750,
       "delaiPose": "sous 4 semaines après livraison",
-      "complet": false
+      "complet": false,
+      "livraisonSemainesMax": 6,
+      "poseSemainesMax": 4,
+      "icone": "feu"
     },
     {
       "id": "cool-roofing",
@@ -91,7 +100,10 @@
       "delaiLivraison": "3 à 5 semaines",
       "pose": 580,
       "delaiPose": "sous 4 semaines après livraison",
-      "complet": false
+      "complet": false,
+      "livraisonSemainesMax": 5,
+      "poseSemainesMax": 4,
+      "icone": "chaleur"
     },
     {
       "id": "clapet-anti-retour",
@@ -101,7 +113,10 @@
       "delaiLivraison": "1 à 2 semaines",
       "pose": 60,
       "delaiPose": "sous 1 semaine après livraison",
-      "complet": false
+      "complet": false,
+      "livraisonSemainesMax": 2,
+      "poseSemainesMax": 1,
+      "icone": "inondation"
     },
     {
       "id": "volet-extrude",
@@ -111,7 +126,10 @@
       "delaiLivraison": "3 à 4 semaines",
       "pose": 390,
       "delaiPose": "sous 3 semaines après livraison",
-      "complet": false
+      "complet": false,
+      "livraisonSemainesMax": 4,
+      "poseSemainesMax": 3,
+      "icone": "grele-vent"
     },
     {
       "id": "grille-pare-braises",
@@ -121,7 +139,10 @@
       "delaiLivraison": "1 à 2 semaines",
       "pose": 100,
       "delaiPose": "sous 2 semaines après livraison",
-      "complet": false
+      "complet": false,
+      "livraisonSemainesMax": 2,
+      "poseSemainesMax": 2,
+      "icone": "feu"
     },
     {
       "id": "isolant-reflecteur",
@@ -131,7 +152,10 @@
       "delaiLivraison": "2 semaines",
       "pose": 120,
       "delaiPose": "sous 2 semaines après livraison",
-      "complet": false
+      "complet": false,
+      "livraisonSemainesMax": 2,
+      "poseSemainesMax": 2,
+      "icone": "chaleur"
     },
     {
       "id": "pompe-de-relevage",
@@ -141,7 +165,10 @@
       "delaiLivraison": "2 à 3 semaines",
       "pose": 170,
       "delaiPose": "sous 2 semaines après livraison",
-      "complet": false
+      "complet": false,
+      "livraisonSemainesMax": 3,
+      "poseSemainesMax": 2,
+      "icone": "inondation"
     },
     {
       "id": "filet-de-toiture",
@@ -151,7 +178,10 @@
       "delaiLivraison": "2 à 3 semaines",
       "pose": 130,
       "delaiPose": "sous 3 semaines après livraison",
-      "complet": false
+      "complet": false,
+      "livraisonSemainesMax": 3,
+      "poseSemainesMax": 3,
+      "icone": "chute"
     }
   ],
   "produitParDefaut": "batardeau-modulable",
@@ -431,6 +461,28 @@
       "pastille": "Logo exemple",
       "paiement": "Paiement sécurisé par un tiers de confiance bancaire (exemple).",
       "sav": "Garantie de prise en charge du service après-vente par la plateforme (exemple)."
+    },
+    "limites": {
+      "quantiteMax": 10,
+      "lignesMax": 10
     }
+  },
+  "ajout": {
+    "quantite": "Quantité",
+    "quantiteAria": "Quantité : {produit}",
+    "moins": "−",
+    "plus": "+",
+    "moinsAria": "Diminuer la quantité : {produit}",
+    "plusAria": "Augmenter la quantité : {produit}",
+    "bouton": "Ajouter au panier",
+    "ajoutee": "Ajouté au panier : {titre} × {quantite}.",
+    "fusionnee": "Quantité mise à jour : {titre} × {quantite}.",
+    "plafonnee": "Limite de {max} par ligne atteinte pour {titre}.",
+    "pleine": "Le panier est plein ({max} lignes). Retirez une ligne pour continuer.",
+    "articles": "{articles} articles dans le panier.",
+    "article": "{articles} article dans le panier.",
+    "voirPanier": "Voir le panier",
+    "continuer": "Continuer mes achats",
+    "stockage": "Impossible d'enregistrer le panier dans ce navigateur."
   }
 }

@@ -9,3 +9,4 @@ lot-5|Fiche produit Hi-Fi, zone haute : fil d'Ariane, galerie, achat, bascule DI
 lot-6|Fiche produit Hi-Fi : configurateur de cotes (schéma, saisie, faisabilité) et bouton « Ajouter au panier ».
 lot-7|Fiche produit Hi-Fi : spécifications d'ingénierie (tableau) et documents PDF d'exemple à télécharger, réservés au produit complet.
 lot-8|Panier Hi-Fi : récapitulatif technique, validation de responsabilité, total, paiement et SAV, parcours principal de bout en bout.
+lot-8a|Panier à plusieurs lignes : ajout au panier pour les dix produits, quantités, confirmation sans redirection (partie A).

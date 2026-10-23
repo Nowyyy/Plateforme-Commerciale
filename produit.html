@@ -148,6 +148,16 @@
           </fieldset>
           <div class="mode__detail" id="mode-detail" aria-live="polite"></div>
           <dl class="mode__prix" id="mode-prix" data-aria-label="produit.textes.mode.recapitulatif"></dl>
+          <div class="ajout" data-ajout="mode" hidden>
+              <div class="quantite" role="group">
+                <span class="quantite__libelle" data-texte="produit.ajout.quantite"></span>
+                <button type="button" class="bouton bouton--secondaire quantite__bouton" data-quantite="moins" data-texte="produit.ajout.moins"></button>
+                <output class="quantite__valeur" aria-live="polite">1</output>
+                <button type="button" class="bouton bouton--secondaire quantite__bouton" data-quantite="plus" data-texte="produit.ajout.plus"></button>
+              </div>
+              <button type="button" class="bouton bouton--secondaire ajout__bouton" data-texte="produit.ajout.bouton"></button>
+              <div class="ajout__confirmation" role="status" tabindex="-1"></div>
+          </div>
           <p class="mode__mention" data-texte="produit.textes.mode.mention"></p>
         </div>
       </section>
@@ -242,9 +252,16 @@
                 <p class="faisabilite__indisponible" id="faisabilite-indisponible"></p>
               </div>
             </div>
-            <div class="action" id="cotes-action">
+            <div class="action ajout" id="cotes-action">
+              <div class="quantite" role="group">
+                <span class="quantite__libelle" data-texte="produit.ajout.quantite"></span>
+                <button type="button" class="bouton bouton--secondaire quantite__bouton" data-quantite="moins" data-texte="produit.ajout.moins"></button>
+                <output class="quantite__valeur" aria-live="polite">1</output>
+                <button type="button" class="bouton bouton--secondaire quantite__bouton" data-quantite="plus" data-texte="produit.ajout.plus"></button>
+              </div>
               <button type="button" class="bouton bouton--secondaire action__bouton" id="cotes-ajouter" aria-disabled="true" aria-describedby="cotes-ajouter-aide" data-texte="produit.configurateur.action.bouton"></button>
               <p class="action__aide" id="cotes-ajouter-aide" data-texte="produit.configurateur.action.aide"></p>
+              <div class="ajout__confirmation" role="status" tabindex="-1"></div>
             </div>
           </div>
         </div>

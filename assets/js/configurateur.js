@@ -2,13 +2,11 @@
 // Saisie en entiers de millimètres, faisabilité évaluée à chaque frappe par evaluerCotes (logique pure).
 // Les textes issus des données sont posés par textContent seulement.
 import {
-  CHAMPS, construireCommande, evaluerCotes, formaterMm, peutAjouter, premierChampACorriger, remplirGabarit, restaurerCotes,
+  CHAMPS, evaluerCotes, formaterMm, peutAjouter, premierChampACorriger, remplirGabarit, restaurerCotes,
 } from './cotes-logique.js';
-import { modeValide } from './produit-logique.js';
+import { ajouterDepuisFiche, initialiserQuantite } from './ajout.js';
 
 export const CLE_COTES = 'cotes';
-export const CLE_COMMANDE = 'commande';
-const CLE_MODE = 'mode';
 
 // Champ de saisie -> cote du schéma et de la liste « Où mesurer »
 const COTE_DU_CHAMP = { largeur: 'a', hauteur: 'b', tolerance: 'c' };
@@ -83,6 +81,7 @@ export function initialiserConfigurateur(donnees, produit) {
   const faisabilite = section.querySelector('#cotes-faisabilite');
   const indisponible = faisabilite.querySelector('#faisabilite-indisponible');
   const ajouter = section.querySelector('#cotes-ajouter');
+  const quantite = initialiserQuantite(section.querySelector('#cotes-action .quantite'), donnees, produit);
   const gabaritPlage = (nom) => remplirGabarit(textes.saisie.plage[nom], { min: formaterMm(limites[nom].min), max: formaterMm(limites[nom].max) });
   section.querySelector('#plage-largeur').textContent = gabaritPlage('largeur');
   section.querySelector('#plage-hauteur').textContent = gabaritPlage('hauteur');
@@ -136,7 +135,7 @@ export function initialiserConfigurateur(donnees, produit) {
   }
 
   // Clic inactif : message dans la région de faisabilité, focus sur le premier champ à corriger.
-  // Clic actif : commande en sessionStorage (lue par le panier), puis navigation même si le stockage est refusé.
+  // Clic actif : ligne ajoutée à sessionStorage.panier (quantité du groupe voisin), confirmation sur la fiche, aucune navigation.
   function ajouterAuPanier() {
     const evaluation = evaluerCotes(lireSaisie(), limites);
     if (!peutAjouter(evaluation)) {
@@ -144,9 +143,7 @@ export function initialiserConfigurateur(donnees, produit) {
       champs[premierChampACorriger(evaluation)].focus();
       return;
     }
-    const commande = construireCommande(produit, modeValide(lireSession(CLE_MODE)), evaluation);
-    if (commande) ecrireSession(CLE_COMMANDE, JSON.stringify(commande));
-    window.location.assign(new URL(donnees.site.liens.panier, window.location.href));
+    ajouterDepuisFiche({ donnees, produit, zone: section.querySelector('#cotes-action'), quantite: quantite.lire(), evaluation });
   }
 
   const restaure = restaurerCotes(lireSession(CLE_COTES), produit.id);

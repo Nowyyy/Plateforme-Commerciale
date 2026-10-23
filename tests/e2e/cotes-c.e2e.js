@@ -5,7 +5,10 @@ const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const AMBRE = 'rgb(217, 119, 6)';
 const MARINE = 'rgb(15, 29, 56)';
 
+// Mouvement réduit : accueil.css active le défilement doux, et un clic forcé qui suit le défilement automatique de Playwright
+// vise parfois une position périmée (échec intermittent sous charge) ; le comportement testé n'en dépend pas.
 async function ouvrir(page, largeur, session = {}) {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.setViewportSize({ width: largeur, height: 900 });
   if (Object.keys(session).length > 0) {
     await page.addInitScript((valeurs) => {
@@ -25,7 +28,7 @@ const saisir = async (page, largeur, hauteur, tolerance = '') => {
   await page.locator('#cote-hauteur').fill(hauteur);
   await page.locator('#cote-tolerance').fill(tolerance);
 };
-const commande = async (page) => JSON.parse(await page.evaluate(() => sessionStorage.getItem('commande')));
+const panier = async (page) => JSON.parse(await page.evaluate(() => sessionStorage.getItem('panier')));
 
 test('bouton inactif au chargement : neutre, focalisable, sans navigation ; le clic annonce l\'indisponibilité et place le focus', async ({ page }) => {
   await ouvrir(page, 375);
@@ -35,14 +38,15 @@ test('bouton inactif au chargement : neutre, focalisable, sans navigation ; le c
   const fond = await b.evaluate((el) => getComputedStyle(el).backgroundColor);
   expect(fond).not.toBe(AMBRE);
   await page.locator('#cote-tolerance').focus();
-  await page.keyboard.press('Tab'); // la tolérance est le dernier champ : le bouton suit dans l'ordre du clavier
+  // la tolérance est le dernier champ : « − », « + » (quantité, lot 8a) puis le bouton suivent dans l'ordre du clavier
+  for (let i = 0; i < 3; i += 1) await page.keyboard.press('Tab');
   await expect(b).toBeFocused();
   const url = page.url();
   await b.click({ force: true });
   expect(page.url()).toBe(url);
   await expect(page.locator('#cotes-faisabilite')).toContainText('Corrigez vos cotes pour continuer.');
   await expect(page.locator('#cote-largeur')).toBeFocused();
-  expect(await page.evaluate(() => sessionStorage.getItem('commande'))).toBeNull();
+  expect(await page.evaluate(() => sessionStorage.getItem('panier'))).toBeNull();
   // premier champ à corriger : la hauteur invalide, puis la tolérance
   await saisir(page, '800', 'abc');
   await expect(page.locator('#faisabilite-indisponible')).toHaveText('');
@@ -57,7 +61,7 @@ test('bouton inactif au chargement : neutre, focalisable, sans navigation ; le c
   expect(page.url()).toBe(url);
 });
 
-test('bouton actif (cotes compatibles) : ambre, texte marine ; le clic écrit la commande et mène au panier', async ({ page }) => {
+test('bouton actif (cotes compatibles) : ambre, texte marine ; le clic écrit le panier, la fiche reste affichée, « Voir le panier » mène au panier', async ({ page }) => {
   await ouvrir(page, 1440);
   await saisir(page, '1 200', '400', '10');
   const b = bouton(page);
@@ -65,38 +69,34 @@ test('bouton actif (cotes compatibles) : ambre, texte marine ; le clic écrit la
   const styles = await b.evaluate((el) => ({ fond: getComputedStyle(el).backgroundColor, texte: getComputedStyle(el).color }));
   expect(styles).toEqual({ fond: AMBRE, texte: MARINE });
   await page.screenshot({ path: 'test-results/cotes-C-actif-1440.png' });
+  const url = page.url();
   await b.click({ force: true });
+  await expect(page.locator('#cotes-action .ajout__confirmation')).toContainText('Ajouté au panier : Batardeau modulable × 1.');
+  expect(page.url()).toBe(url);
+  expect(await panier(page)).toEqual({
+    v: 2, lignes: [{ produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 1200, hauteur: 400, tolerance: 10 }, quantite: 1 }],
+  });
+  await page.getByRole('link', { name: 'Voir le panier' }).click();
   await page.waitForURL((u) => u.pathname === '/panier.html');
   expect(new URL(page.url()).search).toBe('');
-  expect(await commande(page)).toEqual({
-    v: 1, produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 1200, hauteur: 400, tolerance: 10 },
-    prix: { materiel: 690, pose: null, total: 690 },
-  });
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 });
 
-test('mode pose : commande avec pose et total ; retour au mode DIY : pose nulle', async ({ page }) => {
+test('mode pose : ligne de pose, puis retour au mode DIY : ligne distincte sans pose', async ({ page }) => {
   await ouvrir(page, 1440);
   await saisir(page, '1200', '400');
   await page.getByRole('radio', { name: /Matériel \+ pose/ }).check({ force: true });
   await bouton(page).click();
-  await page.waitForURL((u) => u.pathname === '/panier.html');
-  const pose = await commande(page);
-  expect(pose.mode).toBe('pose');
-  expect(pose.prix).toEqual({ materiel: 690, pose: 280, total: 970 });
-  expect(pose.prix.total).toBe(pose.prix.materiel + pose.prix.pose);
-  await page.goBack();
-  await page.waitForSelector('html[data-rendu="pret"]');
-  await expect(page.locator('#cote-largeur')).toHaveValue('1200');
+  const pose = await panier(page);
+  expect(pose.lignes).toEqual([{ produit: 'batardeau-modulable', mode: 'pose', cotes: { largeur: 1200, hauteur: 400, tolerance: 0 }, quantite: 1 }]);
+  expect(JSON.stringify(pose)).not.toMatch(/prix|total|materiel/);
   await page.getByRole('radio', { name: /Matériel seul/ }).check({ force: true });
   await bouton(page).click();
-  await page.waitForURL((u) => u.pathname === '/panier.html');
-  const diy = await commande(page);
-  expect(diy.mode).toBe('diy');
-  expect(diy.prix).toEqual({ materiel: 690, pose: null, total: 690 });
+  const deux = await panier(page);
+  expect(deux.lignes.map((l) => l.mode)).toEqual(['pose', 'diy']);
 });
 
-test('stockage indisponible : la navigation a lieu quand même, sans erreur de console', async ({ page }) => {
+test('stockage indisponible : message dédié, sans erreur de console', async ({ page }) => {
   const messages = [];
   page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) messages.push(m.text()); });
   page.on('pageerror', (e) => messages.push(e.message));
@@ -107,12 +107,13 @@ test('stockage indisponible : la navigation a lieu quand même, sans erreur de c
   await saisir(page, '1200', '400');
   await expect(bouton(page)).toHaveAttribute('aria-disabled', 'false');
   await bouton(page).click();
-  await page.waitForURL((u) => u.pathname === '/panier.html');
+  await expect(page.locator('#cotes-action .ajout__confirmation')).toContainText("Impossible d'enregistrer le panier dans ce navigateur.");
   expect(messages).toEqual([]);
 });
 
 for (const largeur of [375, 1440]) {
   test(`parcours cliqué à ${largeur} px : accueil, adresse, « Inondations et crues », diagnostic, fiche, cotes, pose, panier`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.goto('/index.html');
     await page.waitForSelector('.recherche:not([hidden])');
@@ -132,9 +133,10 @@ for (const largeur of [375, 1440]) {
     await saisir(page, '1 200', '400');
     await page.getByRole('radio', { name: /Matériel \+ pose/ }).check({ force: true });
     await bouton(page).click();
+    await page.getByRole('link', { name: 'Voir le panier' }).click();
     await page.waitForURL((u) => u.pathname === '/panier.html');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    expect((await commande(page)).mode).toBe('pose');
+    expect((await panier(page)).lignes[0].mode).toBe('pose');
     expect(new URL(page.url()).search).toBe('');
   });
 }
