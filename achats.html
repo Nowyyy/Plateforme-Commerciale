@@ -92,9 +92,31 @@
   <main id="contenu" class="compte compte--liste" tabindex="-1">
     <section class="conteneur compte__bloc " data-bloc="E8-2" data-role="filtre" aria-labelledby="titre-achats">
       <h1 id="titre-achats" data-texte="compte.pages.achats.titre"></h1>
+      <fieldset class="achats__filtre">
+        <legend class="etiquette" data-texte="compte.pages.achats.filtre"></legend>
+        <div class="diag__pastilles" aria-busy="true">
+          <template data-liste="pages.achats.filtres">
+            <label class="pastille-choix"><input type="radio" name="statut"><span data-texte="libelle"></span></label>
+          </template>
+        </div>
+      </fieldset>
     </section>
     <section class="conteneur compte__bloc " data-bloc="E8-3" data-role="liste" aria-labelledby="titre-liste">
       <h2 id="titre-liste" data-texte="compte.pages.achats.liste"></h2>
+      <p class="achats__vide" role="status"></p>
+      <ul class="commandes" aria-busy="true">
+        <template data-gabarit="carte-commande">
+          <li class="commande carte">
+            <h3 class="commande__numero"></h3>
+            <p class="commande__date"></p>
+            <p class="commande__statut"><span class="commande__statut-libelle"></span> <span class="statut" data-statut=""><span class="statut__icone" aria-hidden="true"></span><span class="statut__texte"></span></span></p>
+            <ul class="commande__lignes"></ul>
+            <p class="commande__total"></p>
+            <p class="commande__mode"></p>
+            <button type="button" class="bouton bouton--secondaire commande__detail"></button>
+          </li>
+        </template>
+      </ul>
     </section>
   </main>
   <footer class="pied" data-bloc="E8-4" data-role="pied">

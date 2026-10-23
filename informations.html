@@ -89,16 +89,83 @@
       </ul>
     </div>
   </nav>
-  <main id="contenu" class="compte" tabindex="-1">
-    <section class="conteneur compte__bloc " data-bloc="E12-2" data-role="identite" aria-labelledby="titre-identite">
-      <h1 id="titre-identite" data-texte="compte.pages.informations.titre"></h1>
-    </section>
-    <section class="conteneur compte__bloc " data-bloc="E12-3" data-role="adresse" aria-labelledby="titre-adresse">
-      <h2 id="titre-adresse" data-texte="compte.pages.informations.adresse"></h2>
-    </section>
-    <section class="conteneur compte__bloc " data-bloc="E12-4" data-role="preferences" aria-labelledby="titre-preferences">
-      <h2 id="titre-preferences" data-texte="compte.pages.informations.preferences"></h2>
-    </section>
+  <main id="contenu" class="compte compte--informations" tabindex="-1">
+    <div class="conteneur compte__bloc compte__informations">
+      <div class="carte compte__carte-info">
+        <form class="formulaire" novalidate hidden aria-labelledby="titre-identite">
+          <section class="compte__section" data-bloc="E12-2" data-role="identite" aria-labelledby="titre-identite">
+            <h1 id="titre-identite" data-texte="compte.pages.informations.titre"></h1>
+            <p class="formulaire__demo" data-texte="compte.formulaire.demo"></p>
+            <p class="compte__enregistre" role="status" tabindex="-1" data-enregistre data-texte="compte.pages.informations.confirmation" hidden></p>
+            <div class="formulaire__resume" role="alert" tabindex="-1" data-resume hidden>
+              <p class="formulaire__resume-titre" data-resume-titre></p>
+              <ul class="formulaire__resume-liste" data-resume-liste></ul>
+              <template data-resume-modele><li><a class="formulaire__lien" href="#"></a></li></template>
+            </div>
+            <div class="formulaire__grille">
+            <div class="formulaire__champ">
+              <label class="etiquette" for="prenom" data-texte="compte.pages.informations.champs.prenom"></label>
+              <input class="champ" type="text" id="prenom" autocomplete="given-name" aria-describedby="erreur-prenom">
+              <p class="formulaire__erreur" id="erreur-prenom" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="nom" data-texte="compte.pages.informations.champs.nom"></label>
+              <input class="champ" type="text" id="nom" autocomplete="family-name" aria-describedby="erreur-nom">
+              <p class="formulaire__erreur" id="erreur-nom" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="email" data-texte="compte.pages.informations.champs.email"></label>
+              <input class="champ" type="email" id="email" autocomplete="email" aria-describedby="erreur-email">
+              <p class="formulaire__erreur" id="erreur-email" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="telephone" data-texte="compte.pages.informations.champs.telephone"></label>
+              <input class="champ" type="tel" id="telephone" autocomplete="tel" aria-describedby="erreur-telephone">
+              <p class="formulaire__erreur" id="erreur-telephone" hidden></p>
+            </div>
+            </div>
+          </section>
+          <section class="compte__section" data-bloc="E12-3" data-role="adresse" aria-labelledby="titre-adresse">
+            <h2 id="titre-adresse" data-texte="compte.pages.informations.adresse"></h2>
+            <div class="formulaire__grille">
+            <div class="formulaire__champ formulaire__champ--pleine">
+              <label class="etiquette" for="adresse" data-texte="compte.pages.informations.champs.adresse"></label>
+              <input class="champ" type="text" id="adresse" autocomplete="street-address" aria-describedby="erreur-adresse">
+              <p class="formulaire__erreur" id="erreur-adresse" hidden></p>
+            </div>
+            <div class="formulaire__champ formulaire__champ--pleine">
+              <label class="etiquette" for="complement" data-texte="compte.pages.informations.champs.complement"></label>
+              <input class="champ" type="text" id="complement" autocomplete="address-line2" aria-describedby="erreur-complement">
+              <p class="formulaire__erreur" id="erreur-complement" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="code-postal" data-texte="compte.pages.informations.champs.codePostal"></label>
+              <input class="champ" type="text" id="code-postal" autocomplete="postal-code" inputmode="numeric" aria-describedby="erreur-code-postal">
+              <p class="formulaire__erreur" id="erreur-code-postal" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="ville" data-texte="compte.pages.informations.champs.ville"></label>
+              <input class="champ" type="text" id="ville" autocomplete="address-level2" aria-describedby="erreur-ville">
+              <p class="formulaire__erreur" id="erreur-ville" hidden></p>
+            </div>
+            </div>
+          </section>
+          <section class="compte__section" data-bloc="E12-4" data-role="preferences" aria-labelledby="titre-preferences">
+            <h2 id="titre-preferences" data-texte="compte.pages.informations.preferences"></h2>
+            <fieldset class="formulaire__groupe">
+              <legend class="etiquette" data-texte="compte.pages.informations.prefs.legende"></legend>
+              <div class="formulaire__cases">
+                <label class="formulaire__case" for="pref-suivi"><input type="checkbox" id="pref-suivi"><span data-texte="compte.pages.informations.prefs.suiviCommandes"></span></label>
+                <label class="formulaire__case" for="pref-sav"><input type="checkbox" id="pref-sav"><span data-texte="compte.pages.informations.prefs.infosSav"></span></label>
+              </div>
+            </fieldset>
+            <p class="compte__rgpd" data-texte="compte.pages.informations.rgpd"></p>
+            <button type="submit" class="bouton bouton--action formulaire__bouton" data-texte="compte.pages.informations.bouton"></button>
+            <p class="formulaire__demo" data-texte="compte.formulaire.demo"></p>
+          </section>
+        </form>
+      </div>
+    </div>
   </main>
   <footer class="pied" data-bloc="E12-5" data-role="pied">
     <div class="conteneur">

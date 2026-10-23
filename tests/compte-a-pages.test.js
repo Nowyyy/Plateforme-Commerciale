@@ -57,7 +57,7 @@ describe('lot 8c-A : squelettes des quatre autres pages', () => {
       expect(html, page).toContain('<meta name="robots" content="noindex">');
       expect([...html.matchAll(/data-bloc="(E\d+-\d+)"/g)].map((m) => m[1]), page).toEqual(attendus.map((a) => a[0]));
       expect([...html.matchAll(/data-role="([a-z-]+)"/g)].map((m) => m[1]), page).toEqual(attendus.map((a) => a[1]));
-      expect(html, page).not.toContain('bouton--action');
+      expect(html.match(/bouton--action/g)?.length ?? 0, page).toBe(page === 'informations.html' ? 1 : 0);
       const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
       expect(new Set(ids).size, page).toBe(ids.length);
     }
@@ -80,7 +80,7 @@ describe('lot 8c-A : squelettes des quatre autres pages', () => {
         for (const [, cle] of hors.matchAll(new RegExp(` ${attribut}="([^"]+)"`, 'g'))) expect(() => resoudre(donnees, cle), `${page} ${attribut} ${cle}`).not.toThrow();
       }
       for (const [, cle] of html.matchAll(/<template data-liste="([^"]+)">/g)) {
-        if (cle !== 'entrees') expect(cle.startsWith('site.'), `${page} ${cle}`).toBe(true);
+        if (cle !== 'entrees') expect(cle.startsWith('site.') || Array.isArray(cle.split('.').reduce((o, k) => o?.[k], compte)), `${page} ${cle}`).toBe(true);
       }
     }
   });

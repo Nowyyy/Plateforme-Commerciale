@@ -91,6 +91,13 @@ export function totauxCommande(lignes) {
   return { articles, materiel, pose, total: materiel + pose };
 }
 
+// « diy », « pose » ou « mixte » (lignes de modes différents) ; commande sans ligne : « diy ».
+export function modeCommande(commande) {
+  const modes = new Set(lignesDe(commande).map((ligne) => (ligne.mode === MODE_POSE ? MODE_POSE : 'diy')));
+  if (modes.size > 1) return 'mixte';
+  return modes.has(MODE_POSE) ? MODE_POSE : 'diy';
+}
+
 // ["Titre × q", …] dans l'ordre des lignes.
 export function resumeLignes(commande) {
   return lignesDe(commande).map((ligne) => `${String(ligne.titre ?? '')} × ${nombre(ligne.quantite)}`);
