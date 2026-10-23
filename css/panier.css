@@ -140,6 +140,7 @@ main:has(.recap[aria-busy="true"]) {
 }
 
 .recap__entete[hidden],
+.recap__deplier[hidden],
 .recap__vide[hidden] {
   display: none;
 }

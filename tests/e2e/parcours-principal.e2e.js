@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { formaterPrix } from '../../assets/js/diagnostic-logique.js';
-import { UNE_LIGNE, ouvrirPanier, panierAvec } from '../outils/panier-aide.mjs';
+import { LIGNE, TROIS_LIGNES, UNE_LIGNE, ouvrirPanier, panierAvec } from '../outils/panier-aide.mjs';
 
 const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const AMBRE = 'rgb(217, 119, 6)';
@@ -182,10 +182,16 @@ test('JavaScript désactivé : seul le message noscript est visible', async ({ b
   await contexte.close();
 });
 
-// CLS de 360 à 1440 px, JSON retardés de 400 ms ; DIY, pose, vide, invalide
+// CLS de 360 à 1440 px, JSON retardés de 400 ms (compteur d'en-tête compris) ; 1, 3 et 10 lignes, pose, invalide, vide, illisible
 const CLS_MAX = 0.08;
 const CLS_CAS = {
-  'une ligne': UNE_LIGNE, pose: panierAvec({ mode: 'pose' }), vide: null, illisible: 'illisible',
+  'une ligne': UNE_LIGNE,
+  pose: panierAvec({ mode: 'pose' }),
+  'trois lignes': TROIS_LIGNES,
+  'dix lignes': { v: 2, lignes: Array.from({ length: 10 }, (_, i) => ({ ...LIGNE, cotes: { largeur: 800 + i * 50, hauteur: 400, tolerance: 0 }, quantite: i + 1 })) },
+  invalide: panierAvec({ cotes: { largeur: 699, hauteur: 400, tolerance: 0 } }),
+  vide: null,
+  illisible: 'illisible',
 };
 for (const [nom, session] of Object.entries(CLS_CAS)) {
   test(`CLS du panier (${nom}) de 360 à 1440 px, JSON retardés de 400 ms : au plus ${CLS_MAX}`, async ({ browser }) => {

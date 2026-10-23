@@ -134,3 +134,29 @@
 .bouton--secondaire:hover {
   background: var(--color-pastille);
 }
+
+/* Compteur d'articles de l'en-tête : nombre entre parenthèses, chiffres tabulaires */
+.compteur__nombre {
+  margin-inline-start: var(--space-1);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* Écrans étroits : le nombre remplace le pictogramme de la barre d'en-tête, pour que le bouton Menu garde sa place sur la ligne */
+@media (max-width: 479px) {
+  .entete__panier-barre:has(.compteur) .pictogramme {
+    display: none;
+  }
+
+  .entete__panier-barre .compteur__nombre {
+    margin-inline-start: 0;
+  }
+
+  .entete__panier-barre .compteur__nombre--long {
+    font-size: var(--text-xs);
+  }
+
+  .entete__panier-barre:has(.compteur__nombre--long) {
+    padding-inline: var(--space-1);
+  }
+}

@@ -8,8 +8,8 @@ Avant de modifier le diagnostic, la fiche produit, le relief ou les listes, lis 
 ## Arborescence
 - Racine : `index.html` (accueil Hi-Fi E1-1 à E1-10), `diagnostic.html` (E2-1 à E2-6), `produit.html` (fiche Hi-Fi : E3-1 à E3-8), `panier.html` (panier Hi-Fi : E4-1 à E4-6), tous `noindex` jusqu'au lot 10 ; `attente.html` (ancienne page d'attente) ; `accueil.html` (redirection vers `index.html`)
 - `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, `accueil.css`, `diagnostic.css`, `produit.css`, `panier.css`, `attente.css`, `wireframe.css`
-- `data/` : `site.json`, `accueil.json`, `diagnostic.json`, `produit.json` (dont `cotes`, `configurateur`, `specs`, `documents`, `panier`, `ajout`) : tous les textes et liens visibles
-- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js`, `diagnostic-logique.js`, `produit-logique.js`, `cotes-logique.js`, `lignes-logique.js` (lignes de panier) et `panier-logique.js` : purs ; `diagnostic.js`, `produit.js`, `configurateur.js`, `ajout.js` (quantité et ajout depuis la fiche), `panier.js`, `alea.js` ; `assets/fonts/` : woff2 (OFL)
+- `data/` : `site.json`, `accueil.json`, `diagnostic.json`, `produit.json` (dont `cotes`, `configurateur`, `specs`, `documents`, `panier`, `ajout`) : tous les textes et liens visibles ; `site.json` porte aussi la clé `compteur`
+- `assets/js/` : `rendu.js` (chargement des données), `menu.js`, `adresse.js`, `diagnostic-logique.js`, `produit-logique.js`, `cotes-logique.js`, `lignes-logique.js` (lignes de panier) et `panier-logique.js` : purs ; `diagnostic.js`, `produit.js`, `configurateur.js`, `ajout.js` (quantité et ajout depuis la fiche), `panier.js`, `compteur.js` (compteur d'articles de l'en-tête), `alea.js` ; `assets/fonts/` : woff2 (OFL)
 - `scripts/lots/` : génération de la page Lots (sans dépendance ; logique pure dans `logique.mjs`)
 - `scripts/documents/` : générateur de PDF d'exemple, sans dépendance ; `assets/documents/` : PDF fictifs générés, versionnés
 - `wireframes/` : Lo-Fi publiés, `noindex` : écrans 1 à 13 (`accueil`… `sav-acces`) et `index.html`

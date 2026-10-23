@@ -35,8 +35,7 @@ test('bouton inactif au chargement : neutre, focalisable, sans navigation ; le c
   const b = bouton(page);
   await expect(b).toHaveAttribute('aria-disabled', 'true');
   await expect(b).not.toHaveAttribute('disabled', /.*/);
-  const fond = await b.evaluate((el) => getComputedStyle(el).backgroundColor);
-  expect(fond).not.toBe(AMBRE);
+  await expect(b).not.toHaveCSS('background-color', AMBRE);
   await page.locator('#cote-tolerance').focus();
   // la tolérance est le dernier champ : « − », « + » (quantité, lot 8a) puis le bouton suivent dans l'ordre du clavier
   for (let i = 0; i < 3; i += 1) await page.keyboard.press('Tab');
@@ -66,8 +65,8 @@ test('bouton actif (cotes compatibles) : ambre, texte marine ; le clic écrit le
   await saisir(page, '1 200', '400', '10');
   const b = bouton(page);
   await expect(b).toHaveAttribute('aria-disabled', 'false');
-  const styles = await b.evaluate((el) => ({ fond: getComputedStyle(el).backgroundColor, texte: getComputedStyle(el).color }));
-  expect(styles).toEqual({ fond: AMBRE, texte: MARINE });
+  await expect(b).toHaveCSS('background-color', AMBRE);
+  await expect(b).toHaveCSS('color', MARINE);
   await page.screenshot({ path: 'test-results/cotes-C-actif-1440.png' });
   const url = page.url();
   await b.click({ force: true });

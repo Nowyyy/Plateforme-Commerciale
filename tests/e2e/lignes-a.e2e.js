@@ -61,7 +61,7 @@ test('ajout du batardeau : la fiche reste affichée, confirmation focalisée, se
   await zoneConfigurateur(page).getByRole('button', { name: 'Augmenter la quantité : Batardeau modulable' }).click();
   const bouton = page.getByRole('button', { name: 'Ajouter au panier' });
   await expect(bouton).toHaveAttribute('aria-disabled', 'false');
-  expect(await bouton.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(AMBRE);
+  await expect(bouton).toHaveCSS('background-color', AMBRE);
   await bouton.click();
   const region = confirmation(page);
   await expect(region).toContainText('Ajouté au panier : Batardeau modulable × 3.');
@@ -109,7 +109,7 @@ test('produit non complet (clapet anti-retour) : zone dans le bloc mode, bouton 
   const bouton = mode.getByRole('button', { name: 'Ajouter au panier' });
   await expect(bouton).toBeVisible();
   await expect(bouton).not.toHaveAttribute('aria-disabled', /.*/);
-  expect(await bouton.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(AMBRE);
+  await expect(bouton).toHaveCSS('background-color', AMBRE);
   await expect(page.locator('[data-role="configurateur"] .configurateur__outil')).toHaveCount(0);
   await expect(page.locator('#cotes-action')).toHaveCount(0);
   await expect(page.locator('.configurateur__indisponible')).toBeVisible();
@@ -155,7 +155,7 @@ test('cotes incompatibles : bouton neutre, focalisable, le clic n\'écrit rien e
   const bouton = page.getByRole('button', { name: 'Ajouter au panier' });
   await expect(bouton).toHaveAttribute('aria-disabled', 'true');
   await expect(bouton).not.toHaveAttribute('disabled', /.*/);
-  expect(await bouton.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe(AMBRE);
+  await expect(bouton).not.toHaveCSS('background-color', AMBRE);
   await bouton.focus();
   await expect(bouton).toBeFocused();
   await bouton.click({ force: true });

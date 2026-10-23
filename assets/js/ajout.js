@@ -80,6 +80,7 @@ export function ajouterDepuisFiche({ donnees, produit, zone, quantite, evaluatio
       region.focus();
       return 'stockage';
     }
+    document.dispatchEvent(new CustomEvent('panier:modifie'));
     liens = true;
   }
   const finale = etat.lignes.find((l) => l.produit === ligne.produit && l.mode === ligne.mode

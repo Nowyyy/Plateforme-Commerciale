@@ -64,5 +64,10 @@
   },
   "liensExternes": {
     "georisques": "https://www.georisques.gouv.fr/"
+  },
+  "compteur": {
+    "gabarit": "({n})",
+    "libelle": "articles dans le panier",
+    "plus": "99+"
   }
 }

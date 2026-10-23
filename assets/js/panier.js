@@ -58,13 +58,16 @@ function repererEtape({ etapeEnCours }) {
   item.append(' ', element('span', 'visuellement-cache', etapeEnCours.texte));
 }
 
+// Prévient le compteur d'en-tête (l'événement storage ne part pas dans l'onglet qui écrit).
+const notifier = () => document.dispatchEvent(new CustomEvent('panier:modifie'));
+
 // Écrit les lignes (clé supprimée quand le panier est vide) ; faux si le stockage refuse l'écriture.
 function enregistrer(etat) {
-  if (etat.lignes.length === 0) {
-    supprimerSession(CLE_PANIER);
-    return true;
-  }
-  return ecrireSession(CLE_PANIER, JSON.stringify({ v: VERSION_PANIER, lignes: etat.lignes }));
+  const ecrit = etat.lignes.length === 0
+    ? (supprimerSession(CLE_PANIER), true)
+    : ecrireSession(CLE_PANIER, JSON.stringify({ v: VERSION_PANIER, lignes: etat.lignes }));
+  notifier();
+  return ecrit;
 }
 
 function demarrerPanier(donnees) {
@@ -439,6 +442,7 @@ function demarrerPanier(donnees) {
     zone.valider.setAttribute('tabindex', '-1');
     zone.caseCochee.disabled = true;
     supprimerSession(CLE_PANIER);
+    notifier();
     confirme = true;
     annulation = null;
     zone.etat.replaceChildren();
