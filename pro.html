@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="fr" data-donnees="pro">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Vendre sur la plateforme : candidature de professionnel (exemple)</title>
+  <meta name="description" content="Démonstrateur : espace professionnel pour vendre sur la plateforme, étapes et formulaire de candidature simulé. Contenus fictifs, aucune vente.">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/composants.css">
+  <link rel="stylesheet" href="css/accueil.css">
+  <link rel="stylesheet" href="css/diagnostic.css">
+  <link rel="stylesheet" href="css/produit.css">
+  <link rel="stylesheet" href="css/pro.css">
+  <script type="module" src="assets/js/rendu.js"></script>
+  <script type="module" src="assets/js/menu.js"></script>
+  <script type="module" src="assets/js/compteur.js"></script>
+  <script type="module" src="assets/js/pro.js"></script>
+</head>
+<body>
+  <div class="relief" aria-hidden="true">
+    <svg class="relief__groupe relief__groupe--1" viewBox="-190 -150 380 300" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <defs><path id="relief-blob" vector-effect="non-scaling-stroke" d="M-120 0C-125 -62 -45 -92 25 -82C105 -72 135 -12 112 42C90 94 22 104 -42 88C-100 72 -116 38 -120 0Z"/></defs>
+      <use href="#relief-blob" transform="scale(0.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.5)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.75)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.5)" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <svg class="relief__groupe relief__groupe--2" viewBox="-170 -170 340 340" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <g transform="rotate(30)">
+      <use href="#relief-blob" transform="scale(0.2)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.45)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.7)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.95)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.2)" vector-effect="non-scaling-stroke"/>
+      </g>
+    </svg>
+  </div>
+  <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
+  <a class="lien-evitement" href="#contenu" data-texte="site.evitement"></a>
+  <aside class="bandeau-demo" data-aria-label="site.aria.bandeau">
+    <p class="conteneur" data-texte="site.bandeau"></p>
+  </aside>
+  <header class="entete" data-bloc="E5-1" data-role="en-tete">
+    <div class="conteneur entete__ligne">
+      <a class="marque" data-lien="site.liens.accueil">
+        <svg class="marque__pictogramme" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path class="marque__toit" d="M4 15 16 5l12 10"/>
+          <path class="marque__goutte" d="M16 13c0 0 6 6 6 10a6 6 0 0 1-12 0c0-4 6-10 6-10z"/>
+        </svg>
+        <span data-texte="site.nom"></span>
+      </a>
+      <a class="lien-entete entete__panier-barre" data-lien="site.liens.panier">
+        <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+        <span data-texte="site.navigation.panier"></span>
+      </a>
+      <button type="button" class="bouton bouton--discret entete__menu" data-menu-bouton aria-expanded="false" aria-controls="menu-navigation" data-texte="site.navigation.menu"></button>
+      <nav class="nav" id="menu-navigation" data-aria-label="site.aria.navigation">
+        <ul>
+          <li><a class="nav__lien" data-lien="site.liens.pro" data-texte="site.navigation.pro"></a></li>
+          <li><a class="nav__lien" data-lien="site.liens.connexion" data-texte="site.navigation.compte"></a></li>
+          <li class="nav__panier">
+            <a class="lien-entete" data-lien="site.liens.panier">
+              <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+              <span data-texte="site.navigation.panier"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="contenu" class="pro" tabindex="-1">
+    <section class="conteneur pro__bloc pro__intro" data-bloc="E5-2" data-role="intro" aria-labelledby="titre-intro">
+      <h1 id="titre-intro" data-texte="pro.intro.titre"></h1>
+      <p class="pro__accroche" data-texte="pro.intro.accroche"></p>
+      <p class="pro__mention" data-texte="pro.intro.mention"></p>
+    </section>
+    <section class="conteneur pro__bloc pro__etapes" data-bloc="E5-3" data-role="etapes" aria-labelledby="titre-etapes">
+      <h2 id="titre-etapes" data-texte="pro.etapes.titre"></h2>
+      <ol class="etapes" aria-busy="true">
+        <template data-liste="etapes.liste">
+          <li class="etape">
+            <span class="etape__numero" aria-hidden="true"></span>
+            <h3 data-texte="titre"></h3>
+            <p data-texte="texte"></p>
+          </li>
+        </template>
+      </ol>
+    </section>
+    <section class="conteneur pro__bloc" data-bloc="E5-4" data-role="formulaire" aria-labelledby="titre-formulaire">
+      <div class="pro__carte pro__carte--formulaire carte">
+        <h2 id="titre-formulaire" tabindex="-1" data-texte="pro.formulaire.titre"></h2>
+        <p data-texte="pro.formulaire.phrase"></p>
+        <form class="formulaire" novalidate hidden aria-labelledby="titre-formulaire">
+          <p class="formulaire__demo" data-texte="pro.formulaire.demo"></p>
+          <div class="formulaire__resume" role="alert" tabindex="-1" data-resume hidden>
+            <p class="formulaire__resume-titre" data-resume-titre></p>
+            <ul class="formulaire__resume-liste" data-resume-liste></ul>
+            <template data-resume-modele><li><a class="formulaire__lien" href="#"></a></li></template>
+          </div>
+          <div class="formulaire__grille">
+            <div class="formulaire__champ">
+              <label class="etiquette" for="societe" data-texte="pro.formulaire.champs.societe.libelle"></label>
+              <input class="champ" type="text" id="societe" autocomplete="organization" aria-describedby="aide-societe erreur-societe">
+              <p class="formulaire__aide" id="aide-societe" data-texte="pro.formulaire.champs.societe.aide"></p>
+              <p class="formulaire__erreur" id="erreur-societe" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="siret" data-texte="pro.formulaire.champs.siret.libelle"></label>
+              <input class="champ" type="text" id="siret" inputmode="numeric" autocomplete="off" aria-describedby="aide-siret erreur-siret">
+              <p class="formulaire__aide" id="aide-siret" data-texte="pro.formulaire.champs.siret.aide"></p>
+              <p class="formulaire__erreur" id="erreur-siret" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="prenom" data-texte="pro.formulaire.champs.prenom.libelle"></label>
+              <input class="champ" type="text" id="prenom" autocomplete="given-name" aria-describedby="aide-prenom erreur-prenom">
+              <p class="formulaire__aide" id="aide-prenom" data-texte="pro.formulaire.champs.prenom.aide"></p>
+              <p class="formulaire__erreur" id="erreur-prenom" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="nom" data-texte="pro.formulaire.champs.nom.libelle"></label>
+              <input class="champ" type="text" id="nom" autocomplete="family-name" aria-describedby="aide-nom erreur-nom">
+              <p class="formulaire__aide" id="aide-nom" data-texte="pro.formulaire.champs.nom.aide"></p>
+              <p class="formulaire__erreur" id="erreur-nom" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="email" data-texte="pro.formulaire.champs.email.libelle"></label>
+              <input class="champ" type="email" id="email" autocomplete="email" aria-describedby="aide-email erreur-email">
+              <p class="formulaire__aide" id="aide-email" data-texte="pro.formulaire.champs.email.aide"></p>
+              <p class="formulaire__erreur" id="erreur-email" hidden></p>
+            </div>
+            <div class="formulaire__champ">
+              <label class="etiquette" for="telephone" data-texte="pro.formulaire.champs.telephone.libelle"></label>
+              <input class="champ" type="tel" id="telephone" autocomplete="tel" aria-describedby="aide-telephone erreur-telephone">
+              <p class="formulaire__aide" id="aide-telephone" data-texte="pro.formulaire.champs.telephone.aide"></p>
+              <p class="formulaire__erreur" id="erreur-telephone" hidden></p>
+            </div>
+            <fieldset class="formulaire__groupe formulaire__champ--pleine" id="aleas" aria-describedby="aide-aleas erreur-aleas">
+              <legend class="etiquette" data-texte="pro.formulaire.champs.aleas.libelle"></legend>
+              <p class="formulaire__aide" id="aide-aleas" data-texte="pro.formulaire.champs.aleas.aide"></p>
+              <div class="formulaire__cases" aria-busy="true">
+                <template data-liste="aleas">
+                  <label class="formulaire__case"><input type="checkbox" aria-describedby="aide-aleas erreur-aleas"><span data-texte="titre"></span></label>
+                </template>
+              </div>
+              <p class="formulaire__erreur" id="erreur-aleas" hidden></p>
+            </fieldset>
+            <div class="formulaire__champ formulaire__champ--pleine">
+              <label class="etiquette" for="description" data-texte="pro.formulaire.champs.description.libelle"></label>
+              <textarea class="champ" id="description" rows="5" maxlength="1000" aria-describedby="aide-description erreur-description"></textarea>
+              <p class="formulaire__aide" id="aide-description" data-texte="pro.formulaire.champs.description.aide"></p>
+              <p class="formulaire__erreur" id="erreur-description" hidden></p>
+            </div>
+            <div class="formulaire__champ formulaire__champ--pleine formulaire__certifications">
+              <p class="etiquette" id="titre-certifications" data-texte="pro.formulaire.champs.certifications.libelle"></p>
+              <ul class="formulaire__emplacements" aria-labelledby="titre-certifications" aria-busy="true">
+                <template data-liste="formulaire.champs.certifications.emplacements">
+                  <li class="formulaire__emplacement" data-texte="."></li>
+                </template>
+              </ul>
+              <p class="formulaire__aide" data-texte="pro.formulaire.champs.certifications.aide"></p>
+            </div>
+            <div class="formulaire__champ formulaire__champ--pleine">
+              <label class="etiquette" for="message" data-texte="pro.formulaire.champs.message.libelle"></label>
+              <textarea class="champ" id="message" rows="3" maxlength="1000" aria-describedby="aide-message erreur-message"></textarea>
+              <p class="formulaire__aide" id="aide-message" data-texte="pro.formulaire.champs.message.aide"></p>
+              <p class="formulaire__erreur" id="erreur-message" hidden></p>
+            </div>
+            <div class="formulaire__champ formulaire__champ--pleine">
+              <label class="formulaire__case" for="consentement"><input type="checkbox" id="consentement" aria-describedby="erreur-consentement"><span data-texte="pro.formulaire.champs.consentement.libelle"></span></label>
+              <p class="formulaire__erreur" id="erreur-consentement" hidden></p>
+            </div>
+          </div>
+          <button type="submit" class="bouton bouton--action formulaire__bouton" data-texte="pro.formulaire.bouton"></button>
+          <p class="formulaire__demo" data-texte="pro.formulaire.demo"></p>
+        </form>
+      </div>
+    </section>
+    <section class="conteneur pro__bloc" data-bloc="E5-5" data-role="confirmation" aria-labelledby="titre-confirmation" hidden>
+      <div class="pro__carte pro__carte--confirmation carte" role="status" tabindex="-1">
+        <h2 id="titre-confirmation" data-texte="pro.confirmation.titre"></h2>
+        <p class="pro__numero" data-texte="pro.confirmation.numero"></p>
+        <p data-texte="pro.confirmation.delai"></p>
+        <ol class="pro__prochaines" aria-busy="true">
+          <template data-liste="confirmation.prochaines">
+            <li data-texte="."></li>
+          </template>
+        </ol>
+        <p class="pro__aucune" data-texte="pro.confirmation.aucune"></p>
+        <div class="pro__actions">
+          <a class="bouton bouton--secondaire" data-lien="site.liens.accueil" data-texte="pro.confirmation.retour"></a>
+          <button type="button" class="bouton bouton--secondaire" data-autre data-texte="pro.confirmation.autre"></button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="pied" data-bloc="E5-6" data-role="pied">
+    <div class="conteneur">
+      <div class="pied__grille" aria-busy="true">
+        <template data-liste="site.pied.colonnes">
+          <div class="pied__colonne">
+            <h2 class="pied__titre" data-texte="titre"></h2>
+            <ul class="pied__liste">
+              <template data-liste="entrees">
+                <li><a class="pied__lien" data-lien-element="lien" data-texte="texte"></a></li>
+              </template>
+            </ul>
+          </div>
+        </template>
+        <div class="pied__colonne pied__marque">
+          <p class="pied__nom" data-texte="site.nom"></p>
+          <p class="pied__presentation" data-texte="site.pied.presentation"></p>
+        </div>
+      </div>
+      <p class="pied__bas" data-texte="site.bandeau"></p>
+    </div>
+  </footer>
+</body>
+</html>

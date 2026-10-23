@@ -32,6 +32,7 @@ Règles déplacées de `CLAUDE.md` au lot 7, sans changement de fond. À lire av
 - `data/produit.json` reprend les `id`, titres et prix de `data/diagnostic.json` (un test les compare) ; prix et totaux par `formaterPrix`.
 - Aucun `<video>` ni `<img>` : visuels = espaces réservés.
 - Blocs : E3-1 à E3-8 ; `specs` (E3-6) et `documents` (E3-7) s'insèrent après `configurateur` (E3-5) sans déplacer les autres ; ils n'existent que pour le produit `complet` (attribut `hidden` sinon).
+- CLS des blocs `achat` et `mode` : dépend du titre le plus long et du mode (DIY ou pose) ; toute modification de ces blocs impose de remesurer de 360 à 1440 px.
 - Documents : PDF d'exemple générés par `scripts/documents/generer.mjs` à partir de `scripts/documents/contenus.json`, versionnés dans `assets/documents/`.
 
 ## Cotes (configurateur)
@@ -46,6 +47,7 @@ Règles déplacées de `CLAUDE.md` au lot 7, sans changement de fond. À lire av
 - Lignes : gabarit `<template data-gabarit="ligne">` (aucun id) ; `<details>` (cotes, aperçu schématique, délais, reprise à la fiche) ; ligne invalide : « À vérifier : {raison} », ni quantité ni détail, « Retirer » (et « Reprendre à la fiche » si le produit est connu). Après la validation, les lignes restent affichées sans contrôle.
 - Aperçu des cotes d'une ligne : gabarit SVG sans `id` (pas de motif de hachure), groupes `cote-a` et `cote-b` dont les `d` sont comparés par un test à ceux de `produit.html` ; valeurs et lettres par `textContent`, `aria-label` par gabarit de données.
 - « Valider ma commande » : jamais `disabled` ; `aria-disabled` ; classe `bouton--action` seulement à l'état actif ; aide : lignes à vérifier d'abord, sinon case de confirmation (seulement s'il y a une ligne sur mesure) ; clic actif = confirmation (CMD-000, exemple), `panier` supprimé.
+- Règles durables (déplacées de `CLAUDE.md` au lot 8b) : identité d'une ligne = `cleLigne` ; limites dans `panier.limites` ; une seule case de confirmation, seulement pour les lignes sur mesure ; la case de responsabilité n'est jamais mémorisée ; « Valider ma commande » affiche une confirmation simulée et supprime le panier ; aucun paiement ; la clé `commande` du lot 8 n'existe plus.
 - Parcours principal : fichier de test `tests/e2e/parcours-principal.e2e.js` (accueil, adresse, diagnostic, fiche, cotes, mode, ajout, « Voir le panier », validation) à 375 et 1440 px ; aucune donnée dans les URL.
 
 ## Panier à plusieurs lignes (lot 8a)
@@ -65,3 +67,15 @@ Règles déplacées de `CLAUDE.md` au lot 7, sans changement de fond. À lire av
 ## Liens externes
 - Seuls ceux de `liensExternes` (`data/site.json`) : `https://`, domaine déclaré, nouvel onglet, `rel="noopener noreferrer"`, aucune donnée du visiteur dans le lien.
 - Aucune requête vers un autre site avant le lot optionnel 4b.
+
+## Formulaires (lot 8b)
+- Contrat de `assets/js/formulaire.js` : `brancherFormulaire({ formulaire, champs, lire, valider, texte, resume, apres })`, générique (ni logique ni texte métier).
+- `champs` : `{ champ: élément }` dans l'ordre du formulaire (le champ d'un groupe de cases est son `fieldset` ; le focus va sur la première case).
+- `lire()` renvoie la saisie brute ; `valider(saisie)` renvoie `{ ok, erreurs: [{ champ, raison }] }` (fonction pure) ; `texte(champ, raison)` et `resume` (gabarits et libellés de liens, issus de `data/<page>.json`) fournissent tous les textes.
+- À l'envoi : toujours `preventDefault` ; avec erreurs, récapitulatif `role="alert"` `tabindex="-1"` en tête (focalisé), message `erreur-<champ>` sous chaque champ, `aria-invalid` et `aria-describedby` ; sans erreur, les champs sont réinitialisés puis `apres()` est appelé.
+- Après le premier envoi seulement, chaque champ est revalidé à `input` ou `change` ; le récapitulatif suit et se masque sans erreur. Aucune validation à la perte du focus ni avant l'envoi. `hidden` est levé une fois le gestionnaire branché.
+- Confidentialité : aucun `fetch`, `sendBeacon`, stockage, cookie ni IndexedDB ; aucun `name` ; rien dans l'URL ; la confirmation (`role="status"`, focalisée) ne répète aucune valeur saisie.
+- `pro-logique.js` : `normaliser` (mono-ligne : bords et espaces ordinaires, U+00A0, U+202F compactés ; SIRET : 14 chiffres si la forme est valide ; zones : `\r\n` et `\r` en `\n`) puis `valider` ; refusés : C0 (sauf `\n` en zone), U+007F, bidirectionnels U+202A-202E et U+2066-2069 (`caractere`) ; SIRET : format seulement, jamais de clé ; e-mail : une arobase, domaine à deux étiquettes au moins, `format` ou `longueur`.
+- Raisons (`RAISONS`, source unique) : société/prénom/nom `vide`, `longueur`, `caractere` ; SIRET `vide`, `format` ; e-mail `vide`, `format`, `longueur` ; téléphone `format` ; aléas `vide`, `invalide` ; description `vide`, `court`, `long`, `caractere` ; message `long`, `caractere` ; consentement `vide`. Chaque couple a un texte dans `messages` (plus `repli`).
+- Parcours vendeur : fichier de test `tests/e2e/parcours-vendeur.e2e.js` (partie C) à 375 et 1440 px.
+- Tests de style : `toHaveCSS` ou `expect.poll` (transitions à 0,01 ms sous `reducedMotion`).

@@ -33,6 +33,8 @@ const CLES_REQUISES = {
   'aleas.liste': ['id', 'icone', 'titre', 'familles'],
   'protection.liste': ['id', 'icone', 'titre', 'familles'],
   'comment.liste': ['titre', 'texte'],
+  'etapes.liste': ['id', 'titre', 'texte'],
+  aleas: ['id', 'titre'],
   'reassurance.liste': ['id', 'titre'],
   'preuve.chiffres': ['valeur', 'libelle'],
   'galerie.vues': ['id', 'type', 'court', 'legende'],
@@ -262,7 +264,7 @@ export async function demarrer() {
     const erreurs = remplir(document, donnees);
     if (erreurs.length > 0) throw new Error(erreurs.join(' ; '));
     remplirLiensExternes(document, donnees);
-    remplirListes(document, donnees.accueil ?? donnees.produit ?? {}, donnees);
+    remplirListes(document, donnees.accueil ?? donnees.produit ?? donnees.pro ?? {}, donnees);
     if (typeof donnees.accueil?.titrePage === 'string') document.title = donnees.accueil.titrePage;
     racine.dataset.rendu = 'pret';
   } catch (e) {
