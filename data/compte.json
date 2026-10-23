@@ -433,9 +433,59 @@
     "achat": {
       "titre": "Détail de ma commande",
       "lignes": "Articles de la commande",
-      "livraison": "Livraison",
+      "sav": "Service après-vente",
+      "fil": {
+        "aria": "Fil d'Ariane",
+        "compte": "Mon compte",
+        "achats": "Mes achats"
+      },
+      "resume": {
+        "date": "Date",
+        "statut": "Statut",
+        "materiel": "Matériel",
+        "pose": "Pose estimée",
+        "total": "Total TTC"
+      },
+      "ligne": {
+        "reference": "Réf. {reference}",
+        "mode": "Mode : {mode}",
+        "surMesure": "Sur mesure : {largeur} × {hauteur} mm",
+        "sansMesure": "Prêt à poser, sans mesure",
+        "prixUnitaire": "{prix} × {quantite}",
+        "totalLigne": "Total de la ligne : {total}",
+        "resume": "Détails : cotes et délais",
+        "cotes": {
+          "largeur": "Largeur du tableau (A)",
+          "hauteur": "Hauteur du seuil (B)",
+          "tolerance": "Tolérance de mesure (C)"
+        },
+        "cotesAria": "Cotes saisies",
+        "delaisAria": "Délais",
+        "delais": {
+          "livraison": "Livraison directe usine :",
+          "pose": "Intervention de l'artisan :"
+        },
+        "apercuAria": "Aperçu des cotes : largeur {largeur} mm, hauteur {hauteur} mm (exemple)",
+        "lettres": {
+          "a": "A",
+          "b": "B"
+        },
+        "quantite": "Quantité :"
+      },
+      "savPhrase": "Un problème avec cette commande ? Vous pouvez demander une intervention.",
+      "savBouton": "Demander une intervention",
+      "documentsTextes": {
+        "libelle": "{titre} (PDF, exemple)",
+        "mention": "Fichiers fictifs du démonstrateur : aucune valeur contractuelle ou réglementaire."
+      },
+      "livraisonTextes": {
+        "statut": "Statut",
+        "delai": "Délai de livraison",
+        "artisan": "Artisan",
+        "intervention": "Date d'intervention"
+      },
       "documents": "Documents",
-      "sav": "Service après-vente"
+      "livraison": "Livraison"
     },
     "informations": {
       "titre": "Mes informations",

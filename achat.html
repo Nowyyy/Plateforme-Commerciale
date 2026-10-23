@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="css/diagnostic.css">
   <link rel="stylesheet" href="css/produit.css">
   <link rel="stylesheet" href="css/pro.css">
+  <link rel="stylesheet" href="css/panier.css">
   <link rel="stylesheet" href="css/compte.css">
   <script type="module" src="assets/js/rendu.js"></script>
   <script type="module" src="assets/js/menu.js"></script>
@@ -47,6 +48,15 @@
   </div>
   <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
   <a class="lien-evitement" href="#contenu" data-texte="site.evitement"></a>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="inondation" viewBox="0 0 48 48"><path d="M9 23 24 9l15 14M13 20v10M35 20v10"/><path d="M5 36q4.5-4 9 0t9 0t9 0t9 0t4 0M5 43q4.5-4 9 0t9 0t9 0t9 0t4 0"/></symbol>
+    <symbol id="grele-vent" viewBox="0 0 48 48"><path d="M14 28a6 6 0 0 1 0-12 9 9 0 0 1 17-1 6 6 0 0 1 2 13z"/><circle cx="15" cy="37" r="1.8"/><circle cx="25" cy="42" r="1.8"/><circle cx="35" cy="37" r="1.8"/></symbol>
+    <symbol id="feu" viewBox="0 0 48 48"><path d="M24 6c2 7 11 11 11 22a11 11 0 0 1-22 0c0-5 3-8 5-10 0 4 2 6 4 6 0-6-1-11 2-18z"/><path d="M24 42a5 5 0 0 1-5-5c0-3 2-5 5-8 3 3 5 5 5 8a5 5 0 0 1-5 5z"/></symbol>
+    <symbol id="chaleur" viewBox="0 0 48 48"><circle cx="24" cy="24" r="8"/><path d="M24 5v6M24 37v6M5 24h6M37 24h6M10.6 10.6l4.2 4.2M33.2 33.2l4.2 4.2M10.6 37.4l4.2-4.2M33.2 14.8l4.2-4.2"/></symbol>
+    <symbol id="froid" viewBox="0 0 48 48"><path d="M24 6v36M8.4 15l31.2 18M8.4 33l31.2-18M19 9l5 4 5-4M19 39l5-4 5 4"/></symbol>
+    <symbol id="bouclier" viewBox="0 0 48 48"><path d="M24 5 9 11v11c0 10 6 17 15 21 9-4 15-11 15-21V11z"/><path d="m17 24 5 5 9-10"/></symbol>
+    <symbol id="chute" viewBox="0 0 48 48"><path d="M24 8v26M14 24l10 10 10-10M10 41h28"/></symbol>
+  </svg>
   <aside class="bandeau-demo" data-aria-label="site.aria.bandeau">
     <p class="conteneur" data-texte="site.bandeau"></p>
   </aside>
@@ -78,22 +88,97 @@
       </nav>
     </div>
   </header>
-  <main id="contenu" class="compte" tabindex="-1">
-    <section class="conteneur compte__bloc " data-bloc="E9-2" data-role="resume" aria-labelledby="titre-resume">
-      <h1 id="titre-resume" data-texte="compte.pages.achat.titre"></h1>
-    </section>
-    <section class="conteneur compte__bloc " data-bloc="E9-3" data-role="lignes" aria-labelledby="titre-lignes">
-      <h2 id="titre-lignes" data-texte="compte.pages.achat.lignes"></h2>
-    </section>
-    <section class="conteneur compte__bloc " data-bloc="E9-4" data-role="livraison" aria-labelledby="titre-livraison">
-      <h2 id="titre-livraison" data-texte="compte.pages.achat.livraison"></h2>
-    </section>
-    <section class="conteneur compte__bloc " data-bloc="E9-5" data-role="documents" aria-labelledby="titre-documents">
-      <h2 id="titre-documents" data-texte="compte.pages.achat.documents"></h2>
-    </section>
-    <section class="conteneur compte__bloc " data-bloc="E9-6" data-role="sav" aria-labelledby="titre-sav">
-      <h2 id="titre-sav" data-texte="compte.pages.achat.sav"></h2>
-    </section>
+  <nav class="fil" data-aria-label="compte.pages.achat.fil.aria">
+    <div class="conteneur">
+      <ol class="fil__liste">
+        <li><a data-lien="site.liens.compte" data-texte="compte.pages.achat.fil.compte"></a></li>
+        <li><a data-lien="site.liens.achats" data-texte="compte.pages.achat.fil.achats"></a></li>
+        <li><span class="fil__courant" aria-current="page"></span></li>
+      </ol>
+    </div>
+  </nav>
+  <main id="contenu" class="compte compte--achat" tabindex="-1">
+    <div class="conteneur compte__colonnes compte__colonnes--achat">
+      <div class="compte__colonne-principale">
+        <section class="compte__bloc" data-bloc="E9-2" data-role="resume" aria-labelledby="titre-resume">
+          <h1 id="titre-resume" data-texte="compte.pages.achat.titre"></h1>
+          <dl class="achat__definitions achat__resume"></dl>
+        </section>
+        <section class="compte__bloc" data-bloc="E9-3" data-role="lignes" aria-labelledby="titre-lignes">
+          <h2 id="titre-lignes" data-texte="compte.pages.achat.lignes"></h2>
+          <ul class="lignes" aria-busy="true">
+            <template data-gabarit="ligne">
+              <li class="ligne">
+                <article class="ligne__article">
+                  <div class="ligne__visuel" aria-hidden="true">
+                    <svg class="icone ligne__pictogramme" viewBox="0 0 48 48" focusable="false"><use></use></svg>
+                  </div>
+                  <div class="ligne__corps">
+                    <h3 class="ligne__nom"></h3>
+                    <p class="ligne__texte ligne__reference"></p>
+                    <p class="ligne__texte ligne__mode"></p>
+                    <p class="ligne__texte ligne__cotes"></p>
+                    <p class="ligne__texte ligne__quantite"></p>
+                    <p class="ligne__texte ligne__prix"></p>
+                    <p class="ligne__texte ligne__total"></p>
+                  </div>
+                  <details class="ligne__details">
+                    <summary class="ligne__resume"></summary>
+                    <div class="ligne__details-corps">
+                      <dl class="ligne__definitions ligne__liste-cotes"></dl>
+                      <div class="ligne__apercu"></div>
+                      <dl class="ligne__definitions ligne__liste-delais"></dl>
+                    </div>
+                  </details>
+                </article>
+              </li>
+            </template>
+        <template data-gabarit="apercu">
+            <svg class="schema apercu__svg" viewBox="0 0 400 300" role="img" focusable="false">
+              <rect class="schema__mur" x="0" y="0" width="400" height="300"/>
+              <rect class="schema__ouverture" x="80" y="50" width="240" height="220"/>
+              <rect class="schema__barriere" x="80" y="160" width="240" height="110"/>
+              <rect class="schema__seuil" x="64" y="270" width="272" height="16"/>
+              <g class="schema__cote cote-a">
+                <path class="schema__fleche" d="M80 105H320M80 90v30M320 90v30"/>
+                <path class="schema__pointe" d="M80 105l12-6v12zM320 105l-12-6v12z"/>
+                <circle class="schema__pastille" cx="200" cy="105" r="14"/>
+                <text class="schema__lettre" x="200" y="105"></text>
+              </g>
+              <g class="schema__cote cote-b">
+                <path class="schema__fleche" d="M120 160V270"/>
+                <path class="schema__pointe" d="M120 160l-6 12h12zM120 270l-6-12h12z"/>
+                <circle class="schema__pastille" cx="120" cy="215" r="14"/>
+                <text class="schema__lettre" x="120" y="215"></text>
+              </g>
+              <text class="schema__valeur schema__valeur--a" x="200" y="82"></text>
+              <text class="schema__valeur schema__valeur--b" x="140" y="215"></text>
+            </svg>
+          </template>
+          </ul>
+        </section>
+      </div>
+      <div class="compte__colonne-secondaire">
+        <section class="compte__bloc" data-bloc="E9-4" data-role="livraison" aria-labelledby="titre-livraison">
+          <h2 id="titre-livraison" data-texte="compte.pages.achat.livraison"></h2>
+          <dl class="achat__definitions achat__livraison"></dl>
+        </section>
+        <section class="compte__bloc" data-bloc="E9-5" data-role="documents" aria-labelledby="titre-documents">
+          <h2 id="titre-documents" data-texte="compte.pages.achat.documents"></h2>
+          <ul class="documents" aria-busy="true">
+            <template data-gabarit="document">
+              <li><a class="bouton bouton--secondaire documents__lien" download type="application/pdf"></a></li>
+            </template>
+          </ul>
+          <p class="documents__mention" data-texte="compte.pages.achat.documentsTextes.mention"></p>
+        </section>
+        <section class="compte__bloc" data-bloc="E9-6" data-role="sav" aria-labelledby="titre-sav">
+          <h2 id="titre-sav" data-texte="compte.pages.achat.sav"></h2>
+          <p data-texte="compte.pages.achat.savPhrase"></p>
+          <a class="bouton bouton--secondaire" data-lien="site.liens.sav" data-texte="compte.pages.achat.savBouton"></a>
+        </section>
+      </div>
+    </div>
   </main>
   <footer class="pied" data-bloc="E9-7" data-role="pied">
     <div class="conteneur">

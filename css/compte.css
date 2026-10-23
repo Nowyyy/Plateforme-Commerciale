@@ -3,7 +3,8 @@
 
 /* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
 html:not([data-rendu]) .compte__bloc,
-html:not([data-rendu]) .nav-compte {
+html:not([data-rendu]) .nav-compte,
+html:not([data-rendu]) .fil {
   visibility: hidden;
 }
 
@@ -407,4 +408,188 @@ html:not([data-formulaire]) .compte__carte-info {
   html:not([data-formulaire]) .compte__carte-info {
     min-block-size: 70.1rem;
   }
+}
+
+/* Fil d'Ariane (E9-1) */
+.fil {
+  border-block-end: 1px solid var(--color-border);
+  background: var(--color-card);
+}
+
+.fil__liste {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--space-2);
+  margin: 0;
+  padding: var(--space-2) 0;
+  list-style: none;
+}
+
+.fil__liste li {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  min-inline-size: 0;
+}
+
+.fil__liste li + li::before {
+  content: ">" / "";
+  margin-inline-end: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.fil__liste a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.fil__courant {
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.fil[hidden] {
+  display: none;
+}
+
+/* Détail d'une commande (E9) : une colonne ; dès 1200 px deux colonnes 3 / 2 (résumé et lignes à gauche) */
+.achat__definitions {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: var(--space-2) var(--space-4);
+  margin: 0;
+}
+
+.achat__definitions dt {
+  font-weight: 600;
+}
+
+.achat__definitions dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+
+.compte--achat .compte__bloc {
+  padding-block: var(--space-4);
+}
+
+.compte--achat .ligne__article {
+  grid-template-columns: 4rem minmax(0, 1fr);
+}
+
+.compte--achat .ligne__nom {
+  font-size: var(--text-lg);
+  overflow-wrap: anywhere;
+}
+
+.compte--achat .ligne__corps {
+  min-inline-size: 0;
+}
+
+.compte--achat .ligne__details {
+  grid-column: 1 / -1;
+}
+
+.documents {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-3) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.documents__lien {
+  justify-content: flex-start;
+  inline-size: 100%;
+  text-align: start;
+}
+
+.documents__mention {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+/* Réserves de hauteur avant le remplissage (CLS) : valeurs mesurées de 360 à 1440 px pour la commande la plus longue (CMD-1037) */
+.achat__resume {
+  min-block-size: 10rem;
+}
+
+.achat__livraison {
+  min-block-size: 9.5rem;
+}
+
+.lignes[aria-busy="true"] {
+  min-block-size: 40.2rem;
+}
+
+.documents[aria-busy="true"] {
+  min-block-size: 18.3rem;
+}
+
+.compte--achat h1 {
+  min-block-size: 4.2rem;
+}
+
+.fil {
+  min-block-size: 7.3rem;
+}
+
+@media (min-width: 375px) {
+  .achat__livraison {
+    min-block-size: 7.9rem;
+  }
+
+  .lignes[aria-busy="true"] {
+    min-block-size: 38.6rem;
+  }
+}
+
+@media (min-width: 390px) {
+  .documents[aria-busy="true"] {
+    min-block-size: 17.1rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .compte--achat h1 {
+    min-block-size: calc(var(--compte-text-h1) * var(--leading-tight));
+  }
+
+  .fil {
+    min-block-size: 4.6rem;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1279px) {
+  .compte--achat h1 {
+    min-block-size: 5.4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .compte--achat .ligne__article {
+    grid-template-columns: 5rem minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .compte__colonnes--achat {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  }
+}
+
+/* Délais d'une ligne : libellé au-dessus de la valeur (la valeur longue ne doit pas écraser le libellé à 375 px) */
+.compte--achat .ligne__liste-delais {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.compte--achat .ligne__liste-delais dd {
+  margin-block-end: var(--space-2);
+  text-align: start;
 }
