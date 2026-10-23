@@ -1,0 +1,99 @@
+/* Espace professionnel Hi-Fi (écran 5). Mobile d'abord ; ruptures 768 et 1200 px.
+   L'en-tête, le pied, le relief et le composant d'étapes viennent de accueil.css ; boutons et cartes, de composants.css. */
+
+/* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
+html:not([data-rendu]) .pro__bloc {
+  visibility: hidden;
+}
+
+html[data-rendu="erreur"] .pro__bloc {
+  display: none;
+}
+
+/* La page occupe au moins un écran : le pied reste sous la ligne de flottaison quel que soit l'état (CLS) */
+.pro {
+  min-block-size: 100svh;
+  padding-block: var(--space-4) var(--space-7);
+}
+
+.pro__bloc {
+  padding-block: var(--space-4);
+}
+
+.pro h1 {
+  margin-block-end: var(--space-3);
+  font-size: var(--pro-text-h1);
+  /* hauteur d'une ligne réservée avant le remplissage (CLS) */
+  min-block-size: calc(var(--pro-text-h1) * var(--leading-tight));
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.pro h2 {
+  font-size: var(--pro-text-h2);
+  text-wrap: balance;
+}
+
+.pro__accroche {
+  max-inline-size: 40rem;
+  color: var(--color-text-secondary);
+}
+
+/* Mention « réservé aux professionnels » : filet marine (le texte porte le sens, pas la couleur) */
+.pro__mention {
+  max-inline-size: 40rem;
+  margin-block-end: 0;
+  padding-inline-start: var(--space-4);
+  border-inline-start: 4px solid var(--color-navy);
+  font-weight: 600;
+}
+
+/* Étapes E5-3 : le composant de l'accueil (.etapes, .etape) ; ici seulement l'espace sous le titre */
+.pro .etapes {
+  margin-block-start: var(--space-4);
+}
+
+/* Cartes du formulaire (E5-4) et de la confirmation (E5-5) : 56 rem au plus, alignées à gauche */
+.pro__carte {
+  max-inline-size: var(--pro-carte-max);
+  margin-inline-end: auto;
+}
+
+.pro__carte > h2:focus {
+  outline: none;
+}
+
+.pro__carte > h2:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.formulaire[hidden],
+.pro__bloc[hidden] {
+  display: none;
+}
+
+.formulaire__groupe {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.formulaire__cases {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.formulaire__case {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: var(--touch-min);
+}
+
+.formulaire__case input {
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  accent-color: var(--color-navy);
+}

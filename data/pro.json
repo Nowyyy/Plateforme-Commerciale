@@ -1,0 +1,175 @@
+{
+  "intro": {
+    "titre": "Vendre sur la plateforme",
+    "accroche": "Proposez vos équipements certifiés de protection de l'habitat aux propriétaires exposés aux aléas climatiques.",
+    "mention": "Réservé aux professionnels. Démonstrateur : aucune candidature n'est réellement transmise."
+  },
+  "etapes": {
+    "titre": "Comment devenir vendeur",
+    "liste": [
+      {
+        "id": "candidature",
+        "titre": "Candidature",
+        "texte": "Vous présentez votre société et vos produits au moyen du formulaire ci-dessous (exemple)."
+      },
+      {
+        "id": "validation",
+        "titre": "Validation du catalogue et des certifications",
+        "texte": "Un conseiller contrôle votre catalogue et vos certifications (exemple)."
+      },
+      {
+        "id": "mise-en-ligne",
+        "titre": "Mise en ligne",
+        "texte": "Les produits validés rejoignent le catalogue de la plateforme (exemple)."
+      }
+    ]
+  },
+  "formulaire": {
+    "titre": "Déposer ma candidature",
+    "phrase": "Tous les champs sont obligatoires, sauf ceux marqués « facultatif ».",
+    "demo": "Démonstrateur : saisissez des données fictives, rien n'est envoyé ni enregistré.",
+    "champs": {
+      "societe": {
+        "libelle": "Société",
+        "aide": "2 à 100 caractères."
+      },
+      "siret": {
+        "libelle": "Numéro SIRET",
+        "aide": "14 chiffres, espaces autorisés. Format vérifié seulement : aucune vérification réelle. Exemple : 000 000 000 00000."
+      },
+      "contact": {
+        "libelle": "Prénom et nom du contact",
+        "aide": "2 à 80 caractères."
+      },
+      "email": {
+        "libelle": "E-mail professionnel",
+        "aide": "Exemple : prenom.nom@societe.fr."
+      },
+      "telephone": {
+        "libelle": "Téléphone (facultatif)",
+        "aide": "9 à 15 chiffres, « + » autorisé en tête."
+      },
+      "aleas": {
+        "libelle": "Aléas couverts par vos produits",
+        "aide": "Cochez au moins un aléa."
+      },
+      "description": {
+        "libelle": "Description de vos produits",
+        "aide": "20 à 1 000 caractères."
+      },
+      "certifications": {
+        "libelle": "Certifications (exemples de justificatifs)",
+        "aide": "Aucun fichier n'est demandé dans ce démonstrateur.",
+        "emplacements": [
+          "[Fichier exemple] Certificat d'usine (exemple)",
+          "[Fichier exemple] Rapport d'essai (exemple)"
+        ]
+      },
+      "message": {
+        "libelle": "Message (facultatif)",
+        "aide": "1 000 caractères au plus."
+      },
+      "consentement": {
+        "libelle": "J'accepte d'être recontacté à propos de ma candidature."
+      }
+    },
+    "bouton": "Envoyer ma candidature",
+    "resume": {
+      "singulier": "Le formulaire contient {n} erreur à corriger :",
+      "pluriel": "Le formulaire contient {n} erreurs à corriger :",
+      "liens": {
+        "societe": "Société",
+        "siret": "Numéro SIRET",
+        "contact": "Prénom et nom du contact",
+        "email": "E-mail professionnel",
+        "telephone": "Téléphone",
+        "aleas": "Aléas couverts par vos produits",
+        "description": "Description de vos produits",
+        "message": "Message",
+        "consentement": "Consentement à être recontacté"
+      }
+    }
+  },
+  "aleas": [
+    {
+      "id": "inondations",
+      "titre": "Inondations et crues"
+    },
+    {
+      "id": "grele-vents",
+      "titre": "Grêle et vents violents"
+    },
+    {
+      "id": "feux-de-foret",
+      "titre": "Feux de forêt"
+    },
+    {
+      "id": "canicule",
+      "titre": "Canicule et chaleur extrême"
+    }
+  ],
+  "limites": {
+    "societe": {
+      "min": 2,
+      "max": 100
+    },
+    "contact": {
+      "min": 2,
+      "max": 80
+    },
+    "description": {
+      "min": 20,
+      "max": 1000
+    },
+    "message": {
+      "max": 1000
+    },
+    "email": {
+      "max": 254,
+      "localMax": 64
+    }
+  },
+  "messages": {
+    "societe": {
+      "vide": "Indiquez le nom de votre société.",
+      "longueur": "Le nom de la société doit compter de 2 à 100 caractères.",
+      "caractere": "Le nom de la société contient un caractère non autorisé."
+    },
+    "siret": {
+      "vide": "Indiquez le numéro SIRET.",
+      "format": "Le numéro SIRET doit comporter exactement 14 chiffres (les espaces sont autorisés)."
+    },
+    "contact": {
+      "vide": "Indiquez le prénom et le nom du contact.",
+      "longueur": "Le prénom et le nom doivent compter de 2 à 80 caractères.",
+      "caractere": "Le prénom et le nom contiennent un caractère non autorisé."
+    },
+    "email": {
+      "vide": "Indiquez une adresse e-mail professionnelle.",
+      "format": "L'adresse e-mail n'est pas valide. Exemple : prenom.nom@societe.fr.",
+      "longueur": "L'adresse e-mail est trop longue (254 caractères au plus, 64 avant l'arobase)."
+    },
+    "telephone": {
+      "format": "Le numéro de téléphone n'est pas valide : 9 à 15 chiffres, « + » autorisé en tête."
+    },
+    "aleas": {
+      "vide": "Cochez au moins un aléa couvert par vos produits.",
+      "invalide": "Un des aléas sélectionnés n'est pas reconnu. Cochez-le de nouveau."
+    },
+    "description": {
+      "vide": "Décrivez vos produits.",
+      "court": "La description est trop courte : 20 caractères au moins.",
+      "long": "La description est trop longue : 1 000 caractères au plus.",
+      "caractere": "La description contient un caractère non autorisé."
+    },
+    "message": {
+      "long": "Le message est trop long : 1 000 caractères au plus.",
+      "caractere": "Le message contient un caractère non autorisé."
+    },
+    "consentement": {
+      "vide": "Cochez la case pour accepter d'être recontacté."
+    },
+    "repli": "Ce champ n'est pas valide."
+  },
+  "confirmation": {}
+}
