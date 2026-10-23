@@ -473,16 +473,15 @@ describe('données du panier et de l\'ajout', () => {
   });
 });
 
-describe('copie héritée de la clé « commande » (partie A)', () => {
-  it('une seule fonction identifiable, dans ajout.js, écrit la clé ; aucun autre module récent ne la cite', () => {
-    const anciens = new Set(['panier.js', 'panier-logique.js']);
-    const modules = readdirSync('assets/js').filter((f) => f.endsWith('.js') && !anciens.has(f));
-    const citent = modules.filter((f) => /['"]commande['"]/.test(lire(`assets/js/${f}`)));
-    expect(citent).toEqual(['ajout.js']);
-    const source = lire('assets/js/ajout.js');
-    expect(source.match(/['"]commande['"]/g)).toHaveLength(1);
-    expect(source).toMatch(/function copieHeriteeCommande/);
-    expect(source.match(/CLE_COMMANDE_HERITEE/g)).toHaveLength(3);
+describe('clé « commande » du lot 8', () => {
+  it('aucun module JavaScript ne la lit ni ne l\'écrit', () => {
+    const modules = readdirSync('assets/js').filter((f) => f.endsWith('.js'));
+    expect(modules.length).toBeGreaterThan(10);
+    for (const f of modules) {
+      const source = lire(`assets/js/${f}`);
+      expect(source, f).not.toMatch(/['"]commande['"]/);
+      expect(source, f).not.toMatch(/lireCommande|validerCommande|construireCommande/);
+    }
   });
 });
 

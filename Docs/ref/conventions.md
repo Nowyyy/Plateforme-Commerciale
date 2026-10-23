@@ -36,17 +36,17 @@ Règles déplacées de `CLAUDE.md` au lot 7, sans changement de fond. À lire av
 
 ## Cotes (configurateur)
 - Seul le produit `complet` (batardeau) a `cotes` ; faisabilité = `evaluerCotes` (valeur ± tolérance dans la plage, bornes comprises, tolérance vide = 0) ; entiers en mm uniquement.
-- `sessionStorage.cotes` (saisie, par produit) ; le clic actif de « Ajouter au panier » écrit `panier` (lot 8a) et, jusqu'à la partie 8a-B, la copie héritée `commande` du lot 8.
+- `sessionStorage.cotes` (saisie, par produit) ; le clic actif de « Ajouter au panier » écrit `panier` (lot 8a) ; l'ancienne clé `commande` du lot 8 n'existe plus.
 - Le bouton n'est jamais `disabled` (`aria-disabled`) et c'est le seul bouton ambre ; le schéma n'a que les lettres A, B, C comme texte.
 
 ## Panier
 - `panier.html` (E4-1 à E4-6) : `en-tete`, `recapitulatif`, `responsabilite`, `total`, `paiement`, `pied` ; indicateur d'étapes = `<nav>` en tête du `<main>`, sans `data-role`. Textes dans `data/produit.json`, clé `panier`.
-- Trois états : plein (commande valide), vide (clé `commande` absente ou vide : « Votre panier est vide », lien vers le diagnostic), invalide (commande présente mais refusée : « Commande à vérifier », lien vers la fiche). Vide et invalide masquent `responsabilite`, `total` et `paiement` ; `h1` toujours présent ; message annoncé par une région `role="status"`.
-- `validerCommande(objet, produits)` : `{ ok, commande }` ou `{ ok: false, raison }` ; raisons `absente`, `version`, `produit`, `incomplet`, `mode`, `cotes` (entiers requis, `evaluerCotes` avec les limites du produit). Lignes de prix et total recalculés par `lignesPrix`, jamais ceux de la session.
-- Grille : une colonne sous 1200 px dans l'ordre du HTML ; dès 1200 px deux colonnes 3fr / 2fr (`panier__colonne`) : `recapitulatif` puis `responsabilite` à gauche, `total` puis `paiement` à droite. `main` occupe au moins un écran (pied sous la ligne de flottaison, CLS).
-- Aperçu des cotes : SVG copié de `produit.html` (mur, ouverture, seuil, barrière, flèches A et B, sans C) ; le tracé des groupes `cote-a` et `cote-b` est comparé par un test ; valeurs écrites par `textContent`.
-- « Valider ma commande » : jamais `disabled` ; `aria-disabled` ; classe `bouton--action` seulement à l'état actif ; clic inactif = aide dans la région d'état et focus sur la case ; clic actif = confirmation (CMD-000, exemple), `commande` supprimée.
-- Parcours principal : fichier de test `tests/e2e/parcours-principal.e2e.js` (accueil, adresse, diagnostic, fiche, cotes, mode, panier, validation) à 375 et 1440 px, DIY et pose ; aucune donnée dans les URL.
+- États : plein (au moins une ligne), vide (`panier` absent ou liste vide : « Votre panier est vide »), illisible (JSON invalide, forme ou version inconnue : « Panier à vérifier », `statutListe`). Vide et illisible masquent `responsabilite`, `total` et `paiement` ; `h1` toujours présent ; la carte d'état est dans `#recap-vide`, les annonces dans `#recap-etat` (`role="status"`).
+- Grille : une colonne sous 1200 px dans l'ordre du HTML ; dès 1200 px deux colonnes 3fr / 2fr (`panier__colonne`) : `recapitulatif` puis `responsabilite` à gauche, `total` puis `paiement` à droite. `main` occupe au moins un écran (pied sous la ligne de flottaison, CLS) ; avant le rendu, `.recap[aria-busy]` réserve la hauteur (30 rem).
+- Lignes : gabarit `<template data-gabarit="ligne">` (aucun id) ; `<details>` (cotes, aperçu schématique, délais, reprise à la fiche) ; ligne invalide : « À vérifier : {raison} », ni quantité ni détail, « Retirer » (et « Reprendre à la fiche » si le produit est connu). Après la validation, les lignes restent affichées sans contrôle.
+- Aperçu des cotes d'une ligne : gabarit SVG sans `id` (pas de motif de hachure), groupes `cote-a` et `cote-b` dont les `d` sont comparés par un test à ceux de `produit.html` ; valeurs et lettres par `textContent`, `aria-label` par gabarit de données.
+- « Valider ma commande » : jamais `disabled` ; `aria-disabled` ; classe `bouton--action` seulement à l'état actif ; aide : lignes à vérifier d'abord, sinon case de confirmation (seulement s'il y a une ligne sur mesure) ; clic actif = confirmation (CMD-000, exemple), `panier` supprimé.
+- Parcours principal : fichier de test `tests/e2e/parcours-principal.e2e.js` (accueil, adresse, diagnostic, fiche, cotes, mode, ajout, « Voir le panier », validation) à 375 et 1440 px ; aucune donnée dans les URL.
 
 ## Panier à plusieurs lignes (lot 8a)
 - Modèle : `sessionStorage.panier` = `{ v: 2, lignes: [{ produit, mode: "diy"|"pose", cotes: { largeur, hauteur, tolerance }|null, quantite }] }`, jamais de prix, de titre ni de délai. `cotes` est `null` pour les produits sans configurateur. Logique pure : `assets/js/lignes-logique.js`.
@@ -55,6 +55,8 @@ Règles déplacées de `CLAUDE.md` au lot 7, sans changement de fond. À lire av
 - Limites (exemples, `panier.limites`) : `quantiteMax` 10, `lignesMax` 10. `ajouterLigne` : `ajoutee`, `fusionnee`, `plafonnee` (le total demandé dépasse `quantiteMax`), `pleine` (état inchangé), `refusee`. Retrait / restauration : `retirerLigne` rend la ligne et son index, `restaurerLigne` réinsère à `min(index, longueur)`.
 - Totaux : lignes valides seulement ; pose seulement en mode pose ; délai le plus long = produit au `livraisonSemainesMax` (ou `poseSemainesMax`) le plus grand, égalité : première ligne.
 - Fiche : groupe « Quantité » (`role="group"`, sortie `aria-live`, boutons `aria-disabled` aux bornes) ; batardeau : zone `#cotes-action` sous la faisabilité ; autres produits : zone `data-ajout="mode"` dans le bloc `mode`, bouton ambre d'emblée (classe posée par `ajout.js`). Confirmation : région `role="status"` `tabindex="-1"` qui reçoit le focus, deux liens (« Voir le panier », « Continuer mes achats ») sauf si le panier est plein ou le stockage indisponible.
+- Retrait et annulation : « Retirer » annonce « {titre} retiré du panier. » avec « Annuler » (région d'état) ; « Annuler » restaure à l'index d'origine ; le bouton disparaît après toute autre modification. Quantités : plancher 1, plafond `quantiteMax` ; annonces par la région d'état du récapitulatif.
+- Reprise à la fiche : écrit `produit`, `mode` et `cotes` (textes) en session, jamais dans l'URL, puis ouvre `liens.produit` ; la fiche affiche donc les entiers de la ligne (« 1200 »).
 - Tests de clics : `emulateMedia({ reducedMotion: 'reduce' })` (défilement doux de `accueil.css`).
 
 ## Liens externes

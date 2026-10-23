@@ -75,6 +75,21 @@ export function lireListe(brut, limites) {
   return { lignes, ignorees: ignorees + (fusionnees.length - lignes.length) };
 }
 
+// Statut du texte de session : « absent » (rien d'enregistré), « illisible » (JSON invalide, forme ou version inconnue, ou
+// aucune ligne exploitable alors que la liste en contenait) ou « lisible » (y compris une liste vide).
+export function statutListe(brut, limites) {
+  if (typeof brut !== 'string' || brut.trim() === '') return 'absent';
+  let objet;
+  try {
+    objet = JSON.parse(brut);
+  } catch {
+    return 'illisible';
+  }
+  if (!estObjet(objet) || objet.v !== VERSION_PANIER || !Array.isArray(objet.lignes)) return 'illisible';
+  const { lignes, ignorees } = lireListe(brut, limites);
+  return lignes.length === 0 && ignorees > 0 ? 'illisible' : 'lisible';
+}
+
 // -> { etat, resultat } ; resultat : ajoutee, fusionnee, plafonnee, pleine, refusee.
 export function ajouterLigne(etat, ligne, quantite, limites) {
   const lignes = etat?.lignes ?? [];

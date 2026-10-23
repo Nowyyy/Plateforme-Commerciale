@@ -1,6 +1,5 @@
 // Logique pure du configurateur de cotes : aucun accès au DOM ni au stockage, aucun argument modifié.
 // Les limites viennent de data/produit.json (produit.cotes) ; la plage est un exemple fixe, pas un calcul d'ingénierie.
-import { lignesPrix, modeValide, MODE_POSE } from './produit-logique.js';
 
 export const CHAMPS = ['largeur', 'hauteur', 'tolerance'];
 
@@ -77,21 +76,6 @@ export function formaterMm(n) {
 
 export function peutAjouter(evaluation) {
   return evaluation?.etat === 'compatible';
-}
-
-// Commande lue par le panier (lot 8) ; null si les cotes ne sont pas compatibles ou si le produit n'est pas complet.
-export function construireCommande(produit, mode, evaluation) {
-  if (!produit?.complet || !peutAjouter(evaluation)) return null;
-  const choisi = modeValide(mode);
-  const montants = Object.fromEntries(lignesPrix(produit, choisi).map(({ cle, montant }) => [cle, montant]));
-  const { largeur, hauteur, tolerance } = evaluation.champs;
-  return {
-    v: 1,
-    produit: produit.id,
-    mode: choisi,
-    cotes: { largeur: largeur.valeur, hauteur: hauteur.valeur, tolerance: tolerance.etat === 'ok' ? tolerance.valeur : 0 },
-    prix: { materiel: montants.materiel, pose: choisi === MODE_POSE ? montants.pose : null, total: montants.total },
-  };
 }
 
 // Lecture sûre de sessionStorage.cotes : champs mémorisés si le produit est celui de la page, sinon champs vides.

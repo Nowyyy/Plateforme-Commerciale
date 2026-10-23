@@ -2,9 +2,9 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resoudre } from '../assets/js/rendu.js';
 import {
-  lireMm, evaluerCotes, remplirGabarit, formaterMm, peutAjouter, construireCommande, restaurerCotes, premierChampACorriger,
+  lireMm, evaluerCotes, remplirGabarit, formaterMm, peutAjouter, restaurerCotes, premierChampACorriger,
 } from '../assets/js/cotes-logique.js';
-import { lignesPrix } from '../assets/js/produit-logique.js';
+import { construireLigne } from '../assets/js/lignes-logique.js';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const donneesProduit = JSON.parse(lire('data/produit.json'));
@@ -156,7 +156,7 @@ describe('pureté', () => {
     expect(saisie).toEqual({ largeur: '705', hauteur: '400', tolerance: '10' });
     const gele = Object.freeze({ ...batardeau, cotes: limites });
     const bon = evaluerCotes({ largeur: '800', hauteur: '400', tolerance: '' }, limites);
-    expect(() => construireCommande(gele, 'pose', bon)).not.toThrow();
+    expect(() => construireLigne(gele, 'pose', bon)).not.toThrow();
     expect(() => restaurerCotes(Object.freeze('{"produit":"x"}'), 'x')).not.toThrow();
     expect(un).not.toBe(evaluerCotes(saisie, limites));
   });
@@ -182,35 +182,33 @@ describe('remplirGabarit, formaterMm, peutAjouter', () => {
   });
 });
 
-describe('construireCommande', () => {
+describe('construireLigne (remplace construireCommande du lot 8)', () => {
   const bon = eval_('1 200', 400, 10);
 
-  it('mode DIY : pose nulle, total égal au prix', () => {
-    expect(construireCommande(batardeau, 'diy', bon)).toEqual({
-      v: 1, produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 1200, hauteur: 400, tolerance: 10 },
-      prix: { materiel: 690, pose: null, total: 690 },
+  it('mode DIY : ligne sans aucun prix, quantité 1', () => {
+    expect(construireLigne(batardeau, 'diy', bon)).toEqual({
+      produit: 'batardeau-modulable', mode: 'diy', cotes: { largeur: 1200, hauteur: 400, tolerance: 10 }, quantite: 1,
     });
   });
 
-  it('mode pose : total égal au prix plus la pose, calculé par lignesPrix', () => {
-    const c = construireCommande(batardeau, 'pose', bon);
-    expect(c.prix).toEqual({ materiel: 690, pose: 280, total: 970 });
-    expect(c.prix.total).toBe(lignesPrix(batardeau, 'pose').at(-1).montant);
+  it('mode pose : mode conservé, quantité choisie, aucun prix (recalculé à l\'affichage)', () => {
+    const c = construireLigne(batardeau, 'pose', bon, 3);
+    expect(c).toMatchObject({ mode: 'pose', quantite: 3 });
+    expect(JSON.stringify(c)).not.toMatch(/prix|total|materiel/);
   });
 
   it('mode inconnu = DIY ; tolérance vide = 0', () => {
-    const c = construireCommande(batardeau, 'autre', eval_(800, 400));
+    const c = construireLigne(batardeau, 'autre', eval_(800, 400));
     expect(c.mode).toBe('diy');
     expect(c.cotes.tolerance).toBe(0);
   });
 
-  it('évaluation non compatible ou produit non complet : null', () => {
-    expect(construireCommande(batardeau, 'diy', eval_(699, 400))).toBeNull();
-    expect(construireCommande(batardeau, 'diy', eval_('', ''))).toBeNull();
-    expect(construireCommande(batardeau, 'diy', null)).toBeNull();
+  it('évaluation non compatible : cotes null ; produit non complet : cotes null', () => {
+    expect(construireLigne(batardeau, 'diy', eval_(699, 400)).cotes).toBeNull();
+    expect(construireLigne(batardeau, 'diy', eval_('', '')).cotes).toBeNull();
+    expect(construireLigne(batardeau, 'diy', null).cotes).toBeNull();
     const autre = donneesProduit.produits.find((p) => !p.complet);
-    expect(construireCommande(autre, 'diy', bon)).toBeNull();
-    expect(construireCommande(null, 'diy', bon)).toBeNull();
+    expect(construireLigne(autre, 'diy', bon).cotes).toBeNull();
   });
 });
 

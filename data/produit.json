@@ -381,7 +381,11 @@
     "mention": "Aucune valeur de ces documents n'a de valeur contractuelle ou réglementaire."
   },
   "panier": {
-    "titre": "Récapitulatif de votre commande",
+    "titre": "Votre panier",
+    "limites": {
+      "quantiteMax": 10,
+      "lignesMax": 10
+    },
     "etapesAria": "Étapes de la commande",
     "etapes": [
       {
@@ -401,54 +405,88 @@
       "id": "panier",
       "texte": "(étape en cours)"
     },
-    "recapitulatif": {
-      "mode": "Mode choisi :",
-      "cotesAria": "Cotes saisies",
+    "sousTitre": "{lignes} {motLignes} · {articles} {motArticles}",
+    "mots": {
+      "ligne": "ligne",
+      "lignes": "lignes",
+      "article": "article",
+      "articles": "articles"
+    },
+    "deplierTout": "Tout déplier",
+    "replierTout": "Tout replier",
+    "retirer": "Retirer",
+    "retirerAria": "Retirer {titre} du panier",
+    "annuler": "Annuler",
+    "annonces": {
+      "retiree": "{titre} retiré du panier.",
+      "restauree": "{titre} remis dans le panier.",
+      "quantite": "{titre} : quantité {quantite}.",
+      "pleine": "Le panier est plein ({max} lignes) : {titre} n'a pas pu être remis."
+    },
+    "ligne": {
+      "reference": "Réf. {reference}",
+      "mode": "Mode : {mode}",
+      "surMesure": "Sur mesure : {largeur} × {hauteur} mm",
+      "sansMesure": "Prêt à poser, sans mesure",
+      "prixUnitaire": "{prix} × {quantite}",
+      "totalLigne": "Total de la ligne : {total}",
+      "aVerifier": "À vérifier : {raison}"
+    },
+    "raisons": {
+      "produit": "produit inconnu.",
+      "mode": "mode de commande inconnu.",
+      "cotes": "cotes absentes ou hors de la plage du produit."
+    },
+    "detail": {
+      "resume": "Détails : cotes et délais",
       "cotes": {
         "largeur": "Largeur du tableau (A)",
         "hauteur": "Hauteur du seuil (B)",
         "tolerance": "Tolérance de mesure (C)"
       },
-      "prixAria": "Prix du matériel",
+      "cotesAria": "Cotes saisies",
+      "delaisAria": "Délais",
       "delais": {
         "livraison": "Livraison directe usine :",
         "pose": "Intervention de l'artisan :"
       },
-      "delaisAria": "Délais",
-      "modifier": "Modifier mes cotes"
+      "apercuAria": "Aperçu des cotes : largeur {largeur} mm, hauteur {hauteur} mm (exemple)",
+      "lettres": {
+        "a": "A",
+        "b": "B"
+      },
+      "reprendreCotes": "Reprendre ces cotes à la fiche",
+      "reprendre": "Reprendre à la fiche",
+      "aide": "Pour modifier, ajoutez la nouvelle configuration puis retirez cette ligne."
     },
     "vide": {
       "titre": "Votre panier est vide",
       "phrase": "Ajoutez un produit depuis sa fiche, après avoir saisi vos cotes.",
       "lien": "Retour au diagnostic"
     },
-    "invalide": {
-      "titre": "Commande à vérifier",
-      "phrase": "Les cotes enregistrées ne conviennent plus ou la commande est illisible. Retournez à la fiche pour les saisir de nouveau.",
-      "lien": "Retour à la fiche"
+    "illisible": {
+      "titre": "Panier à vérifier",
+      "phrase": "Le panier enregistré est illisible. Retournez au diagnostic pour choisir de nouveau un produit.",
+      "lien": "Retour au diagnostic"
     },
     "responsabilite": {
       "titre": "Validation des mesures",
-      "aide": "Contrôlez les cotes reprises sur le schéma, puis confirmez-les pour activer la validation (exemple).",
-      "legende": "Aperçu des cotes saisies (exemple)",
+      "phraseSingulier": "{n} ligne sur mesure : vérifiez les cotes de la ligne avant de valider (exemple).",
+      "phrasePluriel": "{n} lignes sur mesure : vérifiez les cotes de chaque ligne avant de valider (exemple).",
+      "voirCotes": "Voir les cotes de chaque ligne",
       "avertissement": "Les cotes saisies engagent votre responsabilité : vérifiez-les avant de valider (exemple).",
-      "case": "Je confirme l'exactitude des mesures fournies.",
-      "schema": {
-        "title": "Aperçu des cotes saisies (exemple)",
-        "desc": "Une ouverture dans un mur, avec son seuil et la barrière déployée en repère. A est la largeur du tableau saisie, B la hauteur du seuil saisie.",
-        "lettres": {
-          "a": "A",
-          "b": "B"
-        }
-      }
+      "case": "Je confirme l'exactitude des mesures fournies."
     },
     "total": {
       "titre": "Total de la commande",
-      "livraison": "Livraison estimée :",
-      "intervention": "Intervention estimée :",
-      "mention": "Aucun paiement réel : ce démonstrateur ne prend aucune commande.",
+      "materiel": "Matériel ({n} {mot})",
+      "pose": "Pose estimée ({n} {mot})",
+      "livraison": "Livraison estimée : {delai} (délai le plus long)",
+      "intervention": "Intervention estimée : {delai}",
+      "mention": "Aucun paiement réel (exemple).",
       "bouton": "Valider ma commande",
-      "aideInactif": "Cochez la case de confirmation pour continuer.",
+      "aideCase": "Cochez la case de confirmation pour continuer.",
+      "aideInvalide": "Corrigez ou retirez les lignes à vérifier pour continuer.",
       "confirmation": {
         "titre": "Commande simulée (exemple)",
         "numero": "Numéro : CMD-000 (exemple)",
@@ -461,10 +499,6 @@
       "pastille": "Logo exemple",
       "paiement": "Paiement sécurisé par un tiers de confiance bancaire (exemple).",
       "sav": "Garantie de prise en charge du service après-vente par la plateforme (exemple)."
-    },
-    "limites": {
-      "quantiteMax": 10,
-      "lignesMax": 10
     }
   },
   "ajout": {

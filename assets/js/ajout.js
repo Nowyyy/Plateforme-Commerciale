@@ -25,19 +25,6 @@ function ecrireSession(cle, valeur) {
   }
 }
 
-// Copie héritée du lot 8 (une ligne, clé « commande ») : le panier du lot 8 reste fonctionnel pendant la partie A.
-// Supprimée en partie B, avec lireCommande, validerCommande et construireCommande.
-const CLE_COMMANDE_HERITEE = 'commande';
-
-function copieHeriteeCommande(commande) {
-  try {
-    if (commande) sessionStorage.setItem(CLE_COMMANDE_HERITEE, JSON.stringify(commande));
-    else sessionStorage.removeItem(CLE_COMMANDE_HERITEE);
-  } catch {
-    // stockage indisponible : rien à copier
-  }
-}
-
 function element(balise, classe, texte) {
   const el = document.createElement(balise);
   if (classe) el.className = classe;
@@ -93,13 +80,6 @@ export function ajouterDepuisFiche({ donnees, produit, zone, quantite, evaluatio
       region.focus();
       return 'stockage';
     }
-    copieHeriteeCommande(produit.complet && ligne.cotes ? {
-      v: 1,
-      produit: produit.id,
-      mode: ligne.mode,
-      cotes: ligne.cotes,
-      prix: { materiel: produit.prix, pose: ligne.mode === 'pose' ? produit.pose : null, total: produit.prix + (ligne.mode === 'pose' ? produit.pose : 0) },
-    } : null);
     liens = true;
   }
   const finale = etat.lignes.find((l) => l.produit === ligne.produit && l.mode === ligne.mode
