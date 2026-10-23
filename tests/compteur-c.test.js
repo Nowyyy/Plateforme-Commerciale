@@ -5,7 +5,7 @@ import { compterArticles } from '../assets/js/lignes-logique.js';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const site = JSON.parse(lire('data/site.json'));
-const PAGES = ['index.html', 'diagnostic.html', 'produit.html', 'panier.html'];
+const PAGES = ['index.html', 'diagnostic.html', 'produit.html', 'panier.html', 'pro.html'];
 const entete = (html) => html.slice(html.indexOf('<header'), html.indexOf('</header>')).replace(/ data-bloc="E\d-\d+"/g, '');
 
 describe('compteur d\'en-tête', () => {

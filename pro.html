@@ -178,8 +178,20 @@
       </div>
     </section>
     <section class="conteneur pro__bloc" data-bloc="E5-5" data-role="confirmation" aria-labelledby="titre-confirmation" hidden>
-      <div class="pro__carte carte">
-        <h2 id="titre-confirmation"></h2>
+      <div class="pro__carte pro__carte--confirmation carte" role="status" tabindex="-1">
+        <h2 id="titre-confirmation" data-texte="pro.confirmation.titre"></h2>
+        <p class="pro__numero" data-texte="pro.confirmation.numero"></p>
+        <p data-texte="pro.confirmation.delai"></p>
+        <ol class="pro__prochaines" aria-busy="true">
+          <template data-liste="confirmation.prochaines">
+            <li data-texte="."></li>
+          </template>
+        </ol>
+        <p class="pro__aucune" data-texte="pro.confirmation.aucune"></p>
+        <div class="pro__actions">
+          <a class="bouton bouton--secondaire" data-lien="site.liens.accueil" data-texte="pro.confirmation.retour"></a>
+          <button type="button" class="bouton bouton--secondaire" data-autre data-texte="pro.confirmation.autre"></button>
+        </div>
       </div>
     </section>
   </main>

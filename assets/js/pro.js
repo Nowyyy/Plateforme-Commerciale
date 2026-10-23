@@ -18,6 +18,18 @@ export function initialiser(donnees, racine = document) {
   const cases = () => [...formulaire.querySelectorAll('.formulaire__cases input[type="checkbox"]')];
   const controle = (id) => racine.getElementById(id);
 
+  // Confirmation simulée : remplace le formulaire (déjà vidé par formulaire.js), ne répète aucune saisie.
+  const sectionFormulaire = racine.querySelector('[data-role="formulaire"]');
+  const confirmation = racine.querySelector('[data-role="confirmation"]');
+  const region = confirmation.querySelector('[role="status"]');
+  const autre = confirmation.querySelector('[data-autre]');
+  const titre = racine.getElementById('titre-formulaire');
+  const afficherConfirmation = () => {
+    sectionFormulaire.hidden = true;
+    confirmation.hidden = false;
+    region.focus();
+  };
+
   const champs = {};
   for (const nom of ['societe', 'siret', 'contact', 'email', 'telephone', 'aleas', 'description', 'message', 'consentement']) {
     const ancre = nom;
@@ -46,7 +58,12 @@ export function initialiser(donnees, racine = document) {
       titre: (n) => remplirGabarit(n === 1 ? pro.formulaire.resume.singulier : pro.formulaire.resume.pluriel, { n }),
       liens: (erreurs) => construireResume(erreurs, pro.formulaire.resume.liens),
     },
-    apres: () => {}, // la confirmation est branchée en partie C
+    apres: afficherConfirmation,
+  });
+  autre?.addEventListener('click', () => {
+    confirmation.hidden = true;
+    sectionFormulaire.hidden = false;
+    titre.focus();
   });
   racine.documentElement.dataset.formulaire = 'pret';
   return acces;

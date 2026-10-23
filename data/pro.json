@@ -171,5 +171,17 @@
     },
     "repli": "Ce champ n'est pas valide."
   },
-  "confirmation": {}
+  "confirmation": {
+    "titre": "Candidature reçue (exemple)",
+    "numero": "Numéro : PRO-000 (exemple)",
+    "delai": "Réponse sous 5 jours ouvrés (exemple).",
+    "prochaines": [
+      "Étude de votre dossier",
+      "Prise de contact par un conseiller",
+      "Validation de votre catalogue"
+    ],
+    "aucune": "Aucune donnée n'a été envoyée ni enregistrée.",
+    "retour": "Retour à l'accueil",
+    "autre": "Déposer une autre candidature"
+  }
 }
