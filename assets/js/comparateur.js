@@ -3,7 +3,8 @@
 // Les textes issus des données sont posés par textContent seulement.
 import { donneesPretes } from './rendu.js';
 import { formaterPrix, libelleNiveau, segmentsJauge } from './diagnostic-logique.js';
-import { basculerProduit, produitsDeAlea, selectionInitiale, selectionPourAlea, serialiserSelection } from './comparateur-logique.js';
+import { memoriserProduit } from './produit-session.js';
+import { basculerProduit, construireTableau, produitsDeAlea, selectionInitiale, selectionPourAlea, serialiserSelection } from './comparateur-logique.js';
 
 export const CLE_COMPARAISON = 'comparaison';
 const NOM_ALEAS = 'alea-comparateur'; // posé à l'exécution (flèches dans le groupe), jamais dans le HTML
@@ -78,10 +79,63 @@ function annoncer(c, etat) {
   document.getElementById('comparateur-etat').textContent = c.messages.compares.replace('{n}', String(etat.ids.length));
 }
 
-// Chaque changement de sélection ou d'aléa : session à jour, puis événement pour le tableau.
-function publier(etat) {
+function creer(balise, classe, texte) {
+  const element = document.createElement(balise);
+  if (classe) element.className = classe;
+  if (texte !== undefined) element.textContent = texte;
+  return element;
+}
+
+// Tableau sémantique : en-têtes de colonnes (un produit chacune, dans l'ordre de la sélection), lignes de critères.
+function afficherTableau(donnees, etat) {
+  const c = donnees.produit.comparateur;
+  const lienProduit = donnees.site.liens.produit;
+  const choisis = etat.ids.map((id) => donnees.produit.produits.find((p) => p.id === id)).filter(Boolean);
+  const niveau = c.aleas.find((a) => a.id === etat.alea)?.niveau;
+  const indicateur = document.getElementById('comparateur-niveau');
+  remplirJauge(indicateur.querySelector('.jauge'), niveau, c.niveaux.length);
+  indicateur.querySelector('p').textContent = c.comparaison.niveau.replace('{niveau}', libelleNiveau(c.niveaux, niveau));
+
+  const entete = creer('tr');
+  const coin = creer('th');
+  coin.scope = 'col';
+  coin.append(creer('span', 'visuellement-cache', c.comparaison.coin));
+  entete.append(coin);
+  for (const produit of choisis) {
+    const colonne = creer('th');
+    colonne.scope = 'col';
+    const lien = creer('a', 'bouton bouton--secondaire', c.comparaison.voirFiche);
+    lien.setAttribute('href', lienProduit);
+    lien.setAttribute('aria-label', `${c.comparaison.voirFiche} : ${produit.titre}`);
+    lien.dataset.id = produit.id;
+    colonne.append(creer('span', 'comp__produit-titre', produit.titre), creer('span', 'comp__produit-reference', c.reference.replace('{reference}', produit.reference)), lien);
+    entete.append(colonne);
+  }
+  const lignes = construireTableau({ produits: choisis, critere: c.criteres[etat.alea], libelles: c.comparaison }).map((ligne) => {
+    const rangee = creer('tr');
+    const titre = creer('th', undefined, ligne.libelle);
+    titre.scope = 'row';
+    rangee.append(titre, ...ligne.valeurs.map((v) => creer('td', undefined, v.texte)));
+    return rangee;
+  });
+  const zone = document.querySelector('.comp__zone');
+  zone.querySelector('thead').replaceChildren(entete);
+  zone.querySelector('tbody').replaceChildren(...lignes);
+  zone.setAttribute('aria-busy', 'false');
+}
+
+// « Voir la fiche » : le produit est mémorisé en session comme au diagnostic (jamais dans l'URL), puis le lien s'ouvre.
+function initialiserFiches() {
+  document.querySelector('.comp__zone thead').addEventListener('click', (e) => {
+    const id = e.target.closest('a[data-id]')?.dataset.id;
+    if (id) memoriserProduit(id);
+  });
+}
+
+// Chaque changement de sélection ou d'aléa : session et tableau à jour.
+function publier(donnees, etat) {
   ecrireSession(CLE_COMPARAISON, serialiserSelection(etat.alea, etat.ids));
-  document.dispatchEvent(new CustomEvent('comparateur:selection', { detail: { alea: etat.alea, ids: [...etat.ids] } }));
+  afficherTableau(donnees, etat);
 }
 
 function initialiser(donnees) {
@@ -90,13 +144,14 @@ function initialiser(donnees) {
   const etat = selectionInitiale({ brut: lireSession(CLE_COMPARAISON), produits, aleas: c.aleas, limites: c.limites });
   afficherAleas(c, etat);
   afficherProduits(c, produits, etat);
+  initialiserFiches();
 
   document.getElementById('comparateur-aleas').addEventListener('change', (e) => {
     if (!e.target.matches(`input[name="${NOM_ALEAS}"]`)) return;
     Object.assign(etat, selectionPourAlea(e.target.value, produits, c.limites));
     afficherProduits(c, produits, etat);
     annoncer(c, etat);
-    publier(etat);
+    publier(donnees, etat);
   });
 
   document.getElementById('comparateur-produits').addEventListener('change', (e) => {
@@ -107,7 +162,7 @@ function initialiser(donnees) {
     if (resultat === 'ajoute' || resultat === 'retire') {
       etat.ids = ids;
       annoncer(c, etat);
-      publier(etat);
+      publier(donnees, etat);
       return;
     }
     // refus : la case garde son état (jamais disabled), le focus reste dessus, un message l'explique
@@ -116,7 +171,7 @@ function initialiser(donnees) {
     if (resultat === 'max' || resultat === 'min') document.getElementById('comparateur-etat').textContent = c.messages[resultat];
   });
 
-  publier(etat);
+  publier(donnees, etat);
 }
 
 if (typeof document !== 'undefined') {

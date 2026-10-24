@@ -637,7 +637,8 @@
         "montage": "min",
         "poids": "kg"
       },
-      "note": "Valeurs d'exemple du démonstrateur, sans valeur contractuelle."
+      "note": "Valeurs d'exemple du démonstrateur, sans valeur contractuelle.",
+      "coin": "Critère"
     },
     "criteres": {
       "inondations": {

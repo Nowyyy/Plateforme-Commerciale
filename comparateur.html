@@ -124,7 +124,19 @@
       </section>
       <section class="comp__bloc comp__comparaison" data-bloc="E14-3" data-role="comparaison" aria-labelledby="titre-comparaison">
         <h2 id="titre-comparaison" data-texte="produit.comparateur.comparaison.titre"></h2>
-        <div class="comp__tableau" id="comparateur-tableau" aria-busy="true"></div>
+        <div class="comp__niveau" id="comparateur-niveau">
+          <ol class="jauge" aria-hidden="true"></ol>
+          <p class="comp__niveau-texte"></p>
+        </div>
+        <p class="comp__aide-defilement" data-texte="produit.comparateur.comparaison.aideDefilement"></p>
+        <div class="comp__zone" role="region" tabindex="0" data-aria-label="produit.comparateur.comparaison.regionAria" aria-busy="true">
+          <table class="comp__table">
+            <caption class="visuellement-cache" data-texte="produit.comparateur.comparaison.legende"></caption>
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <p class="comp__note" data-texte="produit.comparateur.comparaison.note"></p>
       </section>
     </div>
   </main>

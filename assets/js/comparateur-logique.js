@@ -1,5 +1,8 @@
 // Logique pure du comparateur : aucun accès au DOM, au réseau ni au stockage ; aucun argument n'est modifié ; jamais d'exception.
 // Source de vérité de la sélection (2 à 3 produits d'un même aléa) : selectionInitiale et basculerProduit.
+import { formaterPrix } from './diagnostic-logique.js';
+import { formaterMm, remplirGabarit } from './cotes-logique.js';
+
 export const VERSION = 1;
 const LIMITES_PAR_DEFAUT = { min: 2, max: 3 };
 
@@ -85,4 +88,29 @@ export function basculerProduit(ids, id, disponibles, limites) {
 // Chaîne JSON de la clé « comparaison » (identifiants seulement).
 export function serialiserSelection(alea, ids) {
   return JSON.stringify({ v: VERSION, alea, produits: liste(ids) });
+}
+
+// « {valeur} {unite} » ; valeur absente ou gabarit inutilisable : texte vide (jamais d'exception).
+function avecUnite(gabarit, valeur, unite) {
+  if (!Number.isFinite(valeur)) return '';
+  try {
+    return remplirGabarit(gabarit, { valeur: formaterMm(valeur), unite: unite ?? '' });
+  } catch {
+    return '';
+  }
+}
+
+// Lignes du tableau dans l'ordre : critère principal de l'aléa, montage, poids, prix TTC, pose estimée.
+// libelles = comparateur.comparaison (valeur, lignes, unites) ; critere = { titre, unite } de l'aléa.
+export function construireTableau({ produits, critere, libelles } = {}) {
+  const choisis = liste(produits);
+  const { valeur, lignes, unites } = libelles ?? {};
+  const ligne = (cle, libelle, texteDe) => ({ cle, libelle: libelle ?? '', valeurs: choisis.map((p) => ({ texte: texteDe(p?.performances ?? {}, p ?? {}) })) });
+  return [
+    ligne('principale', critere?.titre, (perf) => avecUnite(valeur, perf.principale, critere?.unite)),
+    ligne('montage', lignes?.montage, (perf) => avecUnite(valeur, perf.montage, unites?.montage)),
+    ligne('poids', lignes?.poids, (perf) => avecUnite(valeur, perf.poids, unites?.poids)),
+    ligne('prix', lignes?.prix, (perf, p) => formaterPrix(p.prix)),
+    ligne('pose', lignes?.pose, (perf, p) => formaterPrix(p.pose)),
+  ];
 }

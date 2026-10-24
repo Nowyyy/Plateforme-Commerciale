@@ -2,10 +2,10 @@
 // L'adresse et l'aléa ne passent jamais par l'URL ; l'adresse est affichée par valeur de champ / textContent seulement.
 import { donneesPretes, resoudre } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
+import { memoriserProduit } from './produit-session.js';
 import { TOUS, aleaValide, calquesParDefaut, filtrerEquipements, formaterPrix, libelleNiveau, niveauGlobal, segmentsJauge } from './diagnostic-logique.js';
 
 export const CLE_ALEA = 'alea';
-export const CLE_PRODUIT = 'produit';
 
 function lireSession(cle, retirer = false) {
   try {
@@ -160,7 +160,7 @@ function afficherPastilles(donnees, etat) {
 function initialiserFiches() {
   document.getElementById('liste-equipements').addEventListener('click', (e) => {
     const id = e.target.closest('a')?.closest('li[data-id]')?.getAttribute('data-id');
-    if (id) ecrireSession(CLE_PRODUIT, id);
+    if (id) memoriserProduit(id);
   });
 }
 
