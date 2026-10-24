@@ -150,7 +150,8 @@
       "exemple": "(exemple)",
       "voirFiche": "Voir la fiche",
       "annonceUn": "1 équipement recommandé.",
-      "annonceN": "{n} équipements recommandés."
+      "annonceN": "{n} équipements recommandés.",
+      "comparer": "Comparer ces solutions"
     },
     "score": {
       "titre": "Niveau d'exposition",

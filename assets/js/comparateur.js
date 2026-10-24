@@ -4,9 +4,8 @@
 import { donneesPretes } from './rendu.js';
 import { formaterPrix, libelleNiveau, segmentsJauge } from './diagnostic-logique.js';
 import { memoriserProduit } from './produit-session.js';
-import { basculerProduit, construireTableau, produitsDeAlea, selectionInitiale, selectionPourAlea, serialiserSelection } from './comparateur-logique.js';
+import { CLE_COMPARAISON, basculerProduit, construireTableau, produitsDeAlea, selectionInitiale, selectionPourAlea, serialiserSelection } from './comparateur-logique.js';
 
-export const CLE_COMPARAISON = 'comparaison';
 const NOM_ALEAS = 'alea-comparateur'; // posé à l'exécution (flèches dans le groupe), jamais dans le HTML
 
 function lireSession(cle) {
@@ -172,6 +171,8 @@ function initialiser(donnees) {
   });
 
   publier(donnees, etat);
+  // la page n'est révélée qu'une fois remplie : comparateur.js peut arriver après rendu.js sur un réseau lent (CLS)
+  document.documentElement.dataset.comparateur = 'pret';
 }
 
 if (typeof document !== 'undefined') {

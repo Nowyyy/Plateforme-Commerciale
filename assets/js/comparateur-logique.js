@@ -4,6 +4,7 @@ import { formaterPrix } from './diagnostic-logique.js';
 import { formaterMm, remplirGabarit } from './cotes-logique.js';
 
 export const VERSION = 1;
+export const CLE_COMPARAISON = 'comparaison';
 const LIMITES_PAR_DEFAUT = { min: 2, max: 3 };
 
 const estTexte = (v) => typeof v === 'string' && v !== '';
@@ -113,4 +114,12 @@ export function construireTableau({ produits, critere, libelles } = {}) {
     ligne('prix', lignes?.prix, (perf, p) => formaterPrix(p.prix)),
     ligne('pose', lignes?.pose, (perf, p) => formaterPrix(p.pose)),
   ];
+}
+
+// Valeur de la clé « comparaison » écrite par le lien du diagnostic : aléa du filtre actif s'il existe parmi les aléas,
+// sinon l'aléa par défaut (« Tous » ou filtre inconnu) ; produits = identifiants des cartes affichées.
+export function comparaisonDepuisDiagnostic({ filtre, aleas, ids } = {}) {
+  const connus = liste(aleas).map((a) => a?.id);
+  const alea = connus.includes(filtre) ? filtre : aleaParDefaut(aleas);
+  return serialiserSelection(alea, liste(ids).filter(estTexte));
 }

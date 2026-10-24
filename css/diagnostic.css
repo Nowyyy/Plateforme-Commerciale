@@ -235,6 +235,20 @@ html[data-rendu="erreur"] .diag__panneau {
   margin-block-start: auto;
 }
 
+/* Lien « Comparer ces solutions » sous les cartes : sa hauteur est réservée avant le remplissage (CLS) */
+.diag__comparer {
+  min-block-size: var(--touch-min);
+  margin: var(--space-4) 0 0;
+}
+
+html:not([data-rendu]) .diag__comparer {
+  visibility: hidden;
+}
+
+html[data-rendu="erreur"] .diag__comparer {
+  display: none;
+}
+
 /* Score E2-4 */
 .score {
   display: grid;

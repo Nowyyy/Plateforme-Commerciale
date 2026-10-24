@@ -3,6 +3,7 @@
 import { donneesPretes, resoudre } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
 import { memoriserProduit } from './produit-session.js';
+import { CLE_COMPARAISON, comparaisonDepuisDiagnostic } from './comparateur-logique.js';
 import { TOUS, aleaValide, calquesParDefaut, filtrerEquipements, formaterPrix, libelleNiveau, niveauGlobal, segmentsJauge } from './diagnostic-logique.js';
 
 export const CLE_ALEA = 'alea';
@@ -164,6 +165,14 @@ function initialiserFiches() {
   });
 }
 
+// « Comparer ces solutions » : l'aléa du filtre et les cartes affichées sont mémorisés (identifiants seulement, jamais dans l'URL).
+function initialiserComparaison(donnees, etat) {
+  document.querySelector('.diag__comparer').addEventListener('click', () => {
+    const ids = [...document.querySelectorAll('#liste-equipements > li[data-id]')].map((li) => li.getAttribute('data-id'));
+    ecrireSession(CLE_COMPARAISON, comparaisonDepuisDiagnostic({ filtre: etat.filtre, aleas: donnees.diagnostic.aleas, ids }));
+  });
+}
+
 function initialiserAdresse(donnees) {
   const formulaire = document.getElementById('formulaire-adresse');
   const champ = document.getElementById('adresse-evaluee');
@@ -201,6 +210,7 @@ if (typeof document !== 'undefined') {
     const etat = { filtre: aleaValide(donnees.diagnostic.aleas.map((a) => a.id), lireSession(CLE_ALEA, true)) ?? TOUS };
     initialiserAdresse(donnees);
     initialiserFiches();
+    initialiserComparaison(donnees, etat);
     afficherPastilles(donnees, etat);
     initialiserCalques(donnees);
     mettreAJour(donnees, etat.filtre, false);

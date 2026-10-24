@@ -1,9 +1,9 @@
 /* Comparateur Hi-Fi (écran 14). Mobile d'abord ; ruptures 768 et 1200 px.
    La jauge et la base des pastilles viennent de diagnostic.css (couplage assumé) ; l'en-tête, le pied et le relief de accueil.css. */
 
-/* Sans JavaScript (ou avant le rendu), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
-html:not([data-rendu]) .fil__liste,
-html:not([data-rendu]) .comp__bloc {
+/* Sans JavaScript (ou avant le remplissage par comparateur.js, posé en data-comparateur), seul le message noscript doit se voir : le contenu garde sa place mais reste invisible */
+html:not([data-comparateur]) .fil__liste,
+html:not([data-comparateur]) .comp__bloc {
   visibility: hidden;
 }
 
@@ -375,36 +375,36 @@ html[data-rendu="erreur"] .comp {
 
 /* Place réservée avant le remplissage (CLS), mesurée de 360 à 1440 px par node tests/outils/cls-comparateur.mjs ;
    la page entière réserve la hauteur de l'état par défaut (aléa de niveau maximal, deux produits comparés) */
-html:not([data-rendu]) .comp {
+html:not([data-comparateur]) .comp {
   min-block-size: 1599px;
 }
 
 @media (min-width: 480px) {
-  html:not([data-rendu]) .comp {
+  html:not([data-comparateur]) .comp {
     min-block-size: 1551px;
   }
 }
 
 @media (min-width: 600px) {
-  html:not([data-rendu]) .comp {
+  html:not([data-comparateur]) .comp {
     min-block-size: 1470px;
   }
 }
 
 @media (min-width: 700px) {
-  html:not([data-rendu]) .comp {
+  html:not([data-comparateur]) .comp {
     min-block-size: 1418px;
   }
 }
 
 @media (min-width: 768px) {
-  html:not([data-rendu]) .comp {
+  html:not([data-comparateur]) .comp {
     min-block-size: 1204px;
   }
 }
 
 @media (min-width: 1200px) {
-  html:not([data-rendu]) .comp {
+  html:not([data-comparateur]) .comp {
     min-block-size: 1077px;
   }
 }

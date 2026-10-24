@@ -356,7 +356,8 @@ describe('lot 9-A : liens, workflow, CSS, modules et CLAUDE.md', () => {
     expect(src).not.toMatch(/\bfetch\(|XMLHttpRequest|sendBeacon|localStorage|indexedDB|document\.cookie|innerHTML|insertAdjacentHTML|history\.|location/);
     expect(src).not.toMatch(/\.name\s*=\s*['"](?!\$)/);
     expect([...src.matchAll(/(?:getItem|setItem|removeItem)\(([^,)]+)/g)].map((m) => m[1])).toEqual(['cle', 'cle']);
-    expect(src).toContain("CLE_COMPARAISON = 'comparaison'");
+    expect(logique).toContain("export const CLE_COMPARAISON = 'comparaison'");
+    expect(src).toMatch(/import \{ CLE_COMPARAISON,[^}]*\} from '\.\/comparateur-logique\.js'/);
   });
   it('apercu.txt vise l\'accueil en Hi-Fi ; Docs/apercus.txt décrit le lot 9', () => {
     expect(lire('apercu.txt').split('\n').filter(Boolean)).toEqual(['index.html', 'type: hifi', 'titre: Comparateur de solutions']);
