@@ -5,7 +5,6 @@ import { readFileSync } from 'node:fs';
 const produit = JSON.parse(readFileSync('data/produit.json', 'utf8'));
 const c = produit.comparateur;
 const LARGEURS = [375, 768, 1440];
-const CASES = '.carte-produit input';
 const FINE = ' ';
 const euro = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, FINE)}${FINE}€`;
 const ids = (alea) => produit.produits.filter((p) => p.aleas.includes(alea)).map((p) => p.id);

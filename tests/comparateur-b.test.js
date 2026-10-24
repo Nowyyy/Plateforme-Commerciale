@@ -27,7 +27,7 @@ describe('lot 9-B : construireTableau', () => {
     for (const l of lignes) expect(l.valeurs).toHaveLength(3);
     expect(lignes[0].valeurs.map((v) => v.texte)).toEqual(['110 km/h', '180 km/h', '140 km/h']);
     expect(lignes[3].valeurs[1].texte).toBe(formaterPrix(1250));
-    expect(lignes[3].valeurs[1].texte).toBe(`1${' '}250${' '}€`.replace(/ /g, (m, i) => (i === 1 ? ' ' : ' ')));
+    expect(lignes[3].valeurs[1].texte).toBe(`1${FINE}250${FINE}€`);
   });
   it('critère propre à chaque aléa, valeurs lues dans produit.json', () => {
     for (const alea of c.aleas) {
