@@ -50,7 +50,7 @@ jobs:
           copier() {
             ref="$1"; cible="$2"; chemins=""
             mkdir -p "$cible"
-            for p in index.html accueil.html attente.html diagnostic.html produit.html panier.html pro.html connexion.html compte.html achats.html achat.html informations.html sav-acces.html sav.html demandes.html css assets data wireframes; do
+            for p in index.html accueil.html attente.html diagnostic.html produit.html panier.html pro.html connexion.html compte.html achats.html achat.html informations.html sav-acces.html sav.html demandes.html comparateur.html css assets data wireframes; do
               if git cat-file -e "$ref:$p" 2>/dev/null; then chemins="$chemins $p"; fi
             done
             git archive "$ref" $chemins | tar -x -C "$cible"
