@@ -158,7 +158,7 @@ export function documentsCommande(commande, catalogue) {
 const ligneNormalisee = (valeur) => normaliser('nom', valeur);
 
 // Longueur et caractères d'un texte mono-ligne : null si valide, sinon la raison (ordre : vide, caractere, longueur).
-function validerLigne(valeur, limites, champ, obligatoire) {
+export function validerLigne(valeur, limites, champ, obligatoire) {
   if (valeur === '') return obligatoire ? 'vide' : null;
   if (contientInterdit(valeur, false)) return 'caractere';
   const longueur = compterCaracteres(valeur);

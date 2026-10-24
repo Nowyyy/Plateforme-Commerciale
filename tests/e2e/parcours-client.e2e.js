@@ -49,7 +49,7 @@ for (const largeur of [375, 1440]) {
     expect(readFileSync(await telechargement.path()).subarray(0, 5).toString('latin1')).toBe('%PDF-');
 
     await page.getByRole('link', { name: 'Demander une intervention' }).click();
-    await page.waitForURL((u) => u.pathname === '/wireframes/sav.html');
+    await page.waitForURL((u) => u.pathname === '/sav.html');
     await page.goBack();
     await page.waitForURL((u) => u.pathname === '/achat.html');
     await pret();

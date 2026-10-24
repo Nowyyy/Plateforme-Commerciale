@@ -9,7 +9,7 @@ const libelleDe = (liste, id) => liste.find((e) => e.id === id)?.libelle ?? id;
 const par = (racine, selecteur) => racine.querySelector(selecteur);
 
 // Pastille de statut : texte et icône (jamais la couleur seule).
-function remplirStatut(carte, statut, liste) {
+export function remplirStatut(carte, statut, liste) {
   const marque = par(carte, '.statut');
   marque.setAttribute('data-statut', statut);
   par(marque, '.statut__texte').textContent = libelleDe(liste, statut);

@@ -50,7 +50,7 @@ for (const largeur of [375, 768, 1440]) {
     await expect(page.getByText('Connexion simulée : tout e-mail valide ouvre le compte de démonstration.')).toBeVisible();
     await expect(page.getByRole('heading', { level: 2, name: 'Compte de démonstration' })).toBeVisible();
     await expect(page.getByText('client.demo@exemple.test')).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Service après-vente sans compte' })).toHaveAttribute('href', 'wireframes/sav-acces.html');
+    await expect(page.getByRole('link', { name: 'Service après-vente sans compte' })).toHaveAttribute('href', 'sav-acces.html');
     await expect(champMdp(page)).toHaveAttribute('type', 'password');
     await page.screenshot({ path: `test-results/connexion-a-vide-${largeur}.png`, fullPage: true });
     await seConnecter(page).click();

@@ -1,0 +1,361 @@
+/* Service après-vente simulé (écrans 10, 11 et 13). Mobile d'abord ; ruptures 768 et 1200 px.
+   Le décor, l'en-tête et le pied viennent d'accueil.css ; boutons et cartes, de composants.css ; formulaire, de pro.css ;
+   fil d'Ariane, navigation du compte, statuts et listes, de compte.css ; pastilles, de diagnostic.css. */
+
+.sav__phrase {
+  max-inline-size: 40rem;
+  margin-block: 0 var(--space-4);
+}
+
+.sav__liens {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block: var(--space-4) 0;
+}
+
+.sav__connecte {
+  margin-block: var(--space-4) 0;
+  overflow-wrap: anywhere;
+}
+
+.sav__connecte[hidden],
+.sav__section[hidden],
+.sav__liens a[hidden] {
+  display: none;
+}
+
+/* Accès sans compte (E13) : colonne de 30 rem au plus, centrée ; hauteur réservée tant que le formulaire est masqué (CLS) */
+html:not([data-formulaire]) .sav__carte-acces {
+  min-block-size: 29.2rem;
+}
+
+@media (min-width: 480px) {
+  html:not([data-formulaire]) .sav__carte-acces {
+    min-block-size: 27.8rem;
+  }
+}
+
+/* Demande (E10) et confirmation : carte de 56 rem au plus */
+.sav__carte {
+  max-inline-size: var(--compte-carte-max);
+  margin-inline-end: auto;
+}
+
+.sav__etat h2:focus,
+.sav__confirmation h2:focus {
+  outline: none;
+}
+
+.sav__section + .sav__section {
+  margin-block-start: var(--space-6);
+}
+
+.sav__section h2 {
+  margin-block: 0 var(--space-3);
+}
+
+.sav__carte-formulaire[hidden],
+.sav__confirmation[hidden] {
+  display: none;
+}
+
+.sav__commande {
+  margin-block: 0 var(--space-4);
+  overflow-wrap: anywhere;
+}
+
+.sav__groupe + .sav__description,
+.sav__description {
+  margin-block-start: var(--space-5);
+}
+
+.sav__groupe .diag__pastilles {
+  margin-block-start: var(--space-2);
+}
+
+/* Cartes de produit (E10-3) : boutons radio habillés ; l'état choisi se lit au trait épais, à la coche et au fond, jamais à la couleur seule */
+.sav__choix-liste {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
+  margin-block-start: var(--space-2);
+}
+
+.sav__choix {
+  position: relative;
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+  min-block-size: var(--touch-min);
+  padding: var(--space-4);
+  padding-inline-end: var(--space-7);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  cursor: pointer;
+}
+
+.sav__choix input {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.sav__choix:hover {
+  background: var(--color-pastille);
+}
+
+.sav__choix:has(input:checked) {
+  border: 3px solid var(--color-navy);
+  padding: calc(var(--space-4) - 2px);
+  padding-inline-end: calc(var(--space-7) - 2px);
+  background: var(--color-pastille);
+}
+
+.sav__choix:has(input:checked)::after {
+  content: "✓" / "";
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-end: var(--space-3);
+  display: grid;
+  place-items: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.sav__choix:has(input:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.sav__visuel {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  color: var(--color-text-secondary);
+}
+
+.sav__pictogramme {
+  inline-size: 2rem;
+  block-size: 2rem;
+}
+
+.sav__texte {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.sav__titre {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.sav__detail {
+  color: var(--color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+/* Photos d'exemple (E10-5) : trois emplacements non interactifs */
+.sav__photos {
+  margin-block-start: var(--space-2);
+}
+
+.formulaire__case {
+  align-items: flex-start;
+}
+
+/* Confirmation (E10-8) */
+.sav__statut:focus {
+  outline: none;
+}
+
+.sav__statut:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 6px;
+}
+
+.sav__statut h2 {
+  margin-block-start: 0;
+}
+
+.sav__statut h3 {
+  margin-block: var(--space-4) var(--space-2);
+  font-size: var(--text-lg);
+}
+
+.sav__numero {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.sav__statut p {
+  overflow-wrap: anywhere;
+}
+
+.sav__prochaines {
+  margin: 0 0 var(--space-4);
+  padding-inline-start: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .sav__choix-liste {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sav__photos {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Réserve de hauteur du formulaire tant qu'il est masqué (CLS) : valeurs mesurées de 360 à 1440 px pour une commande à une ligne ;
+   les commandes à plusieurs lignes ajoutent de la hauteur sous la ligne de flottaison */
+html:not([data-formulaire]) .sav__carte-formulaire {
+  min-block-size: 152rem;
+}
+
+@media (min-width: 480px) {
+  html:not([data-formulaire]) .sav__carte-formulaire {
+    min-block-size: 145.9rem;
+  }
+}
+
+@media (min-width: 600px) {
+  html:not([data-formulaire]) .sav__carte-formulaire {
+    min-block-size: 137.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  html:not([data-formulaire]) .sav__carte-formulaire {
+    min-block-size: 108.6rem;
+  }
+}
+
+@media (min-width: 900px) {
+  html:not([data-formulaire]) .sav__carte-formulaire {
+    min-block-size: 103.8rem;
+  }
+}
+
+/* Suivi des demandes (E11) : cartes empilées sous 768 px, lignes (infos puis étapes) dès 768 px */
+.sav__demande {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.sav__infos {
+  min-inline-size: 0;
+}
+
+/* Indicateur d'étapes : pastille dessinée en CSS (forme et remplissage par état) + titre + texte masqué ; jamais la couleur seule */
+.sav__etapes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sav__etape {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  min-block-size: var(--touch-min);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  background: var(--color-card);
+  overflow-wrap: break-word;
+}
+
+.sav__pastille {
+  display: grid;
+  flex: none;
+  place-items: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  border: 2px solid var(--color-navy);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-on-navy);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.sav__etape[data-etat="terminee"] .sav__pastille {
+  background: var(--color-navy);
+}
+
+.sav__etape[data-etat="terminee"] .sav__pastille::before {
+  content: "✓" / "";
+}
+
+.sav__etape[data-etat="actuelle"] {
+  border: 3px solid var(--color-navy);
+  padding: calc(var(--space-2) - 2px) calc(var(--space-3) - 2px);
+  background: var(--color-pastille);
+  font-weight: 800;
+}
+
+.sav__etape[data-etat="actuelle"] .sav__pastille {
+  background: radial-gradient(circle, var(--color-navy) 40%, transparent 45%);
+}
+
+.sav__etape[data-etat="a-venir"] {
+  color: var(--color-text-secondary);
+  border-style: dashed;
+}
+
+@media (min-width: 768px) {
+  .sav__demande {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    align-items: center;
+  }
+
+}
+
+/* Réserve de hauteur de la liste avant son remplissage (CLS) : quatre demandes, valeurs mesurées de 360 à 1440 px */
+.sav__demandes[aria-busy="true"] {
+  min-block-size: 94.6rem;
+}
+
+@media (min-width: 390px) {
+  .sav__demandes[aria-busy="true"] {
+    min-block-size: 93rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .sav__demandes[aria-busy="true"] {
+    min-block-size: 86.7rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .sav__demandes[aria-busy="true"] {
+    min-block-size: 57.7rem;
+  }
+}

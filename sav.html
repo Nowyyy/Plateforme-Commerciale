@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="fr" data-donnees="compte">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Demande de service après-vente (exemple)</title>
+  <meta name="description" content="Démonstrateur : demande d'intervention simulée. Contenus fictifs, aucune vente, rien n'est envoyé ni conservé.">
+  <link rel="icon" href="data:,">
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/plus-jakarta-sans-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/composants.css">
+  <link rel="stylesheet" href="css/accueil.css">
+  <link rel="stylesheet" href="css/diagnostic.css">
+  <link rel="stylesheet" href="css/produit.css">
+  <link rel="stylesheet" href="css/pro.css">
+  <link rel="stylesheet" href="css/compte.css">
+  <link rel="stylesheet" href="css/sav.css">
+  <script type="module" src="assets/js/rendu.js"></script>
+  <script type="module" src="assets/js/menu.js"></script>
+  <script type="module" src="assets/js/compteur.js"></script>
+  <script type="module" src="assets/js/compte-lien.js"></script>
+  <script type="module" src="assets/js/sav.js"></script>
+</head>
+<body>
+  <div class="relief" aria-hidden="true">
+    <svg class="relief__groupe relief__groupe--1" viewBox="-190 -150 380 300" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <defs><path id="relief-blob" vector-effect="non-scaling-stroke" d="M-120 0C-125 -62 -45 -92 25 -82C105 -72 135 -12 112 42C90 94 22 104 -42 88C-100 72 -116 38 -120 0Z"/></defs>
+      <use href="#relief-blob" transform="scale(0.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.5)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.75)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.25)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.5)" vector-effect="non-scaling-stroke"/>
+    </svg>
+    <svg class="relief__groupe relief__groupe--2" viewBox="-170 -170 340 340" focusable="false" fill="none" stroke="currentColor" stroke-width="1">
+      <g transform="rotate(30)">
+      <use href="#relief-blob" transform="scale(0.2)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.45)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.7)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(0.95)" vector-effect="non-scaling-stroke"/>
+      <use href="#relief-blob" transform="scale(1.2)" vector-effect="non-scaling-stroke"/>
+      </g>
+    </svg>
+  </div>
+  <noscript><p class="noscript">Ce démonstrateur nécessite JavaScript</p></noscript>
+  <a class="lien-evitement" href="#contenu" data-texte="site.evitement"></a>
+  <svg class="sprite" aria-hidden="true" focusable="false">
+    <symbol id="inondation" viewBox="0 0 48 48"><path d="M9 23 24 9l15 14M13 20v10M35 20v10"/><path d="M5 36q4.5-4 9 0t9 0t9 0t9 0t4 0M5 43q4.5-4 9 0t9 0t9 0t9 0t4 0"/></symbol>
+    <symbol id="grele-vent" viewBox="0 0 48 48"><path d="M14 28a6 6 0 0 1 0-12 9 9 0 0 1 17-1 6 6 0 0 1 2 13z"/><circle cx="15" cy="37" r="1.8"/><circle cx="25" cy="42" r="1.8"/><circle cx="35" cy="37" r="1.8"/></symbol>
+    <symbol id="feu" viewBox="0 0 48 48"><path d="M24 6c2 7 11 11 11 22a11 11 0 0 1-22 0c0-5 3-8 5-10 0 4 2 6 4 6 0-6-1-11 2-18z"/><path d="M24 42a5 5 0 0 1-5-5c0-3 2-5 5-8 3 3 5 5 5 8a5 5 0 0 1-5 5z"/></symbol>
+    <symbol id="chaleur" viewBox="0 0 48 48"><circle cx="24" cy="24" r="8"/><path d="M24 5v6M24 37v6M5 24h6M37 24h6M10.6 10.6l4.2 4.2M33.2 33.2l4.2 4.2M10.6 37.4l4.2-4.2M33.2 14.8l4.2-4.2"/></symbol>
+    <symbol id="froid" viewBox="0 0 48 48"><path d="M24 6v36M8.4 15l31.2 18M8.4 33l31.2-18M19 9l5 4 5-4M19 39l5-4 5 4"/></symbol>
+    <symbol id="bouclier" viewBox="0 0 48 48"><path d="M24 5 9 11v11c0 10 6 17 15 21 9-4 15-11 15-21V11z"/><path d="m17 24 5 5 9-10"/></symbol>
+    <symbol id="chute" viewBox="0 0 48 48"><path d="M24 8v26M14 24l10 10 10-10M10 41h28"/></symbol>
+  </svg>
+  <aside class="bandeau-demo" data-aria-label="site.aria.bandeau">
+    <p class="conteneur" data-texte="site.bandeau"></p>
+  </aside>
+    <header class="entete" data-bloc="E10-1" data-role="en-tete">
+    <div class="conteneur entete__ligne">
+      <a class="marque" data-lien="site.liens.accueil">
+        <svg class="marque__pictogramme" viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+          <path class="marque__toit" d="M4 15 16 5l12 10"/>
+          <path class="marque__goutte" d="M16 13c0 0 6 6 6 10a6 6 0 0 1-12 0c0-4 6-10 6-10z"/>
+        </svg>
+        <span data-texte="site.nom"></span>
+      </a>
+      <a class="lien-entete entete__panier-barre" data-lien="site.liens.panier">
+        <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+        <span data-texte="site.navigation.panier"></span>
+      </a>
+      <button type="button" class="bouton bouton--discret entete__menu" data-menu-bouton aria-expanded="false" aria-controls="menu-navigation" data-texte="site.navigation.menu"></button>
+      <nav class="nav" id="menu-navigation" data-aria-label="site.aria.navigation">
+        <ul>
+          <li><a class="nav__lien" data-lien="site.liens.pro" data-texte="site.navigation.pro"></a></li>
+          <li><a class="nav__lien" data-lien="site.liens.connexion" data-texte="site.navigation.compte"></a></li>
+          <li class="nav__panier">
+            <a class="lien-entete" data-lien="site.liens.panier">
+              <svg class="pictogramme" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 4h2.5l2.2 11h10.6L20.5 7H6.2"/><circle cx="9" cy="19" r="1.2"/><circle cx="17" cy="19" r="1.2"/></svg>
+              <span data-texte="site.navigation.panier"></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <nav class="fil" data-aria-label="compte.sav.demande.fil.aria">
+    <div class="conteneur">
+      <ol class="fil__liste"></ol>
+    </div>
+  </nav>
+  <main id="contenu" class="compte sav sav--demande" tabindex="-1">
+    <section class="conteneur compte__bloc sav__bloc" data-bloc="E10-2" data-role="intro" aria-labelledby="titre-demande">
+      <h1 id="titre-demande" tabindex="-1" data-texte="compte.sav.demande.titre"></h1>
+      <p class="sav__phrase" data-texte="compte.sav.demande.phrase"></p>
+    </section>
+    <section class="conteneur compte__bloc sav__bloc sav__etat" data-etat hidden aria-labelledby="titre-etat">
+      <div class="carte sav__carte">
+        <h2 id="titre-etat" tabindex="-1" data-etat-titre></h2>
+        <p data-etat-phrase></p>
+        <p class="sav__liens"><a class="bouton bouton--secondaire" data-etat-lien></a> <a class="bouton bouton--secondaire" data-etat-lien-2 hidden></a></p>
+      </div>
+    </section>
+    <div class="conteneur compte__bloc sav__bloc sav__corps" data-corps>
+      <div class="carte sav__carte sav__carte-formulaire" data-carte-formulaire>
+        <form class="formulaire" novalidate hidden aria-labelledby="titre-demande">
+          <div class="formulaire__resume" role="alert" tabindex="-1" data-resume hidden>
+            <p class="formulaire__resume-titre" data-resume-titre></p>
+            <ul class="formulaire__resume-liste" data-resume-liste></ul>
+            <template data-resume-modele><li><a class="formulaire__lien" href="#"></a></li></template>
+          </div>
+          <section class="sav__section" data-bloc="E10-3" data-role="produit" aria-labelledby="titre-produit">
+            <h2 id="titre-produit" data-texte="compte.sav.demande.produit.titre"></h2>
+            <p class="sav__commande"><strong data-commande></strong> <span data-commande-date></span></p>
+            <fieldset class="formulaire__groupe sav__groupe" id="ligne" aria-describedby="erreur-ligne">
+              <legend class="etiquette" data-texte="compte.sav.demande.produit.groupe"></legend>
+              <div class="sav__choix-liste" data-lignes>
+                <template data-gabarit="ligne-sav">
+                  <label class="sav__choix">
+                    <input type="radio" aria-describedby="erreur-ligne">
+                    <span class="sav__visuel" aria-hidden="true"><svg class="icone sav__pictogramme" viewBox="0 0 48 48" focusable="false"><use></use></svg></span>
+                    <span class="sav__texte">
+                      <span class="sav__titre"></span>
+                      <span class="sav__detail sav__reference"></span>
+                      <span class="sav__detail sav__mode"></span>
+                      <span class="sav__detail sav__cotes"></span>
+                      <span class="sav__detail sav__quantite"></span>
+                    </span>
+                  </label>
+                </template>
+              </div>
+              <p class="formulaire__erreur" id="erreur-ligne" hidden></p>
+            </fieldset>
+          </section>
+          <section class="sav__section" data-bloc="E10-4" data-role="demande" aria-labelledby="titre-votre-demande">
+            <h2 id="titre-votre-demande" data-texte="compte.sav.demande.motif.titre"></h2>
+            <fieldset class="formulaire__groupe sav__groupe" id="motif" aria-describedby="erreur-motif">
+              <legend class="etiquette" data-texte="compte.sav.demande.motif.groupe"></legend>
+              <div class="diag__pastilles" aria-busy="true">
+                <template data-liste="motifs">
+                  <label class="pastille-choix"><input type="radio" aria-describedby="erreur-motif"><span data-texte="titre"></span></label>
+                </template>
+              </div>
+              <p class="formulaire__erreur" id="erreur-motif" hidden></p>
+            </fieldset>
+            <div class="formulaire__champ sav__description">
+              <label class="etiquette" for="description" data-texte="compte.sav.demande.description.libelle"></label>
+              <textarea class="champ" id="description" rows="5" maxlength="1000" aria-describedby="aide-description erreur-description"></textarea>
+              <p class="formulaire__aide" id="aide-description" data-texte="compte.sav.demande.description.aide"></p>
+              <p class="formulaire__erreur" id="erreur-description" hidden></p>
+            </div>
+          </section>
+          <section class="sav__section" data-bloc="E10-5" data-role="photos" aria-labelledby="titre-photos">
+            <h2 id="titre-photos" data-texte="compte.sav.demande.photos.titre"></h2>
+            <ul class="formulaire__emplacements sav__photos" aria-busy="true">
+              <template data-liste="sav.demande.photos.emplacements">
+                <li class="formulaire__emplacement" data-texte="."></li>
+              </template>
+            </ul>
+            <p class="formulaire__aide" data-texte="compte.sav.demande.photos.aide"></p>
+            <p class="formulaire__aide" data-texte="compte.sav.demande.photos.taille"></p>
+          </section>
+          <section class="sav__section" data-bloc="E10-6" data-role="coordonnees" aria-labelledby="titre-coordonnees">
+            <h2 id="titre-coordonnees" data-texte="compte.sav.demande.coordonnees.titre"></h2>
+            <div class="formulaire__grille">
+              <div class="formulaire__champ">
+                <label class="etiquette" for="prenom" data-texte="compte.sav.demande.coordonnees.champs.prenom"></label>
+                <input class="champ" type="text" id="prenom" autocomplete="given-name" aria-describedby="erreur-prenom">
+                <p class="formulaire__erreur" id="erreur-prenom" hidden></p>
+              </div>
+              <div class="formulaire__champ">
+                <label class="etiquette" for="nom" data-texte="compte.sav.demande.coordonnees.champs.nom"></label>
+                <input class="champ" type="text" id="nom" autocomplete="family-name" aria-describedby="erreur-nom">
+                <p class="formulaire__erreur" id="erreur-nom" hidden></p>
+              </div>
+              <div class="formulaire__champ">
+                <label class="etiquette" for="email" data-texte="compte.sav.demande.coordonnees.champs.email"></label>
+                <input class="champ" type="email" id="email" autocomplete="email" aria-describedby="erreur-email">
+                <p class="formulaire__erreur" id="erreur-email" hidden></p>
+              </div>
+              <div class="formulaire__champ">
+                <label class="etiquette" for="telephone" data-texte="compte.sav.demande.coordonnees.champs.telephone"></label>
+                <input class="champ" type="tel" id="telephone" autocomplete="tel" aria-describedby="erreur-telephone">
+                <p class="formulaire__erreur" id="erreur-telephone" hidden></p>
+              </div>
+              <div class="formulaire__champ formulaire__champ--pleine">
+                <label class="etiquette" for="adresse" data-texte="compte.sav.demande.coordonnees.champs.adresse"></label>
+                <input class="champ" type="text" id="adresse" autocomplete="address-line1" aria-describedby="erreur-adresse">
+                <p class="formulaire__erreur" id="erreur-adresse" hidden></p>
+              </div>
+              <div class="formulaire__champ">
+                <label class="etiquette" for="code-postal" data-texte="compte.sav.demande.coordonnees.champs.codePostal"></label>
+                <input class="champ" type="text" id="code-postal" autocomplete="postal-code" inputmode="numeric" aria-describedby="erreur-code-postal">
+                <p class="formulaire__erreur" id="erreur-code-postal" hidden></p>
+              </div>
+              <div class="formulaire__champ">
+                <label class="etiquette" for="ville" data-texte="compte.sav.demande.coordonnees.champs.ville"></label>
+                <input class="champ" type="text" id="ville" autocomplete="address-level2" aria-describedby="erreur-ville">
+                <p class="formulaire__erreur" id="erreur-ville" hidden></p>
+              </div>
+            </div>
+          </section>
+          <section class="sav__section" data-bloc="E10-7" data-role="envoi" aria-labelledby="titre-envoi">
+            <h2 id="titre-envoi" data-texte="compte.sav.demande.envoi.titre"></h2>
+            <div class="formulaire__champ">
+              <label class="formulaire__case" for="consentement"><input type="checkbox" id="consentement" aria-describedby="erreur-consentement"><span data-texte="compte.sav.demande.envoi.consentement"></span></label>
+              <p class="formulaire__erreur" id="erreur-consentement" hidden></p>
+            </div>
+            <button type="submit" class="bouton bouton--action formulaire__bouton" data-texte="compte.sav.demande.envoi.bouton"></button>
+            <p class="formulaire__demo" data-texte="compte.formulaire.demo"></p>
+          </section>
+        </form>
+      </div>
+      <section class="sav__section sav__confirmation" data-bloc="E10-8" data-role="confirmation" aria-labelledby="titre-confirmation" hidden>
+        <div class="carte sav__carte">
+          <div class="sav__statut" role="status" tabindex="-1" data-confirmation>
+            <h2 id="titre-confirmation" data-texte="compte.sav.confirmation.titre"></h2>
+            <p class="sav__numero" data-texte="compte.sav.confirmation.numero"></p>
+            <p data-concerne></p>
+            <p data-texte="compte.sav.confirmation.delai"></p>
+            <h3 data-texte="compte.sav.confirmation.etapesTitre"></h3>
+            <ol class="sav__prochaines">
+              <template data-liste="sav.confirmation.etapes">
+                <li data-texte="titre"></li>
+              </template>
+            </ol>
+            <p class="formulaire__demo" data-texte="compte.sav.confirmation.mention"></p>
+          </div>
+          <p class="sav__liens">
+            <a class="bouton bouton--secondaire" data-variante="compte" data-lien="site.liens.demandes" data-texte="compte.sav.confirmation.retourDemandes"></a>
+            <a class="bouton bouton--secondaire" data-lien="site.liens.accueil" data-texte="compte.sav.confirmation.retourAccueil"></a>
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <footer class="pied" data-bloc="E10-9" data-role="pied">
+    <div class="conteneur">
+      <div class="pied__grille" aria-busy="true">
+        <template data-liste="site.pied.colonnes">
+          <div class="pied__colonne">
+            <h2 class="pied__titre" data-texte="titre"></h2>
+            <ul class="pied__liste">
+              <template data-liste="entrees">
+                <li><a class="pied__lien" data-lien-element="lien" data-texte="texte"></a></li>
+              </template>
+            </ul>
+          </div>
+        </template>
+        <div class="pied__colonne pied__marque">
+          <p class="pied__nom" data-texte="site.nom"></p>
+          <p class="pied__presentation" data-texte="site.pied.presentation"></p>
+        </div>
+      </div>
+      <p class="pied__bas" data-texte="site.bandeau"></p>
+    </div>
+  </footer>
+</body>
+</html>

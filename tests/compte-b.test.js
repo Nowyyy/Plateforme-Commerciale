@@ -98,7 +98,7 @@ describe('lot 8c-B : balisage', () => {
     expect(compte.pages.achats.filtres).toHaveLength(5);
     expect(lire('compte.html')).toContain('data-gabarit="carte-commande"');
     expect(lire('compte.html')).toContain('data-gabarit="carte-demande"');
-    expect(site.liens.demandes).toBe('wireframes/demandes.html');
+    expect(site.liens.demandes).toBe('demandes.html');
   });
   it('css/compte.css : aucune valeur hexadécimale ni couleur nommée en dur', () => {
     const css = lire('css/compte.css');

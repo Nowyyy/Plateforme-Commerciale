@@ -8,6 +8,15 @@ const envoyer = (page) => page.getByRole('button', { name: 'Envoyer ma candidatu
 const resume = (page) => page.locator('[data-resume]');
 const erreur = (page, nom) => page.locator(`#erreur-${nom}`);
 
+// Juste après un rechargement, le premier focus() peut être perdu (le document n'a pas encore le focus actif) : on refocalise
+// jusqu'à ce que l'élément soit réellement focalisé, puis les assertions habituelles s'appliquent.
+async function focaliser(locator) {
+  await expect(async () => {
+    await locator.focus();
+    await expect(locator).toBeFocused({ timeout: 300 });
+  }).toPass({ timeout: 5000 });
+}
+
 async function ouvrir(page, largeur = 1440) {
   const suivi = { requetes: [], messages: [] };
   await page.emulateMedia({ reducedMotion: 'reduce' });
@@ -113,7 +122,7 @@ test('clavier : Entrée dans un champ valide, Tab suit l\'ordre du formulaire, l
 
   await page.reload();
   await page.waitForSelector('html[data-formulaire="pret"]');
-  await page.locator('#societe').focus();
+  await focaliser(page.locator('#societe'));
   const vus = [];
   for (let i = 0; i < 15; i++) {
     vus.push(await page.evaluate(() => {
@@ -128,7 +137,7 @@ test('clavier : Entrée dans un champ valide, Tab suit l\'ordre du formulaire, l
   for (const touche of ['Enter', 'Space']) {
     await page.reload();
     await page.waitForSelector('html[data-formulaire="pret"]');
-    await envoyer(page).focus();
+    await focaliser(envoyer(page));
     await expect(envoyer(page)).toBeFocused();
     await page.keyboard.press(touche);
     await expect(resume(page), touche).toBeVisible();
