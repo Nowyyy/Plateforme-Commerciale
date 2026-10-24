@@ -93,6 +93,10 @@
   --compte-liste-max: 64rem;
   --compte-carte-max: 56rem;
 
+  /* Comparateur (lot 9) : h1 28 px, h2 22 px (jetons du diagnostic), tableau 64 rem au plus, colonnes de 9 rem au moins */
+  --comparateur-tableau-max: 64rem;
+  --comparateur-colonne-min: 9rem;
+
   /* Espacements */
   --space-1: 0.25rem;
   --space-2: 0.5rem;

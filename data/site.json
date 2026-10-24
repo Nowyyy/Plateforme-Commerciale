@@ -42,6 +42,10 @@
             "lien": "savAcces"
           },
           {
+            "texte": "Comparer des solutions",
+            "lien": "comparateur"
+          },
+          {
             "texte": "Mentions légales (à venir)"
           },
           {
@@ -66,7 +70,8 @@
     "sav": "sav.html",
     "panier": "panier.html",
     "savAcces": "sav-acces.html",
-    "produit": "produit.html"
+    "produit": "produit.html",
+    "comparateur": "comparateur.html"
   },
   "liensExternes": {
     "georisques": "https://www.georisques.gouv.fr/"

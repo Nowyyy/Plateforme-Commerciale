@@ -52,7 +52,7 @@ test('pied : 1 colonne à 375 px, 3 colonnes à 1440 px, entrées « (à venir) 
     expect(await entree.evaluate((el) => el.tagName)).not.toBe('A');
     await expect(pied.getByRole('link', { name: libelle })).toHaveCount(0);
   }
-  await expect(pied.getByRole('link')).toHaveText(['Vendre sur la plateforme', 'Mon compte', 'Panier', 'Service après-vente']);
+  await expect(pied.getByRole('link')).toHaveText(['Vendre sur la plateforme', 'Mon compte', 'Panier', 'Service après-vente', 'Comparer des solutions']);
   await expect(pied.getByText('Démonstrateur : contenus fictifs, aucune vente')).toBeVisible();
 });
 

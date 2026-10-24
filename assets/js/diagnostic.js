@@ -2,10 +2,11 @@
 // L'adresse et l'aléa ne passent jamais par l'URL ; l'adresse est affichée par valeur de champ / textContent seulement.
 import { donneesPretes, resoudre } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
+import { memoriserProduit } from './produit-session.js';
+import { CLE_COMPARAISON, comparaisonDepuisDiagnostic } from './comparateur-logique.js';
 import { TOUS, aleaValide, calquesParDefaut, filtrerEquipements, formaterPrix, libelleNiveau, niveauGlobal, segmentsJauge } from './diagnostic-logique.js';
 
 export const CLE_ALEA = 'alea';
-export const CLE_PRODUIT = 'produit';
 
 function lireSession(cle, retirer = false) {
   try {
@@ -160,7 +161,15 @@ function afficherPastilles(donnees, etat) {
 function initialiserFiches() {
   document.getElementById('liste-equipements').addEventListener('click', (e) => {
     const id = e.target.closest('a')?.closest('li[data-id]')?.getAttribute('data-id');
-    if (id) ecrireSession(CLE_PRODUIT, id);
+    if (id) memoriserProduit(id);
+  });
+}
+
+// « Comparer ces solutions » : l'aléa du filtre et les cartes affichées sont mémorisés (identifiants seulement, jamais dans l'URL).
+function initialiserComparaison(donnees, etat) {
+  document.querySelector('.diag__comparer').addEventListener('click', () => {
+    const ids = [...document.querySelectorAll('#liste-equipements > li[data-id]')].map((li) => li.getAttribute('data-id'));
+    ecrireSession(CLE_COMPARAISON, comparaisonDepuisDiagnostic({ filtre: etat.filtre, aleas: donnees.diagnostic.aleas, ids }));
   });
 }
 
@@ -201,6 +210,7 @@ if (typeof document !== 'undefined') {
     const etat = { filtre: aleaValide(donnees.diagnostic.aleas.map((a) => a.id), lireSession(CLE_ALEA, true)) ?? TOUS };
     initialiserAdresse(donnees);
     initialiserFiches();
+    initialiserComparaison(donnees, etat);
     afficherPastilles(donnees, etat);
     initialiserCalques(donnees);
     mettreAJour(donnees, etat.filtre, false);

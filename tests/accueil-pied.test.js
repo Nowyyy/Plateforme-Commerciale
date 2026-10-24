@@ -39,7 +39,8 @@ describe('data/site.json : pied de page', () => {
     }
     const sav = resoudrePied(site)[1].entrees;
     expect(sav[0]).toEqual({ texte: 'Service après-vente', lien: 'sav-acces.html' });
-    expect(sav.slice(1).every((e) => e.lien === undefined && e.texte.includes('(à venir)'))).toBe(true);
+    expect(sav[1]).toEqual({ texte: 'Comparer des solutions', lien: 'comparateur.html' });
+    expect(sav.slice(2).every((e) => e.lien === undefined && e.texte.includes('(à venir)'))).toBe(true);
   });
   it('un lien inconnu fait échouer le rendu du pied', () => {
     const faux = { ...site, pied: { colonnes: [{ titre: 'x', entrees: [{ texte: 'y', lien: 'absent' }] }] } };

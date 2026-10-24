@@ -64,7 +64,15 @@
       ],
       "livraisonSemainesMax": 3,
       "poseSemainesMax": 2,
-      "icone": "inondation"
+      "icone": "inondation",
+      "aleas": [
+        "inondations"
+      ],
+      "performances": {
+        "principale": 60,
+        "montage": 12,
+        "poids": 18
+      }
     },
     {
       "id": "bouclier-de-baie",
@@ -77,7 +85,15 @@
       "complet": false,
       "livraisonSemainesMax": 4,
       "poseSemainesMax": 3,
-      "icone": "grele-vent"
+      "icone": "grele-vent",
+      "aleas": [
+        "grele-vents"
+      ],
+      "performances": {
+        "principale": 180,
+        "montage": 90,
+        "poids": 35
+      }
     },
     {
       "id": "sprinkler-de-toiture",
@@ -90,7 +106,15 @@
       "complet": false,
       "livraisonSemainesMax": 6,
       "poseSemainesMax": 4,
-      "icone": "feu"
+      "icone": "feu",
+      "aleas": [
+        "feux-de-foret"
+      ],
+      "performances": {
+        "principale": 90,
+        "montage": 180,
+        "poids": 22
+      }
     },
     {
       "id": "cool-roofing",
@@ -103,7 +127,15 @@
       "complet": false,
       "livraisonSemainesMax": 5,
       "poseSemainesMax": 4,
-      "icone": "chaleur"
+      "icone": "chaleur",
+      "aleas": [
+        "canicule"
+      ],
+      "performances": {
+        "principale": 6,
+        "montage": 150,
+        "poids": 15
+      }
     },
     {
       "id": "clapet-anti-retour",
@@ -116,7 +148,15 @@
       "complet": false,
       "livraisonSemainesMax": 2,
       "poseSemainesMax": 1,
-      "icone": "inondation"
+      "icone": "inondation",
+      "aleas": [
+        "inondations"
+      ],
+      "performances": {
+        "principale": 120,
+        "montage": 45,
+        "poids": 4
+      }
     },
     {
       "id": "volet-extrude",
@@ -129,7 +169,15 @@
       "complet": false,
       "livraisonSemainesMax": 4,
       "poseSemainesMax": 3,
-      "icone": "grele-vent"
+      "icone": "grele-vent",
+      "aleas": [
+        "grele-vents"
+      ],
+      "performances": {
+        "principale": 140,
+        "montage": 120,
+        "poids": 28
+      }
     },
     {
       "id": "grille-pare-braises",
@@ -142,7 +190,15 @@
       "complet": false,
       "livraisonSemainesMax": 2,
       "poseSemainesMax": 2,
-      "icone": "feu"
+      "icone": "feu",
+      "aleas": [
+        "feux-de-foret"
+      ],
+      "performances": {
+        "principale": 30,
+        "montage": 25,
+        "poids": 6
+      }
     },
     {
       "id": "isolant-reflecteur",
@@ -155,7 +211,15 @@
       "complet": false,
       "livraisonSemainesMax": 2,
       "poseSemainesMax": 2,
-      "icone": "chaleur"
+      "icone": "chaleur",
+      "aleas": [
+        "canicule"
+      ],
+      "performances": {
+        "principale": 4,
+        "montage": 200,
+        "poids": 11
+      }
     },
     {
       "id": "pompe-de-relevage",
@@ -168,7 +232,15 @@
       "complet": false,
       "livraisonSemainesMax": 3,
       "poseSemainesMax": 2,
-      "icone": "inondation"
+      "icone": "inondation",
+      "aleas": [
+        "inondations"
+      ],
+      "performances": {
+        "principale": 90,
+        "montage": 60,
+        "poids": 12
+      }
     },
     {
       "id": "filet-de-toiture",
@@ -181,7 +253,15 @@
       "complet": false,
       "livraisonSemainesMax": 3,
       "poseSemainesMax": 3,
-      "icone": "chute"
+      "icone": "chute",
+      "aleas": [
+        "grele-vents"
+      ],
+      "performances": {
+        "principale": 110,
+        "montage": 40,
+        "poids": 9
+      }
     }
   ],
   "produitParDefaut": "batardeau-modulable",
@@ -518,5 +598,101 @@
     "voirPanier": "Voir le panier",
     "continuer": "Continuer mes achats",
     "stockage": "Impossible d'enregistrer le panier dans ce navigateur."
+  },
+  "comparateur": {
+    "fil": {
+      "aria": "Fil d'Ariane",
+      "accueil": "Accueil",
+      "diagnostic": "Diagnostic",
+      "courant": "Comparer des solutions"
+    },
+    "titre": "Comparer des solutions",
+    "aide": "Choisissez un aléa, puis deux ou trois produits de cet aléa à comparer. Toutes les valeurs sont des exemples.",
+    "legendeAlea": "Aléa",
+    "legendeProduits": "Produits à comparer (2 à 3)",
+    "niveauAlea": "Exposition : {niveau} (exemple)",
+    "reference": "Réf. {reference}",
+    "prix": "{prix} (exemple)",
+    "aleaDeuxProduits": "Cet aléa propose deux produits seulement : les deux sont comparés.",
+    "messages": {
+      "max": "Trois produits au plus peuvent être comparés. Décochez-en un pour en choisir un autre.",
+      "min": "Deux produits au moins sont nécessaires pour comparer. Cochez-en un autre avant de décocher celui-ci.",
+      "compares": "{n} produits comparés."
+    },
+    "comparaison": {
+      "titre": "Comparaison",
+      "niveau": "Exposition illustrative à cet aléa : {niveau}",
+      "aideDefilement": "Faites défiler le tableau horizontalement si besoin.",
+      "regionAria": "Tableau de comparaison des produits",
+      "legende": "Comparaison des produits sélectionnés (valeurs d'exemple)",
+      "voirFiche": "Voir la fiche",
+      "valeur": "{valeur} {unite}",
+      "lignes": {
+        "montage": "Temps de montage",
+        "poids": "Poids",
+        "prix": "Prix TTC",
+        "pose": "Pose estimée"
+      },
+      "unites": {
+        "montage": "min",
+        "poids": "kg"
+      },
+      "note": "Valeurs d'exemple du démonstrateur, sans valeur contractuelle.",
+      "coin": "Critère"
+    },
+    "criteres": {
+      "inondations": {
+        "titre": "Hauteur d'eau retenue",
+        "unite": "cm"
+      },
+      "grele-vents": {
+        "titre": "Vitesse de vent supportée",
+        "unite": "km/h"
+      },
+      "feux-de-foret": {
+        "titre": "Tenue au feu",
+        "unite": "min"
+      },
+      "canicule": {
+        "titre": "Réduction de température intérieure",
+        "unite": "°C"
+      }
+    },
+    "aleas": [
+      {
+        "id": "inondations",
+        "titre": "Inondations et crues",
+        "court": "Inondations",
+        "niveau": 3
+      },
+      {
+        "id": "grele-vents",
+        "titre": "Grêle et vents violents",
+        "court": "Grêle et vents",
+        "niveau": 2
+      },
+      {
+        "id": "feux-de-foret",
+        "titre": "Feux de forêt",
+        "court": "Feux de forêt",
+        "niveau": 1
+      },
+      {
+        "id": "canicule",
+        "titre": "Canicule et chaleur extrême",
+        "court": "Canicule",
+        "niveau": 2
+      }
+    ],
+    "niveaux": [
+      "faible",
+      "modéré",
+      "élevé",
+      "très élevé"
+    ],
+    "limites": {
+      "min": 2,
+      "max": 3
+    }
   }
 }
