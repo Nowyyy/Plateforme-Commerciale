@@ -25,6 +25,9 @@ const progression = $('progression');
 const corps = $('sondes');
 const lignes = new Map();
 let enCours = false;
+let contexte = null;
+let resultats = [];
+const boutons = [bouton];
 
 function construireTable() {
   SONDES.forEach((sonde, index) => {
@@ -217,13 +220,20 @@ function prepareBoutonCopie() {
 
 // ---------- parcours ----------
 
+function basculerBoutons(inactif) {
+  for (const b of boutons) {
+    if (inactif) b.setAttribute('aria-disabled', 'true');
+    else b.removeAttribute('aria-disabled');
+  }
+}
+
 async function lancer() {
   if (enCours) return;
   enCours = true;
-  bouton.setAttribute('aria-disabled', 'true');
+  basculerBoutons(true);
   reinitialiser();
-  const contexte = { coordonnees: null, couche: null, hote: null };
-  const resultats = [];
+  contexte = { coordonnees: null, couche: null, hote: null };
+  resultats = [];
   for (const [index, sonde] of SONDES.entries()) {
     progression.textContent = `Sonde ${index + 1} sur ${SONDES.length} : ${sonde.libelle}`;
     afficher(sonde.id, 'en-cours');
@@ -232,14 +242,52 @@ async function lancer() {
     afficher(resultat.id, resultat.etat, resultat.ms, resultat.detail);
   }
   afficherSynthese(resultats);
+  $('zone-couche').hidden = contexte.couche !== null;
   progression.textContent = `Test terminé : ${SONDES.length} sondes lancées, résultats ci-dessous.`;
-  bouton.removeAttribute('aria-disabled');
+  basculerBoutons(false);
   enCours = false;
   $('titre-resultats').focus();
+}
+
+async function relancerImage() {
+  if (enCours || !contexte) return;
+  const champ = $('nom-couche');
+  const nom = champ.value.trim();
+  if (!nom) {
+    progression.textContent = 'Saisissez un nom de couche avant de relancer la sonde.';
+    champ.focus();
+    return;
+  }
+  enCours = true;
+  basculerBoutons(true);
+  const sonde = SONDES.at(-1);
+  progression.textContent = `Relance de la sonde ${SONDES.length} sur ${SONDES.length} : couche saisie.`;
+  afficher(sonde.id, 'en-cours');
+  const brut = await executer(sonde, { ...contexte, couche: nom, hote: contexte.hote ?? 'georisques.gouv.fr' });
+  const resultat = evaluerSonde({ ...brut, detail: `couche saisie « ${nom} » : ${brut.detail}` });
+  resultats = resultats.map((r) => (r.id === sonde.id ? resultat : r));
+  afficher(resultat.id, resultat.etat, resultat.ms, resultat.detail);
+  afficherSynthese(resultats);
+  progression.textContent = `Sonde ${SONDES.length} relancée : ${ETATS[resultat.etat].texte}.`;
+  basculerBoutons(false);
+  enCours = false;
+}
+
+function prepareBoutonRelance() {
+  const relancer = document.createElement('button');
+  relancer.type = 'button';
+  relancer.className = 'bouton';
+  relancer.textContent = 'Relancer cette sonde';
+  relancer.addEventListener('click', () => {
+    if (relancer.getAttribute('aria-disabled') !== 'true') relancerImage();
+  });
+  boutons.push(relancer);
+  $('actions-couche').append(relancer);
 }
 
 construireTable();
 reinitialiser();
 prepareBoutonCopie();
+prepareBoutonRelance();
 bouton.addEventListener('click', lancer);
 $('contenu').hidden = false;

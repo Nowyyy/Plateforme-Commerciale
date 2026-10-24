@@ -35,6 +35,12 @@
           <tbody id="sondes"></tbody>
         </table>
       </div>
+      <div class="zone-couche" id="zone-couche" hidden>
+        <label class="etiquette" for="nom-couche">Nom de couche à tester (facultatif)</label>
+        <p class="aide" id="aide-couche">Aucune couche d'inondation n'a pu être lue dans le service. Saisissez le nom d'une couche de Géorisques pour relancer la dernière sonde.</p>
+        <input type="text" id="nom-couche" class="champ" autocomplete="off" spellcheck="false" maxlength="120" aria-describedby="aide-couche">
+        <div class="actions" id="actions-couche"></div>
+      </div>
     </section>
 
     <section aria-labelledby="titre-conclusions" id="conclusions" hidden>
