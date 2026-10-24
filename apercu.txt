@@ -1,3 +1,3 @@
-index.html
-type: hifi
-titre: Comparateur de solutions
+assets/outils/faisabilite.html
+type: technique
+titre: Test de faisabilité de la carte réelle

@@ -1,0 +1,197 @@
+/* Outil jetable du lot 4b : jetons de css/tokens.css seulement, aucune couleur d'alerte ; l'état est porté par du texte et une icône. */
+.outil {
+  max-inline-size: var(--compte-liste-max);
+  margin-inline: auto;
+  padding: var(--space-6) var(--gutter) var(--space-7);
+}
+
+.outil h1 {
+  font-size: var(--diag-text-h1);
+}
+
+.outil h2 {
+  margin-block-start: var(--space-6);
+  font-size: var(--diag-text-h2);
+}
+
+.outil h2:focus {
+  outline: none;
+}
+
+.outil h2:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.outil__noscript {
+  max-inline-size: var(--compte-liste-max);
+  margin: var(--space-6) auto;
+  padding-inline: var(--gutter);
+  font-weight: 600;
+}
+
+.outil__bloc {
+  padding: var(--space-4);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.outil__progression {
+  min-block-size: var(--space-5);
+  margin-block: var(--space-3) 0;
+  color: var(--color-text-secondary);
+}
+
+.bouton {
+  min-block-size: var(--touch-min);
+  padding: var(--space-2) var(--space-5);
+  background: transparent;
+  color: var(--color-navy);
+  border: 2px solid var(--color-navy);
+  border-radius: var(--radius-md);
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bouton:hover {
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+}
+
+.bouton[aria-disabled="true"] {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border-color: var(--color-border-fort);
+  cursor: not-allowed;
+}
+
+.zone-table {
+  overflow-x: auto;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.table-sondes {
+  inline-size: 100%;
+  min-inline-size: 44rem;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.table-sondes caption {
+  padding: var(--space-3) var(--space-4);
+  text-align: start;
+  color: var(--color-text-secondary);
+}
+
+.table-sondes th,
+.table-sondes td {
+  padding: var(--space-3) var(--space-4);
+  border-block-start: 1px solid var(--color-border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-sondes thead th {
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+/* première colonne figée, fond opaque */
+.table-sondes th:first-child {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  background: var(--color-card);
+  border-inline-end: 1px solid var(--color-border-fort);
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+.table-sondes td:last-child {
+  min-inline-size: 16rem;
+  overflow-wrap: anywhere;
+}
+
+.table-sondes td:nth-child(3) {
+  white-space: nowrap;
+}
+
+.etat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.etat__icone {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  flex: none;
+  background: var(--color-pastille);
+  color: var(--color-navy);
+  border: 2px solid var(--color-navy);
+  border-radius: 50%;
+  font-size: var(--text-xs);
+  line-height: 1;
+}
+
+.etat--ok .etat__icone {
+  background: var(--color-green);
+  color: var(--color-on-navy);
+  border-color: var(--color-green);
+}
+
+.etat--bloque .etat__icone,
+.etat--image-echec .etat__icone {
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+}
+
+.etat--delai .etat__icone,
+.etat--http .etat__icone {
+  border-style: dashed;
+}
+
+.conclusions {
+  margin: 0;
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.conclusions li + li {
+  margin-block-start: var(--space-2);
+}
+
+.etiquette {
+  display: block;
+  margin-block-end: var(--space-2);
+  font-weight: 600;
+}
+
+.rapport {
+  display: block;
+  inline-size: 100%;
+  padding: var(--space-3);
+  background: var(--color-card);
+  color: var(--color-text);
+  border: 1px solid var(--color-border-fort);
+  border-radius: var(--radius-md);
+  font-family: var(--font-data);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.actions {
+  margin-block-start: var(--space-3);
+}

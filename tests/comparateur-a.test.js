@@ -360,7 +360,11 @@ describe('lot 9-A : liens, workflow, CSS, modules et CLAUDE.md', () => {
     expect(src).toMatch(/import \{ CLE_COMPARAISON,[^}]*\} from '\.\/comparateur-logique\.js'/);
   });
   it('apercu.txt vise l\'accueil en Hi-Fi ; Docs/apercus.txt décrit le lot 9', () => {
-    expect(lire('apercu.txt').split('\n').filter(Boolean)).toEqual(['index.html', 'type: hifi', 'titre: Comparateur de solutions']);
+    // lot 4b (outil jetable, non fusionné) : apercu.txt vise la page de test ; la cible Hi-Fi reste celle des lots fusionnés
+    expect([
+      ['index.html', 'type: hifi', 'titre: Comparateur de solutions'],
+      ['assets/outils/faisabilite.html', 'type: technique', 'titre: Test de faisabilité de la carte réelle'],
+    ]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
     expect(lire('Docs/apercus.txt')).toMatch(/^lot-9\|.{10,}$/m);
   });
   it('CLAUDE.md fait moins de 9 000 caractères et décrit le comparateur ; conventions.md a une section Comparateur et reste sous 150 lignes', () => {

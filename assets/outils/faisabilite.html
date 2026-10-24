@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Test de faisabilité de la carte réelle</title>
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="faisabilite.css">
+</head>
+<body>
+  <noscript><p class="outil__noscript">Cette page nécessite JavaScript.</p></noscript>
+  <main class="outil" id="contenu" hidden>
+    <h1>Test de faisabilité de la carte réelle</h1>
+    <p class="outil__bloc">Cette page contacte des services tiers depuis votre navigateur : le géocodeur et les cartes de l'IGN (data.geopf.fr), Géorisques (georisques.gouv.fr) et OpenStreetMap (tile.openstreetmap.org). Ils voient votre adresse IP. Aucune donnée personnelle n'est envoyée : le lieu testé est l'hôtel de ville de Paris. Rien n'est enregistré.</p>
+    <p class="outil__bloc">Si vous utilisez un bloqueur de publicités ou des extensions de confidentialité, relancez le test dans une fenêtre privée sans extension : un blocage fausse le résultat.</p>
+    <p><button type="button" class="bouton" id="lancer">Lancer le test</button></p>
+    <p class="outil__progression" id="progression" role="status"></p>
+
+    <section aria-labelledby="titre-resultats">
+      <h2 id="titre-resultats" tabindex="-1">Résultats des sondes</h2>
+      <div class="zone-table" role="region" aria-label="Tableau des résultats" tabindex="0">
+        <table class="table-sondes">
+          <caption>Les huit sondes, lancées l'une après l'autre</caption>
+          <thead>
+            <tr>
+              <th scope="col">Sonde</th>
+              <th scope="col">État</th>
+              <th scope="col">Durée</th>
+              <th scope="col">Détail</th>
+            </tr>
+          </thead>
+          <tbody id="sondes"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section aria-labelledby="titre-conclusions" id="conclusions" hidden>
+      <h2 id="titre-conclusions">Conclusions</h2>
+      <ul class="conclusions" id="liste-conclusions"></ul>
+    </section>
+
+    <section aria-labelledby="titre-rapport" id="rapport" hidden>
+      <h2 id="titre-rapport">Rapport à copier</h2>
+      <p>Copiez ce rapport et collez-le dans la conversation de cadrage.</p>
+      <label class="etiquette" for="texte-rapport">Rapport en texte brut</label>
+      <textarea id="texte-rapport" class="rapport" readonly rows="18"></textarea>
+      <div class="actions" id="actions-rapport"></div>
+      <p class="outil__progression" id="copie-statut" role="status"></p>
+    </section>
+  </main>
+  <script type="module" src="faisabilite.js"></script>
+</body>
+</html>

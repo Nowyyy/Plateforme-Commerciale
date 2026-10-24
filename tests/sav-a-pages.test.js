@@ -167,7 +167,11 @@ describe('lot 8d-A : workflow, CSS, modules et CLAUDE.md', () => {
     expect(conventions.split('\n').length).toBeLessThanOrEqual(150);
   });
   it('apercu.txt vise l\'accueil en Hi-Fi et Docs/apercus.txt décrit le lot 8d', () => {
-    expect(lire('apercu.txt').split('\n').filter(Boolean)).toEqual(['index.html', 'type: hifi', 'titre: Comparateur de solutions']);
+    // lot 4b (outil jetable, non fusionné) : apercu.txt vise la page de test ; la cible Hi-Fi reste celle des lots fusionnés
+    expect([
+      ['index.html', 'type: hifi', 'titre: Comparateur de solutions'],
+      ['assets/outils/faisabilite.html', 'type: technique', 'titre: Test de faisabilité de la carte réelle'],
+    ]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
     expect(lire('Docs/apercus.txt')).toMatch(/^lot-8d\|.{10,}$/m);
   });
   it('les tests adaptés des lots précédents attendent les pages Hi-Fi du SAV', () => {
