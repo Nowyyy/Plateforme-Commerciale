@@ -1,11 +1,12 @@
 // Carte réelle du diagnostic (E2-3), seule carte de la page : affichée d'elle-même dès qu'une adresse valide est en session.
 // Aucune requête tierce sans adresse valide. Le géocodage part au chargement ; Leaflet (copié dans assets/vendor/) n'est chargé
 // qu'après le premier rendu. Rien n'est écrit : seule lecture de session, la clé « adresse ».
-// Calques : les cases pilotent des couches WMS de Géorisques ; fond OpenStreetMap, repli automatique sur le Plan IGN.
+// Calques : seuls ceux des aléas recensés à l'adresse (API Géorisques, coordonnées seulement) sont proposés ; les cases pilotent
+// des couches WMS ; fond OpenStreetMap, repli automatique sur le Plan IGN.
 import { donneesPretes } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
 import { TOUS, calquesParDefaut } from './diagnostic-logique.js';
-import { analyserGeocodage, calquesActifs, chaineAttribution, construireUrlGeocodage, couchesPourCalque, doitBasculer, gabaritFondValide, hoteAutorise, libellesLegende, optionsWms } from './carte-reelle-logique.js';
+import { analyserGeocodage, calquesActifs, calquesProposes, chaineAttribution, cochesInitiales, construireUrlGaspar, construireUrlGeocodage, construireUrlRga, doitBasculer, etatCalques, gabaritFondValide, hoteAutorise, libelleCalque, libellesLegende, lireExpositionRga, lireRisquesGaspar, optionsWms } from './carte-reelle-logique.js';
 
 function adresseDeSession() {
   try {
@@ -31,6 +32,38 @@ async function geocoder(adresse, config) {
   } finally {
     clearTimeout(minuterie);
   }
+}
+
+// Lecture d'une réponse de l'API Géorisques (CORS, sans identifiants, délai maximal) ; null en cas d'échec ou de code non 2xx.
+async function lireTexteApi(url, delai, signal) {
+  if (url === '') return null;
+  const controle = new AbortController();
+  const arret = () => controle.abort();
+  signal.addEventListener('abort', arret, { once: true });
+  const minuterie = setTimeout(arret, delai);
+  try {
+    const reponse = await fetch(url, { mode: 'cors', credentials: 'omit', signal: controle.signal });
+    return reponse.ok ? await reponse.text() : null;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(minuterie);
+    signal.removeEventListener('abort', arret);
+  }
+}
+
+// Seules lectures de l'API : risques de la commune (gaspar) puis exposition aux argiles (rga) ; coordonnées seulement, jamais l'adresse.
+const lireGaspar = (point, config, signal) => lireTexteApi(construireUrlGaspar(point.lat, point.lon, config.api.gaspar, config.api.rayon), config.api.delaiMs, signal);
+const lireRga = (point, config, signal) => lireTexteApi(construireUrlRga(point.lat, point.lon, config.api.rga), config.api.delaiMs, signal);
+
+async function lireAleas(point, config, signal) {
+  const mots = { cles: config.api.cles, calques: Object.fromEntries(Object.entries(config.detection).filter(([, regle]) => regle.source === 'gaspar').map(([calque, regle]) => [calque, regle.mots])) };
+  const brutGaspar = await lireGaspar(point, config, signal); // lectures séquentielles
+  const brutRga = await lireRga(point, config, signal);
+  return {
+    gaspar: brutGaspar === null ? null : lireRisquesGaspar(brutGaspar, mots),
+    rga: brutRga === null ? null : lireExpositionRga(brutRga, config.detection.argile),
+  };
 }
 
 // Leaflet n'est demandé qu'après le premier rendu : événement load, puis temps libre du navigateur (sinon un tour de boucle).
@@ -87,7 +120,7 @@ function initialiser(donnees) {
   const cases = () => [...document.querySelectorAll('#liste-calques input')];
   const radios = () => [...document.querySelectorAll('#liste-fonds input')];
   // `fond` : clé du fond affiché ; `manuel` : le visiteur a choisi un fond (plus de bascule automatique).
-  const etatCarte = { carte: null, sequence: 0, fond: null, couche: null, manuel: false, erreurs: 0, charges: 0, debut: 0, minuterie: null, calques: new Map(), controle: null, attribution: '' };
+  const etatCarte = { carte: null, sequence: 0, fond: null, couche: null, manuel: false, erreurs: 0, charges: 0, debut: 0, minuterie: null, calques: new Map(), controle: null, attribution: '', controleApi: null, aleas: null };
 
   // Cadre : message (sans adresse, chargement, échec) ou carte ; le bouton « Réessayer » n'accompagne que les échecs.
   const afficherMessage = (texte, echec) => {
@@ -101,21 +134,52 @@ function initialiser(donnees) {
     reessayer.hidden = true;
   };
 
-  // Cases des calques : une par calque qui a au moins une couche (chaleur : note statique, jamais de case).
-  const construireCalques = () => {
+  const filtreCourant = () => document.querySelector('input[name="alea"]:checked')?.value ?? TOUS;
+  const aleasTextes = textes.aleas;
+  const zoneMessage = el('aleas-message');
+  const zoneSecours = el('aleas-secours');
+  const annonce = el('aleas-annonce');
+
+  // Panneau « Aléas recensés à cette adresse » : message d'attente ou de lecture, aucune case.
+  const reinitialiserAleas = (message) => {
+    for (const choix of el('liste-calques').querySelectorAll('label')) choix.remove();
+    etatCarte.aleas = null;
+    zoneMessage.textContent = message;
+    zoneMessage.hidden = false;
+    zoneSecours.hidden = true;
+    annonce.textContent = '';
+  };
+
+  // Cases : une par calque proposé (présent ou inconnu), cochées selon le filtre d'aléa ; mode de secours si tout est inconnu.
+  const rendreAleas = (lecture) => {
+    const resultat = etatCalques({ gaspar: lecture.gaspar, rga: lecture.rga, calquesConfig: config });
+    const proposes = calquesProposes(resultat);
+    reinitialiserAleas('');
+    etatCarte.aleas = { resultat, proposes };
+    const coches = cochesInitiales(proposes, calquesParDefaut(donnees.diagnostic.aleas, filtreCourant()));
     const modele = el('modele-calque');
-    const filtre = document.querySelector('input[name="alea"]:checked')?.value ?? TOUS;
-    const coches = calquesParDefaut(donnees.diagnostic.aleas, filtre);
-    for (const id of Object.keys(config.calques)) {
-      if (couchesPourCalque(id, config).length === 0) continue;
+    for (const id of proposes) {
+      const { etat, niveau } = resultat.etats[id];
+      const libelle = libelleCalque(id, etat, niveau, { ...aleasTextes, calques: donnees.diagnostic.textes.carte.calques });
       const choix = modele.content.cloneNode(true);
       const case_ = choix.querySelector('input');
       case_.value = id;
       case_.checked = coches.includes(id);
-      choix.querySelector('span').textContent = donnees.diagnostic.textes.carte.calques[id];
+      choix.querySelector('.calque-choix__nom').textContent = libelle.nom;
+      choix.querySelector('.calque-choix__presence').textContent = libelle.presence;
       el('liste-calques').append(choix);
     }
+    const presents = Object.values(resultat.etats).filter((e) => e.etat === 'present').length;
+    zoneMessage.hidden = proposes.length > 0;
+    zoneMessage.textContent = proposes.length > 0 ? '' : aleasTextes.aucun;
+    zoneSecours.hidden = !resultat.secours;
+    zoneSecours.textContent = resultat.secours ? aleasTextes.secours : '';
+    if (resultat.secours) annonce.textContent = aleasTextes.secours;
+    else if (proposes.length === 0) annonce.textContent = aleasTextes.aucun;
+    else annonce.textContent = presents === 1 ? aleasTextes.annonceUn : aleasTextes.annonceN.replace('{n}', String(presents));
+    synchroniserCalques();
   };
+
   // Légende : une entrée par couche, visible seulement tant que son calque est affiché.
   const construireLegende = () => {
     const modele = el('modele-legende-reelle');
@@ -160,6 +224,7 @@ function initialiser(donnees) {
     }
     Object.assign(etatCarte, { fond: null, couche: null, manuel: false, erreurs: 0, charges: 0, debut: 0, minuterie: null, controle: null, attribution: '' });
     etatCarte.calques.clear();
+    etatCarte.controleApi?.abort();
     for (const radio of radios()) radio.checked = radio.value === config.fondParDefaut;
     etatFond.textContent = '';
     majLegende();
@@ -168,6 +233,7 @@ function initialiser(donnees) {
 
   const echec = (texte) => {
     detruire();
+    reinitialiserAleas(aleasTextes.attente);
     afficherMessage(texte, true);
   };
 
@@ -263,6 +329,7 @@ function initialiser(donnees) {
     const sequence = (etatCarte.sequence += 1);
     const annule = () => sequence !== etatCarte.sequence;
     detruire();
+    reinitialiserAleas(aleasTextes.attente);
     const adresse = adresseDeSession();
     if (adresse === null) {
       afficherMessage(textes.sansAdresse, false);
@@ -272,6 +339,10 @@ function initialiser(donnees) {
     const resultat = await geocoder(adresse, config);
     if (annule()) return;
     if (!resultat.ok) return echec(resultat.raison === 'hors-france' ? textes.horsFrance : textes.erreur);
+    // Lecture des aléas de l'adresse (coordonnées seulement), en parallèle du chargement de Leaflet.
+    zoneMessage.textContent = aleasTextes.lecture;
+    etatCarte.controleApi = new AbortController();
+    const lecture = lireAleas(resultat, config, etatCarte.controleApi.signal);
     await apresPremierRendu();
     if (annule()) return;
     let L;
@@ -290,6 +361,9 @@ function initialiser(donnees) {
       return echec(textes.erreur);
     }
     masquerMessage();
+    const aleas = await lecture;
+    if (annule()) return;
+    rendreAleas(aleas);
   }
 
   reessayer.addEventListener('click', () => {
@@ -301,11 +375,11 @@ function initialiser(donnees) {
   el('liste-calques').addEventListener('change', () => synchroniserCalques());
   // Un changement de filtre réinitialise les cases (« Tous » : toutes ; un aléa : la sienne) et la carte suit.
   document.addEventListener('diagnostic:filtre', (e) => {
-    const coches = calquesParDefaut(donnees.diagnostic.aleas, e.detail?.filtre ?? TOUS);
+    if (!etatCarte.aleas) return;
+    const coches = cochesInitiales(etatCarte.aleas.proposes, calquesParDefaut(donnees.diagnostic.aleas, e.detail?.filtre ?? TOUS));
     for (const case_ of cases()) case_.checked = coches.includes(case_.value);
     synchroniserCalques();
   });
-  construireCalques();
   construireLegende();
   construireFonds();
   majLegende();

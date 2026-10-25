@@ -226,9 +226,9 @@ describe('modules de la carte réelle', () => {
     expect(css).not.toMatch(/amber|red|rgb\(|hsl\(/i);
   });
 
-  it('carte-reelle.js : un seul fetch (géocodage), aucune écriture de stockage, de cookie ni d\'IndexedDB', () => {
+  it('carte-reelle.js : deux fetch (géocodage, API Géorisques), aucune écriture de stockage, de cookie ni d\'IndexedDB', () => {
     const src = lire('assets/js/carte-reelle.js');
-    expect(src.match(/\bfetch\(/g)).toHaveLength(1);
+    expect(src.match(/\bfetch\(/g)).toHaveLength(2); // géocodage et lecture de l'API Géorisques (lireTexteApi)
     expect(src).not.toMatch(/localStorage|indexedDB|document\.cookie|setItem|removeItem|sendBeacon|XMLHttpRequest|innerHTML|https?:\/\//);
     expect(src.match(/sessionStorage\.\w+/g)).toEqual(['sessionStorage.getItem']);
     expect(existsSync('assets/js/carte-reelle-logique.js')).toBe(true);

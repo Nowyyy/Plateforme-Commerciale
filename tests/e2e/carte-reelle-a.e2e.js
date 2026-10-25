@@ -167,7 +167,8 @@ test('« Mettre à jour » avec une autre adresse : carte recréée, un seul con
   await expect(page.locator('.leaflet-container')).toHaveCount(1);
   await page.locator('#adresse-evaluee').fill('8 avenue des Lilas, 31000 Toulouse');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
-  await expect.poll(() => journal.geocodage.length).toBe(2);
+  // vérification de l'adresse saisie (limit=1), puis géocodage de la carte avec le libellé accepté
+  await expect.poll(() => journal.geocodage.length).toBeGreaterThanOrEqual(3);
   expect(new URL(journal.geocodage[1].url).searchParams.get('q')).toBe('8 avenue des Lilas, 31000 Toulouse');
   await carteAffichee(page);
   await expect(page.locator('.leaflet-container')).toHaveCount(1);

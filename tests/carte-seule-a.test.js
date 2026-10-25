@@ -104,7 +104,7 @@ describe('hôtes autorisés et fonds', () => {
 describe('modules diagnostic.js et carte-reelle.js', () => {
   it('aucun stockage écrit ni appel réseau hors le fetch du géocodage', () => {
     const carte = sansCommentaires(lire('assets/js/carte-reelle.js'));
-    expect(carte.match(/\bfetch\(/g)).toHaveLength(1);
+    expect(carte.match(/\bfetch\(/g)).toHaveLength(2); // géocodage et lireTexteApi (API Géorisques)
     expect(carte).not.toMatch(/setItem|removeItem|localStorage|indexedDB|document\.cookie|sendBeacon|XMLHttpRequest|innerHTML|https?:\/\//);
     expect(carte.match(/sessionStorage\.\w+/g)).toEqual(['sessionStorage.getItem']);
     const diag = sansCommentaires(lire('assets/js/diagnostic.js'));

@@ -5,7 +5,7 @@ import { ADRESSE, ouvrirDiagnostic, simuler, surveillerConsole } from './carte-r
 const HOTES = ['data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org'];
 const ORIGINE = 'http://localhost:4173/';
 const carteAffichee = (page) => expect(page.locator('#carte-reelle .carte-reelle__repere')).toHaveCount(1);
-const calque = (page, nom) => page.getByRole('group', { name: 'Calques' }).getByRole('checkbox', { name: nom });
+const calque = (page, nom) => page.getByRole('group', { name: 'Aléas recensés à cette adresse' }).getByRole('checkbox', { name: nom });
 
 // Journal de toutes les requêtes (locales et externes) avec leurs en-têtes complets.
 function journaliser(page) {

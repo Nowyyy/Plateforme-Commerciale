@@ -23,7 +23,7 @@ const boite = async (page, role) => {
   expect(b, role).not.toBeNull();
   return b;
 };
-const calques = (page) => page.getByRole('group', { name: 'Calques' });
+const calques = (page) => page.getByRole('group', { name: 'Aléas recensés à cette adresse' });
 
 test('calques : trois cases (chaleur sans case), état initial selon le filtre, réinitialisation au changement de filtre', async ({ page }) => {
   await ouvrir(page, 1440);
@@ -64,7 +64,7 @@ test('lien Géorisques : adresse déclarée, nouvel onglet, noopener noreferrer,
   await expect(lien).toContainText('(nouvel onglet)');
   await expect(page.getByText("Ce démonstrateur n'envoie pas votre adresse à ce site.")).toBeVisible();
   expect(await lien.getAttribute('href')).not.toContain('?');
-  expect(requetes.filter((u) => u.includes('georisques') && !u.includes('/services?'))).toEqual([]);
+  expect(requetes.filter((u) => u.includes('georisques') && !u.includes('/services?') && !u.includes('/api/v1/'))).toEqual([]);
 });
 
 test('enchaînement : carte, puis score et équipements en dessous à 1440 px ; ordre vertical à 375 px', async ({ page }) => {

@@ -68,7 +68,7 @@ for (const largeur of [375, 1440]) {
       const u = new URL(url);
       if (decodeURIComponent(url).includes('Tilleuls')) {
         expect(u.hostname).toBe('data.geopf.fr');
-        expect(u.pathname).toBe('/geocodage/search');
+        expect(['/geocodage/search', '/geocodage/completion/']).toContain(u.pathname); // vérification, carte ou suggestions
       } else {
         expect(['localhost', 'data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org']).toContain(u.hostname);
       }

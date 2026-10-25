@@ -22,12 +22,16 @@ export const reponseRecherche = (label, type = 'housenumber', score = 0.92, lon 
   features: [{ type: 'Feature', geometry: { type: 'Point', coordinates: [lon, lat] }, properties: { label, score, type } }],
 });
 
+// API Géorisques (formats inférés : aucun échantillon réel) : gaspar/risques et rga.
+export const reponseGaspar = (libelles = ['Inondation', 'Feu de forêt', 'Séisme']) => JSON.stringify({ results: 1, page: 1, total_pages: 1, data: [{ code_insee: '69123', libelle_commune: 'Lyon', risques_detail: libelles.map((libelle_risque_long, i) => ({ num_risque: String(10 + i), libelle_risque_long })) }] });
+export const reponseRga = (niveau = 2) => JSON.stringify(niveau === 0 ? { exposition: 'Exposition nulle', codeExposition: '0' } : { exposition: `Exposition ${['', 'faible', 'moyenne', 'forte'][niveau]}`, codeExposition: String(niveau) });
+
 const LOCAL = (url) => ['localhost', '127.0.0.1'].includes(new URL(url).hostname);
 
 // options.geocodage : { status, corps, attente } ; `attente: true` ne répond jamais (délai dépassé).
 // options.tuiles : { osm: 'ok' | 'abandon', ign: 'ok' | 'abandon', wms: 'ok' | 'abandon' }.
 export async function simuler(page, options = {}) {
-  const journal = { externes: [], geocodage: [], completion: [], osm: [], ign: [], wms: [] };
+  const journal = { externes: [], geocodage: [], completion: [], osm: [], ign: [], wms: [], api: [] };
   const geocodage = options.geocodage ?? {};
   const tuiles = { osm: 'ok', ign: 'ok', wms: 'ok', ...options.tuiles };
   page.on('request', (r) => {
@@ -41,6 +45,7 @@ export async function simuler(page, options = {}) {
     }
     else if (hote === 'data.geopf.fr' && r.url().includes('/wmts')) journal.ign.push(entree);
     else if (hote === 'tile.openstreetmap.org') journal.osm.push(entree);
+    else if (hote === 'www.georisques.gouv.fr' && new URL(r.url()).pathname.startsWith('/api/')) journal.api.push(entree);
     else if (hote === 'www.georisques.gouv.fr') journal.wms.push(entree);
   });
   await page.route((url) => !LOCAL(url.href), (route) => route.abort());
@@ -57,7 +62,16 @@ export async function simuler(page, options = {}) {
   const tuile = (cle) => (route) => (tuiles[cle] === 'abandon' ? route.abort() : route.fulfill({ status: 200, contentType: 'image/png', body: PNG }));
   await page.route('https://tile.openstreetmap.org/**', tuile('osm'));
   await page.route('https://data.geopf.fr/wmts**', tuile('ign'));
-  await page.route('https://www.georisques.gouv.fr/**', tuile('wms'));
+  const api = options.api ?? {};
+  const reponseApi = (cle, defaut) => (route) => {
+    const o = api[cle] ?? {};
+    if (o.attente) return;
+    if (o.abandon) return route.abort();
+    return route.fulfill({ status: o.status ?? 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: o.corps ?? defaut() });
+  };
+  await page.route('https://www.georisques.gouv.fr/services**', tuile('wms'));
+  await page.route('https://www.georisques.gouv.fr/api/v1/gaspar/**', reponseApi('gaspar', () => reponseGaspar()));
+  await page.route('https://www.georisques.gouv.fr/api/v1/rga**', reponseApi('rga', () => reponseRga()));
   return journal;
 }
 

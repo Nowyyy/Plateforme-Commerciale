@@ -91,7 +91,7 @@ test('« Mettre à jour » : adresse valide, sessionStorage mis à jour, aucune 
 
 test('pastilles d\'aléa : 5 boutons radio dans un fieldset, « Tous » par défaut, flèches', async ({ page }) => {
   await ouvrir(page, 1440);
-  const groupe = page.getByRole('group', { name: 'Aléa' });
+  const groupe = page.getByRole('group', { name: 'Aléa', exact: true });
   await expect(groupe).toBeVisible();
   expect(await groupe.evaluate((el) => el.tagName)).toBe('FIELDSET');
   const radios = groupe.getByRole('radio');

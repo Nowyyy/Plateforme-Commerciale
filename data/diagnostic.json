@@ -180,7 +180,6 @@
     },
     "carte": {
       "titre": "Carte et calques",
-      "legendeCalques": "Calques",
       "calques": {
         "inondation": "Zone inondable",
         "argile": "Retrait-gonflement des argiles",
@@ -201,6 +200,18 @@
       "seuil": 0.5,
       "delaiMs": 10000,
       "typesAcceptes": ["housenumber", "street", "locality"]
+    },
+    "api": {
+      "gaspar": "https://www.georisques.gouv.fr/api/v1/gaspar/risques",
+      "rga": "https://www.georisques.gouv.fr/api/v1/rga",
+      "rayon": 1000,
+      "delaiMs": 10000,
+      "cles": ["libelle_risque_long", "libelle_risque_jo"]
+    },
+    "detection": {
+      "inondation": { "source": "gaspar", "mots": ["inondation", "crue", "submersion"] },
+      "feu": { "source": "gaspar", "mots": ["feu de foret", "feux de foret", "incendie"] },
+      "argile": { "source": "rga", "cle": "expos", "cleCode": "codeExposition", "niveaux": { "forte": 3, "moyenne": 2, "faible": 1 } }
     },
     "saisie": {
       "minCaracteres": 3,
@@ -272,6 +283,23 @@
       "zoomArriere": "Dézoomer",
       "basculeFond": "Le fond OpenStreetMap n'a pas répondu : bascule sur le Plan IGN.",
       "chaleurNote": "Aucune carte de chaleur n'est disponible auprès de Géorisques.",
+      "aleas": {
+        "titre": "Aléas recensés à cette adresse",
+        "attente": "Les aléas recensés s'affichent une fois la carte chargée.",
+        "lecture": "Lecture des aléas recensés à cette adresse…",
+        "aucun": "Aucun aléa recensé à cette adresse parmi ceux affichables sur la carte.",
+        "secours": "Les aléas de cette adresse n'ont pas pu être déterminés ; tous les calques disponibles sont proposés.",
+        "source": "Source : Géorisques (aléas recensés à l'échelle de la commune pour l'inondation et les feux de forêt, à l'adresse pour les argiles).",
+        "annonceUn": "1 aléa recensé à cette adresse.",
+        "annonceN": "{n} aléas recensés à cette adresse.",
+        "recense": "recensé",
+        "inconnue": "présence non déterminée",
+        "exposition": {
+          "1": "exposition faible",
+          "2": "exposition moyenne",
+          "3": "exposition forte"
+        }
+      },
       "scoreIllustratif": "Le score illustratif n'est pas calculé à partir de cette carte.",
       "legendeFond": "Fond de carte",
       "legendeCouches": "Couches affichées",

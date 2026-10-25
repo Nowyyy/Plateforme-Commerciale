@@ -9,7 +9,7 @@ const COUCHES = {
 };
 const HOTES = ['data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org'];
 const etat = (page) => page.locator('#carte-reelle-fond-etat');
-const calque = (page, nom) => page.getByRole('group', { name: 'Calques' }).getByRole('checkbox', { name: nom });
+const calque = (page, nom) => page.getByRole('group', { name: 'Aléas recensés à cette adresse' }).getByRole('checkbox', { name: nom });
 const couchesLeaflet = (page) => page.locator('#carte-reelle .leaflet-layer');
 const parametres = (url) => Object.fromEntries([...new URL(url).searchParams].map(([cle, valeur]) => [cle.toUpperCase(), valeur]));
 
@@ -58,7 +58,7 @@ test('cases : décocher retire les couches, recocher les remet, un changement de
 test('« Chaleur extrême » : aucune case, note statique dans le panneau, aucune requête associée', async ({ page }) => {
   const journal = await simuler(page);
   await afficherCarte(page);
-  await expect(page.getByRole('group', { name: 'Calques' }).getByRole('checkbox')).toHaveCount(3);
+  await expect(page.getByRole('group', { name: 'Aléas recensés à cette adresse' }).getByRole('checkbox')).toHaveCount(3);
   await expect(page.getByRole('checkbox', { name: 'Chaleur extrême' })).toHaveCount(0);
   await expect(page.locator('#note-chaleur')).toHaveText("Aucune carte de chaleur n'est disponible auprès de Géorisques.");
   await expect(page.locator('#mention-reelle')).toHaveText("Le score illustratif n'est pas calculé à partir de cette carte.");

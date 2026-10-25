@@ -127,7 +127,7 @@ describe('diagnostic.html (partie B)', () => {
     const fonds = html.slice(html.indexOf('carte-reelle__fonds'), html.indexOf('</fieldset>', html.indexOf('carte-reelle__fonds')));
     expect(fonds).toContain('type="radio"');
     expect(fonds).not.toMatch(/\sname=/);
-    expect(html).toMatch(/<fieldset class="calques">\s*<legend data-texte="diagnostic\.textes\.carte\.legendeCalques">/);
+    expect(html).toMatch(/<fieldset class="calques">\s*<legend data-texte="diagnostic\.carteReelle\.textes\.aleas\.titre">/);
     expect(html).toContain('<template id="modele-calque">');
     const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
     expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);

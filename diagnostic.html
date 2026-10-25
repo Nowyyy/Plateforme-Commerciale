@@ -130,12 +130,16 @@
           <p class="visuellement-cache" id="carte-reelle-clavier" data-texte="diagnostic.carteReelle.textes.aideClavier"></p>
           <div class="carte-panneau carte">
             <fieldset class="calques">
-              <legend data-texte="diagnostic.textes.carte.legendeCalques"></legend>
+              <legend data-texte="diagnostic.carteReelle.textes.aleas.titre"></legend>
+              <p class="diag__mention" id="aleas-message" data-texte="diagnostic.carteReelle.textes.aleas.attente"></p>
+              <p class="diag__mention" id="aleas-secours" hidden></p>
               <div class="calques__liste" id="liste-calques">
                 <template id="modele-calque">
-                  <label class="calque-choix"><input type="checkbox"><span></span></label>
+                  <label class="calque-choix"><input type="checkbox"><span class="calque-choix__texte"><span class="calque-choix__nom"></span> <span class="calque-choix__presence"></span></span></label>
                 </template>
               </div>
+              <p class="diag__mention" id="aleas-source" data-texte="diagnostic.carteReelle.textes.aleas.source"></p>
+              <p class="visuellement-cache" id="aleas-annonce" role="status"></p>
             </fieldset>
             <fieldset class="calques carte-reelle__fonds">
               <legend data-texte="diagnostic.carteReelle.textes.legendeFond"></legend>

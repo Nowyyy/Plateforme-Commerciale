@@ -352,6 +352,23 @@ html[data-rendu="erreur"] .diag__comparer {
   cursor: pointer;
 }
 
+.calque-choix__texte {
+  display: grid;
+}
+
+.calque-choix__presence {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.calques .diag__mention {
+  margin-block-end: var(--space-2);
+}
+
+.calques .diag__mention[hidden] {
+  display: none;
+}
+
 .calque-choix input {
   flex: none;
   inline-size: 1.375rem;
@@ -499,51 +516,69 @@ html[data-rendu="erreur"] .carte-grille {
   display: none;
 }
 
-/* Panneau de la carte : hauteur plancher (contenu maximal, toutes les couches affichées), mesurée par point de rupture ;
-   le remplissage par JavaScript et l'apparition de la carte ne décalent donc rien */
+/* Panneau de la carte : hauteur plancher (contenu maximal : mode de secours, toutes les couches affichées), mesurée par point de rupture ;
+   le remplissage par JavaScript, la lecture des aléas et l'apparition de la carte ne décalent donc rien */
 .carte-panneau {
-  min-block-size: 63.5rem;
+  min-block-size: 75rem;
 }
 
 @media (min-width: 375px) {
   .carte-panneau {
-    min-block-size: 62.5rem;
+    min-block-size: 73.8rem;
   }
 }
 
 @media (min-width: 390px) {
   .carte-panneau {
-    min-block-size: 59.5rem;
+    min-block-size: 69.6rem;
   }
 }
 
 @media (min-width: 414px) {
   .carte-panneau {
-    min-block-size: 58.5rem;
+    min-block-size: 68.45rem;
   }
 }
 
 @media (min-width: 480px) {
   .carte-panneau {
-    min-block-size: 54.25rem;
+    min-block-size: 62.85rem;
+  }
+}
+
+@media (min-width: 520px) {
+  .carte-panneau {
+    min-block-size: 59.6rem;
   }
 }
 
 @media (min-width: 600px) {
   .carte-panneau {
-    min-block-size: 49.5rem;
+    min-block-size: 56.8rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .carte-panneau {
+    min-block-size: 55.4rem;
+  }
+}
+
+@media (min-width: 1100px) {
+  .carte-panneau {
+    min-block-size: 54rem;
   }
 }
 
 @media (min-width: 1200px) {
   .carte-panneau {
-    min-block-size: 63.5rem;
+    min-block-size: 75rem;
   }
 }
 
 @media (min-width: 1280px) {
   .carte-panneau {
-    min-block-size: 59.5rem;
+    min-block-size: 69.6rem;
   }
 }
 
