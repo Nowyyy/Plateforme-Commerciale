@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
+import { simuler } from './carte-reelle-simulation.js';
 
 const produit = JSON.parse(readFileSync('data/produit.json', 'utf8'));
 const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
@@ -14,7 +15,7 @@ function surveiller(page) {
   const suivi = { messages: [], externes: [], urls: [] };
   page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) suivi.messages.push(m.text()); });
   page.on('pageerror', (e) => suivi.messages.push(e.message));
-  page.on('request', (r) => { if (!r.url().startsWith('http://localhost:4173/') && !r.url().startsWith('data:')) suivi.externes.push(r.url()); });
+  page.on('request', (r) => { if (!r.url().startsWith('http://localhost:4173/') && !r.url().startsWith('data:') && !['data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org'].includes(new URL(r.url()).hostname)) suivi.externes.push(r.url()); });
   page.on('framenavigated', (f) => { if (f === page.mainFrame()) suivi.urls.push(f.url()); });
   return suivi;
 }
@@ -36,6 +37,7 @@ const colonnes = (page) => page.locator('.comp__table thead th[scope="col"]:not(
 
 for (const largeur of [375, 1440]) {
   test(`parcours (a) à ${largeur} px : diagnostic, filtre Inondations, « Comparer ces solutions », tableau, fiche`, async ({ page }) => {
+    await simuler(page); // services de la carte simulés
     const suivi = surveiller(page);
     const debut = Date.now();
     await page.setViewportSize({ width: largeur, height: 900 });
@@ -74,6 +76,7 @@ for (const largeur of [375, 1440]) {
     const quatre = structuredClone(produit);
     quatre.produits.push({ ...trouver('pompe-de-relevage'), id: 'produit-extra', titre: 'Quatrième produit', reference: 'EXT-001', performances: { principale: 75, montage: 30, poids: 8 } });
     await page.route('**/data/produit.json', (route) => route.fulfill({ contentType: 'application/json', body: JSON.stringify(quatre) }));
+    await simuler(page); // services de la carte simulés
     const suivi = surveiller(page);
     const debut = Date.now();
     await page.setViewportSize({ width: largeur, height: 900 });

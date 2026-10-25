@@ -3,7 +3,7 @@
 import { lienExterneValide } from './rendu.js';
 import { valider } from './adresse-validation.js';
 
-// Seuls hôtes joignables après l'accord du visiteur. Géorisques : toujours avec « www » (sans, CORS bloque).
+// Seuls hôtes joignables par le site. Géorisques : toujours avec « www » (sans, CORS bloque).
 export const HOTES_CARTE = ['data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org'];
 
 // Métropole : latitude de 41 à 52, longitude de -6 à 10.
@@ -127,14 +127,9 @@ export function calquesActifs(cases, config) {
   return calques.filter((id) => cochees.has(id) && couchesPourCalque(id, config).length > 0);
 }
 
-// Légende de la carte réelle : une entrée par couche (libellé générique + nom technique) ; chaleur : mention d'indisponibilité.
-export function libellesLegende(config, libellesCalques) {
+// Légende de la carte réelle : une entrée par couche (libellé générique + nom technique) ; un calque sans couche (chaleur) n'en a pas.
+export function libellesLegende(config) {
   const textes = estObjet(config) && estObjet(config.textes) ? config.textes : {};
-  const noms = estObjet(libellesCalques) ? libellesCalques : {};
   const calques = estObjet(config) && estObjet(config.calques) ? Object.keys(config.calques) : [];
-  return calques.flatMap((calque) => {
-    const couches = listeCouches(calque, config);
-    if (couches.length === 0) return [{ calque, nom: null, libelle: texte(noms[calque]), technique: null, indisponible: texte(textes.chaleurIndisponible) }];
-    return couches.map((c) => ({ calque, nom: c.nom, libelle: texte(c.libelle), technique: texte(textes.nomTechnique).replace('{nom}', c.nom), indisponible: null }));
-  });
+  return calques.flatMap((calque) => listeCouches(calque, config).map((c) => ({ calque, nom: c.nom, libelle: texte(c.libelle), technique: texte(textes.nomTechnique).replace('{nom}', c.nom) })));
 }

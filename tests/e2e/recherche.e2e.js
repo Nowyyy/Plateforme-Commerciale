@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { simuler } from './carte-reelle-simulation.js';
 
 const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 
@@ -46,6 +47,7 @@ test('le formulaire est sans action et saisir efface l\'erreur', async ({ page }
 
 for (const largeur of [375, 1440]) {
   test(`parcours cliqué à ${largeur} px : accueil, adresse, diagnostic`, async ({ page }) => {
+    await simuler(page);
     const requetes = [];
     page.on('request', (r) => requetes.push(r.url()));
     await ouvrir(page, largeur);
@@ -61,9 +63,15 @@ for (const largeur of [375, 1440]) {
     expect(new URL(page.url()).search).toBe('');
     expect(new URL(page.url()).hash).toBe('');
     expect(await page.evaluate(() => sessionStorage.getItem('adresse'))).toBe(ADRESSE);
+    // l'adresse n'apparaît que dans les requêtes de géocodage vers data.geopf.fr (carte du diagnostic)
     for (const url of requetes) {
-      expect(decodeURIComponent(url)).not.toContain('Tilleuls');
-      expect(new URL(url).hostname).toBe('localhost');
+      const u = new URL(url);
+      if (decodeURIComponent(url).includes('Tilleuls')) {
+        expect(u.hostname).toBe('data.geopf.fr');
+        expect(u.pathname).toBe('/geocodage/search');
+      } else {
+        expect(['localhost', 'data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org']).toContain(u.hostname);
+      }
     }
   });
 }

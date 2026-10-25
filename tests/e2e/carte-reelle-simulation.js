@@ -53,6 +53,5 @@ export async function ouvrirDiagnostic(page, largeur, session = { adresse: ADRES
   }, session);
   await page.goto('/diagnostic.html');
   await page.waitForSelector('html[data-rendu="pret"]');
-  await page.waitForSelector('#carte-reelle-ouvrir[aria-disabled]');
   await page.evaluate(() => document.fonts.ready);
 }

@@ -1,23 +1,59 @@
-/* Carte réelle du diagnostic (E2-5) : bouton, consentement, cadre 4:3 identique au schéma, repère.
-   Les feuilles de Leaflet (assets/vendor/leaflet/) ne sont chargées qu'après l'accord du visiteur. */
-.schema[hidden],
+/* Carte réelle du diagnostic (E2-3) : cadre de hauteur fixe (aucun décalage quand Leaflet apparaît), message d'état, repère.
+   Les feuilles de Leaflet (assets/vendor/leaflet/) ne sont chargées qu'après le premier rendu. */
 .carte-reelle[hidden],
-.carte-reelle__consentement[hidden],
-.carte-schema .bouton[hidden] {
+.carte-cadre__message[hidden],
+.carte-cadre__message .bouton[hidden] {
   display: none;
 }
 
-/* Cadre de la carte réelle : mêmes dimensions que le schéma (4:3, même largeur maximale) */
-.carte-reelle {
-  display: block;
-  inline-size: 100%;
-  block-size: auto;
-  aspect-ratio: 4 / 3;
-  max-inline-size: 36rem;
-  margin-inline: auto;
+.carte-cadre {
+  position: relative;
+  min-inline-size: 0;
+  block-size: clamp(22rem, 65vh, 34rem);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+  background: var(--color-pastille);
   overflow: hidden;
+}
+
+.carte-reelle {
+  position: absolute;
+  inset: 0;
+}
+
+/* Message (sans adresse, chargement, échec) : centré dans le cadre, remplacé par la carte */
+.carte-cadre__message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.carte-cadre__etat {
+  max-inline-size: 36rem;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.carte-cadre__etat:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (min-width: 1200px) {
+  .carte-grille {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+    align-items: start;
+  }
+
+  .carte-cadre {
+    block-size: 36rem;
+  }
 }
 
 .carte-reelle:focus-visible {
@@ -34,47 +70,8 @@
   stroke-opacity: 1;
 }
 
-.carte-reelle__ligne {
-  display: grid;
-  justify-items: start;
-  gap: var(--space-2);
-}
-
-.carte-reelle__aide,
-.carte-reelle__etat {
-  color: var(--color-text-secondary);
-  font-size: var(--text-sm);
-}
-
-.carte-schema .carte-reelle__aide {
-  margin: 0;
-}
-
-.carte-reelle__consentement {
-  padding: var(--space-4);
-  border: 1px solid var(--color-border-fort);
-  border-radius: var(--radius-md);
-  background: var(--color-card);
-}
-
-.carte-reelle__consentement h3 {
-  margin-block: 0 var(--space-3);
-}
-
-.carte-reelle__consentement p {
-  margin-block: 0 var(--space-4);
-}
-
-.carte-reelle__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-}
-
-.carte-reelle__fonds[hidden],
-.carte-reelle__legende[hidden],
-.carte-schema .diag__mention[hidden],
-.carte-schema .legende[hidden] {
+/* État du fond (repli automatique) : sans texte, aucune hauteur */
+.carte-reelle__fonds + .diag__mention:empty {
   display: none;
 }
 
@@ -88,13 +85,14 @@
   font-size: var(--text-xs);
 }
 
-.legende__indisponible {
-  color: var(--color-text-secondary);
+.legende__item[hidden] {
+  display: none;
 }
 
-.calque-choix.est-indisponible {
-  color: var(--color-text-secondary);
-  cursor: default;
+.calques__titre {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 600;
 }
 
 /* Attributions de Leaflet : liens marine sur fond clair (contraste) */

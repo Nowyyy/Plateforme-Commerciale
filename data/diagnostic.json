@@ -141,7 +141,7 @@
     "erreur": "Saisissez une adresse d'au moins 5 caractères.",
     "legendeAlea": "Aléa",
     "tous": "Tous",
-    "mention": "Démonstrateur : l'adresse reste dans votre navigateur, rien n'est envoyé sauf carte réelle avec votre accord. Exemples.",
+    "information": "Pour vérifier l'adresse et afficher la carte, ce site interroge des services publics et ouverts : l'IGN (adresses et cartes) avec l'adresse saisie, Géorisques (zones de risque) avec les coordonnées de l'adresse, et OpenStreetMap (fond de carte). Ces services voient votre adresse IP. Ce site n'enregistre rien.",
     "equipements": {
       "titre": "Équipements recommandés",
       "intro": "Pour l'aléa choisi, voici l'essentiel à prévoir.",
@@ -175,9 +175,6 @@
         "chaleur": "Chaleur extrême"
       },
       "legendeAdresse": "Votre adresse",
-      "mention": "Carte schématique d'exemple, sans données réelles.",
-      "svgTitre": "Carte schématique d'un quartier d'exemple",
-      "svgDescription": "Quelques rues, des îlots de bâtiments et une parcelle avec une maison repérée comme votre adresse. Quatre calques d'exemple se superposent : zone inondable en bordure de rivière, retrait-gonflement des argiles, zone boisée exposée aux feux, zone urbaine dense exposée à la chaleur.",
       "lienGeorisques": "Consulter la source officielle des risques (Géorisques)",
       "nouvelOnglet": "(nouvel onglet)",
       "noteGeorisques": "Ce démonstrateur n'envoie pas votre adresse à ce site."
@@ -243,29 +240,20 @@
       "georisques": { "texte": "Données : Géorisques", "lien": "georisques" }
     },
     "textes": {
-      "bouton": "Afficher la carte réelle",
-      "aide": "Facultatif : votre adresse sera envoyée à des services externes, avec votre accord.",
-      "aideSansAdresse": "Saisissez d'abord une adresse.",
-      "consentement": {
-        "titre": "Afficher la carte réelle ?",
-        "texte": "Pour placer votre adresse sur une vraie carte, ce site envoie l'adresse saisie au service de géocodage de l'IGN (data.geopf.fr). Votre navigateur charge ensuite des cartes d'OpenStreetMap (ou, en repli, le Plan IGN) et les zones de risque du service Géorisques (www.georisques.gouv.fr). Ces services voient votre adresse IP, et le géocodeur reçoit l'adresse saisie. Ce site n'enregistre rien. Vous pouvez revenir à la carte schématique à tout moment. Les zones affichées sont informatives : elles ne remplacent ni un document réglementaire ni l'avis d'un professionnel.",
-        "accepter": "J'accepte et j'affiche la carte réelle",
-        "garder": "Garder la carte schématique"
-      },
-      "chargement": "Chargement de la carte réelle…",
-      "affichee": "Carte réelle affichée.",
-      "retourFait": "Carte schématique affichée.",
-      "erreur": "La carte réelle n'a pas pu être affichée : service indisponible ou adresse introuvable. La carte schématique reste affichée.",
-      "horsFrance": "La carte réelle n'est disponible que pour la France métropolitaine.",
-      "retour": "Revenir à la carte schématique",
-      "regionNom": "Carte réelle autour de votre adresse",
+      "sansAdresse": "Saisissez une adresse pour afficher la carte.",
+      "chargement": "Chargement de la carte…",
+      "erreur": "La carte n'a pas pu être affichée : service indisponible ou adresse introuvable. Vérifiez l'adresse ci-dessus.",
+      "horsFrance": "La carte n'est disponible que pour la France métropolitaine.",
+      "reessayer": "Réessayer",
+      "regionNom": "Carte autour de votre adresse",
       "aideClavier": "Flèches : déplacer la carte. Plus et moins : zoomer.",
       "zoomAvant": "Zoomer",
       "zoomArriere": "Dézoomer",
       "basculeFond": "Le fond OpenStreetMap n'a pas répondu : bascule sur le Plan IGN.",
-      "chaleurIndisponible": "Aucune donnée de chaleur disponible auprès de Géorisques.",
-      "scoreIllustratif": "Le score affiché plus haut reste illustratif : il n'est pas calculé à partir de cette carte.",
+      "chaleurNote": "Aucune carte de chaleur n'est disponible auprès de Géorisques.",
+      "scoreIllustratif": "Le score illustratif n'est pas calculé à partir de cette carte.",
       "legendeFond": "Fond de carte",
+      "legendeCouches": "Couches affichées",
       "nomTechnique": "Couche : {nom}"
     }
   }

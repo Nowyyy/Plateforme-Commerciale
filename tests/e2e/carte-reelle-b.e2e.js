@@ -8,16 +8,14 @@ const COUCHES = {
   feu: 'PPRN_COMMUNE_FEU_APPROUV',
 };
 const HOTES = ['data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org'];
-const etat = (page) => page.locator('#carte-reelle-etat');
+const etat = (page) => page.locator('#carte-reelle-fond-etat');
 const calque = (page, nom) => page.getByRole('group', { name: 'Calques' }).getByRole('checkbox', { name: nom });
 const couchesLeaflet = (page) => page.locator('#carte-reelle .leaflet-layer');
 const parametres = (url) => Object.fromEntries([...new URL(url).searchParams].map(([cle, valeur]) => [cle.toUpperCase(), valeur]));
 
 async function afficherCarte(page, largeur = 1440) {
   await ouvrirDiagnostic(page, largeur);
-  await page.locator('#carte-reelle-ouvrir').click();
-  await page.getByRole('button', { name: "J'accepte et j'affiche la carte réelle" }).click();
-  await expect(etat(page)).toHaveText('Carte réelle affichée.');
+  await expect(page.locator('#carte-reelle .carte-reelle__repere')).toHaveCount(1);
 }
 
 test('requêtes WMS conformes : hôte avec www, WMS 1.3.0, EPSG:3857, transparent, couches de l\'état initial', async ({ page }) => {
@@ -43,8 +41,7 @@ test('cases : décocher retire les couches, recocher les remet, un changement de
   await expect(couchesLeaflet(page)).toHaveCount(3);
   await page.locator('#carte-reelle').focus();
   const avant = journal.wms.length;
-  await page.keyboard.press('ArrowRight');
-  await page.keyboard.press('ArrowRight');
+  await page.keyboard.press('+'); // un nouveau niveau de zoom demande toujours de nouvelles tuiles
   await expect.poll(() => journal.wms.length).toBeGreaterThan(avant);
   const apres = journal.wms.slice(avant).map((r) => parametres(r.url).LAYERS);
   expect(apres).not.toContain(COUCHES.inondation);
@@ -52,38 +49,23 @@ test('cases : décocher retire les couches, recocher les remet, un changement de
   await expect(couchesLeaflet(page)).toHaveCount(4);
   await page.getByRole('radio', { name: 'Feux de forêt' }).check({ force: true });
   await expect(calque(page, 'Feux de forêt')).toBeChecked();
-  for (const nom of ['Zone inondable', 'Retrait-gonflement des argiles', 'Chaleur extrême']) await expect(calque(page, nom)).not.toBeChecked();
+  for (const nom of ['Zone inondable', 'Retrait-gonflement des argiles']) await expect(calque(page, nom)).not.toBeChecked();
   await expect(couchesLeaflet(page)).toHaveCount(2);
   await page.getByRole('radio', { name: 'Tous' }).check({ force: true });
   await expect(couchesLeaflet(page)).toHaveCount(4);
 });
 
-test('« Chaleur extrême » : aria-disabled et description, aucune requête associée, rôle rendu au retour', async ({ page }) => {
+test('« Chaleur extrême » : aucune case, note statique dans le panneau, aucune requête associée', async ({ page }) => {
   const journal = await simuler(page);
-  await ouvrirDiagnostic(page, 1440);
-  await expect(calque(page, 'Chaleur extrême')).toBeChecked();
-  await page.locator('#carte-reelle-ouvrir').click();
-  await page.getByRole('button', { name: "J'accepte et j'affiche la carte réelle" }).click();
-  await expect(etat(page)).toHaveText('Carte réelle affichée.');
-  const chaleur = calque(page, 'Chaleur extrême');
-  await expect(chaleur).toHaveAttribute('aria-disabled', 'true');
-  await expect(chaleur).not.toHaveAttribute('disabled', /.*/);
-  await expect(chaleur).toHaveAccessibleDescription('Aucune donnée de chaleur disponible auprès de Géorisques.');
-  await expect(chaleur).not.toBeChecked();
-  await chaleur.click({ force: true });
-  await expect(chaleur).not.toBeChecked();
+  await afficherCarte(page);
+  await expect(page.getByRole('group', { name: 'Calques' }).getByRole('checkbox')).toHaveCount(3);
+  await expect(page.getByRole('checkbox', { name: 'Chaleur extrême' })).toHaveCount(0);
+  await expect(page.locator('#note-chaleur')).toHaveText("Aucune carte de chaleur n'est disponible auprès de Géorisques.");
+  await expect(page.locator('#mention-reelle')).toHaveText("Le score illustratif n'est pas calculé à partir de cette carte.");
   await page.getByRole('radio', { name: 'Canicule' }).check({ force: true });
-  await expect(chaleur).not.toBeChecked();
-  await expect(chaleur).toHaveAttribute('aria-disabled', 'true');
-  await expect.poll(() => journal.wms.length).toBeGreaterThan(0);
+  await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(1); // fond seul : aucun calque pour la canicule
+  await expect.poll(() => journal.osm.length).toBeGreaterThan(0);
   expect(journal.wms.filter((r) => /chaleur|canicule/i.test(r.url))).toEqual([]);
-  await page.getByRole('radio', { name: 'Tous' }).check({ force: true });
-  await page.getByRole('button', { name: 'Revenir à la carte schématique' }).click();
-  await expect(chaleur).not.toHaveAttribute('aria-disabled', /.*/);
-  await expect(chaleur).toHaveAccessibleDescription('');
-  await expect(chaleur).toBeChecked(); // état retrouvé : « Tous » coche les quatre calques
-  await chaleur.uncheck();
-  await expect(chaleur).not.toBeChecked();
 });
 
 test('fonds : Plan IGN par le choix du visiteur, retour à OpenStreetMap, flèches dans le groupe', async ({ page }) => {
@@ -172,7 +154,7 @@ test('clavier : la carte est atteignable par Tab, flèches et plus/moins, aucun 
   await afficherCarte(page);
   const carte = page.locator('#carte-reelle');
   await expect(carte).toHaveAttribute('role', 'region');
-  await expect(carte).toHaveAccessibleName('Carte réelle autour de votre adresse');
+  await expect(carte).toHaveAccessibleName('Carte autour de votre adresse');
   await expect(carte).toHaveAccessibleDescription('Flèches : déplacer la carte. Plus et moins : zoomer.');
   await calque(page, 'Zone inondable').focus();
   let atteinte = false;
@@ -215,35 +197,7 @@ for (const largeur of [375, 768, 1440]) {
   });
 }
 
-test('mesures à 1440 px : même cadre que le schéma, critères de colonne du lot 4 ; à 375 px aucun débordement', async ({ page }) => {
-  await simuler(page);
-  await ouvrirDiagnostic(page, 1440);
-  const schema = await page.locator('.schema').boundingBox();
-  await page.locator('#carte-reelle-ouvrir').click();
-  await page.getByRole('button', { name: "J'accepte et j'affiche la carte réelle" }).click();
-  await expect(etat(page)).toHaveText('Carte réelle affichée.');
-  await page.waitForTimeout(500); // fin du défilement vers la carte (focus), puis une seule lecture de toutes les boîtes
-  const { carte, score, equip, cadre } = await page.evaluate(() => {
-    const lire = (sel) => { const b = document.querySelector(sel).getBoundingClientRect(); return { x: b.x, y: b.y, width: b.width, height: b.height }; };
-    return { carte: lire('[data-role="carte"]'), score: lire('[data-role="score"]'), equip: lire('[data-role="equipements"]'), cadre: lire('#carte-reelle') };
-  });
-  const ecart = Math.abs(equip.y + equip.height - (carte.y + carte.height));
-  console.log(`1440 px : cadre ${cadre.width.toFixed(1)} × ${cadre.height.toFixed(1)} (schéma ${schema.width.toFixed(1)} × ${schema.height.toFixed(1)}), carte ${carte.width.toFixed(1)}, score ${score.width.toFixed(1)}, équipements ${equip.width.toFixed(1)}, écart des bas ${ecart.toFixed(1)}`);
-  expect(Math.abs(cadre.width - schema.width)).toBeLessThanOrEqual(1);
-  expect(Math.abs(cadre.height - schema.height)).toBeLessThanOrEqual(1);
-  expect(Math.abs(cadre.width / cadre.height - 4 / 3) / (4 / 3)).toBeLessThanOrEqual(0.02);
-  expect(Math.abs(carte.width - score.width)).toBeLessThanOrEqual(1);
-  expect(equip.width).toBeGreaterThanOrEqual(1.8 * score.width);
-  expect(ecart).toBeLessThanOrEqual(8);
-  await page.setViewportSize({ width: 375, height: 900 });
-  await expect(page.locator('#legende-reelle')).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  const attribution = await page.locator('#carte-reelle .leaflet-control-attribution').boundingBox();
-  const petit = await page.locator('#carte-reelle').boundingBox();
-  expect(attribution.x + attribution.width).toBeLessThanOrEqual(petit.x + petit.width + 1);
-});
-
-test('aucune requête hors des trois hôtes, aucune écriture de stockage ni de cookie, CLS de l\'ouverture d\'au plus 0,02', async ({ page, context }) => {
+test('aucune requête hors des trois hôtes, aucune écriture de stockage ni de cookie, CLS du chargement avec carte d\'au plus 0,02', async ({ page, context }) => {
   const journal = await simuler(page);
   await page.addInitScript(() => {
     globalThis.__cls = 0;
@@ -251,22 +205,16 @@ test('aucune requête hors des trois hôtes, aucune écriture de stockage ni de 
       for (const entree of liste.getEntries()) if (!entree.hadRecentInput) globalThis.__cls += entree.value;
     }).observe({ type: 'layout-shift', buffered: true });
   });
-  await ouvrirDiagnostic(page, 375);
-  await page.waitForTimeout(300);
-  const avant = await page.evaluate(() => ({ cles: Object.keys(sessionStorage).sort(), cls: globalThis.__cls }));
-  await page.locator('#carte-reelle-ouvrir').click();
-  await page.getByRole('button', { name: "J'accepte et j'affiche la carte réelle" }).click();
-  await expect(etat(page)).toHaveText('Carte réelle affichée.');
+  await afficherCarte(page, 375);
   await page.getByText('Plan IGN', { exact: true }).click();
   await expect(page.getByRole('radio', { name: 'Plan IGN' })).toBeChecked();
-  await calque(page, 'Zone inondable').uncheck();
   await page.waitForTimeout(500);
   const apres = await page.evaluate(() => ({ cles: Object.keys(sessionStorage).sort(), cls: globalThis.__cls, local: Object.keys(localStorage).length }));
-  console.log(`CLS avant ouverture ${avant.cls.toFixed(4)}, après ouverture ${apres.cls.toFixed(4)}`);
-  expect(apres.cles).toEqual(avant.cles);
+  console.log(`CLS du chargement avec carte : ${apres.cls.toFixed(4)}`);
+  expect(apres.cles).toEqual(['adresse']);
   expect(apres.local).toBe(0);
   expect(await context.cookies()).toEqual([]);
-  expect(apres.cls - avant.cls).toBeLessThanOrEqual(0.02);
+  expect(apres.cls).toBeLessThanOrEqual(0.02);
   expect(journal.externes.length).toBeGreaterThan(0);
   for (const { url } of journal.externes) expect(HOTES, url).toContain(new URL(url).hostname);
 });

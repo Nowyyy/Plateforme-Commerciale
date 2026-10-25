@@ -53,14 +53,14 @@ test('filtre « Tous » : le clic mène au comparateur avec l\'aléa de niveau m
   await expect(page.locator('.comp__table thead th[scope="col"]:not(:first-child)')).toHaveCount(2);
 });
 
-test('diagnostic à 1440 px : critères du lot 4 conservés (carte = score à 1 px, équipements au moins 1,8 fois plus large, bas de colonne à 8 px)', async ({ page }) => {
+test('diagnostic à 1440 px : score et équipements côte à côte, hauts alignés, équipements environ deux fois plus larges (lot 4d)', async ({ page }) => {
   await ouvrirDiagnostic(page, 1440);
   const boite = async (role) => (await page.locator(`[data-role="${role}"]`).boundingBox());
-  const [carte, score, equipements] = await Promise.all([boite('carte'), boite('score'), boite('equipements')]);
-  console.log(`1440 px : carte ${carte.width} px, score ${score.width} px, equipements ${equipements.width} px, bas ${equipements.y + equipements.height} / ${carte.y + carte.height} px`);
-  expect(Math.abs(carte.width - score.width)).toBeLessThanOrEqual(1);
-  expect(equipements.width).toBeGreaterThanOrEqual(1.8 * score.width);
-  expect(Math.abs(equipements.y + equipements.height - (carte.y + carte.height))).toBeLessThanOrEqual(8);
+  const [score, equipements] = await Promise.all([boite('score'), boite('equipements')]);
+  console.log(`1440 px : score ${score.width} px, equipements ${equipements.width} px, hauts ${score.y} / ${equipements.y}`);
+  expect(Math.abs(score.y - equipements.y)).toBeLessThanOrEqual(2);
+  expect(equipements.width / score.width).toBeGreaterThanOrEqual(1.7);
+  expect(equipements.width / score.width).toBeLessThanOrEqual(2.3);
 });
 
 const ETATS = [

@@ -14,3 +14,4 @@ lot-8c|Espace client simulé : connexion, tableau de bord, achats, détail d'une
 lot-8d|Service après-vente simulé : accès sans compte, demande d'intervention, suivi des demandes, sans rien enregistrer.
 lot-9|Comparateur de solutions : choix de deux à trois produits d'un même aléa, indicateur de niveau et tableau de comparaison, valeurs d'exemple.
 lot-4c|Carte réelle du diagnostic : consentement du visiteur, fond OpenStreetMap ou Plan IGN, calques Géorisques, données de services publics.
+lot-4d|Carte réelle seule et agrandie, saisie assistée de l'adresse, calques selon les aléas de l'adresse.

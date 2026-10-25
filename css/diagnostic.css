@@ -139,45 +139,33 @@ html[data-rendu="erreur"] .diag__panneau {
 
 @media (min-width: 1200px) {
   .diag {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-    grid-template-rows: auto auto 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
     column-gap: var(--space-4);
   }
 
-  .diag__adresse {
+  .diag__adresse,
+  .diag__carte {
     grid-column: 1 / -1;
   }
 
-  .diag__equipements {
-    grid-column: 1;
-    grid-row: 2 / span 2;
-  }
-
   .diag__score {
-    grid-column: 2;
-    grid-row: 2;
+    grid-column: 1;
   }
 
-  .diag__carte {
-    grid-column: 2;
-    grid-row: 3;
+  .diag__equipements {
+    grid-column: 2 / -1;
   }
 }
 
-/* Équipements E2-3 */
+/* Équipements E2-5 : hauteur naturelle, jamais étirés à celle du score */
 .diag__intro {
   max-inline-size: 40rem;
   color: var(--color-text-secondary);
 }
 
-.diag__equipements {
-  display: flex;
-  flex-direction: column;
-}
-
 .equipements {
   display: grid;
-  flex: 1 1 auto;
   gap: var(--space-4);
   margin: 0;
   padding: 0;
@@ -306,109 +294,36 @@ html[data-rendu="erreur"] .diag__comparer {
   .equipement__visuel {
     aspect-ratio: auto;
     min-block-size: 8rem;
+    max-block-size: 12rem;
   }
 }
 
-@media (min-width: 1200px) {
-  .equipements {
-    grid-template-rows: repeat(3, 1fr);
-  }
-}
-
-/* Carte E2-5 : SVG schématique à quatre calques distingués par un motif */
-.diag__carte {
-  display: flex;
-  flex-direction: column;
-}
-
-.carte-schema {
+/* Carte E2-3 : cadre pleine largeur et panneau de contrôles (calques, fond, légende, mentions) */
+.carte-grille {
   display: grid;
-  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+.carte-panneau {
+  display: grid;
   gap: var(--space-4);
   align-content: start;
+  min-inline-size: 0;
 }
 
-.carte-schema p {
+.carte-panneau p {
   margin: 0;
 }
 
-.schema {
-  display: block;
-  inline-size: 100%;
-  block-size: auto;
-  aspect-ratio: 4 / 3;
-  max-inline-size: 36rem;
-  margin-inline: auto;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-}
-
-.schema__fond {
-  fill: var(--carte-fond);
-}
-
-.schema__batiments rect {
-  fill: var(--carte-bati);
-}
-
-.schema__rues {
-  fill: none;
-  stroke: var(--carte-rue);
-  stroke-width: 7;
-}
-
-.schema__parcelle {
-  fill: var(--carte-parcelle);
-  stroke: var(--color-navy);
-  stroke-width: 1.5;
-}
-
-.schema__maison {
-  fill: var(--color-pastille);
-  stroke: var(--color-navy);
-  stroke-width: 2;
-  stroke-linejoin: round;
-}
-
-.schema__repere {
-  fill: var(--color-navy);
-  stroke: var(--color-on-navy);
-  stroke-width: 1.5;
-}
-
-.schema__repere-centre {
-  fill: var(--color-on-navy);
-}
-
-/* teinte de chaque calque, appliquée au groupe SVG, à la pastille de légende et au motif */
+/* teinte de chaque calque, appliquée à la pastille de légende */
 [data-calque="inondation"] { --teinte: var(--calque-inondation); }
 [data-calque="argile"] { --teinte: var(--calque-argile); }
 [data-calque="feu"] { --teinte: var(--calque-feu); }
-[data-calque="chaleur"] { --teinte: var(--calque-chaleur); }
 
-.motif {
-  fill: none;
-  stroke-width: 1.6;
-}
-
-.motif--inondation { stroke: var(--calque-inondation); }
-.motif--argile { stroke: none; fill: var(--calque-argile); }
-.motif--feu { stroke: var(--calque-feu); stroke-width: 1.4; }
-.motif--chaleur { stroke: var(--calque-chaleur); stroke-width: 1.6; }
-
-.calque__fond,
 .legende__fond {
   fill: var(--teinte);
   fill-opacity: 0.14;
-}
-
-.calque__zone {
-  stroke: var(--teinte);
-  stroke-width: 1.5;
-}
-
-.calque.est-masque {
-  display: none;
 }
 
 .calques {
@@ -468,10 +383,6 @@ html[data-rendu="erreur"] .diag__comparer {
   border-radius: var(--radius-sm);
 }
 
-.legende__zone {
-  stroke: none;
-}
-
 .legende__repere {
   flex: none;
   inline-size: 1.75rem;
@@ -506,10 +417,6 @@ html:not([data-rendu]) .diag__aide {
   min-block-size: 3lh;
 }
 
-html:not([data-rendu]) .diag__panneau {
-  min-block-size: 30.4rem;
-}
-
 @media (min-width: 480px) {
   html:not([data-rendu]) .diag h1 {
     min-block-size: 1lh;
@@ -517,28 +424,6 @@ html:not([data-rendu]) .diag__panneau {
 
   html:not([data-rendu]) .diag__aide {
     min-block-size: 2lh;
-  }
-
-  html:not([data-rendu]) .diag__panneau {
-    min-block-size: 25.75rem;
-  }
-}
-
-@media (min-width: 700px) {
-  html:not([data-rendu]) .diag__panneau {
-    min-block-size: 22.5rem;
-  }
-}
-
-@media (min-width: 768px) {
-  html:not([data-rendu]) .diag__panneau {
-    min-block-size: 18.95rem;
-  }
-}
-
-@media (min-width: 900px) {
-  html:not([data-rendu]) .diag__panneau {
-    min-block-size: 17.5rem;
   }
 }
 
@@ -595,34 +480,116 @@ html[data-rendu="erreur"] .score {
 
 @media (min-width: 1200px) {
   html:not([data-rendu]) .score {
+    min-block-size: 17.7rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  html:not([data-rendu]) .score {
     min-block-size: 16.3rem;
   }
 }
 
-/* Carte : place réservée avant le remplissage (mesurée), invisible sans JavaScript */
-html:not([data-rendu]) .carte-schema {
-  min-block-size: calc(min(75vw - 62px, 432px) + 732px);
+/* Carte : cadre et panneau sont remplis par JavaScript ; invisibles avant, sans JavaScript ils n'apparaissent jamais */
+html:not([data-rendu]) .carte-grille {
   visibility: hidden;
 }
 
-html[data-rendu="erreur"] .carte-schema {
+html[data-rendu="erreur"] .carte-grille {
   display: none;
 }
 
-@media (min-width: 480px) {
-  html:not([data-rendu]) .carte-schema {
-    min-block-size: calc(min(75vw - 62px, 432px) + 680px);
+/* Panneau de la carte : hauteur plancher (contenu maximal, toutes les couches affichées), mesurée par point de rupture ;
+   le remplissage par JavaScript et l'apparition de la carte ne décalent donc rien */
+.carte-panneau {
+  min-block-size: 63.5rem;
+}
+
+@media (min-width: 375px) {
+  .carte-panneau {
+    min-block-size: 62.5rem;
   }
 }
 
-@media (min-width: 768px) {
-  html:not([data-rendu]) .carte-schema {
-    min-block-size: calc(min(75vw - 86px, 432px) + 680px);
+@media (min-width: 390px) {
+  .carte-panneau {
+    min-block-size: 59.5rem;
+  }
+}
+
+@media (min-width: 414px) {
+  .carte-panneau {
+    min-block-size: 58.5rem;
+  }
+}
+
+@media (min-width: 480px) {
+  .carte-panneau {
+    min-block-size: 54.25rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .carte-panneau {
+    min-block-size: 49.5rem;
   }
 }
 
 @media (min-width: 1200px) {
-  html:not([data-rendu]) .carte-schema {
-    min-block-size: 61.65rem;
+  .carte-panneau {
+    min-block-size: 63.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .carte-panneau {
+    min-block-size: 59.5rem;
+  }
+}
+
+/* Panneau d'adresse : hauteur plancher (contenu maximal) mesurée par point de rupture ; le remplissage ne décale rien */
+.diag__panneau {
+  min-block-size: 37.4rem;
+}
+
+@media (min-width: 389px) {
+  .diag__panneau {
+    min-block-size: 36rem;
+  }
+}
+
+@media (min-width: 479px) {
+  .diag__panneau {
+    min-block-size: 31.4rem;
+  }
+}
+
+@media (min-width: 520px) {
+  .diag__panneau {
+    min-block-size: 29.95rem;
+  }
+}
+
+@media (min-width: 699px) {
+  .diag__panneau {
+    min-block-size: 25.35rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .diag__panneau {
+    min-block-size: 21.75rem;
+  }
+}
+
+@media (min-width: 850px) {
+  .diag__panneau {
+    min-block-size: 20.35rem;
+  }
+}
+
+@media (min-width: 1150px) {
+  .diag__panneau {
+    min-block-size: 18.95rem;
   }
 }

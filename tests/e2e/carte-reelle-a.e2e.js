@@ -2,94 +2,110 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { ADRESSE, ouvrirDiagnostic, reponseGeocodage, simuler, surveillerConsole } from './carte-reelle-simulation.js';
 
-const boite = async (page, role) => {
-  const b = await page.locator(`[data-role="${role}"]`).boundingBox();
-  expect(b, role).not.toBeNull();
+const boite = async (page, selecteur) => {
+  const b = await page.locator(selecteur).first().boundingBox();
+  expect(b, selecteur).not.toBeNull();
   return b;
 };
-const ouvrir = (page) => page.locator('#carte-reelle-ouvrir');
-const panneau = (page) => page.locator('#carte-reelle-consentement');
 const etat = (page) => page.locator('#carte-reelle-etat');
-const accepter = async (page) => {
-  await ouvrir(page).click();
-  await page.getByRole('button', { name: "J'accepte et j'affiche la carte réelle" }).click();
-};
+const reessayer = (page) => page.getByRole('button', { name: 'Réessayer' });
 const SANS_RESSOURCE = (m) => !m.includes('Failed to load resource');
+const carteAffichee = async (page) => {
+  await expect(page.locator('#carte-reelle')).toBeVisible();
+  await expect(page.locator('#carte-reelle .carte-reelle__repere')).toHaveCount(1);
+};
 
-test('état initial à 375, 768 et 1440 px : console propre, aucun débordement, axe, aucune requête externe, mise en page du lot 4', async ({ page }) => {
+test('sans adresse : message dans le cadre, aucune requête tierce, aucun chargement de Leaflet', async ({ page }) => {
   const journal = await simuler(page);
-  const console_ = surveillerConsole(page);
-  for (const largeur of [375, 768, 1440]) {
-    await ouvrirDiagnostic(page, largeur);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `${largeur} px`).toBe(true);
-    const violations = (await new AxeBuilder({ page }).analyze()).violations;
-    expect(violations.map((v) => v.id), `${largeur} px`).toEqual([]);
-  }
-  const [carte, score, equip] = [await boite(page, 'carte'), await boite(page, 'score'), await boite(page, 'equipements')];
-  const ecart = Math.abs(equip.y + equip.height - (carte.y + carte.height));
-  console.log(`1440 px : carte ${carte.width} px, score ${score.width} px, équipements ${equip.width} px, écart des bas ${ecart} px`);
-  expect(Math.abs(carte.width - score.width)).toBeLessThanOrEqual(1);
-  expect(equip.width).toBeGreaterThanOrEqual(1.8 * score.width);
-  expect(ecart).toBeLessThanOrEqual(8);
-  expect(journal.externes).toEqual([]);
-  expect(console_).toEqual([]);
-});
-
-test('sans adresse : bouton aria-disabled avec son aide, le clic place le focus sur le champ', async ({ page }) => {
-  const journal = await simuler(page);
+  const locales = [];
+  page.on('request', (r) => { if (r.url().includes('/assets/vendor/leaflet/')) locales.push(r.url()); });
   await ouvrirDiagnostic(page, 1440, {});
-  await expect(ouvrir(page)).toHaveAttribute('aria-disabled', 'true');
-  await expect(ouvrir(page)).not.toHaveAttribute('disabled', /.*/);
-  await expect(page.locator('#carte-reelle-aide')).toHaveText("Saisissez d'abord une adresse.");
-  await ouvrir(page).click({ force: true }); // aria-disabled : Playwright attend sinon un bouton actif
-  await expect(page.locator('#adresse-evaluee')).toBeFocused();
-  await expect(panneau(page)).toBeHidden();
+  await expect(etat(page)).toHaveText('Saisissez une adresse pour afficher la carte.');
+  await expect(page.locator('#carte-reelle')).toBeHidden();
+  await expect(reessayer(page)).toBeHidden();
+  await page.waitForTimeout(600);
   expect(journal.externes).toEqual([]);
+  expect(locales).toEqual([]);
 });
 
-test('avec adresse : le panneau s\'ouvre sans requête ; « Garder la carte schématique » le ferme et rend le focus', async ({ page }) => {
-  const journal = await simuler(page);
-  await ouvrirDiagnostic(page, 375);
-  await expect(ouvrir(page)).toHaveAttribute('aria-disabled', 'false');
-  await expect(page.locator('#carte-reelle-aide')).toContainText('avec votre accord');
-  await ouvrir(page).click();
-  await expect(panneau(page)).toBeVisible();
-  const region = page.getByRole('region', { name: 'Afficher la carte réelle ?' });
-  await expect(region).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Afficher la carte réelle ?' })).toBeFocused();
-  await expect(panneau(page)).toContainText('data.geopf.fr');
-  expect(journal.externes).toEqual([]);
-  await page.getByRole('button', { name: 'Garder la carte schématique' }).click();
-  await expect(panneau(page)).toBeHidden();
-  await expect(ouvrir(page)).toBeFocused();
-  expect(journal.externes).toEqual([]);
-});
-
-test('accord : un géocodage avec l\'adresse, Leaflet de la même origine, tuiles OpenStreetMap, carte dans le cadre 4:3', async ({ page }) => {
+test('adresse valide : géocodage avec l\'adresse, puis Leaflet local, tuiles OpenStreetMap, carte et repère sans aucune action', async ({ page }) => {
   const journal = await simuler(page);
   const console_ = surveillerConsole(page);
   const locales = [];
   page.on('request', (r) => { if (r.url().includes('/assets/vendor/leaflet/')) locales.push(new URL(r.url()).pathname); });
   await ouvrirDiagnostic(page, 1440);
-  const schema = await page.locator('.schema').boundingBox();
-  await accepter(page);
-  await expect(page.locator('#carte-reelle')).toBeVisible();
-  await expect(page.locator('.schema')).toBeHidden();
-  await expect(etat(page)).toHaveText('Carte réelle affichée.');
-  await expect(page.locator('#carte-reelle .carte-reelle__repere')).toHaveCount(1);
+  await carteAffichee(page);
+  await expect(etat(page)).toBeHidden();
   await expect.poll(() => journal.osm.length).toBeGreaterThan(0);
   expect(journal.geocodage).toHaveLength(1);
   expect(new URL(journal.geocodage[0].url).searchParams.get('q')).toBe(ADRESSE);
   expect(locales).toEqual(expect.arrayContaining(['/assets/vendor/leaflet/leaflet.js', '/assets/vendor/leaflet/leaflet.css']));
-  const carte = await page.locator('#carte-reelle').boundingBox();
-  console.log(`1440 px : schéma ${schema.width} × ${schema.height} px, carte réelle ${carte.width} × ${carte.height} px`);
-  expect(Math.abs(carte.width - schema.width)).toBeLessThanOrEqual(1);
-  expect(Math.abs(carte.height - schema.height)).toBeLessThanOrEqual(1);
-  expect(Math.abs(carte.width / carte.height - 4 / 3) / (4 / 3)).toBeLessThanOrEqual(0.02);
-  const hors = journal.externes.filter((r) => !r.url.startsWith('https://data.geopf.fr/geocodage/'));
-  expect(hors.filter((r) => decodeURIComponent(r.url).includes('Tilleuls'))).toEqual([]);
+  expect(journal.externes.filter((r) => !r.url.startsWith('https://data.geopf.fr/geocodage/') && decodeURIComponent(r.url).includes('Tilleuls'))).toEqual([]);
   expect(page.url()).not.toContain('Tilleuls');
   expect(console_).toEqual([]);
+});
+
+test('mise en page à 1440 px : cadre 800 × 540 au moins, panneau à droite, score et équipements côte à côte sans étirement', async ({ page }) => {
+  await simuler(page);
+  await ouvrirDiagnostic(page, 1440);
+  await carteAffichee(page);
+  const m = await page.evaluate(() => {
+    const lire = (sel) => { const b = document.querySelector(sel).getBoundingClientRect(); return { x: b.x, y: b.y, width: b.width, height: b.height }; };
+    const cartes = [...document.querySelectorAll('#liste-equipements > li')].map((li) => ({ li: li.getBoundingClientRect().height, corps: li.querySelector('.equipement__corps').getBoundingClientRect().height }));
+    return { cadre: lire('.carte-cadre'), panneau: lire('.carte-panneau'), score: lire('[data-role="score"]'), equip: lire('[data-role="equipements"]'), cartes };
+  });
+  console.log(`1440 px : cadre ${m.cadre.width.toFixed(0)} × ${m.cadre.height.toFixed(0)}, panneau ${m.panneau.width.toFixed(0)} px à ${m.panneau.x.toFixed(0)}, score ${m.score.width.toFixed(0)}, équipements ${m.equip.width.toFixed(0)}`);
+  expect(m.cadre.width).toBeGreaterThanOrEqual(800);
+  expect(m.cadre.height).toBeGreaterThanOrEqual(540);
+  expect(m.panneau.x).toBeGreaterThanOrEqual(m.cadre.x + m.cadre.width);
+  expect(Math.abs(m.panneau.y - m.cadre.y)).toBeLessThanOrEqual(2);
+  expect(Math.abs(m.score.y - m.equip.y)).toBeLessThanOrEqual(2);
+  expect(m.equip.width / m.score.width).toBeGreaterThanOrEqual(1.7);
+  expect(m.equip.width / m.score.width).toBeLessThanOrEqual(2.3);
+  expect(m.score.y).toBeGreaterThanOrEqual(m.cadre.y + m.cadre.height);
+  expect(m.cartes.length).toBeGreaterThan(0);
+  for (const c of m.cartes) expect(c.li, 'carte d\'équipement étirée').toBeLessThanOrEqual(c.corps + 48);
+});
+
+test('mise en page à 375 px : cadre 340 × 350 au moins, ordre adresse, carte, score, équipements ; aucun débordement à 375, 768 et 1440 px', async ({ page }) => {
+  await simuler(page);
+  await ouvrirDiagnostic(page, 375);
+  await carteAffichee(page);
+  const cadre = await boite(page, '.carte-cadre');
+  console.log(`375 px : cadre ${cadre.width.toFixed(0)} × ${cadre.height.toFixed(0)}`);
+  expect(cadre.width).toBeGreaterThanOrEqual(340);
+  expect(cadre.height).toBeGreaterThanOrEqual(350);
+  const hauts = [];
+  for (const role of ['adresse', 'carte', 'score', 'equipements']) hauts.push((await boite(page, `[data-role="${role}"]`)).y);
+  for (let i = 1; i < hauts.length; i += 1) expect(hauts[i]).toBeGreaterThan(hauts[i - 1]);
+  for (const largeur of [375, 768, 1440]) {
+    await page.setViewportSize({ width: largeur, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `${largeur} px`).toBe(true);
+  }
+});
+
+test('aucun décalage : le cadre garde ses dimensions entre « chargement » et la carte affichée', async ({ page }) => {
+  await simuler(page);
+  let liberer = () => {};
+  let attente = Promise.resolve();
+  await page.route('https://data.geopf.fr/geocodage/**', async (route) => {
+    await attente;
+    await route.fulfill({ status: 200, contentType: 'application/json', body: reponseGeocodage() });
+  });
+  for (const largeur of [375, 1440]) {
+    attente = new Promise((resolve) => { liberer = resolve; });
+    await ouvrirDiagnostic(page, largeur);
+    await expect(etat(page)).toHaveText('Chargement de la carte…');
+    const avant = await boite(page, '.carte-cadre');
+    const scoreAvant = await boite(page, '[data-role="score"]');
+    liberer();
+    await carteAffichee(page);
+    const apres = await boite(page, '.carte-cadre');
+    const scoreApres = await boite(page, '[data-role="score"]');
+    console.log(`${largeur} px : cadre ${avant.width} × ${avant.height} puis ${apres.width} × ${apres.height}`);
+    expect(apres).toEqual(avant);
+    expect(scoreApres.y).toBe(scoreAvant.y);
+  }
 });
 
 const ECHECS = [
@@ -100,89 +116,89 @@ const ECHECS = [
 ];
 
 for (const [nom, options, message] of ECHECS) {
-  test(`échec : ${nom} → message, schéma conservé, focus rendu`, async ({ page }) => {
-    await simuler(page, options);
+  test(`échec : ${nom} → message adapté, « Réessayer » relance le géocodage, console propre`, async ({ page }) => {
+    const journal = await simuler(page, options);
     const console_ = surveillerConsole(page);
     await ouvrirDiagnostic(page, 375);
-    await accepter(page);
     await expect(etat(page)).toContainText(message);
-    await expect(page.locator('.schema')).toBeVisible();
+    await expect(etat(page)).toHaveAttribute('role', 'status');
     await expect(page.locator('#carte-reelle')).toBeHidden();
-    await expect(panneau(page)).toBeHidden();
-    await expect(ouvrir(page)).toBeFocused();
-    await expect(ouvrir(page)).toHaveAttribute('aria-disabled', 'false');
+    await expect(reessayer(page)).toBeVisible();
+    expect(journal.geocodage).toHaveLength(1);
+    await page.unroute('https://data.geopf.fr/geocodage/**');
+    await page.route('https://data.geopf.fr/geocodage/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: reponseGeocodage() }));
+    await reessayer(page).click();
+    await carteAffichee(page);
+    expect(journal.geocodage).toHaveLength(2);
     expect(console_.filter(SANS_RESSOURCE)).toEqual([]);
   });
 }
 
-test('échec : délai de 10 s dépassé (horloge simulée) → message et schéma conservé', async ({ page }) => {
+test('échec : délai de 10 s dépassé (horloge simulée) → message et « Réessayer »', async ({ page }) => {
   await simuler(page, { geocodage: { attente: true } });
   const console_ = surveillerConsole(page);
   await page.clock.install();
   await ouvrirDiagnostic(page, 375);
-  await accepter(page);
-  await expect(etat(page)).toHaveText('Chargement de la carte réelle…');
+  await expect(etat(page)).toHaveText('Chargement de la carte…');
   await page.clock.fastForward(10_500);
   await expect(etat(page)).toContainText("n'a pas pu être affichée");
-  await expect(page.locator('.schema')).toBeVisible();
-  await expect(ouvrir(page)).toBeFocused();
+  await expect(reessayer(page)).toBeVisible();
   expect(console_.filter(SANS_RESSOURCE)).toEqual([]);
 });
 
-test('échec : leaflet.js impossible à charger → message, schéma conservé, nouvel essai possible', async ({ page }) => {
+test('échec : leaflet.js impossible à charger → message, « Réessayer » charge la carte', async ({ page }) => {
   const journal = await simuler(page);
   const console_ = surveillerConsole(page);
   let echecs = 1;
   await page.route('**/assets/vendor/leaflet/leaflet.js', (route) => (echecs-- > 0 ? route.abort() : route.continue()));
   await ouvrirDiagnostic(page, 375);
-  await accepter(page);
   await expect(etat(page)).toContainText("n'a pas pu être affichée");
-  await expect(page.locator('.schema')).toBeVisible();
-  await expect(ouvrir(page)).toBeFocused();
+  await expect(reessayer(page)).toBeVisible();
   expect(journal.osm).toHaveLength(0);
-  await accepter(page);
-  await expect(etat(page)).toHaveText('Carte réelle affichée.');
+  await reessayer(page).click();
+  await carteAffichee(page);
   expect(console_.filter(SANS_RESSOURCE)).toEqual([]);
 });
 
-test('« Revenir à la carte schématique » et « Mettre à jour » : retour au schéma, carte Leaflet détruite', async ({ page }) => {
-  await simuler(page);
+test('« Mettre à jour » avec une autre adresse : carte recréée, un seul conteneur Leaflet, nouvelle adresse géocodée', async ({ page }) => {
+  const journal = await simuler(page);
   await ouvrirDiagnostic(page, 1440);
-  await accepter(page);
-  await expect(page.locator('.leaflet-container')).toHaveCount(1);
-  await expect(ouvrir(page)).toBeHidden();
-  await page.getByRole('button', { name: 'Revenir à la carte schématique' }).click();
-  await expect(page.locator('.leaflet-container')).toHaveCount(0);
-  await expect(page.locator('.schema')).toBeVisible();
-  await expect(ouvrir(page)).toBeFocused();
-  await accepter(page);
+  await carteAffichee(page);
   await expect(page.locator('.leaflet-container')).toHaveCount(1);
   await page.locator('#adresse-evaluee').fill('8 avenue des Lilas, 31000 Toulouse');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
-  await expect(page.locator('.leaflet-container')).toHaveCount(0);
-  await expect(page.locator('.schema')).toBeVisible();
-  await expect(ouvrir(page)).toBeVisible();
+  await expect.poll(() => journal.geocodage.length).toBe(2);
+  expect(new URL(journal.geocodage[1].url).searchParams.get('q')).toBe('8 avenue des Lilas, 31000 Toulouse');
+  await carteAffichee(page);
+  await expect(page.locator('.leaflet-container')).toHaveCount(1);
+  await expect(page.locator('#carte-reelle .carte-reelle__repere')).toHaveCount(1);
 });
 
-test('rien n\'est écrit : session inchangée, aucun cookie, aucune base IndexedDB ; un rechargement redemande l\'accord', async ({ page, context }) => {
-  const journal = await simuler(page);
-  await ouvrirDiagnostic(page, 375);
-  const avant = await page.evaluate(() => Object.keys(sessionStorage).sort());
-  await accepter(page);
-  await expect(etat(page)).toHaveText('Carte réelle affichée.');
-  await page.getByRole('button', { name: 'Revenir à la carte schématique' }).click();
-  expect(await page.evaluate(() => Object.keys(sessionStorage).sort())).toEqual(avant);
+test('information visible sous le champ d\'adresse ; aucun stockage ni cookie écrit ; axe à 375, 768 et 1440 px', async ({ page, context }) => {
+  await simuler(page);
+  const console_ = surveillerConsole(page);
+  for (const largeur of [375, 768, 1440]) {
+    await ouvrirDiagnostic(page, largeur);
+    await carteAffichee(page);
+    const info = page.locator('#adresse-information');
+    await expect(info).toBeVisible();
+    await expect(info).toContainText('IGN');
+    await expect(info).toContainText('Géorisques');
+    await expect(info).toContainText('OpenStreetMap');
+    await expect(info).toContainText('adresse IP');
+    await expect(info).toContainText("Ce site n'enregistre rien.");
+    const champ = await boite(page, '#adresse-evaluee');
+    const texte = await boite(page, '#adresse-information');
+    expect(texte.y).toBeGreaterThan(champ.y + champ.height);
+    await page.waitForTimeout(400);
+    const violations = (await new AxeBuilder({ page }).analyze()).violations;
+    expect(violations.map((v) => `${v.id} : ${v.nodes.map((n) => n.target.join(' ')).join(' ; ')}`), `${largeur} px`).toEqual([]);
+  }
+  expect(await page.evaluate(() => Object.keys(sessionStorage).sort())).toEqual(['adresse']);
   expect(await page.evaluate(() => Object.keys(localStorage))).toEqual([]);
   expect(await context.cookies()).toEqual([]);
   expect(await page.evaluate(async () => (await indexedDB.databases()).length)).toBe(0);
-  const requetes = journal.geocodage.length;
-  await page.reload();
-  await page.waitForSelector('#carte-reelle-ouvrir[aria-disabled]');
-  await expect(page.locator('.schema')).toBeVisible();
-  await expect(page.locator('#carte-reelle')).toBeHidden();
-  expect(journal.geocodage).toHaveLength(requetes);
-  await ouvrir(page).click();
-  await expect(panneau(page)).toBeVisible();
+  expect(console_).toEqual([]);
 });
 
 test('JavaScript désactivé : seul le message noscript est visible', async ({ browser }) => {

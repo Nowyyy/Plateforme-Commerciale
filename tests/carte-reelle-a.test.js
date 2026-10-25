@@ -171,12 +171,10 @@ describe('données de carteReelle', () => {
     const textes = [];
     const parcourir = (o) => { for (const v of Object.values(o)) (typeof v === 'object' ? parcourir(v) : textes.push(v)); };
     parcourir(config.textes);
-    expect(textes.length).toBeGreaterThan(20);
+    expect(textes.length).toBeGreaterThan(10);
     for (const t of textes) expect(typeof t === 'string' && t.trim() !== '').toBe(true);
-    expect(config.textes.consentement.texte).toMatch(/informatives/);
-    expect(config.textes.consentement.texte).toMatch(/ne remplacent ni un document réglementaire ni l'avis d'un professionnel/);
-    expect(config.textes.scoreIllustratif).toMatch(/illustratif/);
-    expect(config.textes.chaleurIndisponible).toBe('Aucune donnée de chaleur disponible auprès de Géorisques.');
+    expect(config.textes.scoreIllustratif).toBe("Le score illustratif n'est pas calculé à partir de cette carte.");
+    expect(config.textes.chaleurNote).toBe("Aucune carte de chaleur n'est disponible auprès de Géorisques.");
   });
 
   it('calques : mêmes identifiants que les aléas, couches exactement celles de la spécification, chaleur sans couche', () => {
@@ -202,9 +200,9 @@ describe('données de carteReelle', () => {
 });
 
 describe('diagnostic.html (partie A)', () => {
-  it('bouton, panneau de consentement masqué et nommé, un seul conteneur de carte', () => {
-    expect(html).toMatch(/<button[^>]*id="carte-reelle-ouvrir"/);
-    expect(html).toMatch(/<section[^>]*id="carte-reelle-consentement"[^>]*aria-labelledby="carte-reelle-consentement-titre"[^>]*hidden/);
+  it('un seul conteneur de carte (région), message d\'état et bouton « Réessayer » masqué', () => {
+    expect(html).toMatch(/<button[^>]*id="carte-reelle-reessayer"[^>]*hidden/);
+    expect(html).toMatch(/<p[^>]*id="carte-reelle-etat"[^>]*role="status"/);
     expect(html.match(/id="carte-reelle"/g)).toHaveLength(1);
     expect(html).toMatch(/id="carte-reelle"[^>]*role="region"/);
   });
@@ -212,7 +210,7 @@ describe('diagnostic.html (partie A)', () => {
   it('aucun id dupliqué, aucun name sur les nouveaux contrôles, aucun script en ligne ni URL en dur', () => {
     const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
     expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);
-    const bloc = html.slice(html.indexOf('carte-reelle-ouvrir') - 200, html.indexOf('carte-reelle-etat') + 100);
+    const bloc = html.slice(html.indexOf('carte-cadre'), html.indexOf('carte-panneau'));
     expect(bloc).not.toMatch(/\sname=/);
     expect(html).not.toMatch(/<script(?![^>]*\ssrc=)/);
     expect(html).not.toMatch(/https?:\/\//i);

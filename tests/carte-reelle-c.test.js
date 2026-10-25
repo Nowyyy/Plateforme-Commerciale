@@ -9,15 +9,10 @@ const accueil = JSON.parse(lire('data/accueil.json'));
 const site = JSON.parse(lire('data/site.json'));
 const config = diagnostic.carteReelle;
 
-describe('mentions de la recherche d\'adresse', () => {
-  it('accueil et diagnostic annoncent la carte réelle et l\'accord', () => {
-    expect(accueil.recherche.microtexte).toBe("Démonstrateur : l'adresse reste dans votre navigateur. Elle n'est envoyée à un service externe que si vous demandez la carte réelle, avec votre accord.");
-    for (const mention of [accueil.recherche.microtexte, diagnostic.textes.mention]) {
-      expect(mention).toMatch(/carte réelle/);
-      expect(mention).toMatch(/accord/);
-      expect(mention).toMatch(/^Démonstrateur : /);
-    }
-    expect(diagnostic.textes.mention).toMatch(/rien n'est envoyé sauf carte réelle avec votre accord/);
+describe('information permanente sous le champ d\'adresse du diagnostic', () => {
+  it('texte exact du lot 4d, nommant les trois services et l\'absence d\'enregistrement', () => {
+    expect(diagnostic.textes.information).toBe("Pour vérifier l'adresse et afficher la carte, ce site interroge des services publics et ouverts : l'IGN (adresses et cartes) avec l'adresse saisie, Géorisques (zones de risque) avec les coordonnées de l'adresse, et OpenStreetMap (fond de carte). Ces services voient votre adresse IP. Ce site n'enregistre rien.");
+    expect(accueil.recherche.microtexte.length).toBeGreaterThan(0); // remplacé par la même information à la partie B
   });
 });
 
@@ -37,7 +32,6 @@ describe('l\'adresse n\'entre dans aucune URL de tuile', () => {
     expect(construireUrlGeocodage(ADRESSE, config.geocodage.base)).toContain('Tilleuls');
     const src = lire('assets/js/carte-reelle.js');
     expect(src.match(/construireUrlGeocodage\(/g)).toHaveLength(1); // l'appel dans geocoder()
-    expect(src.match(/^\s+afficher\(adresse\);/gm)).toHaveLength(1);
     expect(src.match(/await geocoder\(adresse, config\)/g)).toHaveLength(1);
   });
 });

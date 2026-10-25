@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { simuler } from './carte-reelle-simulation.js';
 import { formaterPrix } from '../../assets/js/diagnostic-logique.js';
 import { LIGNE, TROIS_LIGNES, UNE_LIGNE, ouvrirPanier, panierAvec } from '../outils/panier-aide.mjs';
 
@@ -11,11 +12,13 @@ const valider = (page) => page.getByRole('button', { name: 'Valider ma commande'
 const caseConfirmation = (page) => page.getByLabel("Je confirme l'exactitude des mesures fournies.");
 const sessionPanier = async (page) => page.evaluate(() => sessionStorage.getItem('panier'));
 
+const HOTES_CARTE = ['data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org'];
+
 function surveiller(page) {
   const suivi = { messages: [], externes: [], urls: [] };
   page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) suivi.messages.push(m.text()); });
   page.on('pageerror', (e) => suivi.messages.push(e.message));
-  page.on('request', (r) => { if (!r.url().startsWith('http://localhost:4173/') && !r.url().startsWith('data:')) suivi.externes.push(r.url()); });
+  page.on('request', (r) => { if (!r.url().startsWith('http://localhost:4173/') && !r.url().startsWith('data:') && !HOTES_CARTE.includes(new URL(r.url()).hostname)) suivi.externes.push(r.url()); });
   page.on('framenavigated', (f) => { if (f === page.mainFrame()) suivi.urls.push(f.url()); });
   return suivi;
 }
@@ -35,6 +38,7 @@ const saisir = async (page, largeur, hauteur) => {
 
 // Parcours multi-lignes cliqué : accueil, adresse, diagnostic, fiche (batardeau), ajouts, autre produit, panier, validation.
 async function parcours(page, largeur) {
+  await simuler(page); // services de la carte simulés
   const suivi = surveiller(page);
   const debut = Date.now();
   await page.setViewportSize({ width: largeur, height: 900 });
