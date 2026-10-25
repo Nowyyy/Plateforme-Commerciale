@@ -5,36 +5,6 @@ import { lienExterneValide } from '../assets/js/rendu.js';
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const site = JSON.parse(lire('data/site.json'));
 const html = lire('diagnostic.html');
-const svg = html.slice(html.indexOf('<svg class="schema"'), html.indexOf('</svg>', html.indexOf('<svg class="schema"')) + 6);
-
-describe('carte schématique (SVG en ligne)', () => {
-  it('est une image nommée, à quatre calques et quatre motifs, sans couleur en dur, texte ni script', () => {
-    expect(svg.startsWith('<svg')).toBe(true);
-    expect(svg).toContain('role="img"');
-    expect(svg).toMatch(/<title id="schema-titre" data-texte="diagnostic\.textes\.carte\.svgTitre">/);
-    expect(svg).toMatch(/<desc id="schema-desc" data-texte="diagnostic\.textes\.carte\.svgDescription">/);
-    expect(svg).toContain('aria-labelledby="schema-titre schema-desc"');
-    expect(svg.match(/<g class="calque" data-calque="[a-z]+"/g)).toHaveLength(4);
-    const motifs = [...svg.matchAll(/<pattern id="(motif-[a-z]+)"/g)].map((m) => m[1]);
-    expect(new Set(motifs).size).toBe(4);
-    for (const id of motifs) expect(svg).toContain(`url(#${id})`);
-    expect(svg).not.toMatch(/#[0-9a-fA-F]{3}\b|#[0-9a-fA-F]{6,8}\b/);
-    expect(svg).not.toContain('<script');
-    expect(svg).not.toContain('<text');
-    const sansBalises = svg.replace(/<title[\s\S]*?<\/title>|<desc[\s\S]*?<\/desc>/g, '').replace(/<[^>]+>/g, '');
-    expect(sansBalises.trim()).toBe('');
-    expect(svg).not.toMatch(/style="/);
-  });
-});
-
-describe('jetons des calques', () => {
-  it('css/tokens.css définit les quatre jetons --calque-*', () => {
-    const tokens = lire('css/tokens.css');
-    for (const nom of ['inondation', 'argile', 'feu', 'chaleur']) {
-      expect(tokens, nom).toMatch(new RegExp(`--calque-${nom}:\\s*#[0-9a-fA-F]{6};`));
-    }
-  });
-});
 
 describe('liens externes', () => {
   it('liensExternes.georisques : https et hôte georisques.gouv.fr ou sous-domaine, sans paramètre', () => {

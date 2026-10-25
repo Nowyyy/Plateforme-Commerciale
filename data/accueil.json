@@ -19,7 +19,20 @@
     "libelle": "Entrez votre adresse pour évaluer l'exposition de votre maison aux aléas et voir les solutions adaptées",
     "placeholder": "Ex. : 12 rue des Tilleuls, Lyon",
     "bouton": "Évaluer mon exposition",
-    "microtexte": "Démonstrateur : l'adresse reste dans votre navigateur. Elle n'est envoyée à un service externe que si vous demandez la carte réelle, avec votre accord.",
+    "microtexte": "Pour vérifier l'adresse et afficher la carte, ce site interroge des services publics et ouverts : l'IGN (adresses et cartes) avec l'adresse saisie, Géorisques (zones de risque) avec les coordonnées de l'adresse, et OpenStreetMap (fond de carte). Ces services voient votre adresse IP. Ce site n'enregistre rien.",
+    "assistee": {
+      "listeNom": "Suggestions d'adresses",
+      "suggestionUne": "1 suggestion",
+      "suggestionsN": "{n} suggestions",
+      "aucune": "Aucune suggestion",
+      "indisponible": "Suggestions indisponibles pour le moment.",
+      "choisie": "Adresse choisie : {libelle}",
+      "reconnue": "Adresse reconnue : {libelle}",
+      "introuvable": "Adresse introuvable. Choisissez une adresse dans la liste de suggestions.",
+      "municipalite": "Précisez une adresse avec le numéro et la rue.",
+      "nonVerifiee": "Vérification impossible pour le moment : l'adresse est utilisée telle quelle.",
+      "verification": "Vérification de l'adresse…"
+    },
     "erreur": "Saisissez une adresse d'au moins 5 caractères."
   },
   "aleas": {

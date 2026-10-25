@@ -64,7 +64,7 @@ describe('diagnostic.html', () => {
     const codes = [...html.matchAll(/data-bloc="(E\d-\d+)"/g)].map((m) => m[1]);
     expect(codes).toEqual(['E2-1', 'E2-2', 'E2-3', 'E2-4', 'E2-5', 'E2-6']);
     const roles = [...html.matchAll(/data-role="([^"]+)"/g)].map((m) => m[1]);
-    expect(roles).toEqual(['en-tete', 'adresse', 'equipements', 'score', 'carte', 'pied']);
+    expect(roles).toEqual(['en-tete', 'adresse', 'carte', 'score', 'equipements', 'pied']);
     expect(html).not.toMatch(/\border:/);
   });
 

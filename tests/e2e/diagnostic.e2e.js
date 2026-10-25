@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { reponseRecherche, simuler } from './carte-reelle-simulation.js';
 
 const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 
 async function ouvrir(page, largeur, session = {}) {
+  if (!page.__simule) page.__simule = await simuler(page); // services tiers simulés, jamais de requête réelle
   await page.setViewportSize({ width: largeur, height: 900 });
   await page.addInitScript((valeurs) => {
     for (const [cle, valeur] of Object.entries(valeurs)) sessionStorage.setItem(cle, valeur);
@@ -14,7 +16,7 @@ async function ouvrir(page, largeur, session = {}) {
 }
 
 for (const largeur of [375, 768, 1440]) {
-  test(`diagnostic.html à ${largeur} px : console propre, sans débordement, axe, aucune requête externe`, async ({ page }) => {
+  test(`diagnostic.html à ${largeur} px : console propre, sans débordement, axe, aucune requête hors des trois hôtes`, async ({ page }) => {
     const messages = [];
     const requetes = [];
     page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) messages.push(m.text()); });
@@ -26,7 +28,7 @@ for (const largeur of [375, 768, 1440]) {
     console.log(`${largeur} px : largeur de défilement ${defilement} px pour une fenêtre de ${fenetre} px`);
     expect(defilement).toBeLessThanOrEqual(fenetre);
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-    expect(requetes.filter((u) => !u.startsWith('http://localhost:4173/') && !u.startsWith('data:'))).toEqual([]);
+    expect(requetes.filter((u) => !u.startsWith('http://localhost:4173/') && !u.startsWith('data:') && !/^https:\/\/(data\.geopf\.fr|www\.georisques\.gouv\.fr|tile\.openstreetmap\.org)\//.test(u))).toEqual([]);
     await page.screenshot({ path: `test-results/diagnostic-A-${largeur}.png`, fullPage: true });
   });
 }
@@ -71,6 +73,8 @@ test('« Mettre à jour » : adresse invalide, message, focus, aria-describedby'
 
 test('« Mettre à jour » : adresse valide, sessionStorage mis à jour, aucune navigation, URL sans adresse', async ({ page }) => {
   await ouvrir(page, 1440, { adresse: ADRESSE });
+  const officiel = '5 Allée des Peupliers 44000 Nantes';
+  await page.route('https://data.geopf.fr/geocodage/search**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: reponseRecherche(officiel, 'housenumber', 0.9, -1.5534, 47.2184) }));
   let navigations = 0;
   page.on('framenavigated', () => { navigations += 1; });
   const urlAvant = page.url();
@@ -78,8 +82,8 @@ test('« Mettre à jour » : adresse valide, sessionStorage mis à jour, aucune 
   await champ.fill('  5 allée des Peupliers, Nantes  ');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
   await expect(page.locator('#adresse-erreur')).toBeHidden();
-  expect(await page.evaluate(() => sessionStorage.getItem('adresse'))).toBe('5 allée des Peupliers, Nantes');
-  await expect(champ).toHaveValue('5 allée des Peupliers, Nantes');
+  expect(await page.evaluate(() => sessionStorage.getItem('adresse'))).toBe(officiel); // libellé officiel de l'IGN
+  await expect(champ).toHaveValue(officiel);
   expect(navigations).toBe(0);
   expect(page.url()).toBe(urlAvant);
   expect(decodeURIComponent(page.url())).not.toContain('Peupliers');
@@ -87,7 +91,7 @@ test('« Mettre à jour » : adresse valide, sessionStorage mis à jour, aucune 
 
 test('pastilles d\'aléa : 5 boutons radio dans un fieldset, « Tous » par défaut, flèches', async ({ page }) => {
   await ouvrir(page, 1440);
-  const groupe = page.getByRole('group', { name: 'Aléa' });
+  const groupe = page.getByRole('group', { name: 'Aléa', exact: true });
   await expect(groupe).toBeVisible();
   expect(await groupe.evaluate((el) => el.tagName)).toBe('FIELDSET');
   const radios = groupe.getByRole('radio');

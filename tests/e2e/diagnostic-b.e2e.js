@@ -55,7 +55,7 @@ test('score : niveau en toutes lettres, jauge de 4 segments, repère sous le bon
     expect(repere.x + repere.width).toBeLessThanOrEqual(segment.x + segment.width);
   }
   await expect(page.locator('#jauge')).toHaveAttribute('aria-hidden', 'true');
-  await expect(page.getByText('Score illustratif')).toBeVisible();
+  await expect(page.getByText('Score illustratif : il ne remplace')).toBeVisible();
 });
 
 test('mise en page : 1440 px (colonnes), 768 px (visuel à gauche), aucun débordement à 375, 768 et 1440 px', async ({ page }) => {

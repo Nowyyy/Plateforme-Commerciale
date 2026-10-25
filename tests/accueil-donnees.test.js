@@ -29,7 +29,7 @@ describe('données de l\'accueil', () => {
 
 describe('index.html', () => {
   it('a lang="fr", noindex, un seul h1, aucune URL http(s) ni script externe', () => {
-    expect(html).toContain('<html lang="fr">');
+    expect(html).toContain('<html lang="fr" data-donnees="accueil diagnostic">');
     expect(html).toMatch(/<meta name="robots" content="noindex">/);
     expect(html.match(/<h1[\s>]/g)).toHaveLength(1);
     expect(html).not.toMatch(/https?:\/\//i);

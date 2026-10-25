@@ -94,10 +94,10 @@ describe('chaineAttribution', () => {
 });
 
 describe('libellesLegende', () => {
-  const legende = libellesLegende(config, diagnostic.textes.carte.calques);
+  const legende = libellesLegende(config);
 
   it('un libellé et un nom technique par couche', () => {
-    const avecCouche = legende.filter((e) => e.nom !== null);
+    const avecCouche = legende;
     expect(avecCouche.map((e) => e.nom)).toEqual(CALQUES.flatMap((id) => COUCHES[id]));
     for (const entree of avecCouche) {
       expect(entree.libelle).toMatch(/\(Géorisques\)$/);
@@ -105,13 +105,13 @@ describe('libellesLegende', () => {
     }
   });
 
-  it('chaleur : libellé du calque et mention d\'indisponibilité', () => {
-    expect(legende.filter((e) => e.calque === 'chaleur')).toEqual([{ calque: 'chaleur', nom: null, libelle: 'Chaleur extrême', technique: null, indisponible: 'Aucune donnée de chaleur disponible auprès de Géorisques.' }]);
+  it('chaleur : aucune entrée de légende (la note du panneau la remplace)', () => {
+    expect(legende.filter((e) => e.calque === 'chaleur')).toEqual([]);
   });
 
   it('toutes les couches de la configuration figurent dans la légende, aucune autre', () => {
     const configurees = Object.values(config.calques).flat().map((c) => c.nom).sort();
-    expect(legende.filter((e) => e.nom).map((e) => e.nom).sort()).toEqual(configurees);
+    expect(legende.map((e) => e.nom).sort()).toEqual(configurees);
     expect(JSON.stringify(legende)).not.toMatch(/GEORISQUES_SERVICES|COMMUNE_FXX/);
   });
 });
@@ -127,16 +127,16 @@ describe('diagnostic.html (partie B)', () => {
     const fonds = html.slice(html.indexOf('carte-reelle__fonds'), html.indexOf('</fieldset>', html.indexOf('carte-reelle__fonds')));
     expect(fonds).toContain('type="radio"');
     expect(fonds).not.toMatch(/\sname=/);
-    expect(html).toMatch(/<fieldset class="calques">\s*<legend data-texte="diagnostic\.textes\.carte\.legendeCalques">/);
+    expect(html).toMatch(/<fieldset class="calques">\s*<legend data-texte="diagnostic\.carteReelle\.textes\.aleas\.titre">/);
     expect(html).toContain('<template id="modele-calque">');
     const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
     expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);
   });
 
-  it('légende, mention du score illustratif et description de la chaleur présentes', () => {
-    expect(html).toMatch(/id="legende-reelle"[^>]*hidden/);
-    expect(html).toMatch(/id="mention-reelle"[^>]*scoreIllustratif[^>]*hidden/);
-    expect(html).toMatch(/id="carte-reelle-chaleur-aide"[^>]*chaleurIndisponible/);
+  it('légende, mention du score illustratif et note de chaleur présentes dans le panneau', () => {
+    expect(html).toMatch(/id="legende-reelle"/);
+    expect(html).toMatch(/id="mention-reelle"[^>]*scoreIllustratif/);
+    expect(html).toMatch(/id="note-chaleur"[^>]*chaleurNote/);
   });
 });
 
@@ -153,13 +153,10 @@ describe('css/carte-reelle.css (partie B)', () => {
     expect(regle(css, '.carte-reelle__repere')).toMatch(/fill: var\(--color-navy\)/);
   });
 
-  it('cadre 4:3 identique à celui du schéma', () => {
-    const schema = regle(lire('css/diagnostic.css'), '.schema');
-    const carte = regle(css, '.carte-reelle');
-    for (const propriete of ['inline-size: 100%', 'aspect-ratio: 4 / 3', 'max-inline-size: 36rem', 'margin-inline: auto', 'border: 1px solid var(--color-border)', 'border-radius: var(--radius-md)']) {
-      expect(schema, propriete).toContain(propriete);
-      expect(carte, propriete).toContain(propriete);
-    }
+  it('cadre de la carte : hauteur fixée (clamp sous 1200 px, 36 rem au-delà), conteneur rempli par la carte', () => {
+    expect(regle(css, '.carte-cadre')).toContain('block-size: clamp(22rem, 65vh, 34rem)');
+    expect(css).toMatch(/@media \(min-width: 1200px\) \{[\s\S]*\.carte-cadre \{\s*block-size: 36rem;/);
+    expect(regle(css, '.carte-reelle')).toContain('inset: 0');
   });
 });
 

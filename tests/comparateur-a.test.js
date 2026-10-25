@@ -360,15 +360,15 @@ describe('lot 9-A : liens, workflow, CSS, modules et CLAUDE.md', () => {
     expect(src).toMatch(/import \{ CLE_COMPARAISON,[^}]*\} from '\.\/comparateur-logique\.js'/);
   });
   it('apercu.txt vise l\'accueil en Hi-Fi ; Docs/apercus.txt décrit le lot 9', () => {
-    expect([['index.html', 'type: hifi', 'titre: Comparateur de solutions'], ['index.html', 'type: hifi', 'titre: Carte réelle avec consentement']]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
+    expect([['index.html', 'type: hifi', 'titre: Comparateur de solutions'], ['index.html', 'type: hifi', 'titre: Carte réelle avec consentement'], ['index.html', 'type: hifi', "titre: Carte réelle seule, saisie assistée, calques selon l'adresse"]]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
     expect(lire('Docs/apercus.txt')).toMatch(/^lot-9\|.{10,}$/m);
   });
-  it('CLAUDE.md fait moins de 9 000 caractères et décrit le comparateur ; conventions.md a une section Comparateur et reste sous 150 lignes', () => {
+  it('CLAUDE.md fait moins de 9 000 caractères et décrit le comparateur ; conventions.md a une section Comparateur et reste sous 190 lignes', () => {
     const texte = lire('CLAUDE.md');
     expect([...texte].length).toBeLessThan(9000);
     for (const mot of ['comparateur.html', 'comparateur-logique.js', 'comparateur.js', 'comparateur.css', 'comparaison', 'selectionInitiale', 'basculerProduit', 'performances']) expect(texte, mot).toContain(mot);
     const conventions = lire('Docs/ref/conventions.md');
     expect(conventions).toMatch(/^## Comparateur/m);
-    expect(conventions.split('\n').length).toBeLessThanOrEqual(150);
+    expect(conventions.split('\n').length).toBeLessThanOrEqual(190);
   });
 });

@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
+import { simuler } from './carte-reelle-simulation.js';
 
 const donnees = JSON.parse(readFileSync('data/produit.json', 'utf8'));
 const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
@@ -76,6 +77,7 @@ for (const largeur of [375, 1440]) {
     const messages = [];
     page.on('console', (m) => { if (['error', 'warning'].includes(m.type())) messages.push(m.text()); });
     page.on('pageerror', (e) => messages.push(e.message));
+    await simuler(page); // services de l'adresse et de la carte simulés
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.goto('/index.html');
     await page.waitForSelector('.recherche:not([hidden])');

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-donnees="accueil diagnostic">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -96,10 +96,14 @@
           <form class="recherche carte" novalidate hidden>
             <label class="etiquette" id="etiquette-adresse" for="adresse" data-texte="accueil.recherche.libelle"></label>
             <div class="recherche__ligne">
-              <input class="champ" type="text" id="adresse" name="adresse" autocomplete="street-address" aria-describedby="adresse-erreur adresse-microtexte" data-placeholder="accueil.recherche.placeholder">
+              <div class="champ-assiste">
+                <input class="champ" type="text" id="adresse" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="adresse-liste" autocomplete="off" aria-describedby="adresse-erreur adresse-microtexte" data-placeholder="accueil.recherche.placeholder">
+                <ul class="suggestions" id="adresse-liste" role="listbox" hidden></ul>
+              </div>
               <button type="submit" class="bouton bouton--action" data-texte="accueil.recherche.bouton"></button>
             </div>
             <p class="recherche__erreur" id="adresse-erreur" aria-live="polite"></p>
+            <p class="visuellement-cache" id="adresse-statut" role="status"></p>
             <p class="recherche__microtexte" id="adresse-microtexte" data-texte="accueil.recherche.microtexte"></p>
           </form>
         </section>
