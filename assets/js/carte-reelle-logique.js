@@ -94,3 +94,47 @@ export function chaineAttribution(attributions, liens) {
     })
     .join(' | ');
 }
+
+const listeCouches = (calque, config) => {
+  const calques = estObjet(config) && estObjet(config.calques) ? config.calques : {};
+  const couches = typeof calque === 'string' && Object.hasOwn(calques, calque) && Array.isArray(calques[calque]) ? calques[calque] : [];
+  return couches.filter((c) => estObjet(c) && texte(c.nom) !== '');
+};
+
+// Noms techniques des couches d'un calque (chaleur et calque inconnu : liste vide).
+export function couchesPourCalque(calque, config) {
+  return listeCouches(calque, config).map((c) => c.nom);
+}
+
+// Réglages WMS d'un calque : un seul service, une requête par couche jointe (`couches.join(',')`).
+export function optionsWms(calque, config) {
+  const wms = estObjet(config) && estObjet(config.wms) ? config.wms : {};
+  const vue = estObjet(config) && estObjet(config.vue) ? config.vue : {};
+  return {
+    base: texte(wms.base),
+    couches: couchesPourCalque(calque, config),
+    version: texte(wms.version),
+    format: texte(wms.format),
+    transparent: wms.transparent === true,
+    opacite: estNombre(vue.opacite) ? vue.opacite : 1,
+  };
+}
+
+// Calques à afficher : cases cochées (`[{ id, coche }]`) dont le calque a au moins une couche, dans l'ordre de la configuration.
+export function calquesActifs(cases, config) {
+  const cochees = new Set((Array.isArray(cases) ? cases : []).filter((c) => estObjet(c) && c.coche === true).map((c) => c.id));
+  const calques = estObjet(config) && estObjet(config.calques) ? Object.keys(config.calques) : [];
+  return calques.filter((id) => cochees.has(id) && couchesPourCalque(id, config).length > 0);
+}
+
+// Légende de la carte réelle : une entrée par couche (libellé générique + nom technique) ; chaleur : mention d'indisponibilité.
+export function libellesLegende(config, libellesCalques) {
+  const textes = estObjet(config) && estObjet(config.textes) ? config.textes : {};
+  const noms = estObjet(libellesCalques) ? libellesCalques : {};
+  const calques = estObjet(config) && estObjet(config.calques) ? Object.keys(config.calques) : [];
+  return calques.flatMap((calque) => {
+    const couches = listeCouches(calque, config);
+    if (couches.length === 0) return [{ calque, nom: null, libelle: texte(noms[calque]), technique: null, indisponible: texte(textes.chaleurIndisponible) }];
+    return couches.map((c) => ({ calque, nom: c.nom, libelle: texte(c.libelle), technique: texte(textes.nomTechnique).replace('{nom}', c.nom), indisponible: null }));
+  });
+}

@@ -1,9 +1,10 @@
 // Carte réelle du diagnostic (E2-5), à la demande et avec l'accord du visiteur. Aucune requête vers un service tiers avant l'accord ;
 // le consentement n'est jamais écrit (ni session, ni stockage local, ni cookie) : un rechargement le redemande.
+// Calques : les cases du diagnostic pilotent des couches WMS de Géorisques ; fond OpenStreetMap, repli automatique sur le Plan IGN.
 // Seule lecture de session : l'adresse (clé « adresse »). Leaflet (copié dans assets/vendor/) n'est chargé qu'après l'accord.
 import { donneesPretes } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
-import { analyserGeocodage, chaineAttribution, construireUrlGeocodage, gabaritFondValide } from './carte-reelle-logique.js';
+import { analyserGeocodage, calquesActifs, chaineAttribution, construireUrlGeocodage, doitBasculer, gabaritFondValide, hoteAutorise, libellesLegende, optionsWms } from './carte-reelle-logique.js';
 
 function adresseDeSession() {
   try {
@@ -62,6 +63,7 @@ function chargerLeaflet(chemins) {
 function initialiser(donnees) {
   const config = donnees.diagnostic.carteReelle;
   const { textes } = config;
+  const liens = donnees.site.liensExternes;
   const el = (id) => document.getElementById(id);
   const ouvrir = el('carte-reelle-ouvrir');
   const retour = el('carte-reelle-retour');
@@ -72,7 +74,15 @@ function initialiser(donnees) {
   const conteneur = el('carte-reelle');
   const schema = document.querySelector('.schema');
   const champ = el('adresse-evaluee');
-  const etatCarte = { carte: null, sequence: 0, enCours: false };
+  const fonds = document.querySelector('.carte-reelle__fonds');
+  const legendeReelle = el('legende-reelle');
+  const legendeSchema = el('legende-calques');
+  const mentionSchema = el('mention-schema');
+  const mentionReelle = el('mention-reelle');
+  const cases = () => [...document.querySelectorAll('#liste-calques input')];
+  const radios = () => [...document.querySelectorAll('#liste-fonds input')];
+  // `fond` : clé du fond affiché ; `manuel` : le visiteur a choisi un fond (plus de bascule automatique).
+  const etatCarte = { carte: null, sequence: 0, enCours: false, fond: null, couche: null, manuel: false, erreurs: 0, charges: 0, debut: 0, minuterie: null, calques: new Map(), controle: null, attribution: '', miseEnPage: false, chaleurAvant: null };
 
   // Bouton d'ouverture : jamais `disabled` ; inactif sans adresse de session valide ou pendant le chargement.
   const rafraichirBouton = () => {
@@ -81,7 +91,62 @@ function initialiser(donnees) {
     aide.textContent = sansAdresse ? textes.aideSansAdresse : textes.aide;
   };
 
+  // Légende de la carte réelle et sélecteur de fond : construits une fois (textContent seulement).
+  const construireLegende = () => {
+    const modele = el('modele-legende-reelle');
+    const adresse = legendeReelle.querySelector('li:not([data-calque])');
+    for (const entree of libellesLegende(config, donnees.diagnostic.textes.carte.calques)) {
+      const item = modele.content.cloneNode(true);
+      item.querySelector('li').setAttribute('data-calque', entree.calque);
+      item.querySelector('.legende__libelle').textContent = entree.libelle;
+      item.querySelector('.legende__technique').textContent = entree.technique ?? entree.indisponible;
+      legendeReelle.insertBefore(item, adresse);
+    }
+  };
+  const construireFonds = () => {
+    const modele = el('modele-fond');
+    for (const [cle, fond] of Object.entries(config.fonds)) {
+      if (!gabaritFondValide(fond.gabarit)) continue;
+      const choix = modele.content.cloneNode(true);
+      const radio = choix.querySelector('input');
+      radio.name = 'fond-carte'; // posé à l'exécution (flèches dans le groupe), jamais dans le HTML
+      radio.value = cle;
+      radio.checked = cle === config.fondParDefaut;
+      choix.querySelector('span').textContent = fond.libelle;
+      el('liste-fonds').append(choix);
+    }
+    el('liste-fonds').addEventListener('change', (e) => {
+      if (e.target.matches('input[type="radio"]') && etatCarte.carte) choisirFond(e.target.value, true);
+    });
+  };
+
+  // Légende, fonds et mention de la carte réelle : préparés dès l'accord (action du visiteur), défaits au retour.
+  // « Chaleur extrême » : aria-disabled avec description (jamais disabled) tant que la carte réelle est affichée.
+  const preparerMiseEnPage = (reelle) => {
+    etatCarte.miseEnPage = reelle;
+    fonds.hidden = !reelle;
+    legendeReelle.hidden = !reelle;
+    legendeSchema.hidden = reelle;
+    mentionReelle.hidden = !reelle;
+    mentionSchema.hidden = reelle;
+    const chaleur = cases().find((c) => c.value === 'chaleur');
+    if (!chaleur) return;
+    if (reelle) {
+      etatCarte.chaleurAvant = chaleur.checked;
+      chaleur.checked = false;
+      chaleur.setAttribute('aria-disabled', 'true');
+      chaleur.setAttribute('aria-describedby', 'carte-reelle-chaleur-aide');
+    } else {
+      if (etatCarte.chaleurAvant !== null) chaleur.checked = etatCarte.chaleurAvant;
+      etatCarte.chaleurAvant = null;
+      chaleur.removeAttribute('aria-disabled');
+      chaleur.removeAttribute('aria-describedby');
+    }
+    chaleur.closest('label').classList.toggle('est-indisponible', reelle);
+  };
+
   const detruire = () => {
+    clearTimeout(etatCarte.minuterie);
     if (etatCarte.carte) {
       etatCarte.carte.remove();
       etatCarte.carte = null;
@@ -90,6 +155,10 @@ function initialiser(donnees) {
       conteneur.removeAttribute('tabindex');
       conteneur.removeAttribute('style');
     }
+    Object.assign(etatCarte, { fond: null, couche: null, manuel: false, erreurs: 0, charges: 0, debut: 0, minuterie: null, controle: null, attribution: '' });
+    etatCarte.calques.clear();
+    for (const radio of radios()) radio.checked = radio.value === config.fondParDefaut;
+    preparerMiseEnPage(false);
     conteneur.hidden = true;
     schema.toggleAttribute('hidden', false);
     retour.hidden = true;
@@ -116,15 +185,88 @@ function initialiser(donnees) {
     ouvrir.focus();
   };
 
+  // Attributions : celles du fond affiché, plus Géorisques tant qu'un calque est affiché ; chaîne construite par chaineAttribution.
+  const majAttribution = () => {
+    if (!etatCarte.controle) return;
+    const cles = [...config.fonds[etatCarte.fond].attributions];
+    if (etatCarte.calques.size > 0) cles.push('georisques');
+    const suivante = chaineAttribution(cles.map((cle) => config.attributions[cle]), liens);
+    etatCarte.controle.removeAttribution(etatCarte.attribution);
+    etatCarte.controle.addAttribution(suivante);
+    etatCarte.attribution = suivante;
+  };
+
+  // Repli automatique du fond par défaut : seulement avant tout choix manuel (règle pure doitBasculer).
+  const verifierBascule = (delaiEcoule) => {
+    if (etatCarte.manuel || etatCarte.fond !== config.fondParDefaut || !etatCarte.carte) return;
+    const ecouleMs = delaiEcoule ? config.basculeFond.delaiMs : performance.now() - etatCarte.debut;
+    if (!doitBasculer({ erreurs: etatCarte.erreurs, charges: etatCarte.charges, ecouleMs }, config.basculeFond)) return;
+    choisirFond('ign', false);
+    etat.textContent = textes.basculeFond;
+  };
+
+  function choisirFond(cle, manuel) {
+    const L = globalThis.L;
+    const fond = config.fonds[cle];
+    if (!etatCarte.carte || !fond || !gabaritFondValide(fond.gabarit)) return;
+    if (manuel) etatCarte.manuel = true;
+    clearTimeout(etatCarte.minuterie);
+    Object.assign(etatCarte, { erreurs: 0, charges: 0, debut: 0, minuterie: null });
+    if (etatCarte.couche) etatCarte.carte.removeLayer(etatCarte.couche);
+    const couche = L.tileLayer(fond.gabarit, { minZoom: config.vue.zoomMin, maxZoom: config.vue.zoomMax });
+    couche.on('tileloadstart', () => {
+      if (etatCarte.debut !== 0 || etatCarte.couche !== couche) return;
+      etatCarte.debut = performance.now();
+      etatCarte.minuterie = setTimeout(() => verifierBascule(true), config.basculeFond.delaiMs);
+    });
+    couche.on('tileload', () => {
+      if (etatCarte.couche !== couche) return;
+      etatCarte.charges += 1;
+      clearTimeout(etatCarte.minuterie);
+    });
+    couche.on('tileerror', () => {
+      if (etatCarte.couche !== couche) return;
+      etatCarte.erreurs += 1;
+      verifierBascule(false);
+    });
+    etatCarte.couche = couche;
+    etatCarte.fond = cle;
+    couche.addTo(etatCarte.carte);
+    couche.bringToBack();
+    for (const radio of radios()) radio.checked = radio.value === cle;
+    majAttribution();
+  }
+
+  // Les cases pilotent les couches : ajout et retrait (jamais d'opacité nulle) ; une requête WMS par calque.
+  const synchroniserCalques = () => {
+    if (!etatCarte.carte) return;
+    const L = globalThis.L;
+    const actifs = calquesActifs(cases().map((c) => ({ id: c.value, coche: c.checked })), config);
+    for (const id of Object.keys(config.calques)) {
+      const present = etatCarte.calques.has(id);
+      if (actifs.includes(id) && !present) {
+        const o = optionsWms(id, config);
+        if (!hoteAutorise(o.base)) continue;
+        const couche = L.tileLayer.wms(o.base, { layers: o.couches.join(','), version: o.version, format: o.format, transparent: o.transparent ? 'TRUE' : 'FALSE', opacity: o.opacite, styles: '', uppercase: true, minZoom: config.vue.zoomMin, maxZoom: config.vue.zoomMax });
+        couche.addTo(etatCarte.carte);
+        etatCarte.calques.set(id, couche);
+      } else if (!actifs.includes(id) && present) {
+        etatCarte.carte.removeLayer(etatCarte.calques.get(id));
+        etatCarte.calques.delete(id);
+      }
+    }
+    majAttribution();
+  };
+
   const creerCarte = (L, point) => {
     const { vue } = config;
-    const fond = config.fonds[config.fondParDefaut];
     const carte = L.map(conteneur, { zoomControl: false, attributionControl: false, minZoom: vue.zoomMin, maxZoom: vue.zoomMax });
     L.control.zoom({ zoomInTitle: textes.zoomAvant, zoomOutTitle: textes.zoomArriere }).addTo(carte);
-    const attributions = fond.attributions.map((cle) => config.attributions[cle]);
-    L.control.attribution({ prefix: false }).addAttribution(chaineAttribution(attributions, donnees.site.liensExternes)).addTo(carte);
-    L.tileLayer(fond.gabarit, { maxZoom: vue.zoomMax, minZoom: vue.zoomMin }).addTo(carte);
+    etatCarte.controle = L.control.attribution({ prefix: false }).addTo(carte);
+    etatCarte.carte = carte;
     carte.setView([point.lat, point.lon], vue.zoom);
+    choisirFond(config.fondParDefaut, false);
+    synchroniserCalques();
     L.circleMarker([point.lat, point.lon], { radius: 9, className: 'carte-reelle__repere', interactive: false }).addTo(carte);
     return carte;
   };
@@ -151,7 +293,7 @@ function initialiser(donnees) {
     schema.toggleAttribute('hidden', true);
     conteneur.hidden = false;
     try {
-      etatCarte.carte = creerCarte(L, resultat);
+      creerCarte(L, resultat);
     } catch {
       return echec(textes.erreur);
     }
@@ -183,11 +325,29 @@ function initialiser(donnees) {
       ouvrir.focus();
       return;
     }
+    preparerMiseEnPage(true);
     ouvrir.focus();
     afficher(adresse);
   });
   retour.addEventListener('click', () => revenir(true));
   document.addEventListener('adresse:modifiee', () => revenir(false));
+  // « Chaleur extrême » ne bascule pas tant que la carte réelle est affichée ; les autres cases pilotent les couches.
+  el('liste-calques').addEventListener('click', (e) => {
+    if (e.target.matches('input[aria-disabled="true"]')) e.preventDefault();
+  });
+  el('liste-calques').addEventListener('change', () => synchroniserCalques());
+  // Un changement de filtre réinitialise les cases (diagnostic.js) : la carte réelle suit, chaleur reste décochée.
+  document.addEventListener('diagnostic:filtre', () => {
+    if (!etatCarte.miseEnPage) return;
+    const chaleur = cases().find((c) => c.value === 'chaleur');
+    if (chaleur) {
+      etatCarte.chaleurAvant = chaleur.checked;
+      chaleur.checked = false;
+    }
+    synchroniserCalques();
+  });
+  construireLegende();
+  construireFonds();
   rafraichirBouton();
 }
 

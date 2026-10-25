@@ -70,3 +70,50 @@
   flex-wrap: wrap;
   gap: var(--space-3);
 }
+
+.carte-reelle__fonds[hidden],
+.carte-reelle__legende[hidden],
+.carte-schema .diag__mention[hidden],
+.carte-schema .legende[hidden] {
+  display: none;
+}
+
+/* Légende de la carte réelle : libellé générique, nom technique de la couche en petit */
+.legende__texte {
+  display: grid;
+}
+
+.legende__technique {
+  color: var(--color-text-secondary);
+  font-size: var(--text-xs);
+}
+
+.legende__indisponible {
+  color: var(--color-text-secondary);
+}
+
+.calque-choix.est-indisponible {
+  color: var(--color-text-secondary);
+  cursor: default;
+}
+
+/* Attributions de Leaflet : liens marine sur fond clair (contraste) */
+.carte-reelle .leaflet-control-attribution {
+  color: var(--color-text-secondary);
+  font-family: var(--font-data);
+}
+
+.carte-reelle .leaflet-control-attribution a {
+  color: var(--color-navy);
+  text-decoration: underline;
+}
+
+.carte-reelle__legende .legende__repere {
+  fill: none;
+}
+
+.carte-reelle__legende .legende__repere circle {
+  fill: var(--color-navy);
+  stroke: var(--color-on-navy);
+  stroke-width: 3;
+}

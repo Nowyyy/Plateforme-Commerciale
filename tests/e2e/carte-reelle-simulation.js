@@ -46,6 +46,7 @@ export function surveillerConsole(page) {
 }
 
 export async function ouvrirDiagnostic(page, largeur, session = { adresse: ADRESSE }) {
+  await page.emulateMedia({ reducedMotion: 'reduce' }); // défilement doux de accueil.css : sinon les clics visent une cible qui bouge
   await page.setViewportSize({ width: largeur, height: 900 });
   await page.addInitScript((valeurs) => {
     for (const [cle, valeur] of Object.entries(valeurs)) sessionStorage.setItem(cle, valeur);
