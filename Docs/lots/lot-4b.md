@@ -10,9 +10,11 @@
 ## Test intermittent (non lié au lot)
 `pro-b.e2e.js` « mise en page… une colonne à 375 px » échoue 2 fois sur 5 en relance isolée (mesure juste après `setViewportSize`, sans attente de la mise en page) ; page non touchée par le lot, test non modifié, à traiter hors lot.
 ## Essai réel de l'agent
-Non testable depuis la session : le proxy sortant répond 403 à `data.geopf.fr` (essai unique de la partie A). Rien n'a été simulé ; aucun script `sonde-reelle.mjs` écrit. Premier rapport du propriétaire (Safari, iPhone) reçu en conversation : huit sondes lisibles sauf le WMS sans `www`, bloqué en 31 ms.
+Non testable depuis la session : le proxy sortant répond 403 à `data.geopf.fr` (essai unique de la partie A). Rien n'a été simulé ; aucun script `sonde-reelle.mjs` écrit.
+## Rapports du propriétaire (5, déployé sur `/lot-4b/`)
+iPhone Safari (3, dont un en navigation privée) ; PC Firefox 158 avec bloqueurs ; PC Firefox 158 en navigation privée sans extension. Identiques : 7 sondes ok, WMS sans `www` bloqué (`TypeError`, 24 à 201 ms) avec et sans extension, WMS avec `www` ok (1,56 à 1,69 s, 222 couches), image de calque ok mais lente (6,76 à 7,10 s). Carte réelle possible : oui dans les 5. Non testé : Chrome, hors de France.
 ## Points ouverts
-Le chemin de l'API Géorisques n'est pas vérifié dans la documentation officielle ; la couche d'inondation est choisie par son nom (`PPRN_COMMUNE_GASPAR` sur iPhone), ce qui ne prouve pas qu'elle montre des zones inondables ; aucune couche d'argiles reconnue ; l'image du calque a pris 6,8 s ; adresse non ouverte depuis la session.
+Cause du blocage du WMS sans `www` inconnue (serveur ou redirection sans CORS, non prouvé) ; chemin de l'API Géorisques non vérifié ; couche d'inondation choisie par son nom (`PPRN_COMMUNE_GASPAR`, rien ne prouve qu'elle montre des zones inondables) ; aucune couche d'argiles reconnue ; adresse non ouverte depuis la session.
 ## Choix à valider
 - Adresse testée : hôtel de ville de Paris (4 place de l'Hôtel de Ville), score de géocodage affiché.
 - Huit sondes dans cet ordre, une à la fois, délai de 10 s.
