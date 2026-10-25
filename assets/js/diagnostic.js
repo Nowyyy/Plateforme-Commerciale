@@ -200,6 +200,8 @@ function initialiserAdresse(donnees) {
     champ.value = resultat.adresse;
     ecrireSession(CLE_STOCKAGE, resultat.adresse);
     aide.textContent = resoudre(donnees, 'diagnostic.textes.aide');
+    // Après une mise à jour valide seulement : la carte réelle (si affichée) revient au schéma.
+    document.dispatchEvent(new CustomEvent('adresse:modifiee'));
   });
 }
 

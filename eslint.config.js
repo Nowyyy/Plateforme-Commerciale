@@ -2,7 +2,7 @@ import js from '@eslint/js';
 import globals from 'globals';
 
 export default [
-  { ignores: ['node_modules/', 'dist/', 'coverage/', 'playwright-report/', 'test-results/', '.lighthouseci/'] },
+  { ignores: ['node_modules/', 'dist/', 'coverage/', 'playwright-report/', 'test-results/', '.lighthouseci/', 'assets/vendor/'] },
   js.configs.recommended,
   {
     files: ['tests/e2e/**/*.js'],

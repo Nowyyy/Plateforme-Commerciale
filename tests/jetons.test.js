@@ -32,6 +32,7 @@ describe('jetons de design', () => {
     const hex = /#(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3,4})\b/i;
     const fautifs = fichiers('.', ['.css', '.html'])
       .filter((f) => f.replaceAll('\\', '/') !== 'css/tokens.css')
+      .filter((f) => !f.replaceAll('\\', '/').startsWith('assets/vendor/'))
       .filter((f) => hex.test(readFileSync(f, 'utf8')));
     expect(fautifs).toEqual([]);
   });

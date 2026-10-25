@@ -141,7 +141,7 @@
     "erreur": "Saisissez une adresse d'au moins 5 caractères.",
     "legendeAlea": "Aléa",
     "tous": "Tous",
-    "mention": "Démonstrateur : l'adresse reste dans votre navigateur, rien n'est envoyé. Les résultats sont des exemples.",
+    "mention": "Démonstrateur : l'adresse reste dans votre navigateur, rien n'est envoyé sauf carte réelle avec votre accord. Exemples.",
     "equipements": {
       "titre": "Équipements recommandés",
       "intro": "Pour l'aléa choisi, voici l'essentiel à prévoir.",
@@ -181,6 +181,92 @@
       "lienGeorisques": "Consulter la source officielle des risques (Géorisques)",
       "nouvelOnglet": "(nouvel onglet)",
       "noteGeorisques": "Ce démonstrateur n'envoie pas votre adresse à ce site."
+    }
+  },
+  "carteReelle": {
+    "hotes": ["data.geopf.fr", "www.georisques.gouv.fr", "tile.openstreetmap.org"],
+    "geocodage": {
+      "base": "https://data.geopf.fr/geocodage/search",
+      "seuil": 0.5,
+      "delaiMs": 10000
+    },
+    "leaflet": {
+      "css": "assets/vendor/leaflet/leaflet.css",
+      "js": "assets/vendor/leaflet/leaflet.js"
+    },
+    "vue": {
+      "zoom": 14,
+      "zoomMin": 6,
+      "zoomMax": 18,
+      "opacite": 0.7
+    },
+    "fondParDefaut": "osm",
+    "basculeFond": {
+      "erreursMin": 4,
+      "delaiMs": 8000
+    },
+    "fonds": {
+      "osm": {
+        "libelle": "OpenStreetMap",
+        "gabarit": "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+        "attributions": ["osm", "ign"]
+      },
+      "ign": {
+        "libelle": "Plan IGN",
+        "gabarit": "https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2&STYLE=normal&FORMAT=image/png&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}",
+        "attributions": ["ign"]
+      }
+    },
+    "wms": {
+      "base": "https://www.georisques.gouv.fr/services",
+      "version": "1.3.0",
+      "format": "image/png",
+      "transparent": true,
+      "crs": "EPSG:3857"
+    },
+    "calques": {
+      "inondation": [
+        { "nom": "ALEA_SYNT_01_04FAI_FXX", "libelle": "Aléa inondation (Géorisques)" },
+        { "nom": "PPRN_COMMUNE_RISQINOND_PRESCRIT", "libelle": "Communes avec un plan de prévention inondation prescrit (Géorisques)" }
+      ],
+      "argile": [
+        { "nom": "ALEARG", "libelle": "Aléa retrait-gonflement des argiles (Géorisques)" }
+      ],
+      "feu": [
+        { "nom": "PPRN_COMMUNE_FEU_APPROUV", "libelle": "Communes avec un plan de prévention incendie approuvé (Géorisques)" }
+      ],
+      "chaleur": []
+    },
+    "attributions": {
+      "osm": { "texte": "© OpenStreetMap", "lien": "osm" },
+      "ign": { "texte": "© IGN/Géoplateforme", "lien": "ign" },
+      "georisques": { "texte": "Données : Géorisques", "lien": "georisques" }
+    },
+    "textes": {
+      "bouton": "Afficher la carte réelle",
+      "aide": "Facultatif : votre adresse sera envoyée à des services externes, avec votre accord.",
+      "aideSansAdresse": "Saisissez d'abord une adresse.",
+      "consentement": {
+        "titre": "Afficher la carte réelle ?",
+        "texte": "Pour placer votre adresse sur une vraie carte, ce site envoie l'adresse saisie au service de géocodage de l'IGN (data.geopf.fr). Votre navigateur charge ensuite des cartes d'OpenStreetMap (ou, en repli, le Plan IGN) et les zones de risque du service Géorisques (www.georisques.gouv.fr). Ces services voient votre adresse IP, et le géocodeur reçoit l'adresse saisie. Ce site n'enregistre rien. Vous pouvez revenir à la carte schématique à tout moment. Les zones affichées sont informatives : elles ne remplacent ni un document réglementaire ni l'avis d'un professionnel.",
+        "accepter": "J'accepte et j'affiche la carte réelle",
+        "garder": "Garder la carte schématique"
+      },
+      "chargement": "Chargement de la carte réelle…",
+      "affichee": "Carte réelle affichée.",
+      "retourFait": "Carte schématique affichée.",
+      "erreur": "La carte réelle n'a pas pu être affichée : service indisponible ou adresse introuvable. La carte schématique reste affichée.",
+      "horsFrance": "La carte réelle n'est disponible que pour la France métropolitaine.",
+      "retour": "Revenir à la carte schématique",
+      "regionNom": "Carte réelle autour de votre adresse",
+      "aideClavier": "Flèches : déplacer la carte. Plus et moins : zoomer.",
+      "zoomAvant": "Zoomer",
+      "zoomArriere": "Dézoomer",
+      "basculeFond": "Le fond OpenStreetMap n'a pas répondu : bascule sur le Plan IGN.",
+      "chaleurIndisponible": "Aucune donnée de chaleur disponible auprès de Géorisques.",
+      "scoreIllustratif": "Le score affiché plus haut reste illustratif : il n'est pas calculé à partir de cette carte.",
+      "legendeFond": "Fond de carte",
+      "nomTechnique": "Couche : {nom}"
     }
   }
 }
