@@ -54,7 +54,7 @@ test('lien Géorisques : adresse déclarée, nouvel onglet, noopener noreferrer,
   const requetes = [];
   page.on('request', (r) => requetes.push(r.url()));
   await ouvrir(page, 375);
-  const lien = page.getByRole('link', { name: /Consulter la source officielle des risques \(Géorisques\)/ });
+  const lien = page.getByRole('link', { name: /Source officielle : Géorisques/ });
   await expect(lien).toBeVisible();
   await expect(lien).toHaveAttribute('href', site.liensExternes.georisques);
   await expect(lien).toHaveAttribute('target', '_blank');
@@ -62,21 +62,21 @@ test('lien Géorisques : adresse déclarée, nouvel onglet, noopener noreferrer,
   expect(rel).toContain('noopener');
   expect(rel).toContain('noreferrer');
   await expect(lien).toContainText('(nouvel onglet)');
-  await expect(page.getByText("Ce démonstrateur n'envoie pas votre adresse à ce site.")).toBeVisible();
+  await expect(page.getByText("Ce démonstrateur n'envoie pas votre adresse à ce site.")).toHaveCount(0);
   expect(await lien.getAttribute('href')).not.toContain('?');
   expect(requetes.filter((u) => u.includes('georisques') && !u.includes('/services?') && !u.includes('/api/v1/'))).toEqual([]);
 });
 
-test('enchaînement : carte, puis score et équipements en dessous à 1440 px ; ordre vertical à 375 px', async ({ page }) => {
+test('enchaînement : carte, légende, exposition, puis équipements en dessous à 1440 px ; ordre vertical à 375 px', async ({ page }) => {
   await ouvrir(page, 1440);
-  const [carte, score, equip] = [await boite(page, 'carte'), await boite(page, 'score'), await boite(page, 'equipements')];
-  expect(score.y).toBeGreaterThanOrEqual(carte.y + carte.height);
-  expect(equip.y).toBeGreaterThanOrEqual(carte.y + carte.height);
+  const [carte, expo, equip] = [await boite(page, 'carte'), await boite(page, 'exposition'), await boite(page, 'equipements')];
+  expect(expo.x).toBeGreaterThanOrEqual(carte.x + carte.width);
+  expect(equip.y).toBeGreaterThanOrEqual(Math.max(carte.y + carte.height, expo.y + expo.height) - 1);
   await ouvrir(page, 375);
   const ys = [];
-  for (const role of ['adresse', 'carte', 'score', 'equipements']) ys.push((await boite(page, role)).y);
+  for (const role of ['adresse', 'carte', 'legende', 'exposition', 'equipements']) ys.push((await boite(page, role)).y);
   expect(ys).toEqual([...ys].sort((a, b) => a - b));
-  expect(new Set(ys).size).toBe(4);
+  expect(new Set(ys).size).toBe(5);
 });
 
 test('JavaScript désactivé : seul le message noscript est visible', async ({ browser }) => {
@@ -85,7 +85,7 @@ test('JavaScript désactivé : seul le message noscript est visible', async ({ b
   await page.goto('/diagnostic.html');
   expect((await page.locator('body').innerText()).trim()).toBe('Ce démonstrateur nécessite JavaScript');
   await expect(page.locator('.noscript')).toBeVisible();
-  for (const selecteur of ['.carte-grille', '.score', '.diag__panneau']) {
+  for (const selecteur of ['.carte-cadre', '.exposition', '.diag__panneau']) {
     await expect(page.locator(selecteur).first()).toBeHidden();
   }
   await contexte.close();

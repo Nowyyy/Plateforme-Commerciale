@@ -65,7 +65,7 @@ test('inondation et argiles recensées, feux absents : deux cases, libellés, an
   await expect(groupe(page)).toContainText('Source : Géorisques (aléas recensés à l\'échelle de la commune pour l\'inondation et les feux de forêt, à l\'adresse pour les argiles).');
   await expect.poll(() => couchesDemandees(journal).size).toBe(2);
   expect([...couchesDemandees(journal)].sort()).toEqual([COUCHES.inondation, COUCHES.argile].sort());
-  await expect(page.locator('#note-chaleur')).toBeVisible();
+  await expect(page.locator('#note-chaleur')).toHaveCount(0);
 });
 
 test('aucun aléa recensé : message, aucune case, aucune couche demandée', async ({ page }) => {
@@ -164,8 +164,7 @@ test('confidentialité : aucune requête tierce hors diagnostic ni sans adresse 
   await page.evaluate(() => sessionStorage.clear()); // les autres pages écrivent leurs propres clés (comparaison, panier…) : repartir de zéro
   await ouvrirDiagnostic(page, 1440);
   await pret(page);
-  await page.getByRole('radio', { name: 'Plan IGN' }).check({ force: true });
-  await expect.poll(() => journal.ign.length).toBeGreaterThan(0);
+  await expect.poll(() => journal.osm.length).toBeGreaterThan(0);
   const liste = await externes();
   expect(new Set(liste.map((r) => new URL(r.url).hostname))).toEqual(new Set(['data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org']));
   for (const r of liste) {
@@ -220,17 +219,17 @@ test('JavaScript désactivé : seul le message noscript est visible', async ({ b
   await contexte.close();
 });
 
-test('la carte du diagnostic reste inchangée par les aléas : score et équipements ne dépendent pas des aléas détectés', async ({ page }) => {
+test('la carte du diagnostic reste inchangée par les aléas : niveau fixe provisoire (lot 4e-A) et équipements ne dépendent pas des aléas détectés', async ({ page }) => {
   await simuler(page, SCENARIOS.aucun);
   await ouvrirDiagnostic(page, 1440);
   await pret(page);
-  const sans = await page.locator('#score-niveau').textContent();
+  const sans = await page.locator('#exposition-niveau').textContent();
   const equipementsSans = await page.locator('#liste-equipements > li h3').allTextContents();
   const autre = await page.context().newPage();
   await simuler(autre, SCENARIOS.deux);
   await ouvrirDiagnostic(autre, 1440);
   await pret(autre);
-  expect(await autre.locator('#score-niveau').textContent()).toBe(sans);
+  expect(await autre.locator('#exposition-niveau').textContent()).toBe(sans);
   expect(await autre.locator('#liste-equipements > li h3').allTextContents()).toEqual(equipementsSans);
   expect(reponseGeocodage()).toContain(ADRESSE);
 });

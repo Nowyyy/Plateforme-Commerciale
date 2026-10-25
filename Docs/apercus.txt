@@ -15,3 +15,4 @@ lot-8d|Service après-vente simulé : accès sans compte, demande d'intervention
 lot-9|Comparateur de solutions : choix de deux à trois produits d'un même aléa, indicateur de niveau et tableau de comparaison, valeurs d'exemple.
 lot-4c|Carte réelle du diagnostic : consentement du visiteur, fond OpenStreetMap ou Plan IGN, calques Géorisques, données de services publics.
 lot-4d|Carte réelle seule et agrandie, saisie assistée de l'adresse, calques selon les aléas de l'adresse.
+lot-4e|Diagnostic : mise en page en cadres blancs (carte, légende, exposition), niveau d'exposition, équipements selon les aléas, saisie d'adresse stricte.

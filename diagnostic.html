@@ -106,78 +106,65 @@
             <p class="recherche__erreur" id="adresse-erreur" aria-live="polite"></p>
             <p class="visuellement-cache" id="adresse-statut" role="status"></p>
           </form>
-          <fieldset class="diag__alea" id="choix-alea">
-            <legend data-texte="diagnostic.textes.legendeAlea"></legend>
-            <div class="diag__pastilles" id="pastilles-alea">
-              <template id="modele-pastille">
-                <label class="pastille-choix"><input type="radio" name="alea"><span></span></label>
-              </template>
-            </div>
-          </fieldset>
           <p class="diag__mention" id="adresse-information" data-texte="diagnostic.textes.information"></p>
         </div>
       </section>
       <section class="diag__bloc diag__carte" data-bloc="E2-3" data-role="carte" aria-labelledby="titre-carte">
         <h2 id="titre-carte" data-texte="diagnostic.textes.carte.titre"></h2>
-        <div class="carte-grille">
-          <div class="carte-cadre">
-            <div class="carte-reelle" id="carte-reelle" role="region" data-aria-label="diagnostic.carteReelle.textes.regionNom" aria-describedby="carte-reelle-clavier" hidden></div>
-            <div class="carte-cadre__message" id="carte-reelle-message">
-              <p class="carte-cadre__etat" id="carte-reelle-etat" role="status" tabindex="-1"></p>
-              <button type="button" class="bouton bouton--secondaire" id="carte-reelle-reessayer" data-texte="diagnostic.carteReelle.textes.reessayer" hidden></button>
-            </div>
-          </div>
-          <p class="visuellement-cache" id="carte-reelle-clavier" data-texte="diagnostic.carteReelle.textes.aideClavier"></p>
-          <div class="carte-panneau carte">
-            <fieldset class="calques">
-              <legend data-texte="diagnostic.carteReelle.textes.aleas.titre"></legend>
-              <p class="diag__mention" id="aleas-message" data-texte="diagnostic.carteReelle.textes.aleas.attente"></p>
-              <p class="diag__mention" id="aleas-secours" hidden></p>
-              <div class="calques__liste" id="liste-calques">
-                <template id="modele-calque">
-                  <label class="calque-choix"><input type="checkbox"><span class="calque-choix__texte"><span class="calque-choix__nom"></span> <span class="calque-choix__presence"></span></span></label>
-                </template>
-              </div>
-              <p class="diag__mention" id="aleas-source" data-texte="diagnostic.carteReelle.textes.aleas.source"></p>
-              <p class="visuellement-cache" id="aleas-annonce" role="status"></p>
-            </fieldset>
-            <fieldset class="calques carte-reelle__fonds">
-              <legend data-texte="diagnostic.carteReelle.textes.legendeFond"></legend>
-              <div class="calques__liste" id="liste-fonds">
-                <template id="modele-fond">
-                  <label class="calque-choix"><input type="radio"><span></span></label>
-                </template>
-              </div>
-            </fieldset>
-            <p class="diag__mention" id="carte-reelle-fond-etat" role="status"></p>
-            <div class="carte-panneau__legende">
-              <p class="calques__titre" data-texte="diagnostic.carteReelle.textes.legendeCouches"></p>
-              <ul class="legende carte-reelle__legende" id="legende-reelle">
-                <template id="modele-legende-reelle">
-                  <li class="legende__item"><svg class="legende__motif" viewBox="0 0 24 16" aria-hidden="true" focusable="false"><rect class="legende__fond" width="24" height="16" rx="2"/></svg><span class="legende__texte"><span class="legende__libelle"></span> <span class="legende__technique"></span></span></li>
-                </template>
-                <li class="legende__item"><svg class="legende__repere" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/></svg><span data-texte="diagnostic.textes.carte.legendeAdresse"></span></li>
-              </ul>
-            </div>
-            <p class="diag__mention" id="mention-reelle" data-texte="diagnostic.carteReelle.textes.scoreIllustratif"></p>
-            <p class="diag__mention" id="note-chaleur" data-texte="diagnostic.carteReelle.textes.chaleurNote"></p>
-            <p class="diag__lien"><a class="lien-externe" data-lien-externe="georisques" target="_blank" rel="noopener noreferrer"><span data-texte="diagnostic.textes.carte.lienGeorisques"></span> <span class="visuellement-cache" data-texte="diagnostic.textes.carte.nouvelOnglet"></span></a></p>
-            <p class="diag__mention" data-texte="diagnostic.textes.carte.noteGeorisques"></p>
+        <div class="carte-cadre">
+          <div class="carte-reelle" id="carte-reelle" role="region" data-aria-label="diagnostic.carteReelle.textes.regionNom" aria-describedby="carte-reelle-clavier" hidden></div>
+          <div class="carte-cadre__message" id="carte-reelle-message">
+            <p class="carte-cadre__etat" id="carte-reelle-etat" role="status" tabindex="-1"></p>
+            <button type="button" class="bouton bouton--secondaire" id="carte-reelle-reessayer" data-texte="diagnostic.carteReelle.textes.reessayer" hidden></button>
           </div>
         </div>
+        <p class="visuellement-cache" id="carte-reelle-clavier" data-texte="diagnostic.carteReelle.textes.aideClavier"></p>
+        <p class="visuellement-cache" id="carte-reelle-fond-etat" role="status"></p>
       </section>
-      <section class="diag__bloc diag__score" data-bloc="E2-4" data-role="score" aria-labelledby="titre-score">
-        <h2 id="titre-score" data-texte="diagnostic.textes.score.titre"></h2>
-        <div class="score carte" aria-busy="true">
+      <section class="diag__bloc diag__legende" data-bloc="E2-4" data-role="legende" aria-labelledby="titre-legende">
+        <div class="carte bloc-carte">
+          <h2 id="titre-legende" data-texte="diagnostic.textes.legende.titre"></h2>
+          <ul class="legende carte-reelle__legende" id="legende-reelle">
+            <template id="modele-legende-reelle">
+              <li class="legende__item"><svg class="legende__motif" viewBox="0 0 24 16" aria-hidden="true" focusable="false"><rect class="legende__fond" width="24" height="16" rx="2"/></svg><span class="legende__texte"><span class="legende__libelle"></span> <span class="legende__technique visuellement-cache"></span></span></li>
+            </template>
+            <li class="legende__item"><svg class="legende__repere" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/></svg><span data-texte="diagnostic.textes.carte.legendeAdresse"></span></li>
+          </ul>
+          <p class="diag__mention" data-texte="diagnostic.textes.legende.phrase"></p>
+        </div>
+      </section>
+      <section class="diag__bloc diag__exposition" data-bloc="E2-5" data-role="exposition" aria-labelledby="titre-exposition">
+        <div class="carte bloc-carte exposition" aria-busy="true">
+          <h2 id="titre-exposition" data-texte="diagnostic.textes.exposition.titre"></h2>
           <ol class="jauge" id="jauge" aria-hidden="true"></ol>
-          <p class="score__niveau" id="score-niveau"></p>
-          <p class="score__phrase" id="score-phrase"></p>
-          <p class="diag__mention" data-texte="diagnostic.textes.score.mention"></p>
+          <p class="exposition__niveau" id="exposition-niveau"></p>
+          <p class="diag__mention" data-texte="diagnostic.textes.exposition.phrase"></p>
+          <fieldset class="calques">
+            <legend data-texte="diagnostic.carteReelle.textes.aleas.titre"></legend>
+            <p class="diag__mention" id="aleas-message" data-texte="diagnostic.carteReelle.textes.aleas.attente"></p>
+            <p class="diag__mention" id="aleas-secours" hidden></p>
+            <div class="calques__liste" id="liste-calques">
+              <template id="modele-calque">
+                <label class="calque-choix"><input type="checkbox"><span class="calque-choix__texte"><span class="calque-choix__nom"></span> <span class="calque-choix__presence"></span></span></label>
+              </template>
+            </div>
+            <p class="diag__mention" id="aleas-source" data-texte="diagnostic.carteReelle.textes.aleas.source"></p>
+            <p class="visuellement-cache" id="aleas-annonce" role="status"></p>
+          </fieldset>
+          <p class="diag__lien"><a class="lien-externe" data-lien-externe="georisques" target="_blank" rel="noopener noreferrer"><span data-texte="diagnostic.textes.carte.lienGeorisques"></span> <span class="visuellement-cache" data-texte="diagnostic.textes.carte.nouvelOnglet"></span></a></p>
         </div>
       </section>
-      <section class="diag__bloc diag__equipements" data-bloc="E2-5" data-role="equipements" aria-labelledby="titre-equipements">
+      <section class="diag__bloc diag__equipements" data-bloc="E2-6" data-role="equipements" aria-labelledby="titre-equipements">
         <h2 id="titre-equipements" data-texte="diagnostic.textes.equipements.titre"></h2>
         <p class="diag__intro" data-texte="diagnostic.textes.equipements.intro"></p>
+        <fieldset class="diag__alea" id="choix-alea">
+          <legend data-texte="diagnostic.textes.legendeAlea"></legend>
+          <div class="diag__pastilles" id="pastilles-alea">
+            <template id="modele-pastille">
+              <label class="pastille-choix"><input type="radio" name="alea"><span></span></label>
+            </template>
+          </div>
+        </fieldset>
         <ul class="equipements" id="liste-equipements" aria-busy="true">
           <template id="modele-equipement">
             <li class="equipement carte">
@@ -196,7 +183,7 @@
       </section>
     </div>
   </main>
-  <footer class="pied" data-bloc="E2-6" data-role="pied">
+  <footer class="pied" data-bloc="E2-7" data-role="pied">
     <div class="conteneur">
       <div class="pied__grille" aria-busy="true">
         <template data-liste="site.pied.colonnes">

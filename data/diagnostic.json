@@ -166,20 +166,18 @@
       "annonceN": "{n} équipements recommandés.",
       "comparer": "Comparer ces solutions"
     },
-    "score": {
-      "titre": "Niveau d'exposition",
+    "exposition": {
+      "titre": "Exposition à cette adresse",
       "libelle": "Niveau d'exposition :",
-      "phrases": [
-        "L'exposition d'exemple est faible : quelques gestes d'entretien suffisent.",
-        "L'exposition d'exemple est modérée : prévoir des équipements ciblés.",
-        "L'exposition d'exemple est élevée : des équipements de protection sont à prévoir en priorité.",
-        "L'exposition d'exemple est très élevée : une protection complète est recommandée."
-      ],
-      "mention": "Score illustratif : il ne remplace ni un document réglementaire ni l'avis d'un professionnel.",
-      "annonce": "Niveau d'exposition : {niveau}."
+      "indicatif": "(indicatif)",
+      "phrase": "Calculé à partir des aléas recensés par Géorisques."
+    },
+    "legende": {
+      "titre": "Légende",
+      "phrase": "Elle suit les cases cochées. Fond de carte : OpenStreetMap, repli automatique sur le Plan IGN."
     },
     "carte": {
-      "titre": "Carte et calques",
+      "titre": "Carte",
       "calques": {
         "inondation": "Zone inondable",
         "argile": "Retrait-gonflement des argiles",
@@ -187,9 +185,8 @@
         "chaleur": "Chaleur extrême"
       },
       "legendeAdresse": "Votre adresse",
-      "lienGeorisques": "Consulter la source officielle des risques (Géorisques)",
-      "nouvelOnglet": "(nouvel onglet)",
-      "noteGeorisques": "Ce démonstrateur n'envoie pas votre adresse à ce site."
+      "lienGeorisques": "Source officielle : Géorisques",
+      "nouvelOnglet": "(nouvel onglet)"
     }
   },
   "carteReelle": {
@@ -282,7 +279,6 @@
       "zoomAvant": "Zoomer",
       "zoomArriere": "Dézoomer",
       "basculeFond": "Le fond OpenStreetMap n'a pas répondu : bascule sur le Plan IGN.",
-      "chaleurNote": "Aucune carte de chaleur n'est disponible auprès de Géorisques.",
       "aleas": {
         "titre": "Aléas recensés à cette adresse",
         "attente": "Les aléas recensés s'affichent une fois la carte chargée.",
@@ -300,9 +296,6 @@
           "3": "exposition forte"
         }
       },
-      "scoreIllustratif": "Le score illustratif n'est pas calculé à partir de cette carte.",
-      "legendeFond": "Fond de carte",
-      "legendeCouches": "Couches affichées",
       "nomTechnique": "Couche : {nom}"
     }
   }

@@ -173,8 +173,7 @@ describe('données de carteReelle', () => {
     parcourir(config.textes);
     expect(textes.length).toBeGreaterThan(10);
     for (const t of textes) expect(typeof t === 'string' && t.trim() !== '').toBe(true);
-    expect(config.textes.scoreIllustratif).toBe("Le score illustratif n'est pas calculé à partir de cette carte.");
-    expect(config.textes.chaleurNote).toBe("Aucune carte de chaleur n'est disponible auprès de Géorisques.");
+    for (const cle of ['scoreIllustratif', 'chaleurNote', 'legendeFond', 'legendeCouches']) expect(config.textes[cle], cle).toBeUndefined(); // lot 4e-A : notes et choix de fond supprimés
   });
 
   it('calques : mêmes identifiants que les aléas, couches exactement celles de la spécification, chaleur sans couche', () => {
@@ -210,7 +209,7 @@ describe('diagnostic.html (partie A)', () => {
   it('aucun id dupliqué, aucun name sur les nouveaux contrôles, aucun script en ligne ni URL en dur', () => {
     const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
     expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);
-    const bloc = html.slice(html.indexOf('carte-cadre'), html.indexOf('carte-panneau'));
+    const bloc = html.slice(html.indexOf('carte-cadre'), html.indexOf('data-role="legende"'));
     expect(bloc).not.toMatch(/\sname=/);
     expect(html).not.toMatch(/<script(?![^>]*\ssrc=)/);
     expect(html).not.toMatch(/https?:\/\//i);

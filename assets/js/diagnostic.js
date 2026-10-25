@@ -63,10 +63,11 @@ function afficherEquipements(donnees, filtre) {
   return choisis.length;
 }
 
-// Jauge à 4 segments (décor) avec repère sous le segment du niveau, puis niveau en toutes lettres et phrase.
-function afficherScore(donnees, filtre) {
+// Jauge à 4 segments (décor) avec repère sous le segment du niveau, puis niveau en toutes lettres.
+// Lot 4e-A : niveau fixe provisoire (maximum des niveaux d'exemple) ; le calcul sur les aléas recensés arrive à la partie B.
+function afficherExposition(donnees) {
   const { aleas, niveaux, textes } = donnees.diagnostic;
-  const niveau = niveauGlobal(aleas, filtre);
+  const niveau = niveauGlobal(aleas, TOUS);
   const segments = segmentsJauge(niveau, niveaux.length).map((plein, i) => {
     const segment = document.createElement('li');
     segment.className = plein ? 'jauge__segment est-plein' : 'jauge__segment';
@@ -78,20 +79,16 @@ function afficherScore(donnees, filtre) {
     return segment;
   });
   document.getElementById('jauge').replaceChildren(...segments);
-  const libelle = libelleNiveau(niveaux, niveau);
-  document.getElementById('score-niveau').textContent = `${textes.score.libelle} ${libelle}`;
-  document.getElementById('score-phrase').textContent = textes.score.phrases[Math.min(Math.max(niveau, 1), textes.score.phrases.length) - 1];
-  document.querySelector('.score').setAttribute('aria-busy', 'false');
-  return libelle;
+  const { libelle, indicatif } = textes.exposition;
+  document.getElementById('exposition-niveau').textContent = `${libelle} ${libelleNiveau(niveaux, niveau)} ${indicatif}`;
+  document.querySelector('.exposition').setAttribute('aria-busy', 'false');
 }
 
 function mettreAJour(donnees, filtre, annoncer) {
   const nombre = afficherEquipements(donnees, filtre);
-  const niveau = afficherScore(donnees, filtre);
   if (!annoncer) return;
-  const { equipements, score } = donnees.diagnostic.textes;
-  const phrase = nombre === 1 ? equipements.annonceUn : equipements.annonceN.replace('{n}', String(nombre));
-  document.getElementById('annonce-diagnostic').textContent = `${phrase} ${score.annonce.replace('{niveau}', niveau)}`;
+  const { equipements } = donnees.diagnostic.textes;
+  document.getElementById('annonce-diagnostic').textContent = nombre === 1 ? equipements.annonceUn : equipements.annonceN.replace('{n}', String(nombre));
 }
 
 function afficherPastilles(donnees, etat) {
@@ -106,7 +103,7 @@ function afficherPastilles(donnees, etat) {
     pastille.querySelector('span').textContent = libelle;
     conteneur.append(pastille);
   }
-  // Un changement de pastille met à jour l'état puis prévient les autres blocs (équipements, score, carte).
+  // Un changement de pastille met à jour l'état puis prévient les autres blocs (équipements, carte).
   conteneur.addEventListener('change', (e) => {
     if (!e.target.matches('input[name="alea"]')) return;
     etat.filtre = aleaValide(donnees.diagnostic.aleas.map((a) => a.id), e.target.value) ?? TOUS;
@@ -191,6 +188,7 @@ if (typeof document !== 'undefined') {
     initialiserFiches();
     initialiserComparaison(donnees, etat);
     afficherPastilles(donnees, etat);
+    afficherExposition(donnees);
     mettreAJour(donnees, etat.filtre, false);
     document.dispatchEvent(new CustomEvent('diagnostic:filtre', { detail: { filtre: etat.filtre } }));
   });

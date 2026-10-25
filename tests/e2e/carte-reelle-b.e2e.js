@@ -55,62 +55,43 @@ test('cases : décocher retire les couches, recocher les remet, un changement de
   await expect(couchesLeaflet(page)).toHaveCount(4);
 });
 
-test('« Chaleur extrême » : aucune case, note statique dans le panneau, aucune requête associée', async ({ page }) => {
+test('« Chaleur extrême » : aucune case, aucune note, aucune requête associée', async ({ page }) => {
   const journal = await simuler(page);
   await afficherCarte(page);
   await expect(page.getByRole('group', { name: 'Aléas recensés à cette adresse' }).getByRole('checkbox')).toHaveCount(3);
   await expect(page.getByRole('checkbox', { name: 'Chaleur extrême' })).toHaveCount(0);
-  await expect(page.locator('#note-chaleur')).toHaveText("Aucune carte de chaleur n'est disponible auprès de Géorisques.");
-  await expect(page.locator('#mention-reelle')).toHaveText("Le score illustratif n'est pas calculé à partir de cette carte.");
+  await expect(page.locator('#note-chaleur, #mention-reelle')).toHaveCount(0);
   await page.getByRole('radio', { name: 'Canicule' }).check({ force: true });
   await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(1); // fond seul : aucun calque pour la canicule
   await expect.poll(() => journal.osm.length).toBeGreaterThan(0);
   expect(journal.wms.filter((r) => /chaleur|canicule/i.test(r.url))).toEqual([]);
 });
 
-test('fonds : Plan IGN par le choix du visiteur, retour à OpenStreetMap, flèches dans le groupe', async ({ page }) => {
+test('aucun choix de fond : aucune radio « Fond de carte », OpenStreetMap par défaut, jamais le Plan IGN sans repli', async ({ page }) => {
   const journal = await simuler(page);
   await afficherCarte(page);
-  const osm = page.getByRole('radio', { name: 'OpenStreetMap' });
-  const ign = page.getByRole('radio', { name: 'Plan IGN' });
-  await expect(osm).toBeChecked();
+  await expect(page.getByRole('radio', { name: 'OpenStreetMap' })).toHaveCount(0);
+  await expect(page.getByRole('radio', { name: 'Plan IGN' })).toHaveCount(0);
+  await expect(page.getByText('Fond de carte', { exact: true })).toHaveCount(0);
+  await expect(page.locator('[data-role="legende"]')).toContainText('Fond de carte : OpenStreetMap, repli automatique sur le Plan IGN.');
   await expect.poll(() => journal.osm.length).toBeGreaterThan(0);
   expect(journal.ign).toHaveLength(0);
-  await ign.check({ force: true });
-  await expect.poll(() => journal.ign.length).toBeGreaterThan(0);
-  expect(parametres(journal.ign[0].url)).toMatchObject({ SERVICE: 'WMTS', LAYER: 'GEOGRAPHICALGRIDSYSTEMS.PLANIGNV2', TILEMATRIXSET: 'PM' });
-  await page.waitForTimeout(300);
-  const nOsm = journal.osm.length;
-  await page.locator('#carte-reelle').focus();
-  await page.keyboard.press('ArrowLeft');
-  await page.waitForTimeout(500);
-  expect(journal.osm.length).toBe(nOsm);
-  await ign.focus();
-  await page.keyboard.press('ArrowLeft');
-  await expect(ign).not.toBeChecked();
-  await expect(osm).toBeChecked();
-  await page.keyboard.press('ArrowRight');
-  await expect(ign).toBeChecked();
-  expect(await osm.getAttribute('name')).toBe(await ign.getAttribute('name'));
 });
 
-test('repli automatique : tuiles OpenStreetMap refusées → annonce, Plan IGN, radio mise à jour ; aucune bascule après un choix manuel', async ({ page }) => {
+test('repli automatique : tuiles OpenStreetMap refusées → annonce, Plan IGN, attribution IGN seule', async ({ page }) => {
   const journal = await simuler(page, { tuiles: { osm: 'abandon' } });
   await page.clock.install();
   await afficherCarte(page);
   await expect(etat(page)).toHaveText("Le fond OpenStreetMap n'a pas répondu : bascule sur le Plan IGN.");
-  await expect(page.getByRole('radio', { name: 'Plan IGN' })).toBeChecked();
-  await expect(page.getByRole('radio', { name: 'OpenStreetMap' })).not.toBeChecked();
+  await expect(etat(page)).toHaveAttribute('role', 'status');
   await expect.poll(() => journal.ign.length).toBeGreaterThan(0);
-  // choix manuel d'OpenStreetMap (toujours refusé) : plus aucune bascule, même après le délai de 8 s
-  await page.getByRole('radio', { name: 'OpenStreetMap' }).check({ force: true });
-  await page.clock.fastForward(9000);
-  await page.waitForTimeout(400);
-  await expect(page.getByRole('radio', { name: 'OpenStreetMap' })).toBeChecked();
-  await expect(etat(page)).toHaveText("Le fond OpenStreetMap n'a pas répondu : bascule sur le Plan IGN.");
+  const attributions = page.locator('#carte-reelle .leaflet-control-attribution');
+  await expect(attributions).not.toContainText('© OpenStreetMap');
+  await expect(attributions).toContainText('© IGN/Géoplateforme');
   const nIgn = journal.ign.length;
-  await page.clock.fastForward(9000);
-  expect(journal.ign.length).toBe(nIgn);
+  await page.clock.fastForward(9000); // une seule bascule : le fond n'est plus le fond par défaut
+  expect(journal.ign.length).toBeGreaterThanOrEqual(nIgn);
+  await expect(etat(page)).toHaveText("Le fond OpenStreetMap n'a pas répondu : bascule sur le Plan IGN.");
 });
 
 test('repli automatique après huit secondes sans tuile chargée (réponses jamais reçues)', async ({ page }) => {
@@ -119,9 +100,10 @@ test('repli automatique après huit secondes sans tuile chargée (réponses jama
   await page.clock.install();
   await afficherCarte(page);
   await page.clock.fastForward(7000);
-  await expect(page.getByRole('radio', { name: 'OpenStreetMap' })).toBeChecked();
+  await expect(etat(page)).toHaveText('');
+  expect(journal.ign).toHaveLength(0);
   await page.clock.fastForward(1500);
-  await expect(page.getByRole('radio', { name: 'Plan IGN' })).toBeChecked();
+  await expect(etat(page)).toHaveText("Le fond OpenStreetMap n'a pas répondu : bascule sur le Plan IGN.");
   await expect.poll(() => journal.ign.length).toBeGreaterThan(0);
 });
 
@@ -143,9 +125,6 @@ test('attributions : trois textes, liens en nouvel onglet vers les hôtes attend
     hotes.push(new URL(await lien.getAttribute('href')).hostname);
   }
   expect(hotes).toEqual(['www.openstreetmap.org', 'geoservices.ign.fr', 'www.georisques.gouv.fr']);
-  await page.getByRole('radio', { name: 'Plan IGN' }).check({ force: true });
-  await expect(attributions).not.toContainText('© OpenStreetMap');
-  await expect(attributions).toContainText('© IGN/Géoplateforme');
   expect(journal.externes.filter((r) => /openstreetmap\.org\/copyright|geoservices\.ign\.fr/.test(r.url))).toEqual([]);
 });
 
@@ -206,8 +185,7 @@ test('aucune requête hors des trois hôtes, aucune écriture de stockage ni de 
     }).observe({ type: 'layout-shift', buffered: true });
   });
   await afficherCarte(page, 375);
-  await page.getByText('Plan IGN', { exact: true }).click();
-  await expect(page.getByRole('radio', { name: 'Plan IGN' })).toBeChecked();
+  await page.getByRole('radio', { name: 'Inondations' }).check({ force: true }); // une action du visiteur sur la page
   await page.waitForTimeout(500);
   const apres = await page.evaluate(() => ({ cles: Object.keys(sessionStorage).sort(), cls: globalThis.__cls, local: Object.keys(localStorage).length }));
   console.log(`CLS du chargement avec carte : ${apres.cls.toFixed(4)}`);

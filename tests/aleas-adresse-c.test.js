@@ -155,7 +155,7 @@ describe('données du lot 4d-C', () => {
     expect(a.secours).toBe("Les aléas de cette adresse n'ont pas pu être déterminés ; tous les calques disponibles sont proposés.");
     expect(a.source).toBe("Source : Géorisques (aléas recensés à l'échelle de la commune pour l'inondation et les feux de forêt, à l'adresse pour les argiles).");
     expect(a.annonceN).toBe('{n} aléas recensés à cette adresse.');
-    expect(config.textes.chaleurNote).toBe("Aucune carte de chaleur n'est disponible auprès de Géorisques.");
+    expect(config.textes.chaleurNote).toBeUndefined(); // lot 4e-A : note supprimée
     expect(config.calques.chaleur).toEqual([]);
   });
 });

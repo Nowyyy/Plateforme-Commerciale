@@ -10,11 +10,11 @@ const config = diagnostic.carteReelle;
 const sansCommentaires = (src) => src.split('\n').filter((l) => !l.trim().startsWith('//')).join('\n');
 
 describe('diagnostic.html (lot 4d-A) : carte seule', () => {
-  it('ordre en-tete, adresse, carte, score, equipements, pied ; codes E2-1 à E2-6 une fois chacun ; aucun order CSS', () => {
+  it('ordre en-tete, adresse, carte, legende, exposition, equipements, pied ; codes E2-1 à E2-7 une fois chacun ; aucun order CSS', () => {
     const roles = [...html.matchAll(/data-role="([^"]+)"/g)].map((m) => m[1]);
-    expect(roles).toEqual(['en-tete', 'adresse', 'carte', 'score', 'equipements', 'pied']);
+    expect(roles).toEqual(['en-tete', 'adresse', 'carte', 'legende', 'exposition', 'equipements', 'pied']);
     const codes = [...html.matchAll(/data-bloc="(E2-\d)"/g)].map((m) => m[1]);
-    expect(codes).toEqual(['E2-1', 'E2-2', 'E2-3', 'E2-4', 'E2-5', 'E2-6']);
+    expect(codes).toEqual(['E2-1', 'E2-2', 'E2-3', 'E2-4', 'E2-5', 'E2-6', 'E2-7']);
     expect(lire('css/diagnostic.css')).not.toMatch(/\border:\s*-?\d/);
   });
 
@@ -26,11 +26,11 @@ describe('diagnostic.html (lot 4d-A) : carte seule', () => {
     expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);
   });
 
-  it('le bloc carte contient le titre, le cadre, le panneau ; le lien Comparer reste dans equipements', () => {
-    const carte = html.slice(html.indexOf('data-role="carte"'), html.indexOf('data-role="score"'));
+  it('le bloc carte contient le titre et le cadre, sans panneau ; le lien Comparer reste dans equipements', () => {
+    const carte = html.slice(html.indexOf('data-role="carte"'), html.indexOf('data-role="legende"'));
     expect(carte).toContain('<h2');
     expect(carte).toContain('class="carte-cadre"');
-    expect(carte).toContain('class="carte-panneau carte"');
+    expect(html).not.toMatch(/carte-panneau|carte-grille/);
     const equipements = html.slice(html.indexOf('data-role="equipements"'), html.indexOf('</main>'));
     expect(equipements).toContain('site.liens.comparateur');
   });
@@ -66,12 +66,12 @@ describe('CSS du lot 4d-A', () => {
     expect(css).not.toMatch(/\.schema|\.motif|\.calque__|carte-schema/);
   });
 
-  it('cadre : clamp(22rem, 65vh, 34rem) puis 36 rem dès 1200 px ; équipements sans étirement (visuel de 12 rem au plus)', () => {
+  it('cadre : clamp(22rem, 65vh, 34rem) puis 30 rem dès 1200 px ; cartes d\'équipement de visuel fixe (8 rem)', () => {
     expect(css).toContain('block-size: clamp(22rem, 65vh, 34rem)');
-    expect(css).toMatch(/@media \(min-width: 1200px\) \{\s*\.carte-grille[^}]*\}\s*\.carte-cadre \{\s*block-size: 36rem;/);
+    expect(css).toMatch(/@media \(min-width: 1200px\) \{\s*\.carte-cadre \{\s*block-size: 30rem;/);
     expect(css).not.toMatch(/grid-template-rows: repeat\(3, 1fr\)/);
     expect(css).not.toMatch(/\.diag__equipements \{\s*display: flex/);
-    expect(css).toContain('max-block-size: 12rem');
+    expect(css).toMatch(/\.equipement__visuel \{[^}]*block-size: 8rem/);
   });
 });
 

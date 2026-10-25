@@ -39,12 +39,12 @@ test('équipements : « Tous » donne 3 cartes complètes ; « Inondations » de
   await expect(page.locator('#annonce-diagnostic')).toContainText('équipements recommandés');
 });
 
-test('score : niveau en toutes lettres, jauge de 4 segments, repère sous le bon segment, pour chaque pastille', async ({ page }) => {
+test('exposition : niveau en toutes lettres (indicatif), jauge de 4 segments décorative, repère sous le bon segment, niveau provisoire indépendant des pastilles', async ({ page }) => {
   await ouvrir(page, 1440);
-  const attendus = [['Tous', Math.max(...diag.aleas.map((a) => a.niveau))], ...diag.aleas.map((a) => [a.court, a.niveau])];
-  for (const [nom, niveau] of attendus) {
+  const niveau = Math.max(...diag.aleas.map((a) => a.niveau)); // lot 4e-A : copie provisoire du niveau fixe
+  for (const nom of ['Tous', ...diag.aleas.map((a) => a.court)]) {
     await page.getByRole('radio', { name: nom, exact: true }).check({ force: true });
-    await expect(page.locator('#score-niveau')).toHaveText(`Niveau d'exposition : ${diag.niveaux[niveau - 1]}`);
+    await expect(page.locator('#exposition-niveau')).toHaveText(`Niveau d'exposition : ${diag.niveaux[niveau - 1]} (indicatif)`);
     const segments = page.locator('#jauge > li');
     await expect(segments).toHaveCount(4);
     await expect(page.locator('#jauge .est-plein')).toHaveCount(niveau);
@@ -55,20 +55,22 @@ test('score : niveau en toutes lettres, jauge de 4 segments, repère sous le bon
     expect(repere.x + repere.width).toBeLessThanOrEqual(segment.x + segment.width);
   }
   await expect(page.locator('#jauge')).toHaveAttribute('aria-hidden', 'true');
-  await expect(page.getByText('Score illustratif : il ne remplace')).toBeVisible();
+  await expect(page.locator('[data-role="exposition"] h2')).toHaveText('Exposition à cette adresse');
+  await expect(page.getByText('Score illustratif')).toHaveCount(0);
 });
 
-test('mise en page : 1440 px (colonnes), 768 px (visuel à gauche), aucun débordement à 375, 768 et 1440 px', async ({ page }) => {
+test('mise en page : équipements en pleine largeur et trois colonnes à 1440 px, cartes verticales, aucun débordement à 375, 768 et 1440 px', async ({ page }) => {
   await ouvrir(page, 1440);
-  const [equip, score] = [await boite(page, 'equipements'), await boite(page, 'score')];
-  console.log(`1440 px : equipements ${equip.width} px (haut ${equip.y}), score ${score.width} px (haut ${score.y})`);
-  expect(equip.width).toBeGreaterThanOrEqual(1.8 * score.width);
-  expect(Math.abs(equip.y - score.y)).toBeLessThanOrEqual(2);
+  const [equip, expo] = [await boite(page, 'equipements'), await boite(page, 'exposition')];
+  console.log(`1440 px : equipements ${equip.width} px (haut ${equip.y}), exposition ${expo.width} px (bas ${expo.y + expo.height})`);
+  expect(equip.width).toBeGreaterThanOrEqual(1100);
+  expect(equip.y).toBeGreaterThanOrEqual(expo.y + expo.height - 1);
   const hauteurs = await cartes(page).evaluateAll((els) => els.map((e) => e.getBoundingClientRect().height));
   expect(Math.max(...hauteurs) - Math.min(...hauteurs)).toBeLessThanOrEqual(2);
   const premiere = cartes(page).first();
   const [visuel, carte] = [await premiere.locator('.equipement__visuel').boundingBox(), await premiere.boundingBox()];
-  expect(visuel.height).toBeGreaterThanOrEqual(carte.height - 40);
+  expect(visuel.height).toBeGreaterThanOrEqual(120); // visuel de 8 rem
+  expect(visuel.height).toBeLessThan(carte.height - 80);
 
   for (const largeur of [375, 768, 1440]) {
     await page.setViewportSize({ width: largeur, height: 900 });
@@ -78,7 +80,7 @@ test('mise en page : 1440 px (colonnes), 768 px (visuel à gauche), aucun débor
 
   await page.setViewportSize({ width: 768, height: 900 });
   const [v, texte] = [await premiere.locator('.equipement__visuel').boundingBox(), await premiere.locator('.equipement__corps').boundingBox()];
-  expect(v.x + v.width).toBeLessThanOrEqual(texte.x + 1);
+  expect(texte.y).toBeGreaterThanOrEqual(v.y + v.height); // carte verticale : le texte sous le visuel
 });
 
 test('robustesse : 6 équipements pour un aléa, seulement 3 cartes, sans débordement', async ({ page }) => {

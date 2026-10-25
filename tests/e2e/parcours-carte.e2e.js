@@ -47,8 +47,7 @@ for (const largeur of [375, 1440]) {
     await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(2);
     await calque(page, 'Zone inondable').uncheck();
     await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(1);
-    await page.getByRole('radio', { name: 'Plan IGN' }).check({ force: true });
-    await expect.poll(() => externes.ign.length).toBeGreaterThan(0);
+    await expect.poll(() => externes.osm.length).toBeGreaterThan(0);
     // fiche d'un équipement
     await page.locator('#liste-equipements > li').first().getByRole('link', { name: /Voir la fiche/ }).click();
     await page.waitForURL('**/produit.html');
@@ -83,7 +82,6 @@ test('confidentialité : aucune requête tierce hors diagnostic ni sans adresse,
   expect(await hors()).toEqual([]);
   await ouvrirDiagnostic(page, 1440);
   await carteAffichee(page);
-  await page.getByRole('radio', { name: 'Plan IGN' }).check({ force: true });
   await expect.poll(async () => (await hors()).length).toBeGreaterThan(6);
   const externes = await hors();
   for (const r of externes) expect(HOTES, r.url).toContain(new URL(r.url).hostname);
