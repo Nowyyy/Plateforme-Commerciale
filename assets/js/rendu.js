@@ -97,7 +97,7 @@ export function validerListe(valeur, cle, requises = CLES_REQUISES[cle] ?? []) {
 
 // Lien externe autorisé : protocole https, nom d'hôte égal à un domaine déclaré ou sous-domaine de celui-ci, sans caractère
 // de contrôle ni identifiants. Une adresse relative ou une autre origine est refusée.
-export const HOTES_EXTERNES = ['georisques.gouv.fr'];
+export const HOTES_EXTERNES = ['georisques.gouv.fr', 'openstreetmap.org', 'ign.fr'];
 
 export function lienExterneValide(adresse, hotes = HOTES_EXTERNES) {
   if (typeof adresse !== 'string' || !/^https:/i.test(adresse)) return false;

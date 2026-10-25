@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Diagnostic de votre exposition : équipements, niveau et carte d'exemple</title>
   <meta name="description" content="Démonstrateur : diagnostic d'exposition d'une maison, équipements recommandés, niveau et carte schématique d'exemple. Contenus fictifs, aucune vente.">
   <link rel="icon" href="data:,">
@@ -16,11 +17,13 @@
   <link rel="stylesheet" href="css/composants.css">
   <link rel="stylesheet" href="css/accueil.css">
   <link rel="stylesheet" href="css/diagnostic.css">
+  <link rel="stylesheet" href="css/carte-reelle.css">
   <script type="module" src="assets/js/rendu.js"></script>
   <script type="module" src="assets/js/menu.js"></script>
   <script type="module" src="assets/js/compteur.js"></script>
   <script type="module" src="assets/js/compte-lien.js"></script>
   <script type="module" src="assets/js/diagnostic.js"></script>
+  <script type="module" src="assets/js/carte-reelle.js"></script>
 </head>
 <body>
   <div class="relief" aria-hidden="true">
@@ -172,6 +175,8 @@
             <use class="schema__repere" href="#repere-forme"/>
             <circle class="schema__repere-centre" cx="185" cy="110" r="5.5"/>
           </svg>
+          <div class="carte-reelle" id="carte-reelle" role="region" data-aria-label="diagnostic.carteReelle.textes.regionNom" aria-describedby="carte-reelle-clavier" hidden></div>
+          <p class="visuellement-cache" id="carte-reelle-clavier" data-texte="diagnostic.carteReelle.textes.aideClavier"></p>
           <fieldset class="calques">
             <legend data-texte="diagnostic.textes.carte.legendeCalques"></legend>
             <div class="calques__liste" id="liste-calques">
@@ -180,13 +185,43 @@
               </template>
             </div>
           </fieldset>
+          <fieldset class="calques carte-reelle__fonds" hidden>
+            <legend data-texte="diagnostic.carteReelle.textes.legendeFond"></legend>
+            <div class="calques__liste" id="liste-fonds">
+              <template id="modele-fond">
+                <label class="calque-choix"><input type="radio"><span></span></label>
+              </template>
+            </div>
+          </fieldset>
+          <p class="visuellement-cache" id="carte-reelle-chaleur-aide" data-texte="diagnostic.carteReelle.textes.chaleurIndisponible"></p>
+          <div class="carte-reelle__ligne">
+            <button type="button" class="bouton bouton--secondaire" id="carte-reelle-ouvrir" aria-describedby="carte-reelle-aide" data-texte="diagnostic.carteReelle.textes.bouton"></button>
+            <button type="button" class="bouton bouton--secondaire" id="carte-reelle-retour" data-texte="diagnostic.carteReelle.textes.retour" hidden></button>
+            <p class="carte-reelle__aide" id="carte-reelle-aide" data-texte="diagnostic.carteReelle.textes.aide"></p>
+          </div>
+          <section class="carte-reelle__consentement" id="carte-reelle-consentement" aria-labelledby="carte-reelle-consentement-titre" hidden>
+            <h3 id="carte-reelle-consentement-titre" tabindex="-1" data-texte="diagnostic.carteReelle.textes.consentement.titre"></h3>
+            <p data-texte="diagnostic.carteReelle.textes.consentement.texte"></p>
+            <div class="carte-reelle__actions">
+              <button type="button" class="bouton bouton--secondaire" id="carte-reelle-accepter" data-texte="diagnostic.carteReelle.textes.consentement.accepter"></button>
+              <button type="button" class="bouton bouton--secondaire" id="carte-reelle-garder" data-texte="diagnostic.carteReelle.textes.consentement.garder"></button>
+            </div>
+          </section>
+          <p class="carte-reelle__etat" id="carte-reelle-etat" role="status"></p>
+          <ul class="legende carte-reelle__legende" id="legende-reelle" hidden>
+            <template id="modele-legende-reelle">
+              <li class="legende__item"><svg class="legende__motif" viewBox="0 0 24 16" aria-hidden="true" focusable="false"><rect class="legende__fond" width="24" height="16" rx="2"/></svg><span class="legende__texte"><span class="legende__libelle"></span> <span class="legende__technique"></span></span></li>
+            </template>
+            <li class="legende__item"><svg class="legende__repere" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/></svg><span data-texte="diagnostic.textes.carte.legendeAdresse"></span></li>
+          </ul>
           <ul class="legende" id="legende-calques">
             <template id="modele-legende">
               <li class="legende__item"><svg class="legende__motif" viewBox="0 0 24 16" aria-hidden="true" focusable="false"><rect class="legende__fond" width="24" height="16" rx="2"/><rect class="legende__zone" width="24" height="16" rx="2"/></svg><span></span></li>
             </template>
             <li class="legende__item"><svg class="legende__repere" viewBox="168 93 34 46" aria-hidden="true" focusable="false"><use href="#repere-forme"/><circle cx="185" cy="110" r="5.5"/></svg><span data-texte="diagnostic.textes.carte.legendeAdresse"></span></li>
           </ul>
-          <p class="diag__mention" data-texte="diagnostic.textes.carte.mention"></p>
+          <p class="diag__mention" id="mention-schema" data-texte="diagnostic.textes.carte.mention"></p>
+          <p class="diag__mention" id="mention-reelle" data-texte="diagnostic.carteReelle.textes.scoreIllustratif" hidden></p>
           <p class="diag__lien"><a class="lien-externe" data-lien-externe="georisques" target="_blank" rel="noopener noreferrer"><span data-texte="diagnostic.textes.carte.lienGeorisques"></span> <span class="visuellement-cache" data-texte="diagnostic.textes.carte.nouvelOnglet"></span></a></p>
           <p class="diag__mention" data-texte="diagnostic.textes.carte.noteGeorisques"></p>
         </div>

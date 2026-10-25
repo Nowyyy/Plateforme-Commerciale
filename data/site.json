@@ -74,7 +74,9 @@
     "comparateur": "comparateur.html"
   },
   "liensExternes": {
-    "georisques": "https://www.georisques.gouv.fr/"
+    "georisques": "https://www.georisques.gouv.fr/",
+    "osm": "https://www.openstreetmap.org/copyright",
+    "ign": "https://geoservices.ign.fr/"
   },
   "compteur": {
     "gabarit": "({n})",

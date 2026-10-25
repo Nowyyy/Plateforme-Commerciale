@@ -601,7 +601,7 @@ html[data-rendu="erreur"] .score {
 
 /* Carte : place réservée avant le remplissage (mesurée), invisible sans JavaScript */
 html:not([data-rendu]) .carte-schema {
-  min-block-size: calc(min(75vw - 62px, 432px) + 624px);
+  min-block-size: calc(min(75vw - 62px, 432px) + 732px);
   visibility: hidden;
 }
 
@@ -611,18 +611,18 @@ html[data-rendu="erreur"] .carte-schema {
 
 @media (min-width: 480px) {
   html:not([data-rendu]) .carte-schema {
-    min-block-size: calc(min(75vw - 62px, 432px) + 572px);
+    min-block-size: calc(min(75vw - 62px, 432px) + 680px);
   }
 }
 
 @media (min-width: 768px) {
   html:not([data-rendu]) .carte-schema {
-    min-block-size: calc(min(75vw - 86px, 432px) + 572px);
+    min-block-size: calc(min(75vw - 86px, 432px) + 680px);
   }
 }
 
 @media (min-width: 1200px) {
   html:not([data-rendu]) .carte-schema {
-    min-block-size: 54.9rem;
+    min-block-size: 61.65rem;
   }
 }

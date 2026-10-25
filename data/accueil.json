@@ -19,7 +19,7 @@
     "libelle": "Entrez votre adresse pour évaluer l'exposition de votre maison aux aléas et voir les solutions adaptées",
     "placeholder": "Ex. : 12 rue des Tilleuls, Lyon",
     "bouton": "Évaluer mon exposition",
-    "microtexte": "Démonstrateur : l'adresse reste dans votre navigateur et n'est ni envoyée ni enregistrée ailleurs.",
+    "microtexte": "Démonstrateur : l'adresse reste dans votre navigateur. Elle n'est envoyée à un service externe que si vous demandez la carte réelle, avec votre accord.",
     "erreur": "Saisissez une adresse d'au moins 5 caractères."
   },
   "aleas": {
