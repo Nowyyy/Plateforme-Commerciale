@@ -22,7 +22,12 @@ const SEP_FIN = '(?:[^a-z0-9]|$)';
 const jeton = (alternatives) => new RegExp(`${SEP_DEBUT}(?:${alternatives})${SEP_FIN}`);
 
 export const FAMILLES = {
-  inondation: { libelle: 'Inondation', motif: new RegExp(`inond|crue|submersion|${jeton('ppri|tri|azi').source}`) },
+  inondation: {
+    libelle: 'Inondation',
+    motif: new RegExp(`inond|crue|submersion|${jeton('ppri|tri|azi').source}`),
+    // couches d'enjeux et contours de communes du rapportage : elles citent l'inondation sans montrer de zone
+    exclusion: { nom: /^enjeux/, titre: /^limites? de commune/ },
+  },
   argiles: { libelle: 'Argiles', motif: new RegExp(`argil|alearg|retrait|gonflement|${jeton('rga').source}`) },
   feux: { libelle: 'Feux de forêt', motif: new RegExp(`incend|foret|debroussaill|${jeton('feux?|old').source}`) },
   chaleur: { libelle: 'Chaleur', motif: new RegExp(`chaleur|canicule|temperature|${SEP_DEBUT}ilot`) },
@@ -121,7 +126,13 @@ export function extraireCatalogue(xml) {
 export function classerFamilles(entree) {
   const e = estObjet(entree) ? entree : {};
   const cible = normaliser(`${texte(e.nom)} ${texte(e.titre)} ${texte(e.resume)}`);
-  return CLES_FAMILLES.filter((cle) => FAMILLES[cle].motif.test(cible));
+  const nom = normaliser(e.nom).trim();
+  const titre = normaliser(e.titre).trim();
+  return CLES_FAMILLES.filter((cle) => {
+    const { motif, exclusion } = FAMILLES[cle];
+    if (exclusion && (exclusion.nom.test(nom) || exclusion.titre.test(titre))) return false;
+    return motif.test(cible);
+  });
 }
 
 export function grouperParFamille(catalogue) {

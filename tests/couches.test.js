@@ -59,6 +59,26 @@ describe('lot 4b-C : catalogue', () => {
     expect(L.classerFamilles(entree('Débroussaillement', 'Forêt'))).toEqual(['feux']);
   });
 
+  it('partie D : enjeux et contours de communes exclus de l\'inondation, vraies couches d\'aléa et PPR conservées (noms du rapport réel)', () => {
+    const exclues = [
+      entree('ENJEUX_ETS_SENSIBLES_FXX', 'Etablissements sensibles - France métropolitaine - Rapportage 2020', 'Établissements en zone inondable'),
+      entree('ENJEUX_ZONEACT_FXX', "Zone d'activité - France métropolitaine - Rapportage 2020"),
+      entree('ENJEUX_CULT_FXX', 'Patrimoine culturel - France métropolitaine - Rapportage 2020'),
+      entree('COMMUNE_FXX', 'Limites de commune concernée par un TRI - France métropolitaine - Rapportage 2020'),
+    ];
+    for (const e of exclues) expect(L.classerFamilles(e), e.nom).toEqual([]);
+    const gardees = [
+      entree('PPRN_COMMUNE_RISQINOND_APPROUV', 'Communes concernées par un PPR Inondation approuvé'),
+      entree('ALEA_SYNT_01_04FAI_FXX', "Surface inondable - Aléa débordement de cours d'eau rare ou millénial - France métropolitaine - Rapportage 2020"),
+      entree('ISO_HT_03_02MOY_FXX', "Hauteurs d'eau - Aléa submersion moyen ou centennal - France métropolitaine - Rapportage 2020"),
+      entree('OUV_ZONSALEA_FXX', "Zones de sur-aléa inondation - France métropolitaine - Rapportage 2020"),
+    ];
+    for (const e of gardees) expect(L.classerFamilles(e), e.nom).toEqual(['inondation']);
+    expect(L.classerFamilles(entree('ALEARG_REALISE_PE', 'Exposition au retrait-gonflement des argiles (Petite échelle)'))).toEqual(['argiles']);
+    expect(L.classerFamilles(entree('SUP_FEU', 'Périmètres des SUP Feu de forêt'))).toEqual(['feux']);
+    expect(L.lieuPourEntree(exclues[3])).toBe(L.LIEUX.autre);
+  });
+
   it('grouperParFamille et filtrerCatalogue : ordre du catalogue, accents, casse, texte vide', () => {
     const g = L.grouperParFamille(CATALOGUE);
     expect(Object.keys(g)).toEqual(['inondation', 'argiles', 'feux', 'chaleur']);

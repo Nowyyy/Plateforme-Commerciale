@@ -17,3 +17,9 @@ Page `assets/outils/couches.html`, aperçu `/lot-4b/assets/outils/couches.html`.
 ## Vérifié / non vérifié
 - Vérifié : logique pure (20 tests Vitest) et page entière avec services simulés (12 tests Playwright, aucune requête réelle).
 - Non vérifié : tous les services réels (proxy de la session refusé), noms réels des couches, valeur du jugement. Aucune couche n'est recommandée.
+
+## Partie D : motifs de familles (après les rapports du propriétaire)
+- Rapports PC et iPhone : 222 couches ; inondation 103, argiles 3, feux 3, chaleur 0. Le bruit venait des couches `ENJEUX_*` et `COMMUNE_FXX` (« Limites de commune… »), qui citent l'inondation sans montrer de zone.
+- `FAMILLES.inondation.exclusion` : nom commençant par `enjeux` ou titre commençant par « limites de commune » ; ces couches restent dans « Tout le catalogue ». Les `PPRN_COMMUNE_*`, `ALEA_SYNT_*`, `ISO_HT_*` et `OUV_*` restent classés.
+- Chaleur reste à 0 : aucun nom ni titre du catalogue ne contient `chaleur`, `canicule`, `température` ni `îlot` ; aucun motif n'est inventé.
+- Non vérifié : les 78 couches de la liste tronquée (rapport limité à 25 lignes) ; l'effet exact sur l'effectif d'inondation se lira sur le prochain rapport.
