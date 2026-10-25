@@ -15,7 +15,7 @@ function journaliser(page) {
 }
 
 for (const largeur of [375, 1440]) {
-  test(`parcours de l'adresse à ${largeur} px : saisie assistée, choix, diagnostic, carte, aléas recensés, calque, Plan IGN, filtre « Inondations », fiche`, async ({ page }) => {
+  test(`parcours de l'adresse à ${largeur} px : saisie assistée, choix, diagnostic, carte, aléas recensés, calque, filtre « Inondations », fiche`, async ({ page }) => {
     const debut = Date.now();
     // simulation : inondation et argiles présentes, feux absents
     const externes = await simuler(page, { api: { gaspar: { corps: reponseGaspar(['Inondation', 'Séisme']) }, rga: { corps: reponseRga(2) } } });
@@ -48,8 +48,7 @@ for (const largeur of [375, 1440]) {
     await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(3);
     await groupe.getByRole('checkbox', { name: 'Retrait-gonflement des argiles' }).uncheck();
     await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(2);
-    await page.getByRole('radio', { name: 'Plan IGN' }).check({ force: true });
-    await expect.poll(() => externes.ign.length).toBeGreaterThan(0);
+    await expect.poll(() => externes.osm.length).toBeGreaterThan(0);
     // retour à l'accueil, puis carte d'aléa « Inondations » : seul le calque d'inondation est coché
     await page.locator('.marque').first().click();
     await page.waitForURL((u) => u.pathname === '/index.html' || u.pathname === '/');
@@ -59,7 +58,7 @@ for (const largeur of [375, 1440]) {
     await page.waitForSelector('html[data-rendu="pret"]');
     await expect(page.getByRole('radio', { name: 'Inondations' })).toBeChecked();
     await expect(page.getByLabel('Adresse évaluée')).toHaveValue(SUGGESTIONS[0][0]);
-    await expect(groupe.getByRole('checkbox', { checked: true })).toHaveCount(1);
+    await expect(groupe.getByRole('checkbox', { checked: true })).toHaveCount(2); // les pastilles ne changent pas les calques
     await expect(groupe.getByRole('checkbox', { name: 'Zone inondable' })).toBeChecked();
     await page.locator('#liste-equipements > li').first().getByRole('link', { name: /Voir la fiche/ }).click();
     await page.waitForURL('**/produit.html');

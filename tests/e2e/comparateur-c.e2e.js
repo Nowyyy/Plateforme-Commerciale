@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
+import { ADRESSE, simuler } from './carte-reelle-simulation.js';
 
 const produit = JSON.parse(readFileSync('data/produit.json', 'utf8'));
 const LARGEURS = [375, 768, 1440];
@@ -8,9 +9,12 @@ const sansDebordement = (page) => page.evaluate(() => document.documentElement.s
 const cochees = (page) => page.locator('.carte-produit input').evaluateAll((els) => els.filter((e) => e.checked).map((e) => e.value));
 
 async function ouvrirDiagnostic(page, largeur) {
+  if (!page.__simule) page.__simule = await simuler(page); // lot 4e-B : sans adresse, aucun équipement n'est proposé
   await page.setViewportSize({ width: largeur, height: 900 });
+  await page.addInitScript((a) => sessionStorage.setItem('adresse', a), ADRESSE);
   await page.goto('/diagnostic.html');
   await page.waitForSelector('html[data-rendu="pret"]');
+  await expect(page.locator('#liste-equipements > li').first()).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
 }
 
@@ -53,14 +57,14 @@ test('filtre « Tous » : le clic mène au comparateur avec l\'aléa de niveau m
   await expect(page.locator('.comp__table thead th[scope="col"]:not(:first-child)')).toHaveCount(2);
 });
 
-test('diagnostic à 1440 px : score et équipements côte à côte, hauts alignés, équipements environ deux fois plus larges (lot 4d)', async ({ page }) => {
+test('diagnostic à 1440 px : exposition à droite de la carte (hauts alignés), équipements en pleine largeur dessous (lot 4e)', async ({ page }) => {
   await ouvrirDiagnostic(page, 1440);
   const boite = async (role) => (await page.locator(`[data-role="${role}"]`).boundingBox());
-  const [score, equipements] = await Promise.all([boite('score'), boite('equipements')]);
-  console.log(`1440 px : score ${score.width} px, equipements ${equipements.width} px, hauts ${score.y} / ${equipements.y}`);
-  expect(Math.abs(score.y - equipements.y)).toBeLessThanOrEqual(2);
-  expect(equipements.width / score.width).toBeGreaterThanOrEqual(1.7);
-  expect(equipements.width / score.width).toBeLessThanOrEqual(2.3);
+  const [carte, expo, equipements] = await Promise.all([boite('carte'), boite('exposition'), boite('equipements')]);
+  console.log(`1440 px : exposition ${expo.width} px, equipements ${equipements.width} px, hauts ${carte.y} / ${expo.y}`);
+  expect(Math.abs(carte.y - expo.y)).toBeLessThanOrEqual(2);
+  expect(equipements.width).toBeGreaterThanOrEqual(3 * expo.width);
+  expect(equipements.y).toBeGreaterThanOrEqual(expo.y + expo.height - 1);
 });
 
 const ETATS = [

@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { ADRESSE, ouvrirDiagnostic, reponseGeocodage, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { ADRESSE, ouvrirDiagnostic, reponseCompletion, reponseGeocodage, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
 const boite = async (page, selecteur) => {
   const b = await page.locator(selecteur).first().boundingBox();
@@ -45,29 +46,24 @@ test('adresse valide : géocodage avec l\'adresse, puis Leaflet local, tuiles Op
   expect(console_).toEqual([]);
 });
 
-test('mise en page à 1440 px : cadre 800 × 540 au moins, panneau à droite, score et équipements côte à côte sans étirement', async ({ page }) => {
+test('mise en page à 1440 px : cadre 800 × 460 au moins, exposition à droite sur la hauteur de la carte et de la légende, équipements dessous', async ({ page }) => {
   await simuler(page);
   await ouvrirDiagnostic(page, 1440);
   await carteAffichee(page);
   const m = await page.evaluate(() => {
     const lire = (sel) => { const b = document.querySelector(sel).getBoundingClientRect(); return { x: b.x, y: b.y, width: b.width, height: b.height }; };
-    const cartes = [...document.querySelectorAll('#liste-equipements > li')].map((li) => ({ li: li.getBoundingClientRect().height, corps: li.querySelector('.equipement__corps').getBoundingClientRect().height }));
-    return { cadre: lire('.carte-cadre'), panneau: lire('.carte-panneau'), score: lire('[data-role="score"]'), equip: lire('[data-role="equipements"]'), cartes };
+    return { cadre: lire('.carte-cadre'), carte: lire('[data-role="carte"]'), legende: lire('[data-role="legende"]'), expo: lire('[data-role="exposition"]'), equip: lire('[data-role="equipements"]') };
   });
-  console.log(`1440 px : cadre ${m.cadre.width.toFixed(0)} × ${m.cadre.height.toFixed(0)}, panneau ${m.panneau.width.toFixed(0)} px à ${m.panneau.x.toFixed(0)}, score ${m.score.width.toFixed(0)}, équipements ${m.equip.width.toFixed(0)}`);
+  console.log(`1440 px : cadre ${m.cadre.width.toFixed(0)} × ${m.cadre.height.toFixed(0)}, exposition ${m.expo.width.toFixed(0)} px à ${m.expo.x.toFixed(0)}`);
   expect(m.cadre.width).toBeGreaterThanOrEqual(800);
-  expect(m.cadre.height).toBeGreaterThanOrEqual(540);
-  expect(m.panneau.x).toBeGreaterThanOrEqual(m.cadre.x + m.cadre.width);
-  expect(Math.abs(m.panneau.y - m.cadre.y)).toBeLessThanOrEqual(2);
-  expect(Math.abs(m.score.y - m.equip.y)).toBeLessThanOrEqual(2);
-  expect(m.equip.width / m.score.width).toBeGreaterThanOrEqual(1.7);
-  expect(m.equip.width / m.score.width).toBeLessThanOrEqual(2.3);
-  expect(m.score.y).toBeGreaterThanOrEqual(m.cadre.y + m.cadre.height);
-  expect(m.cartes.length).toBeGreaterThan(0);
-  for (const c of m.cartes) expect(c.li, 'carte d\'équipement étirée').toBeLessThanOrEqual(c.corps + 48);
+  expect(m.cadre.height).toBeGreaterThanOrEqual(460);
+  expect(m.expo.x).toBeGreaterThanOrEqual(m.cadre.x + m.cadre.width);
+  expect(Math.abs(m.expo.y - m.carte.y)).toBeLessThanOrEqual(2);
+  expect(Math.abs(m.expo.y + m.expo.height - (m.legende.y + m.legende.height))).toBeLessThanOrEqual(8);
+  expect(m.equip.y).toBeGreaterThanOrEqual(Math.max(m.expo.y + m.expo.height, m.legende.y + m.legende.height) - 1);
 });
 
-test('mise en page à 375 px : cadre 340 × 350 au moins, ordre adresse, carte, score, équipements ; aucun débordement à 375, 768 et 1440 px', async ({ page }) => {
+test('mise en page à 375 px : cadre 340 × 350 au moins, ordre adresse, carte, légende, exposition, équipements ; aucun débordement à 375, 768 et 1440 px', async ({ page }) => {
   await simuler(page);
   await ouvrirDiagnostic(page, 375);
   await carteAffichee(page);
@@ -76,7 +72,7 @@ test('mise en page à 375 px : cadre 340 × 350 au moins, ordre adresse, carte, 
   expect(cadre.width).toBeGreaterThanOrEqual(340);
   expect(cadre.height).toBeGreaterThanOrEqual(350);
   const hauts = [];
-  for (const role of ['adresse', 'carte', 'score', 'equipements']) hauts.push((await boite(page, `[data-role="${role}"]`)).y);
+  for (const role of ['adresse', 'carte', 'legende', 'exposition', 'equipements']) hauts.push((await boite(page, `[data-role="${role}"]`)).y);
   for (let i = 1; i < hauts.length; i += 1) expect(hauts[i]).toBeGreaterThan(hauts[i - 1]);
   for (const largeur of [375, 768, 1440]) {
     await page.setViewportSize({ width: largeur, height: 900 });
@@ -97,14 +93,14 @@ test('aucun décalage : le cadre garde ses dimensions entre « chargement » et 
     await ouvrirDiagnostic(page, largeur);
     await expect(etat(page)).toHaveText('Chargement de la carte…');
     const avant = await boite(page, '.carte-cadre');
-    const scoreAvant = await boite(page, '[data-role="score"]');
+    const expoAvant = await boite(page, '[data-role="exposition"]');
     liberer();
     await carteAffichee(page);
     const apres = await boite(page, '.carte-cadre');
-    const scoreApres = await boite(page, '[data-role="score"]');
+    const expoApres = await boite(page, '[data-role="exposition"]');
     console.log(`${largeur} px : cadre ${avant.width} × ${avant.height} puis ${apres.width} × ${apres.height}`);
     expect(apres).toEqual(avant);
-    expect(scoreApres.y).toBe(scoreAvant.y);
+    expect(expoApres.y).toBe(expoAvant.y);
   }
 });
 
@@ -160,16 +156,20 @@ test('échec : leaflet.js impossible à charger → message, « Réessayer » ch
   expect(console_.filter(SANS_RESSOURCE)).toEqual([]);
 });
 
+const TOULOUSE = '8 Avenue des Lilas 31000 Toulouse';
+
 test('« Mettre à jour » avec une autre adresse : carte recréée, un seul conteneur Leaflet, nouvelle adresse géocodée', async ({ page }) => {
   const journal = await simuler(page);
   await ouvrirDiagnostic(page, 1440);
   await carteAffichee(page);
   await expect(page.locator('.leaflet-container')).toHaveCount(1);
-  await page.locator('#adresse-evaluee').fill('8 avenue des Lilas, 31000 Toulouse');
+  await page.route('https://data.geopf.fr/geocodage/completion/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: reponseCompletion([[TOULOUSE, 1.4442, 43.6047]]) }));
+  await choisirAdresse(page, page.locator('#adresse-evaluee'), '8 avenue des Lilas');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
-  // vérification de l'adresse saisie (limit=1), puis géocodage de la carte avec le libellé accepté
-  await expect.poll(() => journal.geocodage.length).toBeGreaterThanOrEqual(3);
-  expect(new URL(journal.geocodage[1].url).searchParams.get('q')).toBe('8 avenue des Lilas, 31000 Toulouse');
+  // aucune vérification par recherche libre : seul le géocodage de la carte part, avec le libellé choisi
+  const recherches = () => journal.geocodage.filter((r) => new URL(r.url).pathname === '/geocodage/search').map((r) => new URL(r.url).searchParams.get('q'));
+  await expect.poll(() => recherches().length).toBe(2);
+  expect(recherches()).toEqual([ADRESSE, TOULOUSE]);
   await carteAffichee(page);
   await expect(page.locator('.leaflet-container')).toHaveCount(1);
   await expect(page.locator('#carte-reelle .carte-reelle__repere')).toHaveCount(1);

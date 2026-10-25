@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import * as logique from '../assets/js/adresse-assistee-logique.js';
-import { nettoyerSaisie, doitInterroger, construireUrlCompletion, construireUrlRecherche, analyserCompletion, analyserSuggestionsRecherche, decisionVerification, indexSuivant } from '../assets/js/adresse-assistee-logique.js';
-import { analyserGeocodage } from '../assets/js/carte-reelle-logique.js';
+import { nettoyerSaisie, doitInterroger, construireUrlCompletion, construireUrlRecherche, analyserCompletion, analyserSuggestionsRecherche, actionEntree, etatValidation, indexSuivant } from '../assets/js/adresse-assistee-logique.js';
 import { valider } from '../assets/js/adresse-validation.js';
 
 const lire = (f) => readFileSync(f, 'utf8');
@@ -13,7 +12,6 @@ const COMPLETION = config.geocodage.completion;
 const RECHERCHE = config.geocodage.base;
 const sansCommentaires = (src) => src.split('\n').filter((l) => !l.trim().startsWith('//')).join('\n');
 
-const resultat = (lon, lat, score, type) => analyserGeocodage(JSON.stringify({ features: [{ geometry: { coordinates: [lon, lat] }, properties: { label: '12 Rue des Tilleuls 69003 Lyon', score, type } }] }), 0.5);
 
 describe('nettoyerSaisie', () => {
   it('compacte les espaces, remplace les caractères de contrôle, borne à 200 caractères', () => {
@@ -102,39 +100,6 @@ describe('analyserSuggestionsRecherche', () => {
   });
 });
 
-describe('decisionVerification', () => {
-  const selection = { libelle: '12 Rue des Tilleuls 69003 Lyon', lon: 4.8357, lat: 45.764 };
-
-  it('sélection inchangée : accepté sans résultat de service', () => {
-    expect(decisionVerification({ texte: '12 Rue des Tilleuls 69003 Lyon', selection, resultat: null })).toEqual({ decision: 'accepte', adresse: '12 Rue des Tilleuls 69003 Lyon', source: 'selection' });
-  });
-
-  it('texte modifié après la sélection : le service décide', () => {
-    expect(decisionVerification({ texte: '12 Rue des Tilleuls 69003 Lyon bis', selection, resultat: null })).toEqual({ decision: 'indisponible' });
-    expect(decisionVerification({ texte: '14 rue des Tilleuls', selection, resultat: resultat(4.8, 45.7, 0.8, 'housenumber') }).decision).toBe('accepte');
-  });
-
-  it('housenumber à 0,5 accepté (libellé officiel repris), 0,49 refusé ; street et locality acceptés', () => {
-    expect(decisionVerification({ texte: '12 rue des Tilleuls', resultat: resultat(4.8, 45.7, 0.5, 'housenumber') })).toEqual({ decision: 'accepte', adresse: '12 Rue des Tilleuls 69003 Lyon', source: 'service' });
-    expect(decisionVerification({ texte: '12 rue des Tilleuls', resultat: resultat(4.8, 45.7, 0.49, 'housenumber') })).toEqual({ decision: 'refuse', raison: 'introuvable' });
-    for (const type of ['street', 'locality']) expect(decisionVerification({ texte: 'rue des Tilleuls', resultat: resultat(4.8, 45.7, 0.9, type) }).decision, type).toBe('accepte');
-  });
-
-  it('commune seule : « précisez » ; type inconnu : introuvable ; hors de France : refus ; aucun résultat : introuvable', () => {
-    expect(decisionVerification({ texte: 'Lyon', resultat: resultat(4.8, 45.7, 0.95, 'municipality') })).toEqual({ decision: 'refuse', raison: 'municipalite' });
-    expect(decisionVerification({ texte: 'Lyon', resultat: resultat(4.8, 45.7, 0.95, 'autre') })).toEqual({ decision: 'refuse', raison: 'introuvable' });
-    expect(decisionVerification({ texte: 'Madrid', resultat: resultat(-3.7, 40.4, 0.95, 'housenumber') })).toEqual({ decision: 'refuse', raison: 'hors-france' });
-    expect(decisionVerification({ texte: 'xyz', resultat: analyserGeocodage(JSON.stringify({ features: [] }), 0.5) })).toEqual({ decision: 'refuse', raison: 'introuvable' });
-  });
-
-  it('service injoignable ou réponse illisible : indisponible ; types configurables ; entrées inattendues sans exception', () => {
-    expect(decisionVerification({ texte: '12 rue des Tilleuls', resultat: null })).toEqual({ decision: 'indisponible' });
-    expect(decisionVerification({ texte: '12 rue', resultat: analyserGeocodage('pas du json', 0.5) })).toEqual({ decision: 'indisponible' });
-    expect(decisionVerification({ texte: '12 rue', resultat: resultat(4.8, 45.7, 0.9, 'street'), types: ['housenumber'] })).toEqual({ decision: 'refuse', raison: 'introuvable' });
-    for (const v of [undefined, null, 0, NaN, '', {}, [], () => 1]) expect(() => decisionVerification(v), String(v)).not.toThrow();
-  });
-});
-
 describe('indexSuivant', () => {
   it('bas, haut, bouclage, liste vide, autre touche', () => {
     expect(indexSuivant(5, -1, 'ArrowDown')).toBe(0);
@@ -153,11 +118,11 @@ describe('pureté de adresse-assistee-logique.js', () => {
   it('aucune référence à document, window, fetch, Date ni stockage ; arguments gelés non modifiés ; types inattendus sans exception', () => {
     expect(lire('assets/js/adresse-assistee-logique.js')).not.toMatch(/\b(document|window|fetch|Date|localStorage|sessionStorage|indexedDB|XMLHttpRequest|setTimeout)\b/);
     const sel = Object.freeze({ libelle: 'A B C' });
-    expect(() => decisionVerification(Object.freeze({ texte: 'A B C', selection: sel, resultat: null, types: Object.freeze(['street']) }))).not.toThrow();
+    expect(() => etatValidation(Object.freeze({ texte: 'A B C', selection: sel, adresseCourante: 'X', panne: false, valideLocal: true }))).not.toThrow();
     for (const v of [undefined, null, 0, NaN, '', {}, [], () => 1, Symbol.iterator.toString()]) {
-      expect(() => { nettoyerSaisie(v); doitInterroger(v, v, v, v); construireUrlCompletion(v, v, v); construireUrlRecherche(v, v, v); analyserCompletion(v); analyserSuggestionsRecherche(v); indexSuivant(v, v, v); }, String(v)).not.toThrow();
+      expect(() => { nettoyerSaisie(v); doitInterroger(v, v, v, v); construireUrlCompletion(v, v, v); construireUrlRecherche(v, v, v); analyserCompletion(v); analyserSuggestionsRecherche(v); indexSuivant(v, v, v); etatValidation(v); etatValidation({ texte: v, selection: v, adresseCourante: v, panne: v, valideLocal: v }); actionEntree(v); }, String(v)).not.toThrow();
     }
-    expect(Object.keys(logique).sort()).toEqual(['analyserCompletion', 'analyserSuggestionsRecherche', 'construireUrlCompletion', 'construireUrlRecherche', 'decisionVerification', 'doitInterroger', 'indexSuivant', 'nettoyerSaisie']);
+    expect(Object.keys(logique).sort()).toEqual(['actionEntree', 'analyserCompletion', 'analyserSuggestionsRecherche', 'construireUrlCompletion', 'construireUrlRecherche', 'doitInterroger', 'etatValidation', 'indexSuivant', 'nettoyerSaisie']);
   });
 });
 
@@ -187,14 +152,13 @@ describe('données de la saisie assistée', () => {
     const textes = diagnostic.textes.assistee;
     expect(accueil.recherche.assistee).toEqual(textes);
     for (const [cle, valeur] of Object.entries(textes)) expect(typeof valeur === 'string' && valeur.trim() !== '', cle).toBe(true);
-    expect(textes.aucune).toBe('Aucune suggestion');
+    expect(textes.aucune).toBe('Aucune adresse ne correspond.');
+    expect(textes.aideInactif).toBe('Choisissez une adresse dans la liste pour continuer.');
     expect(textes.suggestionsN).toBe('{n} suggestions');
     expect(textes.indisponible).toBe('Suggestions indisponibles pour le moment.');
     expect(textes.choisie).toBe('Adresse choisie : {libelle}');
-    expect(textes.reconnue).toBe('Adresse reconnue : {libelle}');
-    expect(textes.introuvable).toBe('Adresse introuvable. Choisissez une adresse dans la liste de suggestions.');
-    expect(textes.municipalite).toBe('Précisez une adresse avec le numéro et la rue.');
-    expect(textes.nonVerifiee).toBe("Vérification impossible pour le moment : l'adresse est utilisée telle quelle.");
+    expect(textes.nonVerifiee).toBe("Vérification impossible pour le moment : l'adresse sera utilisée telle quelle.");
+    for (const cle of ['reconnue', 'introuvable', 'municipalite', 'verification']) expect(textes[cle], cle).toBeUndefined(); // plus de vérification automatique
     expect(accueil.recherche.microtexte).toBe(diagnostic.textes.information);
     for (const mot of ['IGN', 'Géorisques', 'OpenStreetMap', 'adresse IP', "n'enregistre rien"]) expect(accueil.recherche.microtexte).toContain(mot);
     expect(config.saisie).toEqual({ minCaracteres: 3, delaiMs: 300, delaiRequeteMs: 6000, maxSuggestions: 5 });
@@ -224,18 +188,20 @@ describe('module adresse-assistee.js (DOM)', () => {
     expect(src).toContain('credentials: \'omit\'');
     expect(src).not.toMatch(/https?:\/\//);
     expect(src).not.toMatch(/localStorage|sessionStorage|indexedDB|document\.cookie|sendBeacon|XMLHttpRequest|innerHTML|\.name\s*=|setAttribute\('name'/);
-    expect(src.match(/construireUrl(Completion|Recherche)\(/g)).toHaveLength(3); // complétion, repli, vérification
+    expect(src.match(/construireUrl(Completion|Recherche)\(/g)).toHaveLength(2); // complétion et repli : jamais de vérification à la validation
     expect(src).toContain('new AbortController');
   });
 
-  it('la validation locale du lot 2 est appelée avant le réseau (accueil et diagnostic)', () => {
+  it('la validation locale du lot 2 est appelée avant toute navigation ou écriture (accueil et diagnostic), jamais de vérification', () => {
     for (const fichier of ['assets/js/adresse.js', 'assets/js/diagnostic.js']) {
       const code = sansCommentaires(lire(fichier));
+      const inactif = code.indexOf('if (!assistant.valide())');
       const local = code.indexOf('valider(champ.value)');
-      const reseau = code.indexOf('assistant.verifier()');
-      expect(local, fichier).toBeGreaterThan(0);
-      expect(reseau, fichier).toBeGreaterThan(local);
-      expect(code.slice(local, reseau)).toContain('return;');
+      const suite = Math.min(...['conserver(resultat.adresse)', 'ecrireSession(CLE_STOCKAGE, resultat.adresse)'].map((m) => (code.indexOf(m) > 0 ? code.indexOf(m) : Infinity)));
+      expect(inactif, fichier).toBeGreaterThan(0);
+      expect(local, fichier).toBeGreaterThan(inactif);
+      expect(suite, fichier).toBeGreaterThan(local);
+      expect(code, fichier).not.toMatch(/verifier|decisionVerification/);
     }
   });
 });

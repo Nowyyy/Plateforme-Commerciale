@@ -3,8 +3,8 @@ import AxeBuilder from '@axe-core/playwright';
 import { simuler } from './carte-reelle-simulation.js';
 import { formaterPrix } from '../../assets/js/diagnostic-logique.js';
 import { LIGNE, TROIS_LIGNES, UNE_LIGNE, ouvrirPanier, panierAvec } from '../outils/panier-aide.mjs';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
-const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const AMBRE = 'rgb(217, 119, 6)';
 const sansEspaces = (t) => t.replace(/\s/g, ' ');
 const debordement = (page) => page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
@@ -44,7 +44,7 @@ async function parcours(page, largeur) {
   await page.setViewportSize({ width: largeur, height: 900 });
   await page.goto('/index.html');
   await page.waitForSelector('.recherche:not([hidden])');
-  await page.getByLabel(/Entrez votre adresse/).fill(ADRESSE);
+  await choisirAdresse(page, page.getByLabel(/Entrez votre adresse/));
   await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
   await page.waitForURL('**/diagnostic.html');
   await page.waitForSelector('html[data-rendu="pret"]');
@@ -73,8 +73,10 @@ async function parcours(page, largeur) {
   await confirmation.getByRole('link', { name: 'Continuer mes achats' }).click();
   await page.waitForURL('**/diagnostic.html');
   await page.waitForSelector('html[data-rendu="pret"]');
-  // produit non complet : quantité 3
-  await ouvrirFiche(page, 'Bouclier de baie');
+  // produit non complet : quantité 3 (le bouclier de baie, aléa grêle et vents, n'est plus proposé par le diagnostic : fiche ouverte comme « Voir la fiche »)
+  await page.evaluate(() => sessionStorage.setItem('produit', 'bouclier-de-baie'));
+  await page.goto('/produit.html');
+  await page.waitForSelector('html[data-rendu="pret"]');
   const bouton = page.locator('[data-role="mode"]').getByRole('button', { name: 'Ajouter au panier' });
   for (let i = 0; i < 2; i += 1) await page.getByRole('button', { name: 'Augmenter la quantité : Bouclier de baie' }).click();
   await page.getByRole('radio', { name: /Matériel seul/ }).check({ force: true });

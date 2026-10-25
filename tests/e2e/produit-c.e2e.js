@@ -2,10 +2,11 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
 import { formaterPrix } from '../../assets/js/diagnostic-logique.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
+import { simuler } from './carte-reelle-simulation.js';
 
 const donnees = JSON.parse(readFileSync('data/produit.json', 'utf8'));
 const batardeau = donnees.produits.find((p) => p.id === 'batardeau-modulable');
-const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 
 async function ouvrir(page, largeur, session = {}) {
   await page.setViewportSize({ width: largeur, height: 900 });
@@ -112,10 +113,11 @@ test('mise en page : colonnes 60/40 à 1440 px, blocs empilés à 375 px, aucun 
 
 for (const largeur of [375, 1440]) {
   test(`parcours cliqué à ${largeur} px : accueil, diagnostic, fiche, pose, fil d'Ariane vers le diagnostic`, async ({ page }) => {
+    await simuler(page); // suggestions de l'IGN simulées : la saisie stricte exige un choix dans la liste
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.goto('/index.html');
     await page.waitForSelector('.recherche:not([hidden])');
-    await page.getByLabel(/Entrez votre adresse/).fill(ADRESSE);
+    const libelle = await choisirAdresse(page, page.getByLabel(/Entrez votre adresse/));
     await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
     await page.waitForURL('**/diagnostic.html');
     const carte = page.locator('#liste-equipements > li').first();
@@ -129,7 +131,7 @@ for (const largeur of [375, 1440]) {
     expect(new URL(page.url()).search).toBe('');
     await page.getByRole('navigation', { name: 'Fil d\'Ariane' }).getByRole('link', { name: 'Diagnostic' }).click();
     await page.waitForURL('**/diagnostic.html');
-    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(ADRESSE);
+    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(libelle);
   });
 }
 

@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { ADRESSE, ouvrirDiagnostic, reponseGaspar, reponseGeocodage, reponseRga, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { ADRESSE, ouvrirDiagnostic, reponseCompletion, reponseGaspar, reponseGeocodage, reponseRga, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
 const COUCHES = {
   inondation: 'ALEA_SYNT_01_04FAI_FXX,PPRN_COMMUNE_RISQINOND_PRESCRIT',
@@ -65,7 +66,7 @@ test('inondation et argiles recensées, feux absents : deux cases, libellés, an
   await expect(groupe(page)).toContainText('Source : Géorisques (aléas recensés à l\'échelle de la commune pour l\'inondation et les feux de forêt, à l\'adresse pour les argiles).');
   await expect.poll(() => couchesDemandees(journal).size).toBe(2);
   expect([...couchesDemandees(journal)].sort()).toEqual([COUCHES.inondation, COUCHES.argile].sort());
-  await expect(page.locator('#note-chaleur')).toBeVisible();
+  await expect(page.locator('#note-chaleur')).toHaveCount(0);
 });
 
 test('aucun aléa recensé : message, aucune case, aucune couche demandée', async ({ page }) => {
@@ -103,7 +104,7 @@ test('tous les appels en échec : mode de secours (trois cases, mention), consol
   await expect(annonce(autre)).toHaveText('1 aléa recensé à cette adresse.');
 });
 
-test('cases : décocher retire les couches, recocher les remet ; le filtre « Inondations » ne coche que l\'inondation ; un changement de filtre réinitialise', async ({ page }) => {
+test('cases : décocher retire les couches, recocher les remet ; les pastilles et le niveau n\'y changent rien', async ({ page }) => {
   const journal = await simuler(page, SCENARIOS.deux);
   await ouvrirDiagnostic(page, 1440);
   await pret(page);
@@ -117,16 +118,14 @@ test('cases : décocher retire les couches, recocher les remet ; le filtre « In
   expect(journal.wms.slice(avant).map((r) => new URL(r.url).searchParams.get('LAYERS'))).not.toContain(COUCHES.inondation);
   await calque(page, 'Zone inondable').check();
   await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(3);
-  await page.getByRole('radio', { name: 'Inondations' }).check({ force: true });
-  await expect(calque(page, 'Zone inondable')).toBeChecked();
-  await expect(calque(page, 'Retrait-gonflement des argiles')).not.toBeChecked();
-  await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(2);
-  await calque(page, 'Retrait-gonflement des argiles').check();
-  await page.getByRole('radio', { name: 'Feux de forêt' }).check({ force: true }); // calque absent de l'adresse : rien n'est coché
-  await expect(groupe(page).getByRole('checkbox', { checked: true })).toHaveCount(0);
-  await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(1);
-  await page.getByRole('radio', { name: 'Tous' }).check({ force: true });
+  await page.getByRole('radio', { name: 'Inondations' }).check({ force: true }); // la pastille ne pilote que les équipements
   await expect(groupe(page).getByRole('checkbox', { checked: true })).toHaveCount(2);
+  await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(3);
+  await calque(page, 'Retrait-gonflement des argiles').uncheck();
+  await page.getByRole('radio', { name: 'Tous' }).check({ force: true });
+  await expect(groupe(page).getByRole('checkbox', { checked: true })).toHaveCount(1);
+  await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(2);
+  await expect(page.locator('#exposition-niveau')).toHaveText("Niveau d'exposition : modéré (indicatif)");
 });
 
 test('changement d\'adresse : nouvelle lecture des aléas, cases recalculées', async ({ page }) => {
@@ -139,7 +138,8 @@ test('changement d\'adresse : nouvelle lecture des aléas, cases recalculées', 
   await page.route('https://www.georisques.gouv.fr/api/v1/rga**', (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: reponseRga(0) }));
   await page.unroute('https://www.georisques.gouv.fr/api/v1/gaspar/**');
   await page.route('https://www.georisques.gouv.fr/api/v1/gaspar/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: reponseGaspar(['Feu de forêt', 'Crue']) }));
-  await page.locator('#adresse-evaluee').fill('8 avenue des Lilas, 31000 Toulouse');
+  await page.route('https://data.geopf.fr/geocodage/completion/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: reponseCompletion([['8 Avenue des Lilas 31000 Toulouse', 1.4442, 43.6047]]) }));
+  await choisirAdresse(page, page.locator('#adresse-evaluee'), '8 avenue des Lilas');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
   await expect.poll(() => journal.api.length).toBe(4);
   await expect(cases(page)).toHaveCount(2);
@@ -164,8 +164,7 @@ test('confidentialité : aucune requête tierce hors diagnostic ni sans adresse 
   await page.evaluate(() => sessionStorage.clear()); // les autres pages écrivent leurs propres clés (comparaison, panier…) : repartir de zéro
   await ouvrirDiagnostic(page, 1440);
   await pret(page);
-  await page.getByRole('radio', { name: 'Plan IGN' }).check({ force: true });
-  await expect.poll(() => journal.ign.length).toBeGreaterThan(0);
+  await expect.poll(() => journal.osm.length).toBeGreaterThan(0);
   const liste = await externes();
   expect(new Set(liste.map((r) => new URL(r.url).hostname))).toEqual(new Set(['data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org']));
   for (const r of liste) {
@@ -220,17 +219,17 @@ test('JavaScript désactivé : seul le message noscript est visible', async ({ b
   await contexte.close();
 });
 
-test('la carte du diagnostic reste inchangée par les aléas : score et équipements ne dépendent pas des aléas détectés', async ({ page }) => {
+test('le niveau et les équipements dépendent des aléas recensés à l\'adresse, jamais l\'inverse : aucun aléa, puis inondation et argiles moyennes', async ({ page }) => {
   await simuler(page, SCENARIOS.aucun);
   await ouvrirDiagnostic(page, 1440);
   await pret(page);
-  const sans = await page.locator('#score-niveau').textContent();
-  const equipementsSans = await page.locator('#liste-equipements > li h3').allTextContents();
+  await expect(page.locator('#exposition-niveau')).toHaveText('Aucun aléa recensé parmi ceux évalués (indicatif)');
+  await expect(page.locator('#liste-equipements > li')).toHaveCount(0);
   const autre = await page.context().newPage();
   await simuler(autre, SCENARIOS.deux);
   await ouvrirDiagnostic(autre, 1440);
   await pret(autre);
-  expect(await autre.locator('#score-niveau').textContent()).toBe(sans);
-  expect(await autre.locator('#liste-equipements > li h3').allTextContents()).toEqual(equipementsSans);
+  await expect(autre.locator('#exposition-niveau')).toHaveText("Niveau d'exposition : modéré (indicatif)");
+  await expect(autre.locator('#liste-equipements > li h3')).toHaveText(['Batardeau modulable', 'Clapet anti-retour', 'Pompe de relevage']);
   expect(reponseGeocodage()).toContain(ADRESSE);
 });

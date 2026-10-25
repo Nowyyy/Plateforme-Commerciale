@@ -2,7 +2,7 @@
 // Aucune requête tierce sans adresse valide. Le géocodage part au chargement ; Leaflet (copié dans assets/vendor/) n'est chargé
 // qu'après le premier rendu. Rien n'est écrit : seule lecture de session, la clé « adresse ».
 // Calques : seuls ceux des aléas recensés à l'adresse (API Géorisques, coordonnées seulement) sont proposés ; les cases pilotent
-// des couches WMS ; fond OpenStreetMap, repli automatique sur le Plan IGN.
+// des couches WMS ; fond OpenStreetMap, repli automatique sur le Plan IGN (aucun choix de fond).
 import { donneesPretes } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
 import { TOUS, calquesParDefaut } from './diagnostic-logique.js';
@@ -118,9 +118,8 @@ function initialiser(donnees) {
   const etatFond = el('carte-reelle-fond-etat');
   const legende = el('legende-reelle');
   const cases = () => [...document.querySelectorAll('#liste-calques input')];
-  const radios = () => [...document.querySelectorAll('#liste-fonds input')];
-  // `fond` : clé du fond affiché ; `manuel` : le visiteur a choisi un fond (plus de bascule automatique).
-  const etatCarte = { carte: null, sequence: 0, fond: null, couche: null, manuel: false, erreurs: 0, charges: 0, debut: 0, minuterie: null, calques: new Map(), controle: null, attribution: '', controleApi: null, aleas: null };
+  // `fond` : clé du fond affiché (OpenStreetMap, puis Plan IGN après un repli automatique).
+  const etatCarte = { carte: null, sequence: 0, fond: null, couche: null, erreurs: 0, charges: 0, debut: 0, minuterie: null, calques: new Map(), controle: null, attribution: '', controleApi: null, aleas: null };
 
   // Cadre : message (sans adresse, chargement, échec) ou carte ; le bouton « Réessayer » n'accompagne que les échecs.
   const afficherMessage = (texte, echec) => {
@@ -134,7 +133,8 @@ function initialiser(donnees) {
     reessayer.hidden = true;
   };
 
-  const filtreCourant = () => document.querySelector('input[name="alea"]:checked')?.value ?? TOUS;
+  // États des aléas de l'adresse, annoncés au diagnostic (niveau d'exposition, pastilles, équipements) : sans adresse, lecture, lus.
+  const signaler = (phase, etats = null) => document.dispatchEvent(new CustomEvent('aleas:etat', { detail: { phase, etats } }));
   const aleasTextes = textes.aleas;
   const zoneMessage = el('aleas-message');
   const zoneSecours = el('aleas-secours');
@@ -156,7 +156,7 @@ function initialiser(donnees) {
     const proposes = calquesProposes(resultat);
     reinitialiserAleas('');
     etatCarte.aleas = { resultat, proposes };
-    const coches = cochesInitiales(proposes, calquesParDefaut(donnees.diagnostic.aleas, filtreCourant()));
+    const coches = cochesInitiales(proposes, calquesParDefaut(donnees.diagnostic.aleas, TOUS));
     const modele = el('modele-calque');
     for (const id of proposes) {
       const { etat, niveau } = resultat.etats[id];
@@ -178,6 +178,7 @@ function initialiser(donnees) {
     else if (proposes.length === 0) annonce.textContent = aleasTextes.aucun;
     else annonce.textContent = presents === 1 ? aleasTextes.annonceUn : aleasTextes.annonceN.replace('{n}', String(presents));
     synchroniserCalques();
+    signaler('lus', resultat.etats);
   };
 
   // Légende : une entrée par couche, visible seulement tant que son calque est affiché.
@@ -195,23 +196,6 @@ function initialiser(donnees) {
   const majLegende = () => {
     for (const item of legende.querySelectorAll('li[data-calque]')) item.hidden = !etatCarte.calques.has(item.getAttribute('data-calque'));
   };
-  const construireFonds = () => {
-    const modele = el('modele-fond');
-    for (const [cle, fond] of Object.entries(config.fonds)) {
-      if (!gabaritFondValide(fond.gabarit)) continue;
-      const choix = modele.content.cloneNode(true);
-      const radio = choix.querySelector('input');
-      radio.name = 'fond-carte'; // posé à l'exécution (flèches dans le groupe), jamais dans le HTML
-      radio.value = cle;
-      radio.checked = cle === config.fondParDefaut;
-      choix.querySelector('span').textContent = fond.libelle;
-      el('liste-fonds').append(choix);
-    }
-    el('liste-fonds').addEventListener('change', (e) => {
-      if (e.target.matches('input[type="radio"]') && etatCarte.carte) choisirFond(e.target.value, true);
-    });
-  };
-
   const detruire = () => {
     clearTimeout(etatCarte.minuterie);
     if (etatCarte.carte) {
@@ -222,10 +206,9 @@ function initialiser(donnees) {
       conteneur.removeAttribute('tabindex');
       conteneur.removeAttribute('style');
     }
-    Object.assign(etatCarte, { fond: null, couche: null, manuel: false, erreurs: 0, charges: 0, debut: 0, minuterie: null, controle: null, attribution: '' });
+    Object.assign(etatCarte, { fond: null, couche: null, erreurs: 0, charges: 0, debut: 0, minuterie: null, controle: null, attribution: '' });
     etatCarte.calques.clear();
     etatCarte.controleApi?.abort();
-    for (const radio of radios()) radio.checked = radio.value === config.fondParDefaut;
     etatFond.textContent = '';
     majLegende();
     conteneur.hidden = true;
@@ -235,6 +218,7 @@ function initialiser(donnees) {
     detruire();
     reinitialiserAleas(aleasTextes.attente);
     afficherMessage(texte, true);
+    signaler('lus', etatCalques({ gaspar: null, rga: null, calquesConfig: config }).etats); // aucune lecture possible : présence non déterminée
   };
 
   // Attributions : celles du fond affiché, plus Géorisques tant qu'un calque est affiché ; chaîne construite par chaineAttribution.
@@ -248,20 +232,19 @@ function initialiser(donnees) {
     etatCarte.attribution = suivante;
   };
 
-  // Repli automatique du fond par défaut : seulement avant tout choix manuel (règle pure doitBasculer).
+  // Repli automatique du fond par défaut sur le Plan IGN (règle pure doitBasculer) ; le visiteur ne choisit pas le fond.
   const verifierBascule = (delaiEcoule) => {
-    if (etatCarte.manuel || etatCarte.fond !== config.fondParDefaut || !etatCarte.carte) return;
+    if (etatCarte.fond !== config.fondParDefaut || !etatCarte.carte) return;
     const ecouleMs = delaiEcoule ? config.basculeFond.delaiMs : performance.now() - etatCarte.debut;
     if (!doitBasculer({ erreurs: etatCarte.erreurs, charges: etatCarte.charges, ecouleMs }, config.basculeFond)) return;
-    choisirFond('ign', false);
+    choisirFond('ign');
     etatFond.textContent = textes.basculeFond;
   };
 
-  function choisirFond(cle, manuel) {
+  function choisirFond(cle) {
     const L = globalThis.L;
     const fond = config.fonds[cle];
     if (!etatCarte.carte || !fond || !gabaritFondValide(fond.gabarit)) return;
-    if (manuel) etatCarte.manuel = true;
     clearTimeout(etatCarte.minuterie);
     Object.assign(etatCarte, { erreurs: 0, charges: 0, debut: 0, minuterie: null });
     if (etatCarte.couche) etatCarte.carte.removeLayer(etatCarte.couche);
@@ -285,7 +268,6 @@ function initialiser(donnees) {
     etatCarte.fond = cle;
     couche.addTo(etatCarte.carte);
     couche.bringToBack();
-    for (const radio of radios()) radio.checked = radio.value === cle;
     majAttribution();
   }
 
@@ -318,7 +300,7 @@ function initialiser(donnees) {
     etatCarte.controle = L.control.attribution({ prefix: false }).addTo(carte);
     etatCarte.carte = carte;
     carte.setView([point.lat, point.lon], vue.zoom);
-    choisirFond(config.fondParDefaut, false);
+    choisirFond(config.fondParDefaut);
     synchroniserCalques();
     L.circleMarker([point.lat, point.lon], { radius: 9, className: 'carte-reelle__repere', interactive: false }).addTo(carte);
     return carte;
@@ -333,9 +315,11 @@ function initialiser(donnees) {
     const adresse = adresseDeSession();
     if (adresse === null) {
       afficherMessage(textes.sansAdresse, false);
+      signaler('sans-adresse');
       return;
     }
     afficherMessage(textes.chargement, false);
+    signaler('lecture');
     const resultat = await geocoder(adresse, config);
     if (annule()) return;
     if (!resultat.ok) return echec(resultat.raison === 'hors-france' ? textes.horsFrance : textes.erreur);
@@ -373,15 +357,7 @@ function initialiser(donnees) {
   // « Mettre à jour » (diagnostic.js) : nouvelle adresse valide, la carte est détruite puis recréée.
   document.addEventListener('adresse:modifiee', () => demarrer());
   el('liste-calques').addEventListener('change', () => synchroniserCalques());
-  // Un changement de filtre réinitialise les cases (« Tous » : toutes ; un aléa : la sienne) et la carte suit.
-  document.addEventListener('diagnostic:filtre', (e) => {
-    if (!etatCarte.aleas) return;
-    const coches = cochesInitiales(etatCarte.aleas.proposes, calquesParDefaut(donnees.diagnostic.aleas, e.detail?.filtre ?? TOUS));
-    for (const case_ of cases()) case_.checked = coches.includes(case_.value);
-    synchroniserCalques();
-  });
   construireLegende();
-  construireFonds();
   majLegende();
   demarrer();
 }

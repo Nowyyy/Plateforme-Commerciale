@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { simuler } from './carte-reelle-simulation.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
 const produit = JSON.parse(readFileSync('data/produit.json', 'utf8'));
-const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const FINE = ' ';
 const euro = (n) => `${String(n).replace(/\B(?=(\d{3})+(?!\d))/g, FINE)}${FINE}€`;
 const trouver = (id) => produit.produits.find((p) => p.id === id);
@@ -43,7 +43,7 @@ for (const largeur of [375, 1440]) {
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.goto('/index.html');
     await page.waitForSelector('.recherche:not([hidden])');
-    await page.getByLabel(/Entrez votre adresse/).fill(ADRESSE);
+    await choisirAdresse(page, page.getByLabel(/Entrez votre adresse/));
     await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
     await page.waitForURL('**/diagnostic.html');
     await page.waitForSelector('html[data-rendu="pret"]');

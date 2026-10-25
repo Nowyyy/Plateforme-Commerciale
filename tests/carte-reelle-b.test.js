@@ -123,20 +123,17 @@ describe('diagnostic.html (partie B)', () => {
     expect(config.textes.aideClavier).toBe('Flèches : déplacer la carte. Plus et moins : zoomer.');
   });
 
-  it('fieldset des fonds sans name dans le HTML, cases de calques conservées, aucun id dupliqué', () => {
-    const fonds = html.slice(html.indexOf('carte-reelle__fonds'), html.indexOf('</fieldset>', html.indexOf('carte-reelle__fonds')));
-    expect(fonds).toContain('type="radio"');
-    expect(fonds).not.toMatch(/\sname=/);
+  it('aucun choix de fond dans le HTML, cases de calques conservées, aucun id dupliqué', () => {
+    expect(html).not.toMatch(/carte-reelle__fonds|liste-fonds|modele-fond|fond-carte/);
     expect(html).toMatch(/<fieldset class="calques">\s*<legend data-texte="diagnostic\.carteReelle\.textes\.aleas\.titre">/);
     expect(html).toContain('<template id="modele-calque">');
     const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
     expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);
   });
 
-  it('légende, mention du score illustratif et note de chaleur présentes dans le panneau', () => {
+  it('légende présente ; plus de mention du score illustratif ni de note de chaleur', () => {
     expect(html).toMatch(/id="legende-reelle"/);
-    expect(html).toMatch(/id="mention-reelle"[^>]*scoreIllustratif/);
-    expect(html).toMatch(/id="note-chaleur"[^>]*chaleurNote/);
+    expect(html).not.toMatch(/mention-reelle|note-chaleur|scoreIllustratif|chaleurNote/);
   });
 });
 
@@ -153,9 +150,9 @@ describe('css/carte-reelle.css (partie B)', () => {
     expect(regle(css, '.carte-reelle__repere')).toMatch(/fill: var\(--color-navy\)/);
   });
 
-  it('cadre de la carte : hauteur fixée (clamp sous 1200 px, 36 rem au-delà), conteneur rempli par la carte', () => {
+  it('cadre de la carte : hauteur fixée (clamp sous 1200 px, 30 rem au-delà), conteneur rempli par la carte', () => {
     expect(regle(css, '.carte-cadre')).toContain('block-size: clamp(22rem, 65vh, 34rem)');
-    expect(css).toMatch(/@media \(min-width: 1200px\) \{[\s\S]*\.carte-cadre \{\s*block-size: 36rem;/);
+    expect(css).toMatch(/@media \(min-width: 1200px\) \{[\s\S]*\.carte-cadre \{\s*block-size: 30rem;/);
     expect(regle(css, '.carte-reelle')).toContain('inset: 0');
   });
 });

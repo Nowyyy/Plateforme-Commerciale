@@ -100,8 +100,9 @@
                 <input class="champ" type="text" id="adresse" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="adresse-liste" autocomplete="off" aria-describedby="adresse-erreur adresse-microtexte" data-placeholder="accueil.recherche.placeholder">
                 <ul class="suggestions" id="adresse-liste" role="listbox" hidden></ul>
               </div>
-              <button type="submit" class="bouton bouton--action" data-texte="accueil.recherche.bouton"></button>
+              <button type="submit" class="bouton bouton--secondaire" data-classe-active="bouton--action" data-classe-inactive="bouton--secondaire" aria-disabled="true" aria-describedby="adresse-aide-validation" data-texte="accueil.recherche.bouton"></button>
             </div>
+            <p class="recherche__aide" id="adresse-aide-validation" data-texte="accueil.recherche.assistee.aideInactif"></p>
             <p class="recherche__erreur" id="adresse-erreur" aria-live="polite"></p>
             <p class="visuellement-cache" id="adresse-statut" role="status"></p>
             <p class="recherche__microtexte" id="adresse-microtexte" data-texte="accueil.recherche.microtexte"></p>

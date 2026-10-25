@@ -45,14 +45,18 @@
   outline-offset: 2px;
 }
 
-@media (min-width: 1200px) {
-  .carte-grille {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
-    align-items: start;
-  }
+/* Avant le remplissage, le cadre garde sa place (CLS) mais reste invisible ; sans JavaScript il n'apparaît jamais */
+html:not([data-rendu]) .carte-cadre {
+  visibility: hidden;
+}
 
+html[data-rendu="erreur"] .carte-cadre {
+  display: none;
+}
+
+@media (min-width: 1200px) {
   .carte-cadre {
-    block-size: 36rem;
+    block-size: 30rem;
   }
 }
 
@@ -70,29 +74,13 @@
   stroke-opacity: 1;
 }
 
-/* État du fond (repli automatique) : sans texte, aucune hauteur */
-.carte-reelle__fonds + .diag__mention:empty {
-  display: none;
-}
-
-/* Légende de la carte réelle : libellé générique, nom technique de la couche en petit */
+/* Légende de la carte réelle : libellé générique visible, nom technique de la couche dans un texte masqué */
 .legende__texte {
   display: grid;
 }
 
-.legende__technique {
-  color: var(--color-text-secondary);
-  font-size: var(--text-xs);
-}
-
 .legende__item[hidden] {
   display: none;
-}
-
-.calques__titre {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-weight: 600;
 }
 
 /* Attributions de Leaflet : liens marine sur fond clair (contraste) */

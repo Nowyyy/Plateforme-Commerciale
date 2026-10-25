@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
+import { simuler } from './carte-reelle-simulation.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
 const LARGEURS = [375, 768, 1440];
-const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 
 async function ouvrir(page, largeur) {
   await page.setViewportSize({ width: largeur, height: 900 });
@@ -41,11 +42,11 @@ for (const largeur of LARGEURS) {
 }
 
 for (const largeur of [375, 1440]) {
-  test(`carte de recherche à ${largeur} px : vide réduit, message d'erreur accessible`, async ({ page }) => {
+  test(`carte de recherche à ${largeur} px : vide réduit, aide du bouton inactif accessible`, async ({ page }) => {
     await ouvrir(page, largeur);
     const espace = () => page.evaluate(() => {
       const b = document.querySelector('.recherche .bouton').getBoundingClientRect();
-      const m = document.querySelector('.recherche__microtexte').getBoundingClientRect();
+      const m = document.querySelector('.recherche__aide').getBoundingClientRect();
       return m.top - b.bottom;
     });
     const plafond = await page.evaluate(() => parseFloat(getComputedStyle(document.body).fontSize) * parseFloat(
@@ -53,18 +54,20 @@ for (const largeur of [375, 1440]) {
     expect(await espace()).toBeLessThanOrEqual(plafond);
     expect(await espace()).toBeLessThanOrEqual(24);
 
-    await page.click('.recherche button[type="submit"]');
-    const erreur = page.locator('#adresse-erreur');
-    await expect(erreur).toBeVisible();
-    await expect(page.locator('#adresse')).toHaveAttribute('aria-describedby', /adresse-erreur/);
+    await page.click('.recherche button[type="submit"]', { force: true }); // bouton inactif (aria-disabled)
+    const aide = page.locator('.recherche__aide');
+    await expect(aide).toBeVisible();
+    await expect(page.locator('.recherche button[type="submit"]')).toHaveAttribute('aria-describedby', 'adresse-aide-validation');
+    await expect(page.locator('#adresse-statut')).toHaveText('Choisissez une adresse dans la liste pour continuer.');
     await expect(page.locator('#adresse')).toBeFocused();
-    const [e, m] = await Promise.all([erreur.boundingBox(), page.locator('.recherche__microtexte').boundingBox()]);
-    expect(e.y + e.height).toBeLessThanOrEqual(m.y);
+    const [a, m] = await Promise.all([aide.boundingBox(), page.locator('.recherche__microtexte').boundingBox()]);
+    expect(a.y + a.height).toBeLessThanOrEqual(m.y);
   });
 
   test(`parcours cliqué à ${largeur} px : adresse valide, diagnostic, adresse absente de l'URL`, async ({ page }) => {
+    await simuler(page);
     await ouvrir(page, largeur);
-    await page.fill('#adresse', ADRESSE);
+    await choisirAdresse(page, page.locator('#adresse'));
     await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
     await page.waitForURL('**/diagnostic.html');
     expect(page.url()).not.toContain('Tilleuls');

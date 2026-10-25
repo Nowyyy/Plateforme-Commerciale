@@ -131,6 +131,17 @@
       "prix": 340
     }
   ],
+  "exposition": {
+    "niveaux": {
+      "inondation": { "present": 2 },
+      "feu": { "present": 2 },
+      "argile": { "1": 1, "2": 2, "3": 3 }
+    }
+  },
+  "detection": {
+    "inondations": { "calque": "inondation", "equipements": ["batardeau-modulable", "clapet-anti-retour", "pompe-de-relevage"] },
+    "feux-de-foret": { "calque": "feu", "equipements": ["sprinkler-de-toiture", "grille-pare-braises"] }
+  },
   "textes": {
     "titre": "Diagnostic de votre exposition",
     "aide": "Vérifiez l'adresse, puis choisissez un aléa pour voir les équipements et le niveau d'exposition correspondants.",
@@ -145,14 +156,11 @@
       "listeNom": "Suggestions d'adresses",
       "suggestionUne": "1 suggestion",
       "suggestionsN": "{n} suggestions",
-      "aucune": "Aucune suggestion",
+      "aucune": "Aucune adresse ne correspond.",
       "indisponible": "Suggestions indisponibles pour le moment.",
       "choisie": "Adresse choisie : {libelle}",
-      "reconnue": "Adresse reconnue : {libelle}",
-      "introuvable": "Adresse introuvable. Choisissez une adresse dans la liste de suggestions.",
-      "municipalite": "Précisez une adresse avec le numéro et la rue.",
-      "nonVerifiee": "Vérification impossible pour le moment : l'adresse est utilisée telle quelle.",
-      "verification": "Vérification de l'adresse…"
+      "nonVerifiee": "Vérification impossible pour le moment : l'adresse sera utilisée telle quelle.",
+      "aideInactif": "Choisissez une adresse dans la liste pour continuer."
     },
     "information": "Pour vérifier l'adresse et afficher la carte, ce site interroge des services publics et ouverts : l'IGN (adresses et cartes) avec l'adresse saisie, Géorisques (zones de risque) avec les coordonnées de l'adresse, et OpenStreetMap (fond de carte). Ces services voient votre adresse IP. Ce site n'enregistre rien.",
     "equipements": {
@@ -162,24 +170,47 @@
       "prix": "Prix indicatif TTC :",
       "exemple": "(exemple)",
       "voirFiche": "Voir la fiche",
-      "annonceUn": "1 équipement recommandé.",
-      "annonceN": "{n} équipements recommandés.",
+      "annonceUn": "1 équipement pour {alea}",
+      "annonceN": "{n} équipements pour {alea}",
+      "tousAleas": "tous les aléas proposés",
+      "suffixeInconnu": "(présence non déterminée)",
+      "sansAdresse": "Saisissez une adresse pour voir les équipements recommandés.",
+      "chargement": "Chargement des équipements recommandés…",
+      "aucun": "Aucun aléa recensé à cette adresse ne correspond à un équipement du catalogue.",
+      "explorer": "Explorer tous les aléas",
+      "exploration": "Aléas non recensés à cette adresse : équipements présentés à titre d'exemple.",
+      "aleaAccueilAbsent": "L'aléa choisi sur l'accueil n'est pas recensé à cette adresse.",
       "comparer": "Comparer ces solutions"
     },
-    "score": {
-      "titre": "Niveau d'exposition",
+    "exposition": {
+      "titre": "Exposition à cette adresse",
       "libelle": "Niveau d'exposition :",
-      "phrases": [
-        "L'exposition d'exemple est faible : quelques gestes d'entretien suffisent.",
-        "L'exposition d'exemple est modérée : prévoir des équipements ciblés.",
-        "L'exposition d'exemple est élevée : des équipements de protection sont à prévoir en priorité.",
-        "L'exposition d'exemple est très élevée : une protection complète est recommandée."
-      ],
-      "mention": "Score illustratif : il ne remplace ni un document réglementaire ni l'avis d'un professionnel.",
-      "annonce": "Niveau d'exposition : {niveau}."
+      "indicatif": "(indicatif)",
+      "phrase": "Calculé à partir des aléas recensés par Géorisques.",
+      "prudence": "Indicatif : ce niveau ne remplace ni l'état des risques réglementaire ni l'avis d'un professionnel.",
+      "sansAdresse": "Niveau non déterminé : saisissez une adresse.",
+      "lecture": "Calcul du niveau d'exposition en cours…",
+      "aucun": "Aucun aléa recensé parmi ceux évalués (indicatif)",
+      "indetermine": "Niveau non déterminé : les aléas de cette adresse n'ont pas pu être lus",
+      "inconnus": "Présence non déterminée : {aleas}",
+      "nonRecense": "{aleas} : non recensé.",
+      "nonRecenses": "{aleas} : non recensés.",
+      "nonEvalues": "Grêle, vents, canicule : non évalués.",
+      "calcul": {
+        "titre": "Comment est-il calculé ?",
+        "paragraphes": [
+          "Le niveau retient le plus élevé des aléas recensés à cette adresse par Géorisques : inondation et feux de forêt comptent pour « modéré », les argiles selon leur exposition (faible, moyenne ou forte).",
+          "Les données d'inondation et de feux de forêt sont communales : elles ne disent pas si cette adresse précise est touchée. Grêle, vents et canicule ne sont pas évalués.",
+          "Ce niveau est indicatif. Un niveau vide ne signifie pas l'absence de risque : seulement qu'aucun aléa n'est recensé parmi ceux évalués."
+        ]
+      }
+    },
+    "legende": {
+      "titre": "Légende",
+      "phrase": "Elle suit les cases cochées. Fond de carte : OpenStreetMap, repli automatique sur le Plan IGN."
     },
     "carte": {
-      "titre": "Carte et calques",
+      "titre": "Carte",
       "calques": {
         "inondation": "Zone inondable",
         "argile": "Retrait-gonflement des argiles",
@@ -187,9 +218,8 @@
         "chaleur": "Chaleur extrême"
       },
       "legendeAdresse": "Votre adresse",
-      "lienGeorisques": "Consulter la source officielle des risques (Géorisques)",
-      "nouvelOnglet": "(nouvel onglet)",
-      "noteGeorisques": "Ce démonstrateur n'envoie pas votre adresse à ce site."
+      "lienGeorisques": "Source officielle : Géorisques",
+      "nouvelOnglet": "(nouvel onglet)"
     }
   },
   "carteReelle": {
@@ -282,7 +312,6 @@
       "zoomAvant": "Zoomer",
       "zoomArriere": "Dézoomer",
       "basculeFond": "Le fond OpenStreetMap n'a pas répondu : bascule sur le Plan IGN.",
-      "chaleurNote": "Aucune carte de chaleur n'est disponible auprès de Géorisques.",
       "aleas": {
         "titre": "Aléas recensés à cette adresse",
         "attente": "Les aléas recensés s'affichent une fois la carte chargée.",
@@ -300,9 +329,6 @@
           "3": "exposition forte"
         }
       },
-      "scoreIllustratif": "Le score illustratif n'est pas calculé à partir de cette carte.",
-      "legendeFond": "Fond de carte",
-      "legendeCouches": "Couches affichées",
       "nomTechnique": "Couche : {nom}"
     }
   }

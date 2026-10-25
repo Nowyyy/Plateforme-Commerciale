@@ -48,7 +48,7 @@
 
 .diag__alea {
   min-inline-size: 0;
-  margin: 0;
+  margin: 0 0 var(--space-4);
   padding: 0;
   border: 0;
 }
@@ -63,6 +63,7 @@
 .diag__pastilles {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   gap: var(--space-2);
 }
 
@@ -137,28 +138,60 @@ html[data-rendu="erreur"] .diag__panneau {
   }
 }
 
+/* Dès 1200 px : carte (colonne 1, rangée 2), légende (colonne 1, rangée 3, rangée extensible), exposition (colonne 2, rangées 2 et 3, étirée).
+   Aucun `order` : l'ordre du HTML est l'ordre de lecture. */
 @media (min-width: 1200px) {
   .diag {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 3fr);
+    grid-template-rows: auto auto 1fr auto;
     column-gap: var(--space-4);
   }
 
   .diag__adresse,
-  .diag__carte {
+  .diag__equipements {
     grid-column: 1 / -1;
   }
 
-  .diag__score {
+  .diag__carte {
     grid-column: 1;
+    grid-row: 2;
+  }
+
+  .diag__legende {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .diag__exposition {
+    grid-column: 2;
+    grid-row: 2 / span 2;
   }
 
   .diag__equipements {
-    grid-column: 2 / -1;
+    grid-row: 4;
   }
 }
 
-/* Équipements E2-5 : hauteur naturelle, jamais étirés à celle du score */
+/* Cadres blancs de la légende et de l'exposition : la section s'étire, le cadre remplit la section */
+.diag__legende,
+.diag__exposition {
+  display: flex;
+  flex-direction: column;
+}
+
+.bloc-carte {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+.bloc-carte > * {
+  margin: 0;
+}
+
+/* Équipements E2-6 : pleine largeur, cartes verticales de même hauteur par rangée */
 .diag__intro {
   max-inline-size: 40rem;
   color: var(--color-text-secondary);
@@ -166,6 +199,7 @@ html[data-rendu="erreur"] .diag__panneau {
 
 .equipements {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
   margin: 0;
   padding: 0;
@@ -173,8 +207,8 @@ html[data-rendu="erreur"] .diag__panneau {
 }
 
 .equipement {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   gap: var(--space-4);
   min-inline-size: 0;
   padding: var(--space-4);
@@ -182,9 +216,10 @@ html[data-rendu="erreur"] .diag__panneau {
 
 .equipement__visuel {
   display: flex;
+  flex: none;
   align-items: center;
   justify-content: center;
-  aspect-ratio: 16 / 9;
+  block-size: 8rem;
   background: var(--color-pastille);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -198,6 +233,7 @@ html[data-rendu="erreur"] .diag__panneau {
 
 .equipement__corps {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   align-items: flex-start;
   min-inline-size: 0;
@@ -237,11 +273,54 @@ html[data-rendu="erreur"] .diag__comparer {
   display: none;
 }
 
-/* Score E2-4 */
-.score {
+/* Exposition E2-5 */
+.exposition__calcul summary {
+  display: list-item;
+  list-style-position: inside;
+  padding-block: var(--space-3);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.exposition__calcul summary:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.exposition__calcul p {
+  margin-block: 0 var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.exposition [hidden],
+.equipements-etat [hidden] {
+  display: none;
+}
+
+.equipements-etat {
   display: grid;
-  gap: var(--space-3);
-  align-content: start;
+  gap: var(--space-2);
+  justify-items: start;
+}
+
+.equipements-etat p {
+  margin: 0;
+}
+
+.equipements-etat p:empty {
+  display: none;
+}
+
+/* Une ligne de message est toujours réservée : « Chargement… » puis les cartes ne décalent rien */
+.equipements-etat {
+  min-block-size: 1.4rem;
+}
+
+.exposition__niveau {
+  font-family: var(--font-heading);
+  font-size: var(--diag-text-h3);
+  font-weight: 800;
 }
 
 .jauge {
@@ -275,47 +354,19 @@ html[data-rendu="erreur"] .diag__comparer {
   border-block-end: 0.625rem solid var(--color-navy);
 }
 
-.score p {
-  margin: 0;
-}
-
-.score__niveau {
-  font-family: var(--font-heading);
-  font-size: var(--diag-text-h3);
-  font-weight: 800;
-}
-
 @media (min-width: 768px) {
-  .equipement {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-    align-items: stretch;
-  }
-
-  .equipement__visuel {
-    aspect-ratio: auto;
-    min-block-size: 8rem;
-    max-block-size: 12rem;
+  .equipements {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-/* Carte E2-3 : cadre pleine largeur et panneau de contrôles (calques, fond, légende, mentions) */
-.carte-grille {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--space-4);
+@media (min-width: 1200px) {
+  .equipements {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
-.carte-panneau {
-  display: grid;
-  gap: var(--space-4);
-  align-content: start;
-  min-inline-size: 0;
-}
-
-.carte-panneau p {
-  margin: 0;
-}
-
+/* Carte E2-3, légende E2-4 et exposition E2-5 : cases d'aléas, légende (cadre de la carte dans carte-reelle.css) */
 /* teinte de chaque calque, appliquée à la pastille de légende */
 [data-calque="inondation"] { --teinte: var(--calque-inondation); }
 [data-calque="argile"] { --teinte: var(--calque-argile); }
@@ -378,8 +429,9 @@ html[data-rendu="erreur"] .diag__comparer {
 }
 
 .legende {
-  display: grid;
-  gap: var(--space-2);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -451,180 +503,227 @@ html:not([data-rendu]) .diag__aide {
   }
 }
 
-/* Équipements et score : place réservée avant le remplissage (mesurée), invisible sans JavaScript */
-html:not([data-rendu]) .equipements {
-  min-block-size: calc(168vw + 490px);
-}
-
-html:not([data-rendu]) .score {
-  min-block-size: 17.7rem;
+/* Exposition et légende : invisibles avant le remplissage et sans JavaScript ; les planchers de hauteur (CLS) suivent */
+html:not([data-rendu]) .exposition,
+html:not([data-rendu]) .diag__legende .bloc-carte {
   visibility: hidden;
 }
 
-html[data-rendu="erreur"] .score {
+html[data-rendu="erreur"] .exposition,
+html[data-rendu="erreur"] .diag__legende {
   display: none;
 }
 
-@media (min-width: 414px) {
-  html:not([data-rendu]) .score {
-    min-block-size: 16.3rem;
-  }
-}
-
-@media (min-width: 480px) {
-  html:not([data-rendu]) .score {
-    min-block-size: 14.7rem;
-  }
-}
-
-@media (min-width: 700px) {
-  html:not([data-rendu]) .score {
-    min-block-size: 13.3rem;
-  }
-}
-
-@media (min-width: 768px) {
-  html:not([data-rendu]) .equipements {
-    min-block-size: 35rem;
-  }
-}
-
-@media (min-width: 900px) {
-  html:not([data-rendu]) .score {
-    min-block-size: 11.7rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  html:not([data-rendu]) .score {
-    min-block-size: 17.7rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  html:not([data-rendu]) .score {
-    min-block-size: 16.3rem;
-  }
-}
-
-/* Carte : cadre et panneau sont remplis par JavaScript ; invisibles avant, sans JavaScript ils n'apparaissent jamais */
-html:not([data-rendu]) .carte-grille {
-  visibility: hidden;
-}
-
-html[data-rendu="erreur"] .carte-grille {
-  display: none;
-}
-
-/* Panneau de la carte : hauteur plancher (contenu maximal : mode de secours, toutes les couches affichées), mesurée par point de rupture ;
-   le remplissage par JavaScript, la lecture des aléas et l'apparition de la carte ne décalent donc rien */
-.carte-panneau {
-  min-block-size: 75rem;
-}
-
-@media (min-width: 375px) {
-  .carte-panneau {
-    min-block-size: 73.8rem;
-  }
-}
-
-@media (min-width: 390px) {
-  .carte-panneau {
-    min-block-size: 69.6rem;
-  }
-}
-
-@media (min-width: 414px) {
-  .carte-panneau {
-    min-block-size: 68.45rem;
-  }
-}
-
-@media (min-width: 480px) {
-  .carte-panneau {
-    min-block-size: 62.85rem;
-  }
-}
-
-@media (min-width: 520px) {
-  .carte-panneau {
-    min-block-size: 59.6rem;
-  }
-}
-
-@media (min-width: 600px) {
-  .carte-panneau {
-    min-block-size: 56.8rem;
-  }
-}
-
-@media (min-width: 900px) {
-  .carte-panneau {
-    min-block-size: 55.4rem;
-  }
-}
-
-@media (min-width: 1100px) {
-  .carte-panneau {
-    min-block-size: 54rem;
-  }
-}
-
-@media (min-width: 1200px) {
-  .carte-panneau {
-    min-block-size: 75rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  .carte-panneau {
-    min-block-size: 69.6rem;
-  }
-}
-
-/* Panneau d'adresse : hauteur plancher (contenu maximal) mesurée par point de rupture ; le remplissage ne décale rien */
+/* Planchers de hauteur (CLS) : contenu maximal de chaque cadre, mesuré par point de rupture (adresse simulée, mode de secours des aléas,
+   quatre couches affichées). Le remplissage par JavaScript, la lecture des aléas et l'apparition de la carte ne décalent donc rien. */
 .diag__panneau {
-  min-block-size: 37.4rem;
+  min-block-size: 27.6rem;
 }
 
 @media (min-width: 389px) {
   .diag__panneau {
-    min-block-size: 36rem;
+    min-block-size: 26.2rem;
   }
 }
 
 @media (min-width: 479px) {
   .diag__panneau {
-    min-block-size: 31.4rem;
+    min-block-size: 23.4rem;
   }
 }
 
 @media (min-width: 520px) {
   .diag__panneau {
-    min-block-size: 29.95rem;
+    min-block-size: 22.0rem;
   }
 }
 
 @media (min-width: 699px) {
   .diag__panneau {
-    min-block-size: 25.35rem;
+    min-block-size: 20.6rem;
   }
 }
 
 @media (min-width: 768px) {
   .diag__panneau {
-    min-block-size: 21.75rem;
+    min-block-size: 17.05rem;
   }
 }
 
 @media (min-width: 850px) {
   .diag__panneau {
-    min-block-size: 20.35rem;
+    min-block-size: 15.65rem;
   }
 }
 
 @media (min-width: 1150px) {
   .diag__panneau {
-    min-block-size: 18.95rem;
+    min-block-size: 14.25rem;
+  }
+}
+
+.diag__legende .bloc-carte {
+  min-block-size: 26.5rem;
+}
+
+@media (min-width: 389px) {
+  .diag__legende .bloc-carte {
+    min-block-size: 23.7rem;
+  }
+}
+
+@media (min-width: 414px) {
+  .diag__legende .bloc-carte {
+    min-block-size: 22.3rem;
+  }
+}
+
+@media (min-width: 479px) {
+  .diag__legende .bloc-carte {
+    min-block-size: 20.9rem;
+  }
+}
+
+@media (min-width: 600px) {
+  .diag__legende .bloc-carte {
+    min-block-size: 18.1rem;
+  }
+}
+
+@media (min-width: 700px) {
+  .diag__legende .bloc-carte {
+    min-block-size: 16.7rem;
+  }
+}
+
+@media (min-width: 850px) {
+  .diag__legende .bloc-carte {
+    min-block-size: 14.8rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .diag__legende .bloc-carte {
+    min-block-size: 12.9rem;
+  }
+}
+
+@media (min-width: 1199px) {
+  .diag__legende .bloc-carte {
+    min-block-size: 11rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .diag__legende .bloc-carte {
+    min-block-size: 14.8rem;
+  }
+}
+
+.exposition {
+  min-block-size: 55.5rem;
+}
+
+@media (min-width: 375px) {
+  .exposition {
+    min-block-size: 53.85rem;
+  }
+}
+
+@media (min-width: 389px) {
+  .exposition {
+    min-block-size: 50.65rem;
+  }
+}
+
+@media (min-width: 414px) {
+  .exposition {
+    min-block-size: 49.25rem;
+  }
+}
+
+@media (min-width: 479px) {
+  .exposition {
+    min-block-size: 46.45rem;
+  }
+}
+
+@media (min-width: 520px) {
+  .exposition {
+    min-block-size: 45.05rem;
+  }
+}
+
+@media (min-width: 699px) {
+  .exposition {
+    min-block-size: 43.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .exposition {
+    min-block-size: 41.85rem;
+  }
+}
+
+@media (min-width: 850px) {
+  .exposition {
+    min-block-size: 40.7rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .exposition {
+    min-block-size: 39.3rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .exposition {
+    min-block-size: 55.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .exposition {
+    min-block-size: 52.45rem;
+  }
+}
+
+.diag__pastilles {
+  min-block-size: 9.3rem;
+}
+
+@media (min-width: 479px) {
+  .diag__pastilles {
+    min-block-size: 6.05rem;
+  }
+}
+
+@media (min-width: 850px) {
+  .diag__pastilles {
+    min-block-size: 2.8rem;
+  }
+}
+
+/* Équipements : la zone garde en permanence la hauteur d'une rangée de cartes (20 rem), message, chargement ou résultat ;
+   avant le rendu, trois cartes de 20 rem (empilées, en deux colonnes, puis en une rangée) sont réservées */
+.equipements {
+  min-block-size: 20rem;
+}
+
+html:not([data-rendu]) .equipements {
+  min-block-size: 62rem;
+}
+
+@media (min-width: 768px) {
+  html:not([data-rendu]) .equipements {
+    min-block-size: 41rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  html:not([data-rendu]) .equipements {
+    min-block-size: 20rem;
   }
 }

@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
+import { simuler } from './carte-reelle-simulation.js';
 
-const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const { produits } = JSON.parse(readFileSync('data/produit.json', 'utf8'));
 const titreDe = (id) => produits.find((p) => p.id === id).titre;
 
@@ -68,13 +69,14 @@ test('produit de session : titre du h1 et du fil ; absent ou inconnu = batardeau
 
 for (const largeur of [375, 1440]) {
   test(`parcours à ${largeur} px : accueil, adresse, diagnostic, « Voir la fiche », produit.html`, async ({ page }) => {
+    await simuler(page); // suggestions de l'IGN simulées : la saisie stricte exige un choix dans la liste
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.goto('/index.html');
     await page.waitForSelector('.recherche:not([hidden])');
-    await page.getByLabel(/Entrez votre adresse/).fill(ADRESSE);
+    const libelle = await choisirAdresse(page, page.getByLabel(/Entrez votre adresse/));
     await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
     await page.waitForURL('**/diagnostic.html');
-    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(ADRESSE);
+    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(libelle);
     const premiere = page.locator('#liste-equipements > li').first();
     const titre = await premiere.getByRole('heading', { level: 3 }).textContent();
     await premiere.getByRole('link', { name: /Voir la fiche/ }).click();
