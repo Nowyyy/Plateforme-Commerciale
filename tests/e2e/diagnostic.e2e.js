@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { simuler } from './carte-reelle-simulation.js';
+import { reponseRecherche, simuler } from './carte-reelle-simulation.js';
 
 const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 
@@ -73,6 +73,8 @@ test('« Mettre à jour » : adresse invalide, message, focus, aria-describedby'
 
 test('« Mettre à jour » : adresse valide, sessionStorage mis à jour, aucune navigation, URL sans adresse', async ({ page }) => {
   await ouvrir(page, 1440, { adresse: ADRESSE });
+  const officiel = '5 Allée des Peupliers 44000 Nantes';
+  await page.route('https://data.geopf.fr/geocodage/search**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: reponseRecherche(officiel, 'housenumber', 0.9, -1.5534, 47.2184) }));
   let navigations = 0;
   page.on('framenavigated', () => { navigations += 1; });
   const urlAvant = page.url();
@@ -80,8 +82,8 @@ test('« Mettre à jour » : adresse valide, sessionStorage mis à jour, aucune 
   await champ.fill('  5 allée des Peupliers, Nantes  ');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
   await expect(page.locator('#adresse-erreur')).toBeHidden();
-  expect(await page.evaluate(() => sessionStorage.getItem('adresse'))).toBe('5 allée des Peupliers, Nantes');
-  await expect(champ).toHaveValue('5 allée des Peupliers, Nantes');
+  expect(await page.evaluate(() => sessionStorage.getItem('adresse'))).toBe(officiel); // libellé officiel de l'IGN
+  await expect(champ).toHaveValue(officiel);
   expect(navigations).toBe(0);
   expect(page.url()).toBe(urlAvant);
   expect(decodeURIComponent(page.url())).not.toContain('Peupliers');

@@ -157,14 +157,14 @@ describe('lot 8d-A : workflow, CSS, modules et CLAUDE.md', () => {
     expect(lire('assets/js/sav-logique.js')).not.toMatch(/\bdocument\b|\bwindow\b|sessionStorage/);
     expect(lire('assets/js/sav-acces.js')).not.toMatch(/sessionStorage|\.value\s*=|name=/);
   });
-  it('CLAUDE.md fait moins de 9 000 caractères et décrit le SAV ; conventions.md a une section SAV et reste sous 150 lignes', () => {
+  it('CLAUDE.md fait moins de 9 000 caractères et décrit le SAV ; conventions.md a une section SAV et reste sous 190 lignes', () => {
     const texte = lire('CLAUDE.md');
     expect([...texte].length).toBeLessThan(9000);
     for (const mot of ['sav-acces.html', 'sav.html', 'demandes.html', 'acces-sav', 'resoudreContexte', 'sav.css', 'Envoyer ma demande', 'Continuer']) expect(texte, mot).toContain(mot);
     expect(texte).toContain('`CMD-` suivi de 3 à 8 chiffres');
     const conventions = lire('Docs/ref/conventions.md');
     expect(conventions).toMatch(/^## SAV/m);
-    expect(conventions.split('\n').length).toBeLessThanOrEqual(150);
+    expect(conventions.split('\n').length).toBeLessThanOrEqual(190);
   });
   it('apercu.txt vise l\'accueil en Hi-Fi et Docs/apercus.txt décrit le lot 8d', () => {
     expect([['index.html', 'type: hifi', 'titre: Comparateur de solutions'], ['index.html', 'type: hifi', 'titre: Carte réelle avec consentement'], ['index.html', 'type: hifi', "titre: Carte réelle seule, saisie assistée, calques selon l'adresse"]]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));

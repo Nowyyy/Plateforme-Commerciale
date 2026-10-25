@@ -2,6 +2,7 @@
 // L'adresse et l'aléa ne passent jamais par l'URL ; l'adresse est affichée par valeur de champ / textContent seulement.
 import { donneesPretes, resoudre } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
+import { brancherAssistant } from './adresse-assistee.js';
 import { memoriserProduit } from './produit-session.js';
 import { CLE_COMPARAISON, comparaisonDepuisDiagnostic } from './comparateur-logique.js';
 import { TOUS, aleaValide, filtrerEquipements, formaterPrix, libelleNiveau, niveauGlobal, segmentsJauge } from './diagnostic-logique.js';
@@ -139,25 +140,44 @@ function initialiserAdresse(donnees) {
   if (adresse) champ.value = adresse;
   else aide.textContent = resoudre(donnees, 'diagnostic.textes.aideSansAdresse');
 
+  const textes = donnees.diagnostic.textes.assistee;
+  const assistant = brancherAssistant({ champ, liste: document.getElementById('adresse-liste'), statut: document.getElementById('adresse-statut'), config: donnees.diagnostic.carteReelle, textes });
+  let enCours = false;
+
   const effacer = () => {
     erreur.textContent = '';
     champ.removeAttribute('aria-invalid');
   };
+  const refuser = (message) => {
+    erreur.textContent = message;
+    champ.setAttribute('aria-invalid', 'true');
+    champ.focus();
+  };
   champ.addEventListener('input', effacer);
-  formulaire.addEventListener('submit', (e) => {
+  formulaire.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const resultat = valider(champ.value);
+    if (enCours) return;
+    const resultat = valider(champ.value); // validation locale du lot 2, toujours avant le réseau
     if (!resultat.valide) {
-      erreur.textContent = resoudre(donnees, 'diagnostic.textes.erreur');
-      champ.setAttribute('aria-invalid', 'true');
-      champ.focus();
+      refuser(resoudre(donnees, 'diagnostic.textes.erreur'));
       return;
     }
     effacer();
-    champ.value = resultat.adresse;
-    ecrireSession(CLE_STOCKAGE, resultat.adresse);
+    enCours = true;
+    const verdict = await assistant.verifier();
+    enCours = false;
+    if (verdict.decision === 'refuse') {
+      refuser(textes[verdict.raison === 'municipalite' ? 'municipalite' : 'introuvable']);
+      return;
+    }
+    const adresse = verdict.decision === 'accepte' ? verdict.adresse : resultat.adresse;
+    if (verdict.decision === 'indisponible') {
+      erreur.textContent = textes.nonVerifiee; // service injoignable : l'adresse est utilisée telle quelle
+    }
+    champ.value = adresse;
+    ecrireSession(CLE_STOCKAGE, adresse);
     aide.textContent = resoudre(donnees, 'diagnostic.textes.aide');
-    // Après une mise à jour valide seulement : la carte est recréée pour la nouvelle adresse (carte-reelle.js).
+    // Après une adresse acceptée seulement : la carte est recréée pour la nouvelle adresse (carte-reelle.js).
     document.dispatchEvent(new CustomEvent('adresse:modifiee'));
   });
 }

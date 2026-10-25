@@ -89,7 +89,7 @@ describe('construireUrlGeocodage', () => {
 
 describe('analyserGeocodage', () => {
   it('nominal : coordonnées, libellé et score', () => {
-    expect(analyserGeocodage(reponse(4.8357, 45.764, 0.92, { label: '12 Rue des Tilleuls 69000 Lyon' }), 0.5)).toEqual({ ok: true, lat: 45.764, lon: 4.8357, libelle: '12 Rue des Tilleuls 69000 Lyon', score: 0.92 });
+    expect(analyserGeocodage(reponse(4.8357, 45.764, 0.92, { label: '12 Rue des Tilleuls 69000 Lyon' }), 0.5)).toEqual({ ok: true, lat: 45.764, lon: 4.8357, libelle: '12 Rue des Tilleuls 69000 Lyon', score: 0.92, type: '' });
   });
 
   it('JSON invalide, aucune entité, champs manquants', () => {
@@ -240,11 +240,13 @@ describe('événement adresse:modifiee', () => {
     const src = lire('assets/js/diagnostic.js');
     expect(src.match(/adresse:modifiee/g)).toHaveLength(1);
     const evenement = src.indexOf("new CustomEvent('adresse:modifiee')");
-    const refus = src.indexOf('if (!resultat.valide)');
-    const retour = src.indexOf('return;', refus);
-    const ecriture = src.indexOf('ecrireSession(CLE_STOCKAGE, resultat.adresse)');
-    expect(refus).toBeGreaterThan(0);
-    expect(retour).toBeGreaterThan(refus);
+    const refusLocal = src.indexOf('if (!resultat.valide)');
+    const refusService = src.indexOf("if (verdict.decision === 'refuse')");
+    const retour = src.indexOf('return;', refusService);
+    const ecriture = src.indexOf('ecrireSession(CLE_STOCKAGE, adresse)');
+    expect(refusLocal).toBeGreaterThan(0);
+    expect(refusService).toBeGreaterThan(refusLocal);
+    expect(retour).toBeGreaterThan(refusService);
     expect(ecriture).toBeGreaterThan(retour);
     expect(evenement).toBeGreaterThan(ecriture);
   });

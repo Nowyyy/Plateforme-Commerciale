@@ -97,10 +97,14 @@
           <form class="diag__formulaire" id="formulaire-adresse" novalidate>
             <label class="etiquette" for="adresse-evaluee" data-texte="diagnostic.textes.champLibelle"></label>
             <div class="diag__ligne">
-              <input class="champ" type="text" id="adresse-evaluee" name="adresse" autocomplete="street-address" aria-describedby="adresse-aide adresse-erreur" data-placeholder="diagnostic.textes.placeholder">
+              <div class="champ-assiste">
+                <input class="champ" type="text" id="adresse-evaluee" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="adresse-liste" autocomplete="off" aria-describedby="adresse-aide adresse-erreur" data-placeholder="diagnostic.textes.placeholder">
+                <ul class="suggestions" id="adresse-liste" role="listbox" hidden></ul>
+              </div>
               <button type="submit" class="bouton bouton--secondaire" data-texte="diagnostic.textes.bouton"></button>
             </div>
             <p class="recherche__erreur" id="adresse-erreur" aria-live="polite"></p>
+            <p class="visuellement-cache" id="adresse-statut" role="status"></p>
           </form>
           <fieldset class="diag__alea" id="choix-alea">
             <legend data-texte="diagnostic.textes.legendeAlea"></legend>

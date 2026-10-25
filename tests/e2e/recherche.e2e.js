@@ -38,7 +38,7 @@ for (const [nom, saisie] of [['champ vide', ''], ['adresse invalide', '1234567']
 test('le formulaire est sans action et saisir efface l\'erreur', async ({ page }) => {
   await ouvrir(page, 1440);
   await expect(page.locator('form.recherche')).not.toHaveAttribute('action', /.+/);
-  await expect(page.getByLabel(/Entrez votre adresse/)).toHaveAttribute('autocomplete', 'street-address');
+  await expect(page.getByLabel(/Entrez votre adresse/)).toHaveAttribute('autocomplete', 'off'); // la liste de suggestions remplace celle du navigateur
   await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
   await expect(page.locator('#adresse-erreur')).toBeVisible();
   await page.keyboard.type('a');

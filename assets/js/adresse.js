@@ -1,7 +1,8 @@
-// Recherche d'adresse (E1-3) : validation, stockage de session, navigation vers le diagnostic.
-// L'adresse n'est jamais écrite dans l'URL, jamais envoyée ; aucun géocodage ni autocomplétion.
+// Recherche d'adresse (E1-3) : validation locale, saisie assistée et vérification (data.geopf.fr seulement, jamais avant 3 caractères),
+// stockage de session, navigation vers le diagnostic. L'adresse n'est jamais écrite dans l'URL.
 import { donneesPretes, resoudre } from './rendu.js';
 import { CLE_STOCKAGE, LONGUEUR_MIN, LONGUEUR_MAX, valider } from './adresse-validation.js';
+import { brancherAssistant } from './adresse-assistee.js';
 
 export { LONGUEUR_MIN, LONGUEUR_MAX, CLE_STOCKAGE, valider };
 
@@ -21,25 +22,40 @@ export function initialiser(donnees, racine = document) {
 
   const messageErreur = resoudre(donnees, 'accueil.recherche.erreur');
   const lienDiagnostic = resoudre(donnees, 'site.liens.diagnostic');
+  const textes = donnees.accueil.recherche.assistee;
+  const assistant = brancherAssistant({ champ, liste: racine.getElementById('adresse-liste'), statut: racine.getElementById('adresse-statut'), config: donnees.diagnostic.carteReelle, textes });
+  let enCours = false;
 
   const effacer = () => {
     erreur.textContent = '';
     champ.removeAttribute('aria-invalid');
   };
+  const refuser = (message) => {
+    erreur.textContent = message;
+    champ.setAttribute('aria-invalid', 'true');
+    champ.focus();
+  };
 
   champ.addEventListener('input', effacer);
 
-  formulaire.addEventListener('submit', (e) => {
+  formulaire.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const resultat = valider(champ.value);
+    if (enCours) return;
+    const resultat = valider(champ.value); // validation locale du lot 2, toujours avant le réseau
     if (!resultat.valide) {
-      erreur.textContent = messageErreur;
-      champ.setAttribute('aria-invalid', 'true');
-      champ.focus();
+      refuser(messageErreur);
       return;
     }
     effacer();
-    conserver(resultat.adresse);
+    enCours = true;
+    const verdict = await assistant.verifier();
+    enCours = false;
+    if (verdict.decision === 'refuse') {
+      refuser(textes[verdict.raison === 'municipalite' ? 'municipalite' : 'introuvable']);
+      return;
+    }
+    if (verdict.decision === 'indisponible') assistant.annoncer(textes.nonVerifiee);
+    conserver(verdict.decision === 'accepte' ? verdict.adresse : resultat.adresse);
     window.location.assign(new URL(lienDiagnostic, window.location.href));
   });
 

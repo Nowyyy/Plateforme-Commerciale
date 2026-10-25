@@ -127,7 +127,7 @@ html[data-rendu="erreur"] .diag__panneau {
     align-items: flex-start;
   }
 
-  .diag__ligne .champ {
+  .diag__ligne .champ-assiste {
     flex: 1 1 auto;
   }
 

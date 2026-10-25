@@ -66,7 +66,7 @@ export function analyserGeocodage(texteJson, seuil) {
   if (proprietes.score < (estNombre(seuil) ? seuil : 0)) return { ok: false, raison: 'score' };
   const [lon, lat] = coordonnees;
   if (!dansFrance(lat, lon)) return { ok: false, raison: 'hors-france' };
-  return { ok: true, lat, lon, libelle: texte(proprietes.label), score: proprietes.score };
+  return { ok: true, lat, lon, libelle: texte(proprietes.label), score: proprietes.score, type: texte(proprietes.type) };
 }
 
 // Bascule automatique du fond : au moins `erreursMin` erreurs sans aucune tuile chargée, ou aucune tuile chargée après `delaiMs`.
