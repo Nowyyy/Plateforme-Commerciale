@@ -517,48 +517,48 @@ html[data-rendu="erreur"] .diag__legende {
 /* Planchers de hauteur (CLS) : contenu maximal de chaque cadre, mesuré par point de rupture (adresse simulée, mode de secours des aléas,
    quatre couches affichées). Le remplissage par JavaScript, la lecture des aléas et l'apparition de la carte ne décalent donc rien. */
 .diag__panneau {
-  min-block-size: 24.85rem;
+  min-block-size: 27.6rem;
 }
 
 @media (min-width: 389px) {
   .diag__panneau {
-    min-block-size: 23.45rem;
+    min-block-size: 26.2rem;
   }
 }
 
 @media (min-width: 479px) {
   .diag__panneau {
-    min-block-size: 22.05rem;
+    min-block-size: 23.4rem;
   }
 }
 
 @media (min-width: 520px) {
   .diag__panneau {
-    min-block-size: 20.65rem;
+    min-block-size: 22.0rem;
   }
 }
 
 @media (min-width: 699px) {
   .diag__panneau {
-    min-block-size: 19.25rem;
+    min-block-size: 20.6rem;
   }
 }
 
 @media (min-width: 768px) {
   .diag__panneau {
-    min-block-size: 15.65rem;
+    min-block-size: 17.05rem;
   }
 }
 
 @media (min-width: 850px) {
   .diag__panneau {
-    min-block-size: 14.25rem;
+    min-block-size: 15.65rem;
   }
 }
 
 @media (min-width: 1150px) {
   .diag__panneau {
-    min-block-size: 12.85rem;
+    min-block-size: 14.25rem;
   }
 }
 

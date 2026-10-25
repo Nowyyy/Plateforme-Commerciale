@@ -101,8 +101,9 @@
                 <input class="champ" type="text" id="adresse-evaluee" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="adresse-liste" autocomplete="off" aria-describedby="adresse-aide adresse-erreur" data-placeholder="diagnostic.textes.placeholder">
                 <ul class="suggestions" id="adresse-liste" role="listbox" hidden></ul>
               </div>
-              <button type="submit" class="bouton bouton--secondaire" data-texte="diagnostic.textes.bouton"></button>
+              <button type="submit" class="bouton bouton--secondaire" aria-disabled="true" aria-describedby="adresse-aide-validation" data-texte="diagnostic.textes.bouton"></button>
             </div>
+            <p class="diag__mention" id="adresse-aide-validation" data-texte="diagnostic.textes.assistee.aideInactif"></p>
             <p class="recherche__erreur" id="adresse-erreur" aria-live="polite"></p>
             <p class="visuellement-cache" id="adresse-statut" role="status"></p>
           </form>

@@ -4,7 +4,6 @@ import { LONGUEUR_MAX } from './adresse-validation.js';
 import { dansFrance, hoteAutorise } from './carte-reelle-logique.js';
 
 const MAX_SUGGESTIONS = 5;
-const TYPES_ACCEPTES = ['housenumber', 'street', 'locality'];
 
 const estNombre = (v) => typeof v === 'number' && Number.isFinite(v);
 const estObjet = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -36,7 +35,7 @@ export function construireUrlCompletion(saisie, base, maximum = MAX_SUGGESTIONS)
   return `${texte(base)}?text=${encodeURIComponent(nette)}&type=StreetAddress&maximumResponses=${bornerMax(maximum)}`;
 }
 
-// Recherche de data.geopf.fr : q=…&limit=n (repli de la complétion et vérification, limit=1).
+// Recherche de data.geopf.fr : q=…&limit=n (repli de la complétion pour les suggestions seulement, jamais de vérification à la validation).
 export function construireUrlRecherche(saisie, limite, base) {
   const nette = nettoyerSaisie(saisie);
   if (nette === '' || !hoteAutorise(base)) return '';
@@ -84,28 +83,28 @@ export function analyserSuggestionsRecherche(brut) {
   return { ok: true, suggestions };
 }
 
-// Décision à la validation. `selection` : { libelle } retenue en mémoire ; `resultat` : sortie de analyserGeocodage (avec `type`),
-// ou null si le service est injoignable ; `types` : types d'adresse acceptés.
-//  - accepte  : { decision, adresse, source: 'selection' | 'service' }
-//  - refuse   : { decision, raison: 'introuvable' | 'municipalite' | 'hors-france' }
-//  - indisponible : service injoignable ou réponse illisible (la validation locale du lot 2 s'applique alors)
-export function decisionVerification(entree) {
-  const { texte: saisie, selection, resultat, types } = estObjet(entree) ? entree : {};
-  const nette = nettoyerSaisie(saisie);
-  if (estObjet(selection) && texte(selection.libelle) !== '' && nette === nettoyerSaisie(selection.libelle)) {
-    return { decision: 'accepte', adresse: nettoyerSaisie(selection.libelle), source: 'selection' };
-  }
-  if (!estObjet(resultat)) return { decision: 'indisponible' };
-  if (resultat.ok !== true) {
-    if (resultat.raison === 'hors-france') return { decision: 'refuse', raison: 'hors-france' };
-    if (resultat.raison === 'aucun' || resultat.raison === 'score') return { decision: 'refuse', raison: 'introuvable' };
-    return { decision: 'indisponible' };
-  }
-  const acceptes = Array.isArray(types) ? types : TYPES_ACCEPTES;
-  if (acceptes.includes(resultat.type)) {
-    return { decision: 'accepte', adresse: nettoyerSaisie(resultat.libelle) || nette, source: 'service' };
-  }
-  return { decision: 'refuse', raison: resultat.type === 'municipality' ? 'municipalite' : 'introuvable' };
+// Adresse valide = le texte du champ est exactement le libellé d'une suggestion choisie par le visiteur et n'a pas été modifié depuis.
+// `selection` : libellé choisi (texte ou { libelle }) ; `adresseCourante` : adresse déjà affichée (diagnostic) ; `panne` : la complétion
+// et son repli ont tous deux échoué (l'adresse est alors utilisée telle quelle si `valideLocal`, résultat de la validation locale du lot 2).
+// Résultat { valide, raison } ; raison : null (choisie), 'non-choisie', 'modifiee', 'identique', 'locale' ou 'panne' (valide sans suggestion).
+export function etatValidation(entree) {
+  const { texte: brut, selection, adresseCourante, panne, valideLocal } = estObjet(entree) ? entree : {};
+  const saisie = texte(brut);
+  const libelle = estObjet(selection) ? texte(selection.libelle) : texte(selection);
+  const courante = texte(adresseCourante);
+  if (saisie === '') return { valide: false, raison: 'non-choisie' };
+  if (courante !== '' && saisie === courante) return { valide: false, raison: 'identique' };
+  if (libelle !== '' && saisie === libelle) return { valide: true, raison: null };
+  if (libelle !== '') return { valide: false, raison: 'modifiee' };
+  if (panne === true) return valideLocal === true ? { valide: true, raison: 'panne' } : { valide: false, raison: 'locale' };
+  return { valide: false, raison: 'non-choisie' };
+}
+
+// Touche Entrée dans le champ : une option surlignée est choisie ; sinon une adresse valide déclenche la validation ; sinon rien.
+export function actionEntree(entree) {
+  const { activeIndex, valide } = estObjet(entree) ? entree : {};
+  if (estNombre(activeIndex) && activeIndex >= 0) return 'choisir';
+  return valide === true ? 'valider' : 'rien';
 }
 
 // Navigation au clavier dans `n` options : -1 = aucune ; bas et haut bouclent ; liste vide : -1.

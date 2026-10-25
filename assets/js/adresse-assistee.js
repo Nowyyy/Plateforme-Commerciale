@@ -1,15 +1,37 @@
-// Saisie assistée de l'adresse (accueil et diagnostic, un seul code) : motif combobox ARIA 1.2, suggestions de l'IGN pendant la frappe,
-// vérification de l'adresse à la validation. Aucune requête avant 3 caractères ; l'adresse (ou son début) n'est envoyée qu'à data.geopf.fr ;
-// rien n'est conservé (ni suggestions, ni cache, ni stockage) : la sélection n'existe qu'en mémoire de la page.
-import { analyserGeocodage } from './carte-reelle-logique.js';
-import { analyserCompletion, analyserSuggestionsRecherche, construireUrlCompletion, construireUrlRecherche, decisionVerification, doitInterroger, indexSuivant, nettoyerSaisie } from './adresse-assistee-logique.js';
+// Saisie assistée de l'adresse (accueil et diagnostic, un seul code) : motif combobox ARIA 1.2, suggestions de l'IGN pendant la frappe.
+// Saisie stricte : l'adresse n'est valide que si elle a été choisie dans la liste et n'a pas été modifiée ; aucune vérification par
+// recherche libre. Aucune requête avant 3 caractères ; l'adresse (ou son début) n'est envoyée qu'à data.geopf.fr ; rien n'est conservé
+// (ni suggestions, ni cache, ni stockage) : la sélection n'existe qu'en mémoire de la page.
+import { valider } from './adresse-validation.js';
+import { actionEntree, analyserCompletion, analyserSuggestionsRecherche, construireUrlCompletion, construireUrlRecherche, doitInterroger, etatValidation, indexSuivant, nettoyerSaisie } from './adresse-assistee-logique.js';
 
 // config : donnees.diagnostic.carteReelle ; textes : accueil.recherche.assistee ou diagnostic.textes.assistee.
-export function brancherAssistant({ champ, liste, statut, config, textes }) {
+// bouton : bouton de validation (jamais `disabled` : `aria-disabled`, classes `data-classe-active` et `data-classe-inactive` échangées) ;
+// erreur : zone du message de panne ; adresseCourante : adresse déjà affichée (diagnostic), le bouton reste inactif tant qu'elle est identique.
+export function brancherAssistant({ champ, liste, statut, config, textes, bouton, erreur, adresseCourante = '' }) {
   const { saisie, geocodage } = config;
-  const etat = { controle: null, minuterie: null, version: 0, dernier: null, selection: null, suggestions: [], actif: -1, ignorer: false };
+  const etat = { controle: null, minuterie: null, version: 0, dernier: null, selection: null, suggestions: [], actif: -1, ignorer: false, panne: false, courante: adresseCourante };
 
   const annoncer = (message) => { statut.textContent = message; };
+
+  const validation = () => etatValidation({ texte: champ.value, selection: etat.selection, adresseCourante: etat.courante, panne: etat.panne, valideLocal: valider(champ.value).valide });
+
+  // Bouton : actif seulement pour une adresse valide ; focalisable (`aria-disabled`), classe d'action posée à l'état actif seulement.
+  function majBouton() {
+    if (!bouton) return;
+    const { valide } = validation();
+    bouton.setAttribute('aria-disabled', String(!valide));
+    const [actif, inactif] = [bouton.dataset.classeActive, bouton.dataset.classeInactive];
+    if (actif) bouton.classList.toggle(actif, valide);
+    if (inactif) bouton.classList.toggle(inactif, !valide);
+  }
+
+  // Panne du service : la complétion et son repli ont échoué ; le message reste affiché tant que la panne dure.
+  function definirPanne(panne) {
+    etat.panne = panne;
+    if (erreur) erreur.textContent = panne ? textes.nonVerifiee : '';
+    majBouton();
+  }
 
   // Une seule requête à la fois : toute nouvelle requête annule la précédente ; délai maximal `delai`.
   async function lancer(url, delai) {
@@ -48,6 +70,13 @@ export function brancherAssistant({ champ, liste, statut, config, textes }) {
     marquerActif(-1);
   }
 
+  // Clic ou Entrée sur le bouton inactif : aucune action, la phrase d'aide est annoncée et le focus revient dans le champ.
+  function refuser() {
+    statut.textContent = '';
+    setTimeout(() => { statut.textContent = textes.aideInactif; }, 50);
+    champ.focus();
+  }
+
   function choisir(index) {
     const suggestion = etat.suggestions[index];
     if (!suggestion) return;
@@ -59,6 +88,7 @@ export function brancherAssistant({ champ, liste, statut, config, textes }) {
     etat.dernier = nettoyerSaisie(suggestion.libelle);
     fermer();
     annoncer(textes.choisie.replace('{libelle}', suggestion.libelle));
+    definirPanne(false);
     champ.focus();
   }
 
@@ -103,8 +133,10 @@ export function brancherAssistant({ champ, liste, statut, config, textes }) {
     if (suggestions === null) {
       fermer();
       annoncer(textes.indisponible);
+      definirPanne(true); // les deux appels ont échoué
       return;
     }
+    definirPanne(false);
     afficher(suggestions);
   }
 
@@ -112,6 +144,8 @@ export function brancherAssistant({ champ, liste, statut, config, textes }) {
   champ.addEventListener('input', () => {
     if (etat.ignorer) return;
     if (etat.selection && champ.value !== etat.selection.libelle) etat.selection = null;
+    if (etat.panne) definirPanne(false);
+    majBouton();
     etat.version += 1;
     clearTimeout(etat.minuterie);
     etat.controle?.abort();
@@ -132,9 +166,12 @@ export function brancherAssistant({ champ, liste, statut, config, textes }) {
       if (!ouvert) return;
       e.preventDefault();
       marquerActif(indexSuivant(etat.suggestions.length, etat.actif, e.key));
-    } else if (e.key === 'Enter' && ouvert && etat.actif >= 0) {
-      e.preventDefault();
-      choisir(etat.actif);
+    } else if (e.key === 'Enter') {
+      e.preventDefault(); // jamais de soumission native : ni choix de la première suggestion, ni recherche libre
+      const action = actionEntree({ activeIndex: ouvert ? etat.actif : -1, valide: validation().valide });
+      if (action === 'choisir') choisir(etat.actif);
+      else if (action === 'valider') bouton?.click();
+      else refuser();
     } else if (e.key === 'Escape' && ouvert) {
       e.preventDefault();
       fermer();
@@ -149,29 +186,13 @@ export function brancherAssistant({ champ, liste, statut, config, textes }) {
     if (option) choisir(options().indexOf(option));
   });
 
-  // Vérification à la validation (la validation locale `valider` a déjà été appliquée par la page).
-  // Renvoie { decision: 'accepte' | 'refuse' | 'indisponible', ... } ; l'adresse officielle est reprise dans le champ.
-  async function verifier() {
-    clearTimeout(etat.minuterie);
-    etat.version += 1;
-    fermer();
-    const nette = nettoyerSaisie(champ.value);
-    let resultat = null;
-    if (!(etat.selection && nettoyerSaisie(etat.selection.libelle) === nette)) {
-      const reponse = await lancer(construireUrlRecherche(nette, 1, geocodage.base), geocodage.delaiMs);
-      resultat = reponse.ok ? analyserGeocodage(reponse.texte, geocodage.seuil) : null;
-    }
-    const decision = decisionVerification({ texte: nette, selection: etat.selection, resultat, types: geocodage.typesAcceptes });
-    if (decision.decision === 'accepte' && decision.source === 'service') {
-      etat.ignorer = true;
-      champ.value = decision.adresse;
-      etat.ignorer = false;
-      etat.selection = { libelle: decision.adresse };
-      annoncer(textes.reconnue.replace('{libelle}', decision.adresse));
-    }
-    return decision;
+  // Après une validation réussie (diagnostic) : l'adresse affichée devient l'adresse courante, le bouton se désactive.
+  function definirCourante(adresse) {
+    etat.courante = typeof adresse === 'string' ? adresse : '';
+    majBouton();
   }
 
   liste.setAttribute('aria-label', textes.listeNom);
-  return { verifier, annoncer, fermer };
+  majBouton();
+  return { valide: () => validation().valide, refuser, definirCourante, annoncer, fermer };
 }

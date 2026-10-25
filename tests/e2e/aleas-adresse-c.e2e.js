@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { ADRESSE, ouvrirDiagnostic, reponseGaspar, reponseGeocodage, reponseRga, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { ADRESSE, ouvrirDiagnostic, reponseCompletion, reponseGaspar, reponseGeocodage, reponseRga, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
 const COUCHES = {
   inondation: 'ALEA_SYNT_01_04FAI_FXX,PPRN_COMMUNE_RISQINOND_PRESCRIT',
@@ -137,7 +138,8 @@ test('changement d\'adresse : nouvelle lecture des aléas, cases recalculées', 
   await page.route('https://www.georisques.gouv.fr/api/v1/rga**', (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: reponseRga(0) }));
   await page.unroute('https://www.georisques.gouv.fr/api/v1/gaspar/**');
   await page.route('https://www.georisques.gouv.fr/api/v1/gaspar/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: reponseGaspar(['Feu de forêt', 'Crue']) }));
-  await page.locator('#adresse-evaluee').fill('8 avenue des Lilas, 31000 Toulouse');
+  await page.route('https://data.geopf.fr/geocodage/completion/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: reponseCompletion([['8 Avenue des Lilas 31000 Toulouse', 1.4442, 43.6047]]) }));
+  await choisirAdresse(page, page.locator('#adresse-evaluee'), '8 avenue des Lilas');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
   await expect.poll(() => journal.api.length).toBe(4);
   await expect(cases(page)).toHaveCount(2);

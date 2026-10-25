@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { simuler } from './carte-reelle-simulation.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
 const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const diag = JSON.parse((await import('node:fs')).readFileSync('data/diagnostic.json', 'utf8'));
@@ -101,13 +102,14 @@ test('robustesse : 6 équipements pour un aléa, seulement 3 cartes, sans débor
 
 for (const largeur of [375, 1440]) {
   test(`parcours cliqués à ${largeur} px : accueil, adresse, diagnostic ; carte d'aléa ; fiche produit`, async ({ page }) => {
+    await simuler(page);
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.goto('/index.html');
     await page.waitForSelector('.recherche:not([hidden])');
-    await page.getByLabel(/Entrez votre adresse/).fill(ADRESSE);
+    const libelle = await choisirAdresse(page, page.getByLabel(/Entrez votre adresse/));
     await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
     await page.waitForURL('**/diagnostic.html');
-    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(ADRESSE);
+    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(libelle);
     await expect(page.getByRole('radio', { name: 'Tous' })).toBeChecked();
     expect(decodeURIComponent(page.url())).not.toContain('Tilleuls');
 

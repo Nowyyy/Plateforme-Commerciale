@@ -207,8 +207,9 @@ function initialiserAdresse(donnees) {
   else aide.textContent = resoudre(donnees, 'diagnostic.textes.aideSansAdresse');
 
   const textes = donnees.diagnostic.textes.assistee;
-  const assistant = brancherAssistant({ champ, liste: document.getElementById('adresse-liste'), statut: document.getElementById('adresse-statut'), config: donnees.diagnostic.carteReelle, textes });
-  let enCours = false;
+  // Adresse de session : tenue pour déjà validée (la carte et les lectures partent de ce texte), le bouton reste inactif tant qu'elle est identique.
+  const bouton = formulaire.querySelector('button[type="submit"]');
+  const assistant = brancherAssistant({ champ, liste: document.getElementById('adresse-liste'), statut: document.getElementById('adresse-statut'), config: donnees.diagnostic.carteReelle, textes, bouton, erreur, adresseCourante: adresse ?? '' });
 
   const effacer = () => {
     erreur.textContent = '';
@@ -220,30 +221,22 @@ function initialiserAdresse(donnees) {
     champ.focus();
   };
   champ.addEventListener('input', effacer);
-  formulaire.addEventListener('submit', async (e) => {
+  formulaire.addEventListener('submit', (e) => {
     e.preventDefault();
-    if (enCours) return;
-    const resultat = valider(champ.value); // validation locale du lot 2, toujours avant le réseau
+    if (!assistant.valide()) {
+      assistant.refuser(); // bouton inactif : aucune action, phrase d'aide annoncée, focus dans le champ
+      return;
+    }
+    const resultat = valider(champ.value); // validation locale du lot 2, toujours avant toute mise à jour
     if (!resultat.valide) {
       refuser(resoudre(donnees, 'diagnostic.textes.erreur'));
       return;
     }
     effacer();
-    enCours = true;
-    const verdict = await assistant.verifier();
-    enCours = false;
-    if (verdict.decision === 'refuse') {
-      refuser(textes[verdict.raison === 'municipalite' ? 'municipalite' : 'introuvable']);
-      return;
-    }
-    const adresse = verdict.decision === 'accepte' ? verdict.adresse : resultat.adresse;
-    if (verdict.decision === 'indisponible') {
-      erreur.textContent = textes.nonVerifiee; // service injoignable : l'adresse est utilisée telle quelle
-    }
-    champ.value = adresse;
-    ecrireSession(CLE_STOCKAGE, adresse);
+    ecrireSession(CLE_STOCKAGE, resultat.adresse);
+    assistant.definirCourante(resultat.adresse);
     aide.textContent = resoudre(donnees, 'diagnostic.textes.aide');
-    // Après une adresse acceptée seulement : la carte est recréée pour la nouvelle adresse (carte-reelle.js).
+    // Après une adresse valide seulement : la carte est recréée pour la nouvelle adresse (carte-reelle.js).
     document.dispatchEvent(new CustomEvent('adresse:modifiee'));
   });
 }

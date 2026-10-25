@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { ADRESSE, ouvrirDiagnostic, reponseGaspar, reponseRecherche, reponseRga, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { ADRESSE, ouvrirDiagnostic, reponseCompletion, reponseGaspar, reponseRga, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
 const SCENARIOS = {
   inondationArgiles: { api: { gaspar: { corps: reponseGaspar(['Inondation', 'Séisme']) }, rga: { corps: reponseRga(2) } } },
@@ -153,10 +154,10 @@ test('changement d\'adresse : niveau, pastilles et équipements recalculés', as
   await ouvrir(page, 1440, 'inondationFeux');
   expect(await noms(pastilles(page))).toEqual(['Tous', 'Inondations', 'Feux de forêt']);
   const officiel = '5 Allée des Peupliers 44000 Nantes';
-  await page.route('https://data.geopf.fr/geocodage/search**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: reponseRecherche(officiel, 'housenumber', 0.9, -1.5534, 47.2184) }));
+  await page.route('https://data.geopf.fr/geocodage/completion/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: reponseCompletion([[officiel, -1.5534, 47.2184]]) }));
   await page.route('https://www.georisques.gouv.fr/api/v1/gaspar/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: reponseGaspar(['Séisme']) }));
   await page.route('https://www.georisques.gouv.fr/api/v1/rga**', (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: reponseRga(3) }));
-  await page.getByLabel('Adresse évaluée').fill('5 allée des Peupliers, Nantes');
+  await choisirAdresse(page, page.getByLabel('Adresse évaluée'), '5 allée des Peupliers');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
   await expect(niveau(page)).toHaveText("Niveau d'exposition : élevé (indicatif)");
   expect(await noms(pastilles(page))).toEqual(['Tous']);

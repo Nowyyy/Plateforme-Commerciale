@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { ADRESSE, ouvrirDiagnostic, reponseGeocodage, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { ADRESSE, ouvrirDiagnostic, reponseCompletion, reponseGeocodage, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
 const boite = async (page, selecteur) => {
   const b = await page.locator(selecteur).first().boundingBox();
@@ -155,16 +156,20 @@ test('échec : leaflet.js impossible à charger → message, « Réessayer » ch
   expect(console_.filter(SANS_RESSOURCE)).toEqual([]);
 });
 
+const TOULOUSE = '8 Avenue des Lilas 31000 Toulouse';
+
 test('« Mettre à jour » avec une autre adresse : carte recréée, un seul conteneur Leaflet, nouvelle adresse géocodée', async ({ page }) => {
   const journal = await simuler(page);
   await ouvrirDiagnostic(page, 1440);
   await carteAffichee(page);
   await expect(page.locator('.leaflet-container')).toHaveCount(1);
-  await page.locator('#adresse-evaluee').fill('8 avenue des Lilas, 31000 Toulouse');
+  await page.route('https://data.geopf.fr/geocodage/completion/**', (route) => route.fulfill({ status: 200, contentType: 'application/json', body: reponseCompletion([[TOULOUSE, 1.4442, 43.6047]]) }));
+  await choisirAdresse(page, page.locator('#adresse-evaluee'), '8 avenue des Lilas');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
-  // vérification de l'adresse saisie (limit=1), puis géocodage de la carte avec le libellé accepté
-  await expect.poll(() => journal.geocodage.length).toBeGreaterThanOrEqual(3);
-  expect(new URL(journal.geocodage[1].url).searchParams.get('q')).toBe('8 avenue des Lilas, 31000 Toulouse');
+  // aucune vérification par recherche libre : seul le géocodage de la carte part, avec le libellé choisi
+  const recherches = () => journal.geocodage.filter((r) => new URL(r.url).pathname === '/geocodage/search').map((r) => new URL(r.url).searchParams.get('q'));
+  await expect.poll(() => recherches().length).toBe(2);
+  expect(recherches()).toEqual([ADRESSE, TOULOUSE]);
   await carteAffichee(page);
   await expect(page.locator('.leaflet-container')).toHaveCount(1);
   await expect(page.locator('#carte-reelle .carte-reelle__repere')).toHaveCount(1);

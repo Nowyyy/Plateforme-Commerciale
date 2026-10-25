@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
+import { simuler } from './carte-reelle-simulation.js';
 
-const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const AMBRE = 'rgb(217, 119, 6)';
 const MARINE = 'rgb(15, 29, 56)';
 
@@ -112,18 +113,19 @@ test('stockage indisponible : message dédié, sans erreur de console', async ({
 
 for (const largeur of [375, 1440]) {
   test(`parcours cliqué à ${largeur} px : accueil, adresse, « Inondations et crues », diagnostic, fiche, cotes, pose, panier`, async ({ page }) => {
+    await simuler(page); // suggestions de l'IGN simulées : la saisie stricte exige un choix dans la liste
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.goto('/index.html');
     await page.waitForSelector('.recherche:not([hidden])');
-    await page.getByLabel(/Entrez votre adresse/).fill(ADRESSE);
+    const libelle = await choisirAdresse(page, page.getByLabel(/Entrez votre adresse/));
     await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
     await page.waitForURL('**/diagnostic.html');
     await page.goBack();
     await page.waitForSelector('html[data-rendu="pret"]');
     await page.getByRole('link', { name: 'Voir les solutions Inondations et crues' }).click();
     await page.waitForURL('**/diagnostic.html');
-    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(ADRESSE);
+    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(libelle);
     const carte = page.locator('#liste-equipements > li').filter({ has: page.getByRole('heading', { level: 3, name: 'Batardeau modulable' }) });
     await carte.getByRole('link', { name: /Voir la fiche/ }).click();
     await page.waitForURL('**/produit.html');

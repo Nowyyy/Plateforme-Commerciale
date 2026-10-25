@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { ADRESSE, ouvrirDiagnostic, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { ouvrirDiagnostic, simuler, surveillerConsole } from './carte-reelle-simulation.js';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
 const HOTES = ['data.geopf.fr', 'www.georisques.gouv.fr', 'tile.openstreetmap.org'];
 const ORIGINE = 'http://localhost:4173/';
@@ -27,11 +28,11 @@ for (const largeur of [375, 1440]) {
     await page.setViewportSize({ width: largeur, height: 900 });
     await page.goto('/index.html');
     await page.waitForSelector('html[data-rendu="pret"]');
-    await page.getByLabel(/Entrez votre adresse/).fill(ADRESSE);
+    const libelle = await choisirAdresse(page, page.getByLabel(/Entrez votre adresse/));
     await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
     await page.waitForURL('**/diagnostic.html');
     await page.waitForSelector('html[data-rendu="pret"]');
-    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(ADRESSE);
+    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(libelle);
     await carteAffichee(page);
     // retour à l'accueil, puis filtre « Inondations » depuis la carte d'aléa
     await page.locator('.marque').first().click();
@@ -41,7 +42,7 @@ for (const largeur of [375, 1440]) {
     await page.waitForURL('**/diagnostic.html');
     await page.waitForSelector('html[data-rendu="pret"]');
     await expect(page.getByRole('radio', { name: 'Inondations' })).toBeChecked();
-    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(ADRESSE);
+    await expect(page.getByLabel('Adresse évaluée')).toHaveValue(libelle);
     // la carte s'affiche d'elle-même (pastille « Inondations » : elle ne change pas les calques, fond et trois calques)
     await carteAffichee(page);
     await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(4);
@@ -63,7 +64,7 @@ for (const largeur of [375, 1440]) {
     }
     const contenant = (await journal.lire()).filter((r) => decodeURIComponent(r.url).includes('Tilleuls') || r.corps.includes('Tilleuls'));
     expect(contenant.length).toBeGreaterThan(0);
-    for (const r of contenant) expect(new URL(r.url).pathname).toBe('/geocodage/search');
+    for (const r of contenant) expect(['/geocodage/search', '/geocodage/completion/']).toContain(new URL(r.url).pathname);
     expect(console_).toEqual([]);
     console.log(`${largeur} px : parcours de ${((Date.now() - debut) / 1000).toFixed(1)} s, ${journal.urls.length} pages, ${contenant.length} requêtes portant l'adresse (géocodage)`);
   });
@@ -88,7 +89,7 @@ test('confidentialité : aucune requête tierce hors diagnostic ni sans adresse,
   expect(new Set(externes.map((r) => new URL(r.url).hostname))).toEqual(new Set(HOTES));
   const avecAdresse = (await journal.lire()).filter((r) => `${decodeURIComponent(r.url)} ${r.corps} ${r.referer ?? ''}`.includes('Tilleuls'));
   expect(avecAdresse.length).toBeGreaterThan(0);
-  for (const r of avecAdresse) expect(new URL(r.url).pathname).toBe('/geocodage/search');
+  for (const r of avecAdresse) expect(['/geocodage/search', '/geocodage/completion/']).toContain(new URL(r.url).pathname);
   expect(externes.filter((r) => !r.url.includes('/geocodage/')).length).toBeGreaterThan(3);
   for (const r of externes) expect(r.referer === null || r.referer === ORIGINE, `${r.url} → ${r.referer}`).toBe(true);
   expect(externes.some((r) => r.referer === ORIGINE)).toBe(true);
@@ -129,13 +130,13 @@ test('accueil : la recherche d\'adresse fonctionne comme avant, aucune requête 
   await page.waitForSelector('html[data-rendu="pret"]');
   await expect(page.locator('.recherche__microtexte')).toBeVisible();
   const champ = page.getByLabel(/Entrez votre adresse/);
-  await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
-  await expect(page.locator('#adresse-erreur')).not.toBeEmpty();
+  await page.getByRole('button', { name: 'Évaluer mon exposition' }).click({ force: true }); // inactif : phrase d'aide, aucune navigation
+  await expect(page.locator('#adresse-statut')).toHaveText('Choisissez une adresse dans la liste pour continuer.');
   await expect(page).toHaveURL(/index\.html$|\/$/);
   expect(externes.externes).toEqual([]);
-  await champ.fill(ADRESSE);
+  const libelle = await choisirAdresse(page, champ);
   await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
   await page.waitForURL('**/diagnostic.html');
-  await expect(page.getByLabel('Adresse évaluée')).toHaveValue(ADRESSE);
+  await expect(page.getByLabel('Adresse évaluée')).toHaveValue(libelle);
   expect(new URL(page.url()).search).toBe('');
 });

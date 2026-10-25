@@ -24,14 +24,11 @@
       "listeNom": "Suggestions d'adresses",
       "suggestionUne": "1 suggestion",
       "suggestionsN": "{n} suggestions",
-      "aucune": "Aucune suggestion",
+      "aucune": "Aucune adresse ne correspond.",
       "indisponible": "Suggestions indisponibles pour le moment.",
       "choisie": "Adresse choisie : {libelle}",
-      "reconnue": "Adresse reconnue : {libelle}",
-      "introuvable": "Adresse introuvable. Choisissez une adresse dans la liste de suggestions.",
-      "municipalite": "Précisez une adresse avec le numéro et la rue.",
-      "nonVerifiee": "Vérification impossible pour le moment : l'adresse est utilisée telle quelle.",
-      "verification": "Vérification de l'adresse…"
+      "nonVerifiee": "Vérification impossible pour le moment : l'adresse sera utilisée telle quelle.",
+      "aideInactif": "Choisissez une adresse dans la liste pour continuer."
     },
     "erreur": "Saisissez une adresse d'au moins 5 caractères."
   },

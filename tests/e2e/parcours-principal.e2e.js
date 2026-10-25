@@ -3,8 +3,8 @@ import AxeBuilder from '@axe-core/playwright';
 import { simuler } from './carte-reelle-simulation.js';
 import { formaterPrix } from '../../assets/js/diagnostic-logique.js';
 import { LIGNE, TROIS_LIGNES, UNE_LIGNE, ouvrirPanier, panierAvec } from '../outils/panier-aide.mjs';
+import { choisirAdresse } from '../outils/choisir-adresse.js';
 
-const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const AMBRE = 'rgb(217, 119, 6)';
 const sansEspaces = (t) => t.replace(/[\u202f\u00a0]/g, ' ');
 
@@ -42,10 +42,10 @@ async function parcourir(page, largeur, mode) {
   await page.setViewportSize({ width: largeur, height: 900 });
   await page.goto('/index.html');
   await page.waitForSelector('.recherche:not([hidden])');
-  await page.getByLabel(/Entrez votre adresse/).fill(ADRESSE);
+  const libelle = await choisirAdresse(page, page.getByLabel(/Entrez votre adresse/));
   await page.getByRole('button', { name: 'Évaluer mon exposition' }).click();
   await page.waitForURL('**/diagnostic.html');
-  await expect(page.getByLabel('Adresse évaluée')).toHaveValue(ADRESSE);
+  await expect(page.getByLabel('Adresse évaluée')).toHaveValue(libelle);
   await page.waitForSelector('html[data-rendu="pret"]');
   const carte = page.locator('#liste-equipements > li').filter({ has: page.getByRole('heading', { level: 3, name: 'Batardeau modulable' }) });
   await carte.getByRole('link', { name: /Voir la fiche/ }).click();
