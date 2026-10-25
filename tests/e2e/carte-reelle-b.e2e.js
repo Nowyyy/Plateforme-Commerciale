@@ -33,7 +33,7 @@ test('requêtes WMS conformes : hôte avec www, WMS 1.3.0, EPSG:3857, transparen
   expect([...new Set(journal.wms.map((r) => parametres(r.url).LAYERS))].sort()).toEqual(Object.values(COUCHES).sort());
 });
 
-test('cases : décocher retire les couches, recocher les remet, un changement de filtre réinitialise les cases', async ({ page }) => {
+test('cases : décocher retire les couches, recocher les remet ; les pastilles ne changent pas les cases', async ({ page }) => {
   const journal = await simuler(page);
   await afficherCarte(page);
   await expect(couchesLeaflet(page)).toHaveCount(4); // fond + trois calques
@@ -47,12 +47,13 @@ test('cases : décocher retire les couches, recocher les remet, un changement de
   expect(apres).not.toContain(COUCHES.inondation);
   await calque(page, 'Zone inondable').check();
   await expect(couchesLeaflet(page)).toHaveCount(4);
-  await page.getByRole('radio', { name: 'Feux de forêt' }).check({ force: true });
-  await expect(calque(page, 'Feux de forêt')).toBeChecked();
-  for (const nom of ['Zone inondable', 'Retrait-gonflement des argiles']) await expect(calque(page, nom)).not.toBeChecked();
-  await expect(couchesLeaflet(page)).toHaveCount(2);
+  await calque(page, 'Feux de forêt').uncheck();
+  await page.getByRole('radio', { name: 'Inondations' }).check({ force: true }); // la pastille ne pilote que les équipements
+  await expect(calque(page, 'Feux de forêt')).not.toBeChecked();
+  for (const nom of ['Zone inondable', 'Retrait-gonflement des argiles']) await expect(calque(page, nom)).toBeChecked();
+  await expect(couchesLeaflet(page)).toHaveCount(3);
   await page.getByRole('radio', { name: 'Tous' }).check({ force: true });
-  await expect(couchesLeaflet(page)).toHaveCount(4);
+  await expect(couchesLeaflet(page)).toHaveCount(3);
 });
 
 test('« Chaleur extrême » : aucune case, aucune note, aucune requête associée', async ({ page }) => {
@@ -61,8 +62,8 @@ test('« Chaleur extrême » : aucune case, aucune note, aucune requête associ�
   await expect(page.getByRole('group', { name: 'Aléas recensés à cette adresse' }).getByRole('checkbox')).toHaveCount(3);
   await expect(page.getByRole('checkbox', { name: 'Chaleur extrême' })).toHaveCount(0);
   await expect(page.locator('#note-chaleur, #mention-reelle')).toHaveCount(0);
-  await page.getByRole('radio', { name: 'Canicule' }).check({ force: true });
-  await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(1); // fond seul : aucun calque pour la canicule
+  await expect(page.getByRole('radio', { name: /Canicule/ })).toHaveCount(0); // jamais proposée automatiquement
+  await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(4); // fond et trois calques, aucun pour la canicule
   await expect.poll(() => journal.osm.length).toBeGreaterThan(0);
   expect(journal.wms.filter((r) => /chaleur|canicule/i.test(r.url))).toEqual([]);
 });

@@ -131,6 +131,17 @@
       "prix": 340
     }
   ],
+  "exposition": {
+    "niveaux": {
+      "inondation": { "present": 2 },
+      "feu": { "present": 2 },
+      "argile": { "1": 1, "2": 2, "3": 3 }
+    }
+  },
+  "detection": {
+    "inondations": { "calque": "inondation", "equipements": ["batardeau-modulable", "clapet-anti-retour", "pompe-de-relevage"] },
+    "feux-de-foret": { "calque": "feu", "equipements": ["sprinkler-de-toiture", "grille-pare-braises"] }
+  },
   "textes": {
     "titre": "Diagnostic de votre exposition",
     "aide": "Vérifiez l'adresse, puis choisissez un aléa pour voir les équipements et le niveau d'exposition correspondants.",
@@ -162,15 +173,40 @@
       "prix": "Prix indicatif TTC :",
       "exemple": "(exemple)",
       "voirFiche": "Voir la fiche",
-      "annonceUn": "1 équipement recommandé.",
-      "annonceN": "{n} équipements recommandés.",
+      "annonceUn": "1 équipement pour {alea}",
+      "annonceN": "{n} équipements pour {alea}",
+      "tousAleas": "tous les aléas proposés",
+      "suffixeInconnu": "(présence non déterminée)",
+      "sansAdresse": "Saisissez une adresse pour voir les équipements recommandés.",
+      "chargement": "Chargement des équipements recommandés…",
+      "aucun": "Aucun aléa recensé à cette adresse ne correspond à un équipement du catalogue.",
+      "explorer": "Explorer tous les aléas",
+      "exploration": "Aléas non recensés à cette adresse : équipements présentés à titre d'exemple.",
+      "aleaAccueilAbsent": "L'aléa choisi sur l'accueil n'est pas recensé à cette adresse.",
       "comparer": "Comparer ces solutions"
     },
     "exposition": {
       "titre": "Exposition à cette adresse",
       "libelle": "Niveau d'exposition :",
       "indicatif": "(indicatif)",
-      "phrase": "Calculé à partir des aléas recensés par Géorisques."
+      "phrase": "Calculé à partir des aléas recensés par Géorisques.",
+      "prudence": "Indicatif : ce niveau ne remplace ni l'état des risques réglementaire ni l'avis d'un professionnel.",
+      "sansAdresse": "Niveau non déterminé : saisissez une adresse.",
+      "lecture": "Calcul du niveau d'exposition en cours…",
+      "aucun": "Aucun aléa recensé parmi ceux évalués (indicatif)",
+      "indetermine": "Niveau non déterminé : les aléas de cette adresse n'ont pas pu être lus",
+      "inconnus": "Présence non déterminée : {aleas}",
+      "nonRecense": "{aleas} : non recensé.",
+      "nonRecenses": "{aleas} : non recensés.",
+      "nonEvalues": "Grêle, vents, canicule : non évalués.",
+      "calcul": {
+        "titre": "Comment est-il calculé ?",
+        "paragraphes": [
+          "Le niveau retient le plus élevé des aléas recensés à cette adresse par Géorisques : inondation et feux de forêt comptent pour « modéré », les argiles selon leur exposition (faible, moyenne ou forte).",
+          "Les données d'inondation et de feux de forêt sont communales : elles ne disent pas si cette adresse précise est touchée. Grêle, vents et canicule ne sont pas évalués.",
+          "Ce niveau est indicatif. Un niveau vide ne signifie pas l'absence de risque : seulement qu'aucun aléa n'est recensé parmi ceux évalués."
+        ]
+      }
     },
     "legende": {
       "titre": "Légende",

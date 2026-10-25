@@ -59,7 +59,7 @@ describe('lot 9-C : diagnostic.js, CSS et pages', () => {
     const cles = [...src.matchAll(/(?:lireSession|ecrireSession)\(([A-Z_]+)/g)].map((m) => m[1]);
     expect([...new Set(cles)].sort()).toEqual(['CLE_ALEA', 'CLE_COMPARAISON', 'CLE_STOCKAGE']);
     expect(src).not.toMatch(/(?:getItem|setItem|removeItem)\(['"](?!produit)/);
-    expect(src).toContain('comparaisonDepuisDiagnostic({ filtre: etat.filtre');
+    expect(src).toContain('comparaisonDepuisDiagnostic({ filtre: alea'); // lot 4e-B : aléa de la pastille ou aléa proposé le plus élevé
     expect(lire('assets/js/produit-session.js')).toContain('setItem(CLE_PRODUIT, id)');
   });
   it('css/diagnostic.css : aucune valeur hexadécimale ; réserve de hauteur du lien', () => {

@@ -82,40 +82,41 @@ test('« Mettre à jour » : adresse valide, sessionStorage mis à jour, aucune 
   await champ.fill('  5 allée des Peupliers, Nantes  ');
   await page.getByRole('button', { name: 'Mettre à jour' }).click();
   await expect(page.locator('#adresse-erreur')).toBeHidden();
-  expect(await page.evaluate(() => sessionStorage.getItem('adresse'))).toBe(officiel); // libellé officiel de l'IGN
   await expect(champ).toHaveValue(officiel);
+  expect(await page.evaluate(() => sessionStorage.getItem('adresse'))).toBe(officiel); // libellé officiel de l'IGN
   expect(navigations).toBe(0);
   expect(page.url()).toBe(urlAvant);
   expect(decodeURIComponent(page.url())).not.toContain('Peupliers');
 });
 
-test('pastilles d\'aléa : 5 boutons radio dans un fieldset, « Tous » par défaut, flèches', async ({ page }) => {
-  await ouvrir(page, 1440);
+test('pastilles d\'aléa : seulement les aléas recensés (« Tous », Inondations, Feux de forêt), dans un fieldset, « Tous » par défaut, flèches', async ({ page }) => {
+  await ouvrir(page, 1440, { adresse: ADRESSE });
   const groupe = page.getByRole('group', { name: 'Aléa', exact: true });
   await expect(groupe).toBeVisible();
   expect(await groupe.evaluate((el) => el.tagName)).toBe('FIELDSET');
   const radios = groupe.getByRole('radio');
-  await expect(radios).toHaveCount(5);
+  await expect(radios).toHaveCount(3);
   await expect(groupe.getByRole('radio', { name: 'Tous' })).toBeChecked();
   await groupe.getByRole('radio', { name: 'Tous' }).focus();
   await page.keyboard.press('ArrowRight');
   await expect(groupe.getByRole('radio', { name: 'Inondations' })).toBeChecked();
   await page.keyboard.press('ArrowRight');
-  await expect(groupe.getByRole('radio', { name: 'Grêle et vents' })).toBeChecked();
+  await expect(groupe.getByRole('radio', { name: 'Feux de forêt' })).toBeChecked();
   await page.keyboard.press('ArrowLeft');
   await expect(groupe.getByRole('radio', { name: 'Inondations' })).toBeChecked();
+  await expect(groupe.getByRole('radio', { name: /Grêle|Canicule/ })).toHaveCount(0);
   expect(page.url()).not.toContain('?');
 });
 
 test('aléa de session : pastille préchargée, clé supprimée après lecture', async ({ page }) => {
-  await ouvrir(page, 375, { alea: 'feux-de-foret' });
+  await ouvrir(page, 375, { adresse: ADRESSE, alea: 'feux-de-foret' });
   await expect(page.getByRole('radio', { name: 'Feux de forêt' })).toBeChecked();
   expect(await page.evaluate(() => sessionStorage.getItem('alea'))).toBeNull();
   expect(page.url()).not.toContain('feux');
 });
 
 test('aléa de session inconnu : « Tous »', async ({ page }) => {
-  await ouvrir(page, 375, { alea: 'tremblement' });
+  await ouvrir(page, 375, { adresse: ADRESSE, alea: 'tremblement' });
   await expect(page.getByRole('radio', { name: 'Tous' })).toBeChecked();
   expect(await page.evaluate(() => sessionStorage.getItem('alea'))).toBeNull();
 });

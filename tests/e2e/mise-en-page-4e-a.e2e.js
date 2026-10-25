@@ -114,17 +114,17 @@ test('équipements : trois colonnes à 1440 px, deux à 768 px, une à 375 px, c
   }
 });
 
-test('pastilles d\'aléa dans le bloc équipements (cinq), absentes du bloc adresse, filtrage inchangé', async ({ page }) => {
+test('pastilles d\'aléa dans le bloc équipements (selon les aléas recensés), absentes du bloc adresse, filtrage par aléa', async ({ page }) => {
   await simuler(page);
   await ouvrirDiagnostic(page, 1440);
   const equipements = page.locator('[data-role="equipements"]');
-  await expect(equipements.getByRole('group', { name: 'Aléa' }).getByRole('radio')).toHaveCount(5);
+  await expect(equipements.getByRole('group', { name: 'Aléa' }).getByRole('radio')).toHaveCount(3);
   await expect(page.locator('[data-role="adresse"] input[type="radio"]')).toHaveCount(0);
   await expect(equipements.getByRole('radio', { name: 'Tous' })).toBeChecked();
   await expect(page.locator('#liste-equipements > li')).toHaveCount(3);
   await equipements.getByRole('radio', { name: 'Inondations', exact: true }).check({ force: true });
   for (const carte of await page.locator('#liste-equipements > li').all()) await expect(carte).toContainText('Neutralise : Inondations et crues');
-  await expect(page.locator('#annonce-diagnostic')).toContainText('équipements recommandés');
+  await expect(page.locator('#annonce-diagnostic')).toContainText('équipements pour Inondations');
 });
 
 test('exposition : jauge décorative et niveau visibles dans le cadre blanc', async ({ page }) => {
@@ -135,7 +135,7 @@ test('exposition : jauge décorative et niveau visibles dans le cadre blanc', as
   await expect(expo.locator('#jauge')).toBeVisible();
   await expect(expo.locator('#jauge')).toHaveAttribute('aria-hidden', 'true');
   await expect(expo.locator('#jauge > li')).toHaveCount(4);
-  await expect(expo.locator('#exposition-niveau')).toHaveText("Niveau d'exposition : élevé (indicatif)");
+  await expect(expo.locator('#exposition-niveau')).toHaveText("Niveau d'exposition : modéré (indicatif)");
   await expect(expo.getByRole('link', { name: /Source officielle : Géorisques/ })).toBeVisible();
   const cadre = expo.locator('.carte');
   await expect(cadre).toHaveCSS('background-color', 'rgb(255, 255, 255)');

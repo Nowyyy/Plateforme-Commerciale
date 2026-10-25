@@ -133,7 +133,8 @@ function initialiser(donnees) {
     reessayer.hidden = true;
   };
 
-  const filtreCourant = () => document.querySelector('input[name="alea"]:checked')?.value ?? TOUS;
+  // États des aléas de l'adresse, annoncés au diagnostic (niveau d'exposition, pastilles, équipements) : sans adresse, lecture, lus.
+  const signaler = (phase, etats = null) => document.dispatchEvent(new CustomEvent('aleas:etat', { detail: { phase, etats } }));
   const aleasTextes = textes.aleas;
   const zoneMessage = el('aleas-message');
   const zoneSecours = el('aleas-secours');
@@ -155,7 +156,7 @@ function initialiser(donnees) {
     const proposes = calquesProposes(resultat);
     reinitialiserAleas('');
     etatCarte.aleas = { resultat, proposes };
-    const coches = cochesInitiales(proposes, calquesParDefaut(donnees.diagnostic.aleas, filtreCourant()));
+    const coches = cochesInitiales(proposes, calquesParDefaut(donnees.diagnostic.aleas, TOUS));
     const modele = el('modele-calque');
     for (const id of proposes) {
       const { etat, niveau } = resultat.etats[id];
@@ -177,6 +178,7 @@ function initialiser(donnees) {
     else if (proposes.length === 0) annonce.textContent = aleasTextes.aucun;
     else annonce.textContent = presents === 1 ? aleasTextes.annonceUn : aleasTextes.annonceN.replace('{n}', String(presents));
     synchroniserCalques();
+    signaler('lus', resultat.etats);
   };
 
   // Légende : une entrée par couche, visible seulement tant que son calque est affiché.
@@ -216,6 +218,7 @@ function initialiser(donnees) {
     detruire();
     reinitialiserAleas(aleasTextes.attente);
     afficherMessage(texte, true);
+    signaler('lus', etatCalques({ gaspar: null, rga: null, calquesConfig: config }).etats); // aucune lecture possible : présence non déterminée
   };
 
   // Attributions : celles du fond affiché, plus Géorisques tant qu'un calque est affiché ; chaîne construite par chaineAttribution.
@@ -312,9 +315,11 @@ function initialiser(donnees) {
     const adresse = adresseDeSession();
     if (adresse === null) {
       afficherMessage(textes.sansAdresse, false);
+      signaler('sans-adresse');
       return;
     }
     afficherMessage(textes.chargement, false);
+    signaler('lecture');
     const resultat = await geocoder(adresse, config);
     if (annule()) return;
     if (!resultat.ok) return echec(resultat.raison === 'hors-france' ? textes.horsFrance : textes.erreur);
@@ -352,13 +357,6 @@ function initialiser(donnees) {
   // « Mettre à jour » (diagnostic.js) : nouvelle adresse valide, la carte est détruite puis recréée.
   document.addEventListener('adresse:modifiee', () => demarrer());
   el('liste-calques').addEventListener('change', () => synchroniserCalques());
-  // Un changement de filtre réinitialise les cases (« Tous » : toutes ; un aléa : la sienne) et la carte suit.
-  document.addEventListener('diagnostic:filtre', (e) => {
-    if (!etatCarte.aleas) return;
-    const coches = cochesInitiales(etatCarte.aleas.proposes, calquesParDefaut(donnees.diagnostic.aleas, e.detail?.filtre ?? TOUS));
-    for (const case_ of cases()) case_.checked = coches.includes(case_.value);
-    synchroniserCalques();
-  });
   construireLegende();
   majLegende();
   demarrer();

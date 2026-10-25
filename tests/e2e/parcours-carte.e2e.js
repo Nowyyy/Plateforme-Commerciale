@@ -42,11 +42,11 @@ for (const largeur of [375, 1440]) {
     await page.waitForSelector('html[data-rendu="pret"]');
     await expect(page.getByRole('radio', { name: 'Inondations' })).toBeChecked();
     await expect(page.getByLabel('Adresse évaluée')).toHaveValue(ADRESSE);
-    // la carte s'affiche d'elle-même (filtre « Inondations » : fond et un seul calque)
+    // la carte s'affiche d'elle-même (pastille « Inondations » : elle ne change pas les calques, fond et trois calques)
     await carteAffichee(page);
-    await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(2);
+    await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(4);
     await calque(page, 'Zone inondable').uncheck();
-    await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(1);
+    await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(3);
     await expect.poll(() => externes.osm.length).toBeGreaterThan(0);
     // fiche d'un équipement
     await page.locator('#liste-equipements > li').first().getByRole('link', { name: /Voir la fiche/ }).click();

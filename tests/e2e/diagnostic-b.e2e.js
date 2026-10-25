@@ -1,9 +1,11 @@
 import { test, expect } from '@playwright/test';
+import { simuler } from './carte-reelle-simulation.js';
 
 const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 const diag = JSON.parse((await import('node:fs')).readFileSync('data/diagnostic.json', 'utf8'));
 
 async function ouvrir(page, largeur, session = { adresse: ADRESSE }) {
+  if (!page.__simule) page.__simule = await simuler(page); // services tiers simulés : inondation, feux de forêt, argiles moyennes
   await page.setViewportSize({ width: largeur, height: 900 });
   await page.addInitScript((valeurs) => {
     for (const [cle, valeur] of Object.entries(valeurs)) sessionStorage.setItem(cle, valeur);
@@ -36,13 +38,13 @@ test('équipements : « Tous » donne 3 cartes complètes ; « Inondations » de
   expect(n).toBeLessThanOrEqual(3);
   const titre = diag.aleas.find((a) => a.id === 'inondations').titre;
   for (const carte of await cartes(page).all()) await expect(carte).toContainText(`Neutralise : ${titre}`);
-  await expect(page.locator('#annonce-diagnostic')).toContainText('équipements recommandés');
+  await expect(page.locator('#annonce-diagnostic')).toContainText('équipements pour Inondations');
 });
 
-test('exposition : niveau en toutes lettres (indicatif), jauge de 4 segments décorative, repère sous le bon segment, niveau provisoire indépendant des pastilles', async ({ page }) => {
+test('exposition : niveau calculé en toutes lettres (indicatif), jauge de 4 segments décorative, repère sous le bon segment, indépendant des pastilles', async ({ page }) => {
   await ouvrir(page, 1440);
-  const niveau = Math.max(...diag.aleas.map((a) => a.niveau)); // lot 4e-A : copie provisoire du niveau fixe
-  for (const nom of ['Tous', ...diag.aleas.map((a) => a.court)]) {
+  const niveau = 2; // inondation et feux recensés = modéré, argiles moyennes = modéré
+  for (const nom of ['Tous', 'Inondations', 'Feux de forêt']) {
     await page.getByRole('radio', { name: nom, exact: true }).check({ force: true });
     await expect(page.locator('#exposition-niveau')).toHaveText(`Niveau d'exposition : ${diag.niveaux[niveau - 1]} (indicatif)`);
     const segments = page.locator('#jauge > li');

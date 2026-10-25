@@ -63,6 +63,7 @@
 .diag__pastilles {
   display: flex;
   flex-wrap: wrap;
+  align-content: flex-start;
   gap: var(--space-2);
 }
 
@@ -273,6 +274,49 @@ html[data-rendu="erreur"] .diag__comparer {
 }
 
 /* Exposition E2-5 */
+.exposition__calcul summary {
+  display: list-item;
+  list-style-position: inside;
+  padding-block: var(--space-3);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.exposition__calcul summary:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.exposition__calcul p {
+  margin-block: 0 var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.exposition [hidden],
+.equipements-etat [hidden] {
+  display: none;
+}
+
+.equipements-etat {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+
+.equipements-etat p {
+  margin: 0;
+}
+
+.equipements-etat p:empty {
+  display: none;
+}
+
+/* Une ligne de message est toujours réservée : « Chargement… » puis les cartes ne décalent rien */
+.equipements-etat {
+  min-block-size: 1.4rem;
+}
+
 .exposition__niveau {
   font-family: var(--font-heading);
   font-size: var(--diag-text-h3);
@@ -577,54 +621,72 @@ html[data-rendu="erreur"] .diag__legende {
 }
 
 .exposition {
-  min-block-size: 42.75rem;
+  min-block-size: 55.5rem;
 }
 
 @media (min-width: 375px) {
   .exposition {
-    min-block-size: 41.1rem;
+    min-block-size: 53.85rem;
   }
 }
 
 @media (min-width: 389px) {
   .exposition {
-    min-block-size: 39.7rem;
+    min-block-size: 50.65rem;
   }
 }
 
 @media (min-width: 414px) {
   .exposition {
-    min-block-size: 37.9rem;
+    min-block-size: 49.25rem;
   }
 }
 
 @media (min-width: 479px) {
   .exposition {
-    min-block-size: 35.1rem;
+    min-block-size: 46.45rem;
   }
 }
 
 @media (min-width: 520px) {
   .exposition {
-    min-block-size: 33.7rem;
+    min-block-size: 45.05rem;
+  }
+}
+
+@media (min-width: 699px) {
+  .exposition {
+    min-block-size: 43.25rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .exposition {
+    min-block-size: 41.85rem;
   }
 }
 
 @media (min-width: 850px) {
   .exposition {
-    min-block-size: 32.3rem;
+    min-block-size: 40.7rem;
   }
 }
 
 @media (min-width: 1024px) {
   .exposition {
-    min-block-size: 30.9rem;
+    min-block-size: 39.3rem;
   }
 }
 
 @media (min-width: 1200px) {
   .exposition {
-    min-block-size: 0rem;
+    min-block-size: 55.5rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .exposition {
+    min-block-size: 52.45rem;
   }
 }
 
@@ -632,19 +694,24 @@ html[data-rendu="erreur"] .diag__legende {
   min-block-size: 9.3rem;
 }
 
-@media (min-width: 389px) {
+@media (min-width: 479px) {
   .diag__pastilles {
     min-block-size: 6.05rem;
   }
 }
 
-@media (min-width: 699px) {
+@media (min-width: 850px) {
   .diag__pastilles {
     min-block-size: 2.8rem;
   }
 }
 
-/* Équipements : trois cartes de 20 rem (empilées, en deux colonnes, puis en une rangée), réservées avant le remplissage */
+/* Équipements : la zone garde en permanence la hauteur d'une rangée de cartes (20 rem), message, chargement ou résultat ;
+   avant le rendu, trois cartes de 20 rem (empilées, en deux colonnes, puis en une rangée) sont réservées */
+.equipements {
+  min-block-size: 20rem;
+}
+
 html:not([data-rendu]) .equipements {
   min-block-size: 62rem;
 }

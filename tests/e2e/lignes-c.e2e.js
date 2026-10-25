@@ -73,8 +73,10 @@ async function parcours(page, largeur) {
   await confirmation.getByRole('link', { name: 'Continuer mes achats' }).click();
   await page.waitForURL('**/diagnostic.html');
   await page.waitForSelector('html[data-rendu="pret"]');
-  // produit non complet : quantité 3
-  await ouvrirFiche(page, 'Bouclier de baie');
+  // produit non complet : quantité 3 (le bouclier de baie, aléa grêle et vents, n'est plus proposé par le diagnostic : fiche ouverte comme « Voir la fiche »)
+  await page.evaluate(() => sessionStorage.setItem('produit', 'bouclier-de-baie'));
+  await page.goto('/produit.html');
+  await page.waitForSelector('html[data-rendu="pret"]');
   const bouton = page.locator('[data-role="mode"]').getByRole('button', { name: 'Ajouter au panier' });
   for (let i = 0; i < 2; i += 1) await page.getByRole('button', { name: 'Augmenter la quantité : Bouclier de baie' }).click();
   await page.getByRole('radio', { name: /Matériel seul/ }).check({ force: true });

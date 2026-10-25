@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
+import { ADRESSE, simuler } from './carte-reelle-simulation.js';
 
 const produit = JSON.parse(readFileSync('data/produit.json', 'utf8'));
 const LARGEURS = [375, 768, 1440];
@@ -8,9 +9,12 @@ const sansDebordement = (page) => page.evaluate(() => document.documentElement.s
 const cochees = (page) => page.locator('.carte-produit input').evaluateAll((els) => els.filter((e) => e.checked).map((e) => e.value));
 
 async function ouvrirDiagnostic(page, largeur) {
+  if (!page.__simule) page.__simule = await simuler(page); // lot 4e-B : sans adresse, aucun équipement n'est proposé
   await page.setViewportSize({ width: largeur, height: 900 });
+  await page.addInitScript((a) => sessionStorage.setItem('adresse', a), ADRESSE);
   await page.goto('/diagnostic.html');
   await page.waitForSelector('html[data-rendu="pret"]');
+  await expect(page.locator('#liste-equipements > li').first()).toBeVisible();
   await page.evaluate(() => document.fonts.ready);
 }
 

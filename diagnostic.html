@@ -138,7 +138,13 @@
           <h2 id="titre-exposition" data-texte="diagnostic.textes.exposition.titre"></h2>
           <ol class="jauge" id="jauge" aria-hidden="true"></ol>
           <p class="exposition__niveau" id="exposition-niveau"></p>
+          <p class="diag__mention" id="exposition-inconnus" hidden></p>
           <p class="diag__mention" data-texte="diagnostic.textes.exposition.phrase"></p>
+          <p class="diag__mention" data-texte="diagnostic.textes.exposition.prudence"></p>
+          <details class="exposition__calcul">
+            <summary data-texte="diagnostic.textes.exposition.calcul.titre"></summary>
+            <div id="exposition-calcul"></div>
+          </details>
           <fieldset class="calques">
             <legend data-texte="diagnostic.carteReelle.textes.aleas.titre"></legend>
             <p class="diag__mention" id="aleas-message" data-texte="diagnostic.carteReelle.textes.aleas.attente"></p>
@@ -151,6 +157,7 @@
             <p class="diag__mention" id="aleas-source" data-texte="diagnostic.carteReelle.textes.aleas.source"></p>
             <p class="visuellement-cache" id="aleas-annonce" role="status"></p>
           </fieldset>
+          <p class="diag__mention" id="exposition-non-evalues"></p>
           <p class="diag__lien"><a class="lien-externe" data-lien-externe="georisques" target="_blank" rel="noopener noreferrer"><span data-texte="diagnostic.textes.carte.lienGeorisques"></span> <span class="visuellement-cache" data-texte="diagnostic.textes.carte.nouvelOnglet"></span></a></p>
         </div>
       </section>
@@ -161,10 +168,15 @@
           <legend data-texte="diagnostic.textes.legendeAlea"></legend>
           <div class="diag__pastilles" id="pastilles-alea">
             <template id="modele-pastille">
-              <label class="pastille-choix"><input type="radio" name="alea"><span></span></label>
+              <label class="pastille-choix"><input type="radio"><span></span></label>
             </template>
           </div>
         </fieldset>
+        <div class="equipements-etat">
+          <p class="diag__mention" id="equipements-message"></p>
+          <p class="diag__mention" id="equipements-ligne"></p>
+          <button type="button" class="bouton bouton--secondaire" id="equipements-explorer" data-texte="diagnostic.textes.equipements.explorer" hidden></button>
+        </div>
         <ul class="equipements" id="liste-equipements" aria-busy="true">
           <template id="modele-equipement">
             <li class="equipement carte">

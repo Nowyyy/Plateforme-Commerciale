@@ -25,7 +25,7 @@ const boite = async (page, role) => {
 };
 const calques = (page) => page.getByRole('group', { name: 'Aléas recensés à cette adresse' });
 
-test('calques : trois cases (chaleur sans case), état initial selon le filtre, réinitialisation au changement de filtre', async ({ page }) => {
+test('calques : trois cases (chaleur sans case), toutes cochées au départ, indépendantes des pastilles', async ({ page }) => {
   await ouvrir(page, 1440);
   await expect(calques(page).getByRole('checkbox')).toHaveCount(3);
   await expect(calques(page).getByRole('checkbox', { name: 'Chaleur extrême' })).toHaveCount(0);
@@ -37,17 +37,16 @@ test('calques : trois cases (chaleur sans case), état initial selon le filtre, 
   await inondable.check();
   await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(4);
   await page.getByRole('radio', { name: 'Feux de forêt' }).check({ force: true });
-  await expect(calques(page).getByRole('checkbox', { checked: true })).toHaveCount(1);
-  await expect(calques(page).getByRole('checkbox', { name: 'Feux de forêt' })).toBeChecked();
+  await expect(calques(page).getByRole('checkbox', { checked: true })).toHaveCount(3);
   await page.getByRole('radio', { name: 'Tous' }).check({ force: true });
   await expect(calques(page).getByRole('checkbox', { checked: true })).toHaveCount(3);
 });
 
-test('calques : « Inondations » au départ, un seul calque coché et une couche de calque', async ({ page }) => {
+test('aléa de l\'accueil « Inondations » : pastille présélectionnée, les trois calques restent cochés', async ({ page }) => {
   await ouvrir(page, 375, { adresse: ADRESSE, alea: 'inondations' });
-  await expect(calques(page).getByRole('checkbox', { checked: true })).toHaveCount(1);
-  await expect(calques(page).getByRole('checkbox', { name: 'Zone inondable' })).toBeChecked();
-  await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(2);
+  await expect(page.getByRole('radio', { name: 'Inondations' })).toBeChecked();
+  await expect(calques(page).getByRole('checkbox', { checked: true })).toHaveCount(3);
+  await expect(page.locator('#carte-reelle .leaflet-layer')).toHaveCount(4);
 });
 
 test('lien Géorisques : adresse déclarée, nouvel onglet, noopener noreferrer, texte masqué (non suivi)', async ({ page }) => {

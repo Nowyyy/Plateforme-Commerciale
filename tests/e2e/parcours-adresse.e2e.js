@@ -58,7 +58,7 @@ for (const largeur of [375, 1440]) {
     await page.waitForSelector('html[data-rendu="pret"]');
     await expect(page.getByRole('radio', { name: 'Inondations' })).toBeChecked();
     await expect(page.getByLabel('Adresse évaluée')).toHaveValue(SUGGESTIONS[0][0]);
-    await expect(groupe.getByRole('checkbox', { checked: true })).toHaveCount(1);
+    await expect(groupe.getByRole('checkbox', { checked: true })).toHaveCount(2); // les pastilles ne changent pas les calques
     await expect(groupe.getByRole('checkbox', { name: 'Zone inondable' })).toBeChecked();
     await page.locator('#liste-equipements > li').first().getByRole('link', { name: /Voir la fiche/ }).click();
     await page.waitForURL('**/produit.html');
