@@ -22,3 +22,8 @@ Page d'outil, exception aux règles des pages Hi-Fi : `assets/outils/faisabilite
 - Vérifié par tests simulés : construction des URL, Web Mercator, analyse des réponses, classement des états, verdicts, rapport, séquence des huit requêtes.
 - Non vérifié : comportement réel des services (CORS, quotas, noms de couches), chemin exact de l'API Géorisques (à confirmer dans la documentation officielle), effet des bloqueurs. Un `TypeError` ne distingue pas réseau, CORS et extension ; un 404 lisible prouve seulement que la réponse est lisible par la page.
 - La session de l'agent n'atteint pas ces services (proxy sortant, réponse 403 à l'essai de l'étape 0) : seuls les navigateurs du propriétaire mesurent.
+
+## Étape 2 : catalogue des couches (partie C)
+- `assets/outils/couches.html` (+ `couches.js` DOM, `couches-logique.js` pur) ; détail et bilan : `Docs/ref/faisabilite-couches.md`. Lien depuis `faisabilite.html`.
+- Hôte Géorisques toujours avec `www` (le WMS sans `www` est bloqué dans les rapports du propriétaire).
+- Les couches se choisissent par la vue (galerie de tuiles et jugement du propriétaire), pas par un motif ; les familles ne servent qu'à l'affichage.

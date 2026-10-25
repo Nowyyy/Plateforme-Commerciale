@@ -235,3 +235,167 @@
     max-inline-size: 9.5rem;
   }
 }
+
+/* Page « catalogue des couches » (lot 4b-C) */
+.famille {
+  margin-block-start: var(--space-3);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.famille > summary {
+  min-block-size: var(--touch-min);
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.famille > :not(summary) {
+  margin-inline: var(--space-4);
+}
+
+.famille > :last-child {
+  margin-block-end: var(--space-4);
+}
+
+.couches {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.couches li {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.couche {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  min-block-size: var(--touch-min);
+  padding: var(--space-3) 0;
+  cursor: pointer;
+}
+
+.couche input {
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  margin-block-start: var(--space-1);
+}
+
+.couche__texte {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+  font-size: var(--text-sm);
+}
+
+.couche__resume {
+  color: var(--color-text-secondary);
+}
+
+.galerie {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  gap: var(--space-4);
+}
+
+.carte {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  min-inline-size: 0;
+  padding: var(--space-4);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow-wrap: anywhere;
+}
+
+.carte h3 {
+  margin: 0;
+  font-size: var(--text-base);
+}
+
+.carte p {
+  margin: 0;
+}
+
+.carte__info {
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+}
+
+.tuile {
+  position: relative;
+  inline-size: 256px;
+  max-inline-size: 100%;
+  aspect-ratio: 1;
+  background: var(--color-pastille);
+  border: 1px solid var(--color-border-fort);
+}
+
+.tuile__img {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: contain;
+}
+
+.jugement {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.jugement legend {
+  padding-inline: var(--space-2);
+  font-weight: 600;
+}
+
+.jugement__choix {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  min-block-size: var(--touch-min);
+  cursor: pointer;
+}
+
+.jugement__choix input {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+}
+
+.api {
+  margin-block-start: var(--space-4);
+}
+
+.api h3 {
+  margin-block-end: var(--space-2);
+  font-size: var(--text-base);
+}
+
+.lignes {
+  margin: var(--space-2) 0 0;
+  padding: var(--space-3);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-data);
+  font-size: var(--text-sm);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.api .etat,
+.carte .etat,
+.outil__progression .etat {
+  align-items: flex-start;
+  white-space: normal;
+}

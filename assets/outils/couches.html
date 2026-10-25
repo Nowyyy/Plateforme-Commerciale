@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <title>Catalogue des couches Géorisques</title>
+  <link rel="stylesheet" href="../../css/tokens.css">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="faisabilite.css">
+</head>
+<body>
+  <noscript><p class="outil__noscript">Cette page nécessite JavaScript.</p></noscript>
+  <main class="outil" id="contenu" hidden>
+    <h1>Catalogue des couches Géorisques</h1>
+    <p class="outil__bloc">L'IGN data.geopf.fr, Géorisques www.georisques.gouv.fr et OpenStreetMap tile.openstreetmap.org voient votre adresse IP. Les lieux testés sont des villes : Paris, Toulouse et Aix-en-Provence. Rien n'est enregistré.</p>
+    <p class="outil__bloc">Si vous utilisez un bloqueur de publicités ou des extensions de confidentialité, ouvrez cette page dans une fenêtre privée sans extension : un blocage fausse les durées et les états.</p>
+    <p><button type="button" class="bouton" id="lire-catalogue">Lire le catalogue des couches</button></p>
+    <p class="outil__progression" id="etat-catalogue" role="status"></p>
+
+    <section aria-labelledby="titre-catalogue" id="catalogue" hidden>
+      <h2 id="titre-catalogue" tabindex="-1">Catalogue par familles</h2>
+      <p class="aide">Cochez au plus six couches. Une couche peut apparaître dans plusieurs familles.</p>
+      <p class="outil__progression" id="etat-selection" role="status"></p>
+      <div id="familles"></div>
+      <details class="famille" id="tout-catalogue">
+        <summary id="titre-tout">Tout le catalogue</summary>
+        <label class="etiquette" for="recherche">Rechercher dans tout le catalogue</label>
+        <input type="search" id="recherche" class="champ" autocomplete="off" spellcheck="false" maxlength="80">
+        <p class="outil__progression" id="etat-recherche" role="status"></p>
+        <ul class="couches" id="liste-tout"></ul>
+      </details>
+      <div class="actions" id="actions-galerie"></div>
+    </section>
+
+    <section aria-labelledby="titre-galerie" id="galerie-zone" hidden>
+      <h2 id="titre-galerie" tabindex="-1">Tuiles d'essai</h2>
+      <p class="outil__progression" id="etat-galerie" role="status"></p>
+      <div class="galerie" id="galerie"></div>
+    </section>
+
+    <section aria-labelledby="titre-api">
+      <h2 id="titre-api">API Géorisques</h2>
+      <p class="aide">Deux lectures, l'une après l'autre : risques de la commune à Paris et retrait-gonflement des argiles à Toulouse. Le second chemin n'est pas vérifié.</p>
+      <div class="actions" id="actions-api"></div>
+      <p class="outil__progression" id="etat-api" role="status"></p>
+      <div id="resultats-api"></div>
+    </section>
+
+    <section aria-labelledby="titre-rapport">
+      <h2 id="titre-rapport">Rapport à copier</h2>
+      <p>Copiez ce rapport et collez-le dans la conversation de cadrage.</p>
+      <div class="actions" id="actions-rapport"></div>
+      <label class="etiquette" for="texte-rapport">Rapport en texte brut</label>
+      <textarea id="texte-rapport" class="rapport" readonly rows="18"></textarea>
+      <p class="outil__progression" id="copie-statut" role="status"></p>
+    </section>
+  </main>
+  <script type="module" src="couches.js"></script>
+</body>
+</html>
