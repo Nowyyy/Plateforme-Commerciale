@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { resoudre } from '../assets/js/rendu.js';
 import { RAISONS } from '../assets/js/pro-logique.js';
+import { lireConventions } from './outils/conventions.js';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const pro = JSON.parse(lire('data/pro.json'));
@@ -123,7 +124,7 @@ describe('lot 8b-A : workflow, CLAUDE.md et conventions', () => {
 
   it('CLAUDE.md fait moins de 9 000 caractères et conventions.md contient la section « Formulaires »', () => {
     expect([...lire('CLAUDE.md')].length).toBeLessThan(9000);
-    expect(lire('Docs/ref/conventions.md')).toMatch(/^## Formulaires/m);
+    expect(lireConventions()).toMatch(/^## Formulaires/m);
     expect(lire('CLAUDE.md')).toContain('Formulaires simulés');
   });
 });

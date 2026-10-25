@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { resoudre } from '../assets/js/rendu.js';
+import { lireConventions } from './outils/conventions.js';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const site = JSON.parse(lire('data/site.json'));
@@ -162,12 +163,12 @@ describe('lot 8d-A : workflow, CSS, modules et CLAUDE.md', () => {
     expect([...texte].length).toBeLessThan(9000);
     for (const mot of ['sav-acces.html', 'sav.html', 'demandes.html', 'acces-sav', 'resoudreContexte', 'sav.css', 'Envoyer ma demande', 'Continuer']) expect(texte, mot).toContain(mot);
     expect(texte).toContain('`CMD-` suivi de 3 à 8 chiffres');
-    const conventions = lire('Docs/ref/conventions.md');
+    const conventions = lireConventions();
     expect(conventions).toMatch(/^## SAV/m);
-    expect(conventions.split('\n').length).toBeLessThanOrEqual(190);
+    expect(lire('Docs/ref/conventions.md').split('\n').length).toBeLessThanOrEqual(190);
   });
   it('apercu.txt vise l\'accueil en Hi-Fi et Docs/apercus.txt décrit le lot 8d', () => {
-    expect([['index.html', 'type: hifi', 'titre: Comparateur de solutions'], ['index.html', 'type: hifi', 'titre: Carte réelle avec consentement'], ['index.html', 'type: hifi', "titre: Carte réelle seule, saisie assistée, calques selon l'adresse"], ['index.html', 'type: hifi', 'titre: Diagnostic : mise en page, niveau calculé, adresse stricte']]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
+    expect([['index.html', 'type: hifi', 'titre: Comparateur de solutions'], ['index.html', 'type: hifi', 'titre: Carte réelle avec consentement'], ['index.html', 'type: hifi', "titre: Carte réelle seule, saisie assistée, calques selon l'adresse"], ['index.html', 'type: hifi', 'titre: Diagnostic : mise en page, niveau calculé, adresse stricte'], ['index.html', 'type: hifi', 'titre: Qualité technique : mesures et corrections']]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
     expect(lire('Docs/apercus.txt')).toMatch(/^lot-8d\|.{10,}$/m);
   });
   it('les tests adaptés des lots précédents attendent les pages Hi-Fi du SAV', () => {

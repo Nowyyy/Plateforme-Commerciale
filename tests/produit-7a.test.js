@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { resoudre } from '../assets/js/rendu.js';
+import { lireConventions } from './outils/conventions.js';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const produit = JSON.parse(lire('data/produit.json'));
@@ -14,8 +15,8 @@ describe('lot 7-A : CLAUDE.md et conventions', () => {
   it('CLAUDE.md fait au plus 9 000 caractères ; conventions.md existe, au plus 190 lignes, une rubrique par sujet', () => {
     expect(lire('CLAUDE.md').length).toBeLessThanOrEqual(9000);
     expect(existsSync('Docs/ref/conventions.md')).toBe(true);
-    const conventions = lire('Docs/ref/conventions.md');
-    expect(conventions.split('\n').length).toBeLessThanOrEqual(190);
+    const conventions = lireConventions();
+    expect(lire('Docs/ref/conventions.md').split('\n').length).toBeLessThanOrEqual(190);
     const titres = [...conventions.matchAll(/^## (.+)$/gm)].map((m) => m[1].toLowerCase());
     for (const sujet of ['diagnostic', 'fiche produit', 'cotes', 'liens externes', 'relief', 'listes et gabarits', 'pied et en-tête']) {
       expect(titres.some((t) => t.includes(sujet)), sujet).toBe(true);
