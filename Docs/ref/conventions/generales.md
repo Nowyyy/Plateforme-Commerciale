@@ -33,7 +33,7 @@ Règles transversales : en-tête et pied, fond et relief, listes et gabarits, li
 
 ## Tests et règles transversales
 - Assertions de couleur dans les tests : `toHaveCSS('background-color', …)` (avec nouvelle tentative), jamais une lecture immédiate de `getComputedStyle` juste après un changement d'état.
-- Tests de clics : `emulateMedia({ reducedMotion: 'reduce' })` (défilement doux de `accueil.css`).
+- Tests de clics : `emulateMedia({ reducedMotion: 'reduce' })` (défilement doux de `commun.css`).
 - Toute donnée lue en session est revalidée avant affichage. Modifier prix ou cotes de `produit.json` change les totaux du panier et casse les commandes de `compte.json` (un test le signale) ; les pages du compte ne chargent que `site.json` et `compte.json`.
 - Aucun `id` dans les gabarits clonés (les listes de lignes dupliquent le balisage) ; les zones d'ajout de la fiche sont écrites deux fois dans `produit.html` : classes seulement, sauf `cotes-ajouter` et son aide.
 

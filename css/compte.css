@@ -151,6 +151,24 @@ html[data-rendu="erreur"] .compte__bloc {
   display: none;
 }
 
+/* Connexion : le formulaire reste masqué jusqu'au branchement de connexion.js, qui peut arriver après le rendu (réseau lent : CLS de 0,35).
+   La carte réserve la hauteur du formulaire, mesurée de 320 à 1440 px (retours à la ligne de la mention). */
+[data-role="connexion"] .compte__carte:has(> .formulaire[hidden]) {
+  min-block-size: 30.6rem;
+}
+
+@media (min-width: 350px) {
+  [data-role="connexion"] .compte__carte:has(> .formulaire[hidden]) {
+    min-block-size: 29.2rem;
+  }
+}
+
+@media (min-width: 470px) {
+  [data-role="connexion"] .compte__carte:has(> .formulaire[hidden]) {
+    min-block-size: 27.8rem;
+  }
+}
+
 .compte__connecte {
   margin-block-start: 0;
   font-family: var(--font-heading);

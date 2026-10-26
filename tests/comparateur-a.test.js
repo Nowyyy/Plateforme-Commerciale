@@ -314,7 +314,7 @@ describe('lot 9-A : comparateur.html', () => {
   });
   it('feuilles de style : celles du diagnostic plus comparateur.css ; deux requêtes de données au plus (site et produit)', () => {
     const feuilles = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)">/g)].map((m) => m[1]);
-    expect(feuilles).toEqual(['css/tokens.css', 'css/base.css', 'css/composants.css', 'css/accueil.css', 'css/diagnostic.css', 'css/comparateur.css']);
+    expect(feuilles).toEqual(['css/tokens.css', 'css/base.css', 'css/composants.css', 'css/commun.css', 'css/diagnostic.css', 'css/comparateur.css']);
     for (const f of feuilles) expect(existsSync(f), f).toBe(true);
     expect(html).toContain('data-donnees="produit"');
   });

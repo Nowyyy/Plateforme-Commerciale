@@ -30,7 +30,6 @@ export const RAISONSSAV = {
 export const CHAMPS_ACCES = Object.keys(RAISONSACCES);
 export const CHAMPS_SAV = Object.keys(RAISONSSAV);
 export const ETATS = ['compte', 'sans-compte', 'achat-manquant', 'acces-requis'];
-export const ETAPES = ['terminee', 'actuelle', 'a-venir'];
 
 const DEFAUTS = {
   numero: { min: 3, max: 8 },

@@ -115,7 +115,7 @@ test('chaque règle par l\'interface : SIRET, e-mail, téléphone, description, 
 
 test('clavier : Entrée dans un champ valide, Tab suit l\'ordre du formulaire, le bouton répond à Entrée et à Espace', async ({ page }) => {
   await ouvrir(page);
-  await page.locator('#societe').focus();
+  await focaliser(page.locator('#societe')); // le premier focus() juste après le chargement peut être perdu (instabilité relevée au lot 10a)
   await page.keyboard.press('Enter');
   await expect(resume(page)).toBeVisible();
   await expect(resume(page)).toBeFocused();

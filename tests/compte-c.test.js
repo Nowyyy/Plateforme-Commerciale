@@ -93,10 +93,11 @@ describe('lot 8c-C : documents, liens et styles', () => {
     expect(lire('assets/js/compte-session.js')).toMatch(/CLE_COMPTE = 'compte'/);
     expect(lire('assets/js/compte-session.js')).toMatch(/CLE_ACHAT = 'achat'/);
   });
-  it('le préchargement de police ajouté à diagnostic.html ne change ni l\'en-tête, ni le pied, ni le décor', () => {
+  it('diagnostic.html (sans préchargement d\'Inter 600, retiré au lot 10a) garde l\'en-tête, le pied et le décor de l\'accueil', () => {
     const diagnostic = lire('diagnostic.html');
     const index = lire('index.html');
-    expect(diagnostic.match(/<link rel="preload" href="assets\/fonts\/inter-latin-600-normal\.woff2" as="font" type="font\/woff2" crossorigin>/g)).toHaveLength(1);
+    // lot 10a : le préchargement d'Inter 600 (lot 8c) n'apportait aucun gain mesuré (matrice Lighthouse, 5 passes) : retiré
+    expect(diagnostic).not.toContain('inter-latin-600-normal.woff2');
     expect(sansCode(bloc(diagnostic, '<header', '</header>'))).toBe(sansCode(bloc(index, '<header', '</header>')));
     expect(sansCode(bloc(diagnostic, '<footer', '</footer>'))).toBe(sansCode(bloc(index, '<footer', '</footer>')));
     expect(bloc(diagnostic, '<div class="relief"', '</svg>\n  </div>')).toBe(bloc(index, '<div class="relief"', '</svg>\n  </div>'));

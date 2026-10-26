@@ -1,0 +1,961 @@
+/* Règles communes à plusieurs pages (extraites de accueil.css au lot 10a) : bandeau, en-tête, navigation, pied, champs d'adresse, cartes, pastilles, étapes, relief.
+   Chargé après composants.css par les 14 pages Hi-Fi ; accueil.css ne garde que ce qui est propre à l'accueil. */
+/* Accueil Hi-Fi, partie haute. Mobile d'abord ; ruptures 768 et 1200 px. */
+
+/* Réserve de hauteur : les textes remplis par JavaScript ne doivent pas déplacer la page. */
+:where([data-texte]:empty) {
+  min-block-size: 1lh;
+}
+
+
+
+/* Bandeau démonstrateur (au-dessus de l'en-tête) */
+.bandeau-demo {
+  background: var(--color-green);
+  color: var(--color-on-navy);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  text-align: center;
+}
+
+
+
+.bandeau-demo p {
+  margin: 0;
+  padding-block: var(--space-2);
+  min-block-size: calc(1lh + var(--space-4));
+}
+
+
+
+/* En-tête E1-1 */
+.entete {
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+}
+
+
+
+.entete__ligne {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-1);
+  min-block-size: 4rem;
+  padding-block: var(--space-2);
+}
+
+
+
+.marque {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--touch-min);
+  margin-inline-end: auto;
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-size: 0.9375rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+
+
+.marque {
+  font-size: 0.875rem;
+}
+
+
+
+@media (min-width: 380px) {
+  .marque {
+    font-size: 0.9375rem;
+  }
+}
+
+
+
+.marque__pictogramme {
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+}
+
+
+
+.marque__toit {
+  fill: none;
+  stroke: var(--color-on-navy);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+
+.marque__goutte {
+  fill: var(--color-on-navy);
+}
+
+
+
+.lien-entete {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--touch-min);
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-md);
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+
+
+.lien-entete:hover {
+  background: var(--color-navy-hover);
+}
+
+
+
+.pictogramme {
+  flex: none;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+
+.entete :focus-visible {
+  outline-color: var(--color-focus-on-navy);
+}
+
+
+
+.entete__menu {
+  padding-inline: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+
+
+/* Panneau de navigation : replié (bouton Menu) jusqu'à 1199 px, en ligne dès 1200 px : cinq libellés ne tiennent pas en ligne à 768 px */
+.nav {
+  flex-basis: 100%;
+  display: none;
+}
+
+
+
+.nav.est-ouvert {
+  display: block;
+  padding-block-end: var(--space-3);
+}
+
+
+
+.nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.nav li {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  border-top: 1px solid var(--color-border-on-navy);
+  color: var(--color-on-navy-muted);
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+
+
+.nav__lien {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-block-size: var(--touch-min);
+  padding-inline: var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-on-navy);
+  text-decoration: none;
+}
+
+
+
+.nav__lien:hover {
+  background: var(--color-navy-hover);
+}
+
+
+
+.nav .nav__panier {
+  display: none;
+}
+
+
+
+@media (min-width: 768px) {
+  .marque {
+    font-size: var(--text-lg);
+  }
+
+  .marque__pictogramme {
+    inline-size: 2rem;
+    block-size: 2rem;
+  }
+
+  .lien-entete {
+    padding-inline: var(--space-3);
+  }
+}
+
+
+
+@media (min-width: 1200px) {
+  .entete__menu,
+  .entete__panier-barre {
+    display: none;
+  }
+
+  .nav {
+    display: block;
+    flex-basis: auto;
+    padding: 0;
+  }
+
+  .nav ul {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .nav li {
+    border-top: 0;
+  }
+
+  .nav .nav__panier {
+    display: flex;
+    padding: 0;
+  }
+}
+
+
+
+/* Avis E1-9 : juste au-dessus du pied, filet fin en haut ; fond de page unique (sections transparentes) */
+.avis {
+  border-top: 1px solid var(--color-border);
+}
+
+
+
+.illustration {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  aspect-ratio: 4 / 3;
+}
+
+
+
+.recherche {
+  max-inline-size: 40rem;
+}
+
+
+
+.recherche__erreur {
+  margin: var(--space-3) 0 0;
+  padding-inline-start: var(--space-3);
+  border-inline-start: 4px solid var(--color-navy);
+  font-weight: 600;
+}
+
+
+
+/* Sans réserve de hauteur : le message n'occupe de la place qu'à son affichage, déclenché par l'utilisateur (hors CLS) */
+.recherche__erreur:empty {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+
+
+.recherche__erreur:empty::before {
+  content: none;
+}
+
+
+
+.recherche__erreur::before {
+  content: "!" / "";
+  display: inline-block;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  margin-inline-end: var(--space-2);
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  line-height: 1.25rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+
+
+.champ[aria-invalid="true"] {
+  border-color: var(--color-navy);
+  box-shadow: 0 0 0 2px var(--color-navy);
+}
+
+
+
+/* Bouton de validation de l'adresse inactif (`aria-disabled`, jamais `disabled`) : contour marine, fond neutre, texte atténué, jamais d'ambre */
+.recherche .bouton[aria-disabled="true"],
+.diag__ligne .bouton[aria-disabled="true"] {
+  background: var(--color-card);
+  border-color: var(--color-navy);
+  color: var(--color-text-secondary);
+  cursor: not-allowed;
+}
+
+
+
+.recherche .bouton[aria-disabled="true"]:hover,
+.diag__ligne .bouton[aria-disabled="true"]:hover {
+  background: var(--color-card);
+}
+
+
+
+/* Pied de page E1-10 : fond marine, texte clair ; colonnes pilotées par data/site.json (clé pied) */
+.pied {
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+  font-size: var(--text-sm);
+}
+
+
+
+.pied__grille {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: minmax(0, 1fr);
+  padding-block: var(--space-7) var(--space-6);
+}
+
+
+
+.pied__colonne {
+  min-inline-size: 0;
+}
+
+
+
+.pied__titre {
+  margin-block-end: var(--space-2);
+  color: var(--color-on-navy);
+  font-size: var(--text-base);
+  min-block-size: 1lh;
+}
+
+
+
+.pied__liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.pied__lien {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--touch-min);
+  color: var(--color-on-navy);
+  font-size: var(--text-base);
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+
+
+.pied__lien:hover,
+.pied__lien:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+
+
+.pied :focus-visible {
+  outline: 3px solid var(--color-focus-on-navy);
+  outline-offset: 2px;
+}
+
+
+
+/* entrée sans lien : texte simple, plus discret */
+span.pied__lien {
+  color: var(--color-on-navy-muted);
+}
+
+
+
+.pied__nom {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-weight: 800;
+  min-block-size: 1lh;
+}
+
+
+
+.pied__presentation {
+  max-inline-size: 28rem;
+  margin: 0;
+  color: var(--color-on-navy-muted);
+  font-size: var(--text-base);
+  min-block-size: 3lh;
+}
+
+
+
+.pied__bas {
+  margin: 0;
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--color-border-on-navy);
+  color: var(--color-on-navy-muted);
+  min-block-size: calc(1lh + var(--space-5));
+}
+
+
+
+.pied__grille[aria-busy="true"] {
+  min-block-size: 38.95rem;
+}
+
+
+
+@media (min-width: 768px) {
+  .pied__grille {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pied__marque {
+    grid-column: 1 / -1;
+  }
+
+  .pied__grille[aria-busy="true"] {
+    min-block-size: 27rem;
+  }
+}
+
+
+
+@media (min-width: 1200px) {
+  .pied__grille {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-7);
+  }
+
+  .pied__marque {
+    grid-column: auto;
+  }
+
+  .pied__grille[aria-busy="true"] {
+    min-block-size: 17.7rem;
+  }
+}
+
+
+
+/* Blocs E1-4 à E1-6 (E1-6 : mise en forme finale à la partie C) */
+.sprite {
+  position: absolute;
+  inline-size: 0;
+  block-size: 0;
+  overflow: hidden;
+}
+
+
+
+.visuellement-cache {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+
+
+.bloc {
+  padding-block: var(--space-7);
+  scroll-margin-top: var(--space-4);
+}
+
+
+
+.bloc h2 {
+  font-size: var(--text-h2);
+  text-wrap: balance;
+}
+
+
+
+.bloc:focus {
+  outline: none;
+}
+
+
+
+.bloc:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: -3px;
+}
+
+
+
+.cartes,
+.etapes,
+.carte-bloc__familles {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+/* Cartes E1-4 et E1-5 : le nombre de cartes n'est pas figé, la grille passe à la ligne */
+.cartes {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+
+
+.icone {
+  inline-size: 3rem;
+  block-size: 3rem;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+
+/* Comment ça marche E1-6 : liste ordonnée, numéros ronds (décoratifs), filet de liaison */
+.etapes {
+  margin-block-start: var(--space-5);
+  counter-reset: etape;
+}
+
+
+
+.etape {
+  position: relative;
+  min-inline-size: 0;
+  padding-block-end: var(--space-6);
+  padding-inline-start: 3.5rem;
+  counter-increment: etape;
+}
+
+
+
+.etape:last-of-type {
+  padding-block-end: 0;
+}
+
+
+
+.etape__numero {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  display: grid;
+  place-items: center;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-navy);
+  color: var(--color-on-navy);
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+  line-height: 1;
+}
+
+
+
+.etape__numero::before {
+  content: counter(etape) / "";
+}
+
+
+
+.etape:not(:last-of-type)::after {
+  content: "";
+  position: absolute;
+  inset-block: 2.75rem calc(0.25rem - var(--space-1));
+  inset-inline-start: calc(1.25rem - 1px);
+  inline-size: 2px;
+  background: var(--color-border-fort);
+}
+
+
+
+.etape h3 {
+  margin-block: var(--space-2) var(--space-2);
+  font-size: var(--text-h3);
+}
+
+
+
+.etape p {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+
+
+/* Réserve de hauteur avant remplissage (mesurée) */
+.etapes[aria-busy="true"] {
+  min-block-size: 27.3rem;
+}
+
+
+
+@media (min-width: 414px) {
+  .etapes[aria-busy="true"] {
+    min-block-size: 24.1rem;
+  }
+}
+
+
+
+@media (min-width: 600px) {
+  .etapes[aria-busy="true"] {
+    min-block-size: 21rem;
+  }
+}
+
+
+
+@media (min-width: 768px) {
+  .etapes[aria-busy="true"] {
+    min-block-size: 17.8rem;
+  }
+}
+
+
+
+@media (min-width: 1200px) {
+  .etapes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-6);
+  }
+
+  .etapes[aria-busy="true"] {
+    min-block-size: 8.7rem;
+  }
+
+  .etape {
+    padding: 3.5rem 0 0;
+  }
+
+  .etape:last-of-type {
+    padding: 3.5rem 0 0;
+  }
+
+  .etape:not(:last-of-type)::after {
+    inset-block: 1.25rem auto;
+    inset-inline: 3rem calc(0.5rem - var(--space-6));
+    inline-size: auto;
+    block-size: 2px;
+  }
+
+  .etape h3 {
+    margin-block-start: 0;
+  }
+}
+
+
+
+/* Réassurance E1-7 : pastilles neutres ; le nombre n'est pas figé, la liste passe à la ligne (2 par rangée en mobile, 5 dès 1200 px) */
+.pastilles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: var(--space-5) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.pastille {
+  display: flex;
+  flex: 0 1 calc((100% - var(--space-3)) / 2);
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--touch-min);
+  min-inline-size: 0;
+  padding: var(--space-3);
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+
+
+.pastille__icone {
+  flex: none;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  color: var(--color-green);
+}
+
+
+
+.reassurance .pastilles[aria-busy="true"] {
+  min-block-size: 17.4rem;
+}
+
+
+
+@media (min-width: 480px) {
+  .reassurance .pastilles[aria-busy="true"] {
+    min-block-size: 13.7rem;
+  }
+}
+
+
+
+@media (min-width: 600px) {
+  .reassurance .pastilles[aria-busy="true"] {
+    min-block-size: 10.9rem;
+  }
+}
+
+
+
+@media (min-width: 768px) {
+  .pastille {
+    flex-basis: calc((100% - 2 * var(--space-3)) / 3);
+  }
+
+  .reassurance .pastilles[aria-busy="true"] {
+    min-block-size: 8.9rem;
+  }
+}
+
+
+
+@media (min-width: 1000px) {
+  .reassurance .pastilles[aria-busy="true"] {
+    min-block-size: 7rem;
+  }
+}
+
+
+
+@media (min-width: 1200px) {
+  .pastilles {
+    gap: var(--space-4);
+  }
+
+  .pastille {
+    flex-basis: calc((100% - 4 * var(--space-4)) / 5);
+  }
+
+  .reassurance .pastilles[aria-busy="true"] {
+    min-block-size: 4.05rem;
+  }
+}
+
+
+
+.chiffres {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: minmax(0, 1fr);
+  margin: 0;
+  min-inline-size: 0;
+}
+
+
+
+.chiffres[aria-busy="true"] {
+  min-block-size: 20.45rem;
+}
+
+
+
+@media (min-width: 768px) {
+  .chiffres {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+
+  .chiffres[aria-busy="true"] {
+    min-block-size: 6.3rem;
+  }
+}
+
+
+
+@media (min-width: 1200px) {
+
+  .chiffres {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .chiffres[aria-busy="true"] {
+    min-block-size: 20.45rem;
+  }
+}
+
+
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+
+
+/* Relief décoratif : courbes de niveau en SVG en ligne, derrière tout le contenu (jamais de texte ni d'interaction) */
+.relief {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  color: var(--color-relief);
+  pointer-events: none;
+}
+
+
+
+.relief__groupe {
+  position: absolute;
+  display: block;
+  block-size: auto;
+  aspect-ratio: 1.2667;
+  overflow: visible;
+}
+
+
+
+.relief__groupe--1 {
+  inset-block-start: 38%;
+  inset-inline-end: 4%;
+  inline-size: 10rem;
+  opacity: var(--opacite-relief-mobile);
+}
+
+
+
+.relief__groupe--2 {
+  display: none;
+  inset-block-start: 70%;
+  inset-inline-start: 3%;
+  inline-size: clamp(12.5rem, 22vw, 20rem);
+  aspect-ratio: 1;
+}
+
+
+
+@media (min-width: 768px) {
+  .relief__groupe--1 {
+    inline-size: clamp(15rem, 26vw, 23.75rem);
+    opacity: 1;
+  }
+
+  .relief__groupe--2 {
+    display: block;
+  }
+}
+
+
+
+/* Positions ajustées par page (pourcentages de la hauteur de la page) : à 375 et 768 px, aucun bloc de texte hors carte blanche ne
+   chevauche le tracé visible (mesure : tests/outils/relief.mjs, test relief du lot 10a). Décor, couleur et opacité inchangés. */
+@media (max-width: 767.98px) {
+  body:has(.compte--achat) .relief__groupe--1 {
+    inset-block-start: 51%;
+  }
+}
+
+
+
+@media (min-width: 768px) {
+  body:has([data-role="hero"]) .relief__groupe--1 {
+    inset-block-start: 40.5%;
+  }
+
+  body:has([data-role="hero"]) .relief__groupe--2 {
+    inset-block-start: 71%;
+  }
+
+  body:has([data-role="configurateur"]) .relief__groupe--1 {
+    inset-block-start: 41.5%;
+  }
+
+  body:has([data-role="configurateur"]) .relief__groupe--2 {
+    inset-block-start: 70.5%;
+  }
+
+  body:has([data-role="recapitulatif"]) .relief__groupe--2 {
+    inset-block-start: 74.5%;
+  }
+
+  body:has(.compte--achat) .relief__groupe--2 {
+    inset-block-start: 75.5%;
+  }
+
+  body:has([data-role="comparaison"]) .relief__groupe--2 {
+    inset-block-start: 73%;
+  }
+}
+
+
+
+/* Le contenu passe au-dessus du relief ; en-tête, bandeau et pied (opaques) le recouvrent */
+.bandeau-demo,
+.entete,
+main,
+.pied {
+  position: relative;
+  z-index: 1;
+}

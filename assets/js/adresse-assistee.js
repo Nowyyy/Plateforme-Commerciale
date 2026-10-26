@@ -3,13 +3,14 @@
 // recherche libre. Aucune requête avant 3 caractères ; l'adresse (ou son début) n'est envoyée qu'à data.geopf.fr ; rien n'est conservé
 // (ni suggestions, ni cache, ni stockage) : la sélection n'existe qu'en mémoire de la page.
 import { valider } from './adresse-validation.js';
-import { actionEntree, analyserCompletion, analyserSuggestionsRecherche, construireUrlCompletion, construireUrlRecherche, doitInterroger, etatValidation, indexSuivant, nettoyerSaisie } from './adresse-assistee-logique.js';
+import { actionEntree, aideVisible, analyserCompletion, analyserSuggestionsRecherche, construireUrlCompletion, construireUrlRecherche, doitInterroger, etatValidation, indexSuivant, nettoyerSaisie } from './adresse-assistee-logique.js';
 
 // config : donnees.diagnostic.carteReelle ; textes : accueil.recherche.assistee ou diagnostic.textes.assistee.
 // bouton : bouton de validation (jamais `disabled` : `aria-disabled`, classes `data-classe-active` et `data-classe-inactive` échangées) ;
 // erreur : zone du message de panne ; adresseCourante : adresse déjà affichée (diagnostic), le bouton reste inactif tant qu'elle est identique.
 export function brancherAssistant({ champ, liste, statut, config, textes, bouton, erreur, adresseCourante = '' }) {
   const { saisie, geocodage } = config;
+  const aide = bouton ? document.getElementById(bouton.getAttribute('aria-describedby') ?? '') : null;
   const etat = { controle: null, minuterie: null, version: 0, dernier: null, selection: null, suggestions: [], actif: -1, ignorer: false, panne: false, courante: adresseCourante };
 
   const annoncer = (message) => { statut.textContent = message; };
@@ -19,7 +20,9 @@ export function brancherAssistant({ champ, liste, statut, config, textes, bouton
   // Bouton : actif seulement pour une adresse valide ; focalisable (`aria-disabled`), classe d'action posée à l'état actif seulement.
   function majBouton() {
     if (!bouton) return;
-    const { valide } = validation();
+    const etatCourant = validation();
+    const { valide } = etatCourant;
+    if (aide) aide.hidden = !aideVisible(etatCourant); // l'élément reste dans la page : l'aria-describedby du bouton reste valide
     bouton.setAttribute('aria-disabled', String(!valide));
     const [actif, inactif] = [bouton.dataset.classeActive, bouton.dataset.classeInactive];
     if (actif) bouton.classList.toggle(actif, valide);

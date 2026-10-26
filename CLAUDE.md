@@ -6,11 +6,11 @@ Avant de modifier une page, lis le fichier correspondant de `Docs/ref/convention
 
 ## Arborescence
 - Racine : `index.html`, `diagnostic.html`, `produit.html`, `panier.html`, `pro.html`, espace client simulé : `connexion.html`, `compte.html`, `achats.html`, `achat.html`, `informations.html`, SAV simulé : `sav-acces.html`, `sav.html`, `demandes.html`, `comparateur.html` ; tous `noindex` jusqu'au lot 10 ; `attente.html` ; `accueil.html` (redirection vers `index.html`)
-- `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, une feuille par page (`accueil.css`, `sav.css`, `comparateur.css`…), `carte-reelle.css`, `attente.css`, `wireframe.css`
+- `css/` : `tokens.css` (jetons), `base.css`, `composants.css`, une feuille par page (`commun.css`, `accueil.css`, `sav.css`, `comparateur.css`…), `carte-reelle.css`, `attente.css`, `wireframe.css`
 - `data/` : `site.json`, `accueil.json`, `diagnostic.json`, `pro.json`, `compte.json`, `produit.json` : textes et liens visibles
 - `assets/js/` : `rendu.js` (données), modules purs `*-logique.js` (dont `comparateur-logique.js`), un module par page (dont `comparateur.js`), `compte-lien.js`, `formulaire.js` (générique) ; `assets/fonts/` (woff2, OFL) ; `assets/vendor/leaflet/` : Leaflet 1.9.4, jamais modifié
 - `scripts/lots/` (page Lots) et `scripts/documents/` (PDF d'exemple : `node scripts/documents/generer.mjs`), sans dépendance
-- `wireframes/` : Lo-Fi publiés, `noindex` ; `tests/` : Vitest ; `tests/e2e/` : Playwright ; `tests/outils/` : serveur, Lighthouse, CLS, matrice, empreinte ; `tests/empreintes/`
+- `wireframes/` : Lo-Fi publiés, `noindex` ; `tests/` : Vitest, `tests/e2e/` : Playwright ; `tests/outils/` : serveur, Lighthouse, CLS, matrice, empreinte 
 - `Docs/` : `seed.md`, `lots/` (bilans), `ref/` (`conventions.md` index, `conventions/`, `apercus.md`, `environnement.md`, `qualite.md`), `apercus.txt`
 - `.github/workflows/pages.yml` : vérifications et publication Pages : racine = `main`, chaque `lot-N` sous `/lot-N/`, liste sur `/lots/`
 - `apercu.txt` : cible (ligne 1), puis `type: wireframe|hifi|technique` et `titre:` facultatifs (`Docs/ref/apercus.md`) ; chaque lot le règle sur sa branche.
@@ -45,10 +45,10 @@ Avant de modifier une page, lis le fichier correspondant de `Docs/ref/convention
 - Tag : push refusé (403), une seule tentative. Fin de lot : afficher le lien de comparaison ; le propriétaire crée et fusionne la Pull Request.
 
 ## Pièges (détail : `Docs/ref/environnement.md`, `Docs/ref/conventions/`)
-- `accueil.css` est chargé par `diagnostic.html` et `produit.html` : toute règle ajoutée dedans touche les trois pages ; `comparateur.html` charge `diagnostic.css`.
+- `commun.css` (règles partagées) est chargé par les 14 pages : toute règle ajoutée dedans les touche toutes ; `accueil.css` est propre à l'accueil ; `comparateur.html` charge `diagnostic.css`.
 - `apercu.txt` visant `index.html` : le workflow ne déplace plus l'`index.html` du lot (boucle de redirection).
 - Textes et listes remplis par JavaScript : réserver leur hauteur (`min-block-size`, par point de rupture), sinon le CLS dépasse 0,1. Formulaire masqué : réserver sa hauteur.
-- Chromium préinstallé, pas de `playwright install`. Lighthouse : http://localhost seulement. Réseau sortant filtré.
+- Chromium préinstallé, pas de `playwright install`. Lighthouse : http://localhost seulement. Réseau filtré.
 - Toute donnée lue en session est revalidée avant affichage ; modifier prix ou cotes de `produit.json` casse les totaux du panier et `compte.json` (un test le signale).
 - `prefers-reduced-motion` : transitions à 0,01 ms, donc `toHaveCSS` ou `expect.poll`, jamais `getComputedStyle` juste après.
 - Aucun `id` dans les gabarits clonés. Les parcours qui saisissent une adresse choisissent une suggestion simulée (utilitaire partagé). Détection communale (inondation, feux) : jamais présentée comme un diagnostic de l'adresse.

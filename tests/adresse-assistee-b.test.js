@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import * as logique from '../assets/js/adresse-assistee-logique.js';
-import { nettoyerSaisie, doitInterroger, construireUrlCompletion, construireUrlRecherche, analyserCompletion, analyserSuggestionsRecherche, actionEntree, etatValidation, indexSuivant } from '../assets/js/adresse-assistee-logique.js';
+import { nettoyerSaisie, doitInterroger, construireUrlCompletion, construireUrlRecherche, analyserCompletion, analyserSuggestionsRecherche, actionEntree, aideVisible, etatValidation, indexSuivant } from '../assets/js/adresse-assistee-logique.js';
 import { valider } from '../assets/js/adresse-validation.js';
 
 const lire = (f) => readFileSync(f, 'utf8');
@@ -120,9 +120,9 @@ describe('pureté de adresse-assistee-logique.js', () => {
     const sel = Object.freeze({ libelle: 'A B C' });
     expect(() => etatValidation(Object.freeze({ texte: 'A B C', selection: sel, adresseCourante: 'X', panne: false, valideLocal: true }))).not.toThrow();
     for (const v of [undefined, null, 0, NaN, '', {}, [], () => 1, Symbol.iterator.toString()]) {
-      expect(() => { nettoyerSaisie(v); doitInterroger(v, v, v, v); construireUrlCompletion(v, v, v); construireUrlRecherche(v, v, v); analyserCompletion(v); analyserSuggestionsRecherche(v); indexSuivant(v, v, v); etatValidation(v); etatValidation({ texte: v, selection: v, adresseCourante: v, panne: v, valideLocal: v }); actionEntree(v); }, String(v)).not.toThrow();
+      expect(() => { nettoyerSaisie(v); doitInterroger(v, v, v, v); construireUrlCompletion(v, v, v); construireUrlRecherche(v, v, v); analyserCompletion(v); analyserSuggestionsRecherche(v); indexSuivant(v, v, v); etatValidation(v); etatValidation({ texte: v, selection: v, adresseCourante: v, panne: v, valideLocal: v }); actionEntree(v); aideVisible(v); }, String(v)).not.toThrow();
     }
-    expect(Object.keys(logique).sort()).toEqual(['actionEntree', 'analyserCompletion', 'analyserSuggestionsRecherche', 'construireUrlCompletion', 'construireUrlRecherche', 'doitInterroger', 'etatValidation', 'indexSuivant', 'nettoyerSaisie']);
+    expect(Object.keys(logique).sort()).toEqual(['actionEntree', 'aideVisible', 'analyserCompletion', 'analyserSuggestionsRecherche', 'construireUrlCompletion', 'construireUrlRecherche', 'doitInterroger', 'etatValidation', 'indexSuivant', 'nettoyerSaisie']);
   });
 });
 

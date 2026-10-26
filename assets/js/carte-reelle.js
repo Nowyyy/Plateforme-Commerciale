@@ -196,7 +196,8 @@ function initialiser(donnees) {
   const majLegende = () => {
     for (const item of legende.querySelectorAll('li[data-calque]')) item.hidden = !etatCarte.calques.has(item.getAttribute('data-calque'));
   };
-  const detruire = () => {
+  // garderLectures : l'échec ne vient que de la carte, les lectures de l'API (coordonnées seulement) se poursuivent.
+  const detruire = (garderLectures = false) => {
     clearTimeout(etatCarte.minuterie);
     if (etatCarte.carte) {
       etatCarte.carte.remove();
@@ -208,7 +209,7 @@ function initialiser(donnees) {
     }
     Object.assign(etatCarte, { fond: null, couche: null, erreurs: 0, charges: 0, debut: 0, minuterie: null, controle: null, attribution: '' });
     etatCarte.calques.clear();
-    etatCarte.controleApi?.abort();
+    if (!garderLectures) etatCarte.controleApi?.abort();
     etatFond.textContent = '';
     majLegende();
     conteneur.hidden = true;
@@ -219,6 +220,16 @@ function initialiser(donnees) {
     reinitialiserAleas(aleasTextes.attente);
     afficherMessage(texte, true);
     signaler('lus', etatCalques({ gaspar: null, rga: null, calquesConfig: config }).etats); // aucune lecture possible : présence non déterminée
+  };
+
+  // Échec de la carte seule (Leaflet, fond ou création) après un géocodage réussi : message habituel avec « Réessayer », mais les lectures
+  // de l'API Géorisques, qui ne dépendent que des coordonnées, aboutissent quand même et alimentent le panneau et le niveau calculé.
+  const echecCarte = async (texte, lecture, annule) => {
+    detruire(true);
+    afficherMessage(texte, true);
+    const aleas = await lecture;
+    if (annule()) return;
+    rendreAleas(aleas);
   };
 
   // Attributions : celles du fond affiché, plus Géorisques tant qu'un calque est affiché ; chaîne construite par chaineAttribution.
@@ -334,15 +345,15 @@ function initialiser(donnees) {
       L = await chargerLeaflet(config.leaflet);
     } catch {
       if (annule()) return;
-      return echec(textes.erreur);
+      return echecCarte(textes.erreur, lecture, annule);
     }
     if (annule()) return;
-    if (!gabaritFondValide(config.fonds[config.fondParDefaut].gabarit)) return echec(textes.erreur);
+    if (!gabaritFondValide(config.fonds[config.fondParDefaut].gabarit)) return echecCarte(textes.erreur, lecture, annule);
     conteneur.hidden = false;
     try {
       creerCarte(L, resultat);
     } catch {
-      return echec(textes.erreur);
+      return echecCarte(textes.erreur, lecture, annule);
     }
     masquerMessage();
     const aleas = await lecture;
