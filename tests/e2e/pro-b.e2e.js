@@ -115,7 +115,7 @@ test('chaque règle par l\'interface : SIRET, e-mail, téléphone, description, 
 
 test('clavier : Entrée dans un champ valide, Tab suit l\'ordre du formulaire, le bouton répond à Entrée et à Espace', async ({ page }) => {
   await ouvrir(page);
-  await page.locator('#societe').focus();
+  await focaliser(page.locator('#societe')); // le premier focus() juste après le chargement peut être perdu (instabilité relevée au lot 10a)
   await page.keyboard.press('Enter');
   await expect(resume(page)).toBeVisible();
   await expect(resume(page)).toBeFocused();
@@ -174,9 +174,12 @@ test('mise en page : carte de 56 rem au plus, paires côte à côte à 1440 px, 
   expect(email.y).toBeGreaterThan(prenom.y);
   console.log(`1440 px : carte ${Math.round((await boite('.pro__carte--formulaire')).w)} px, société x=${Math.round(societe.x)} SIRET x=${Math.round(siret.x)}`);
   await page.setViewportSize({ width: 375, height: 900 });
-  const [s2, si2] = await Promise.all(['#societe', '#siret'].map(boite));
-  expect(si2.y).toBeGreaterThan(s2.y);
-  expect(Math.abs(si2.x - s2.x)).toBeLessThan(2);
+  // la mise en page suit le redimensionnement de façon asynchrone (polices, grille) : attendre la mesure, sans l'assouplir
+  await page.evaluate(() => globalThis.document.fonts.ready);
+  await expect.poll(async () => {
+    const [s2, si2] = await Promise.all(['#societe', '#siret'].map(boite));
+    return si2.y > s2.y && Math.abs(si2.x - s2.x) < 2;
+  }, { message: 'à 375 px, le SIRET passe sous la société, sur la même colonne' }).toBe(true);
 });
 
 for (const largeur of [375, 768, 1440]) {

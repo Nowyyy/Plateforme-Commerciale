@@ -100,6 +100,13 @@ export function etatValidation(entree) {
   return { valide: false, raison: 'non-choisie' };
 }
 
+// Aide « Choisissez une adresse dans la liste pour continuer. » : visible seulement tant que l'adresse n'est pas valide ; une adresse
+// choisie et inchangée, ou déjà affichée (diagnostic, raison « identique »), n'a pas besoin d'aide. Prend le résultat d'etatValidation.
+export function aideVisible(validation) {
+  const { valide, raison } = estObjet(validation) ? validation : {};
+  return valide !== true && raison !== 'identique';
+}
+
 // Touche Entrée dans le champ : une option surlignée est choisie ; sinon une adresse valide déclenche la validation ; sinon rien.
 export function actionEntree(entree) {
   const { activeIndex, valide } = estObjet(entree) ? entree : {};

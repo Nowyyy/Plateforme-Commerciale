@@ -4,6 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { resoudre } from '../assets/js/rendu.js';
 import { lireContenus } from '../scripts/documents/generer.mjs';
 import { brancherFormulaire } from '../assets/js/formulaire.js';
+import { lireConventions } from './outils/conventions.js';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const site = JSON.parse(lire('data/site.json'));
@@ -180,6 +181,6 @@ describe('lot 8c-A : PDF, workflow, formulaire et CLAUDE.md', () => {
     const texte = lire('CLAUDE.md');
     expect([...texte].length).toBeLessThan(9000);
     for (const mot of ['connexion.html', 'compte.json', 'compte-lien.js', 'Compte simulé', 'Se connecter']) expect(texte).toContain(mot);
-    expect(lire('Docs/ref/conventions.md')).toMatch(/^## Compte/m);
+    expect(lireConventions()).toMatch(/^## Compte/m);
   });
 });

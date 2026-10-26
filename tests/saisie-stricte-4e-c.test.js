@@ -119,7 +119,7 @@ describe('données', () => {
 
 describe('CSS de l\'état inactif', () => {
   it('contour marine, fond neutre, texte atténué, jamais d\'ambre ni de couleur en dur', () => {
-    const css = lire('css/accueil.css');
+    const css = `${lire('css/commun.css')}\n${lire('css/accueil.css')}`; // règles partagées extraites au lot 10a
     const debut = css.indexOf('.recherche .bouton[aria-disabled="true"],');
     const regle = css.slice(debut, css.indexOf('}', debut));
     expect(regle).toContain('border-color: var(--color-navy)');

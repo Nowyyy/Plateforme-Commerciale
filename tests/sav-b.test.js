@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { brancherFormulaire } from '../assets/js/formulaire.js';
 import { texteConcerne, elementsFil } from '../assets/js/sav.js';
+import { lireConventions } from './outils/conventions.js';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const html = lire('sav.html');
@@ -121,6 +122,6 @@ describe('lot 8d-B : extension de formulaire.js pour les groupes de radios', () 
     clic('ligne');
     clic('description');
     expect(focalises).toEqual(['radio', 'texte']);
-    expect(lire('Docs/ref/conventions.md')).toContain('champs[x].focus');
+    expect(lireConventions()).toContain('champs[x].focus');
   });
 });

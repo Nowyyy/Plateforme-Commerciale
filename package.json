@@ -18,6 +18,8 @@
     "lint": "eslint .",
     "test": "vitest run",
     "e2e": "playwright test",
-    "lighthouse": "node tests/outils/lighthouse.mjs"
+    "lighthouse": "node tests/outils/lighthouse.mjs",
+    "matrice": "node tests/outils/matrice-lighthouse.mjs",
+    "empreinte:maj": "node tests/outils/empreinte.mjs"
   }
 }

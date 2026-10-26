@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 
 const html = readFileSync('index.html', 'utf8');
-const css = readFileSync('css/accueil.css', 'utf8');
+const css = ['css/commun.css', 'css/accueil.css'].map((f) => readFileSync(f, 'utf8')).join('\n'); // règles partagées extraites au lot 10a
 const tokens = readFileSync('css/tokens.css', 'utf8');
 const relief = html.match(/<div class="relief" aria-hidden="true">[\s\S]*?\n {2}<\/div>\n/)[0];
 

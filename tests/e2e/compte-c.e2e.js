@@ -154,9 +154,13 @@ test('mesures à 1440 px : colonnes 3 / 2 aux hauts alignés ; une colonne à 37
   expect(documents.y).toBeGreaterThan(livraison.y);
   expect(sav.y).toBeGreaterThan(documents.y);
   await page.setViewportSize({ width: 375, height: 900 });
-  const boites = await Promise.all(['resume', 'lignes', 'livraison', 'documents', 'sav'].map((r) => page.locator(`[data-role="${r}"]`).boundingBox()));
-  expect(new Set(boites.map((b) => Math.round(b.x))).size).toBe(1);
-  for (let i = 1; i < boites.length; i++) expect(boites[i].y).toBeGreaterThan(boites[i - 1].y);
+  // la mise en page suit le redimensionnement de façon asynchrone (polices, grille) : attendre la mesure, sans l'assouplir
+  await page.evaluate(() => globalThis.document.fonts.ready);
+  await expect.poll(async () => {
+    const boites = await Promise.all(['resume', 'lignes', 'livraison', 'documents', 'sav'].map((r) => page.locator(`[data-role="${r}"]`).boundingBox()));
+    const colonneUnique = new Set(boites.map((b) => Math.round(b.x))).size === 1;
+    return colonneUnique && boites.every((b, i) => i === 0 || b.y > boites[i - 1].y);
+  }, { message: 'à 375 px, une colonne dans l\'ordre du document' }).toBe(true);
 });
 
 test('robustesse : 10 lignes et un titre de 120 caractères, aucun débordement à 375, 768 et 1440 px (détails ouverts)', async ({ page }) => {

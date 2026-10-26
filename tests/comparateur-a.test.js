@@ -4,6 +4,7 @@ import { resoudre } from '../assets/js/rendu.js';
 import {
   aleaParDefaut, basculerProduit, lireSelection, produitsDeAlea, selectionInitiale, selectionPourAlea, serialiserSelection,
 } from '../assets/js/comparateur-logique.js';
+import { lireConventions } from './outils/conventions.js';
 
 const lire = (chemin) => readFileSync(chemin, 'utf8');
 const json = (nom) => JSON.parse(lire(`data/${nom}.json`));
@@ -313,7 +314,7 @@ describe('lot 9-A : comparateur.html', () => {
   });
   it('feuilles de style : celles du diagnostic plus comparateur.css ; deux requêtes de données au plus (site et produit)', () => {
     const feuilles = [...html.matchAll(/<link rel="stylesheet" href="([^"]+)">/g)].map((m) => m[1]);
-    expect(feuilles).toEqual(['css/tokens.css', 'css/base.css', 'css/composants.css', 'css/accueil.css', 'css/diagnostic.css', 'css/comparateur.css']);
+    expect(feuilles).toEqual(['css/tokens.css', 'css/base.css', 'css/composants.css', 'css/commun.css', 'css/diagnostic.css', 'css/comparateur.css']);
     for (const f of feuilles) expect(existsSync(f), f).toBe(true);
     expect(html).toContain('data-donnees="produit"');
   });
@@ -360,15 +361,15 @@ describe('lot 9-A : liens, workflow, CSS, modules et CLAUDE.md', () => {
     expect(src).toMatch(/import \{ CLE_COMPARAISON,[^}]*\} from '\.\/comparateur-logique\.js'/);
   });
   it('apercu.txt vise l\'accueil en Hi-Fi ; Docs/apercus.txt décrit le lot 9', () => {
-    expect([['index.html', 'type: hifi', 'titre: Comparateur de solutions'], ['index.html', 'type: hifi', 'titre: Carte réelle avec consentement'], ['index.html', 'type: hifi', "titre: Carte réelle seule, saisie assistée, calques selon l'adresse"], ['index.html', 'type: hifi', 'titre: Diagnostic : mise en page, niveau calculé, adresse stricte']]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
+    expect([['index.html', 'type: hifi', 'titre: Comparateur de solutions'], ['index.html', 'type: hifi', 'titre: Carte réelle avec consentement'], ['index.html', 'type: hifi', "titre: Carte réelle seule, saisie assistée, calques selon l'adresse"], ['index.html', 'type: hifi', 'titre: Diagnostic : mise en page, niveau calculé, adresse stricte'], ['index.html', 'type: hifi', 'titre: Qualité technique : mesures et corrections']]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
     expect(lire('Docs/apercus.txt')).toMatch(/^lot-9\|.{10,}$/m);
   });
   it('CLAUDE.md fait moins de 9 000 caractères et décrit le comparateur ; conventions.md a une section Comparateur et reste sous 190 lignes', () => {
     const texte = lire('CLAUDE.md');
     expect([...texte].length).toBeLessThan(9000);
     for (const mot of ['comparateur.html', 'comparateur-logique.js', 'comparateur.js', 'comparateur.css', 'comparaison', 'selectionInitiale', 'basculerProduit', 'performances']) expect(texte, mot).toContain(mot);
-    const conventions = lire('Docs/ref/conventions.md');
+    const conventions = lireConventions();
     expect(conventions).toMatch(/^## Comparateur/m);
-    expect(conventions.split('\n').length).toBeLessThanOrEqual(190);
+    expect(lire('Docs/ref/conventions.md').split('\n').length).toBeLessThanOrEqual(190);
   });
 });
