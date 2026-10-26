@@ -62,3 +62,17 @@ CLS Playwright à 55 largeurs (JSON +400 ms) : inchangé, 0,055 au plus (`compte
 - Aide d'adresse masquée si l'adresse est valide ou déjà affichée : aucun écart d'empreinte (le plancher de hauteur absorbe le retrait ; `ecarts-autorises-10a-b.json` vide).
 - Carte : un échec de Leaflet, du fond ou de la création garde les lectures de l'API (niveau et aléas lus) ; géocodage en échec : inchangé.
 - Code mort retiré : export `ETAPES`, clés `compte.pages.compte.aucuneCommande` et `site.navigation.fonctionnement`. Conservés (tests les lisent) : `RAISONSCOMPTE`, `RAISONS`, `ETATS`, `supprimerAccesSav`, `filtrerEquipements`, `niveauGlobal`, `Docs/apercus.txt`. `.galerie__video` n'est pas mort (vue vidéo des données).
+
+## Final (partie C ; performance/accessibilité/bonnes pratiques en médiane de 3 passes, CLS Playwright à 55 largeurs)
+| Page | Page |
+|---|---|
+| index 97/100/100, CLS 0,005 | diagnostic 94/100/96, CLS 0,023 |
+| produit 94/100/100, CLS 0,005 | panier 93/100/100, CLS 0,021 |
+| pro 95/100/100, CLS 0,005 | connexion 95/100/100, CLS 0,032 |
+| compte 95/100/100, CLS 0,055 | achats 95/100/100, CLS 0,012 |
+| achat 95/100/100, CLS 0,026 | informations 96/100/100, CLS 0,026 |
+| sav-acces 96/100/100, CLS 0,031 | sav 94/100/100, CLS 0,005 |
+| demandes 95/100/100, CLS 0,025 | comparateur 96/100/100, CLS 0,026 |
+
+Toutes les pages atteignent les seuils (90/95/95, CLS 0,1 ; objectif 0,08 tenu partout, 0,055 au plus). Poids à 375 px : 4 093 → 3 974 Ko pour les 14 pages (index +2 Ko et +1 requête : `commun.css` et `accueil.css`) ; console : 0 message partout ; liens internes : aucun cassé ; requêtes externes : seulement la carte et la saisie d'adresse (simulées).
+Accessibilité (partie C) : un `h1` et aucun saut de titre, repères, `title` uniques, clavier sans piège, lien d'évitement, focus visible ≥ 3:1, aucun défilement horizontal à 320 px, axe sans violation à 320, 375, 768 et 1440 px. Corrigés : titre de galerie de `produit` (h2 masqué avant le h1, devenu `p` nommant la section), noms distincts des liens « Reprendre… » du panier (`reprendreAria`). Reste, sans correction (hors périmètre) : à 320 px, l'étiquette « En situation » des vignettes de `produit` se coupe en milieu de mot.

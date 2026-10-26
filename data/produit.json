@@ -537,6 +537,7 @@
       },
       "reprendreCotes": "Reprendre ces cotes à la fiche",
       "reprendre": "Reprendre à la fiche",
+      "reprendreAria": "{libelle} : {titre} ({description})",
       "aide": "Pour modifier, ajoutez la nouvelle configuration puis retirez cette ligne."
     },
     "vide": {

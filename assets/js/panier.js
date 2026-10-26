@@ -136,6 +136,9 @@ function demarrerPanier(donnees) {
     for (const [libelle, valeur] of paires) liste.append(element('dt', '', libelle), element('dd', '', valeur));
   }
 
+  // Mode et cotes déjà affichés dans la ligne : distinguent deux lignes du même produit pour les liens « Reprendre… ».
+  const descriptionLigne = (li) => ['.ligne__mode', '.ligne__cotes'].map((s) => li.querySelector(s)?.textContent.trim()).filter(Boolean).join(', ');
+
   function construireLigne({ ligne, cle, validation }) {
     const li = zone.gabaritLigne.content.firstElementChild.cloneNode(true);
     li.dataset.cle = cle;
@@ -169,8 +172,10 @@ function demarrerPanier(donnees) {
       li.classList.add('ligne--invalide');
       groupe.remove();
       detail.remove();
-      if (produit) reprendreSeul.textContent = textes.detail.reprendre;
-      else reprendreSeul.remove();
+      if (produit) {
+        reprendreSeul.textContent = textes.detail.reprendre;
+        reprendreSeul.setAttribute('aria-label', remplirGabarit(textes.detail.reprendreAria, { libelle: textes.detail.reprendre, titre, description: descriptionLigne(li) })); // nom distinct par ligne
+      } else reprendreSeul.remove();
       return li;
     }
 
@@ -215,6 +220,7 @@ function demarrerPanier(donnees) {
     remplirDefinitions(delais, delaisCommande(validation.produit, validation.mode).map(({ cle: nom, texte }) => [textes.detail.delais[nom], texte]));
     const reprendre = par(li, '.ligne__reprendre');
     reprendre.textContent = validation.cotes ? textes.detail.reprendreCotes : textes.detail.reprendre;
+    reprendre.setAttribute('aria-label', remplirGabarit(textes.detail.reprendreAria, { libelle: reprendre.textContent, titre, description: descriptionLigne(li) })); // nom distinct par ligne
     reprendre.classList.add('lien-action');
     const aide = par(li, '.ligne__aide');
     if (validation.cotes) aide.textContent = textes.detail.aide;
