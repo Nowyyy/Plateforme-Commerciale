@@ -72,7 +72,7 @@ test('légende : une entrée par couche affichée plus « Votre adresse » ; dé
   expect(technique.width).toBeLessThanOrEqual(1); // masqué visuellement, lisible par les lecteurs d'écran
   const legende = page.locator('[data-role="legende"]');
   await expect(legende.getByRole('heading', { level: 2, name: 'Légende' })).toBeVisible();
-  await expect(legende).toContainText('Elle suit les cases cochées. Fond de carte : OpenStreetMap, repli automatique sur le Plan IGN.');
+  await expect(legende).not.toContainText('Elle suit les cases cochées'); // retouche client lot 10c : phrase retirée
   await page.getByRole('checkbox', { name: 'Retrait-gonflement des argiles' }).uncheck();
   await expect(entreesVisibles(page)).toHaveCount(4);
   await expect(page.locator('#legende-reelle li[hidden] .legende__technique')).toHaveText('Couche : ALEARG');

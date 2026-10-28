@@ -1,4 +1,4 @@
-// Mesure de la hauteur maximale du cadre de légende (quatre couches affichées, images simulées, aléas en mode de secours) par largeur,
+// Mesure de la hauteur maximale du cadre de légende (quatre couches affichées, images en attente donc réserves pleines, aléas en mode de secours) par largeur,
 // avec le plancher de hauteur neutralisé : sert à fixer les `min-block-size` de `.diag__legende .bloc-carte` (CLS).
 // Usage : PORT=4173 node tests/outils/serveur.mjs & puis BASE=http://localhost:4173 node tests/outils/mesure-legende.mjs
 import { chromium } from '@playwright/test';
@@ -16,11 +16,11 @@ if (largeurs.length === 0) {
 for (const largeur of largeurs) {
   const contexte = await navigateur.newContext({ baseURL: BASE });
   const page = await contexte.newPage();
-  await simuler(page, { api: { gaspar: { abandon: true }, rga: { abandon: true } } });
+  await simuler(page, { api: { gaspar: { abandon: true }, rga: { abandon: true } }, legende: { mode: 'attente' } }); // état le plus haut : images en attente, réserves pleines
   await ouvrirDiagnostic(page, largeur, { adresse: ADRESSE });
   await page.waitForSelector('#liste-calques input');
   await page.addStyleTag({ content: '.diag__legende .bloc-carte { min-block-size: 0 !important; }' });
-  await page.waitForSelector('#legende-reelle li:not([hidden]) img:not([hidden])');
+  await page.waitForSelector('#legende-reelle li:not([hidden]) .legende__image', { state: 'attached' });
   await page.waitForTimeout(300);
   const h = await page.evaluate(() => globalThis.document.querySelector('.diag__legende .bloc-carte').getBoundingClientRect().height / parseFloat(globalThis.getComputedStyle(globalThis.document.documentElement).fontSize));
   console.log(`${largeur} ${h.toFixed(2)}`);

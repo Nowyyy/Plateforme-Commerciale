@@ -88,8 +88,8 @@ test('images affichées : hauteur maximale de 8 rem, alt issu des données, opac
   const taille = await images.first().evaluate((e) => [e.getBoundingClientRect().width, e.getBoundingClientRect().height]);
   expect(taille[0]).toBeCloseTo(200 * (taille[1] / 90) * 1, 0); // proportions conservées
   await expect(page.locator('.legende__motif, .legende__fond')).toHaveCount(0);
-  await expect(page.locator('[data-role="legende"]')).toContainText('Les couleurs et les niveaux sont ceux du service Géorisques.');
-  await expect(page.locator('[data-role="legende"]')).toContainText('Source officielle : Géorisques');
+  await expect(page.locator('[data-role="legende"]')).not.toContainText('Les couleurs et les niveaux sont ceux du service Géorisques.'); // retouche client : note retirée
+  await expect(page.locator('[data-role="exposition"]')).toContainText('Source officielle : Géorisques'); // le lien officiel reste sous les cases
 });
 
 for (const [mode, options] of [

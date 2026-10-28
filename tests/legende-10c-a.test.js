@@ -97,12 +97,11 @@ describe('données carteReelle.legende', () => {
     expect(legende.hauteurReservee).toBe(8);
     expect(Number.isInteger(legende.delai) && legende.delai > 0).toBe(true);
     expect(legende.delai).toBe(10000);
-    for (const cle of ['alt', 'chargement', 'indisponible', 'note']) expect(legende.textes[cle].trim(), cle).not.toBe('');
+    for (const cle of ['alt', 'chargement', 'indisponible']) expect(legende.textes[cle].trim(), cle).not.toBe('');
     expect(legende.textes.alt).toBe('Légende officielle Géorisques : {libelle}');
     expect(legende.textes.chargement).toBe('Chargement de la légende…');
     expect(legende.textes.indisponible).toBe('Légende officielle indisponible pour cette couche.');
-    expect(legende.textes.note).toContain('Les couleurs et les niveaux sont ceux du service Géorisques.');
-    expect(legende.textes.note).toContain(diagnostic.textes.carte.lienGeorisques);
+    expect(legende.textes.note).toBeUndefined(); // retouche client : note et phrase sous la légende retirées
   });
   it('plus aucune clé de couleur ni de motif d\'ancienne pastille', () => {
     const brut = lire('data/diagnostic.json');
@@ -123,7 +122,7 @@ describe('diagnostic.html : gabarit de légende', () => {
   });
   it('région role="status", note issue des données, aucun id dupliqué', () => {
     expect(html).toMatch(/<p class="visuellement-cache" id="legende-etat" role="status"><\/p>/);
-    expect(html).toContain('data-texte="diagnostic.carteReelle.legende.textes.note"');
+    expect(html).not.toMatch(/legende\.textes\.note|textes\.legende\.phrase/);
     const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
     expect(ids.filter((id, i) => ids.indexOf(id) !== i)).toEqual([]);
   });
@@ -142,6 +141,11 @@ describe('CSS de la légende', () => {
     expect(css).not.toMatch(/legende__motif|legende__fond|--teinte/);
     expect(tokens).not.toMatch(/--calque-/);
     for (const f of readdirSync('css')) expect(lire(`css/${f}`), f).not.toMatch(/--calque-|--teinte|legende__motif|legende__fond/);
+  });
+  it('grille de légende : colonnes égales, entrées alignées en haut, réserve levée une fois l\'image reçue', () => {
+    expect(css.match(/\.legende \{[^}]*\}/)[0]).toMatch(/display: grid/);
+    expect(css).toMatch(/\.legende__item--prete \.legende__image \{\s*min-block-size: 0;/);
+    expect(lire('assets/js/carte-reelle.js')).toContain("classList.add('legende__item--prete')");
   });
   it('image : max-height 8 rem, taille naturelle ; entrée : réserve de hauteur ; aucune valeur hexadécimale', () => {
     const img = css.match(/\.legende__img \{[^}]*\}/)[0];

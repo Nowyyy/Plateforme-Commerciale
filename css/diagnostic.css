@@ -418,12 +418,14 @@ html[data-rendu="erreur"] .diag__comparer {
   accent-color: var(--color-navy);
 }
 
-/* Légende officielle : entrées empilées sous 768 px, en ligne avec retour à la ligne dès 768 px ; chaque entrée réserve le libellé plus
-   la hauteur de l'image (--legende-reserve, issue de carteReelle.legende.hauteurReservee) : l'arrivée de l'image ne déplace rien. */
+/* Légende officielle : grille de colonnes égales (une colonne sous 768 px), entrées alignées en haut ; « Votre adresse » seule sur la dernière
+   rangée. Chaque entrée réserve le libellé plus la hauteur de l'image (--legende-reserve, carteReelle.legende.hauteurReservee) tant que
+   l'image n'est pas arrivée : le plancher du cadre (min-block-size) garde alors les blocs en place ; l'image reçue lève la réserve. */
 .legende {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3) var(--space-5);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4) var(--space-5);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -432,7 +434,7 @@ html[data-rendu="erreur"] .diag__comparer {
 
 @media (min-width: 768px) {
   .legende {
-    flex-flow: row wrap;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
   }
 }
 
@@ -442,24 +444,25 @@ html[data-rendu="erreur"] .diag__comparer {
   gap: var(--space-3);
 }
 
-.legende__item--couche {
-  flex: none;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-1);
-  max-inline-size: 100%;
+.legende__item:not(.legende__item--couche) {
+  grid-column: 1 / -1;
 }
 
-@media (min-width: 768px) {
-  .legende__item--couche {
-    flex: 1 1 15rem;
-  }
+.legende__item--couche {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-inline-size: 0;
 }
 
 .legende__image {
   display: block;
   min-block-size: var(--legende-reserve, 8rem);
   max-inline-size: 100%;
+}
+
+.legende__item--prete .legende__image {
+  min-block-size: 0;
 }
 
 .legende__img {
@@ -542,7 +545,7 @@ html[data-rendu="erreur"] .diag__legende {
 }
 
 /* Planchers de hauteur (CLS) : contenu maximal de chaque cadre, mesuré par point de rupture (adresse simulée, mode de secours des aléas,
-   quatre couches affichées ; légende : images de 8 rem, `tests/outils/mesure-legende.mjs`). Le remplissage par JavaScript, la lecture des aléas et l'apparition de la carte ne décalent donc rien. */
+   quatre couches affichées ; légende : images en attente (réserves de 8 rem), `tests/outils/mesure-legende.mjs`). Le remplissage par JavaScript, la lecture des aléas et l'apparition de la carte ne décalent donc rien. */
 .diag__panneau {
   min-block-size: 27.6rem;
 }
@@ -590,90 +593,54 @@ html[data-rendu="erreur"] .diag__legende {
 }
 
 .diag__legende .bloc-carte {
-  min-block-size: 64.1rem;
+  min-block-size: 54.8rem;
 }
 
 @media (min-width: 404px) {
   .diag__legende .bloc-carte {
-    min-block-size: 62.7rem;
-  }
-}
-
-@media (min-width: 414px) {
-  .diag__legende .bloc-carte {
-    min-block-size: 61.3rem;
-  }
-}
-
-@media (min-width: 420px) {
-  .diag__legende .bloc-carte {
-    min-block-size: 59.9rem;
+    min-block-size: 53.4rem;
   }
 }
 
 @media (min-width: 556px) {
   .diag__legende .bloc-carte {
-    min-block-size: 58.5rem;
+    min-block-size: 52.0rem;
   }
 }
 
 @media (min-width: 558px) {
   .diag__legende .bloc-carte {
-    min-block-size: 57.1rem;
-  }
-}
-
-@media (min-width: 596px) {
-  .diag__legende .bloc-carte {
-    min-block-size: 55.7rem;
-  }
-}
-
-@media (min-width: 700px) {
-  .diag__legende .bloc-carte {
-    min-block-size: 54.3rem;
+    min-block-size: 50.6rem;
   }
 }
 
 @media (min-width: 768px) {
   .diag__legende .bloc-carte {
-    min-block-size: 36.3rem;
+    min-block-size: 31.6rem;
   }
 }
 
-@media (min-width: 774px) {
+@media (min-width: 880px) {
   .diag__legende .bloc-carte {
-    min-block-size: 35.5rem;
-  }
-}
-
-@media (min-width: 808px) {
-  .diag__legende .bloc-carte {
-    min-block-size: 34.1rem;
+    min-block-size: 34.4rem;
   }
 }
 
 @media (min-width: 934px) {
   .diag__legende .bloc-carte {
-    min-block-size: 32.7rem;
-  }
-}
-
-@media (min-width: 1114px) {
-  .diag__legende .bloc-carte {
-    min-block-size: 31.3rem;
+    min-block-size: 31.6rem;
   }
 }
 
 @media (min-width: 1146px) {
   .diag__legende .bloc-carte {
-    min-block-size: 24.5rem;
+    min-block-size: 20.7rem;
   }
 }
 
 @media (min-width: 1200px) {
   .diag__legende .bloc-carte {
-    min-block-size: 34.1rem;
+    min-block-size: 31.6rem;
   }
 }
 

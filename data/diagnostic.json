@@ -206,8 +206,7 @@
       }
     },
     "legende": {
-      "titre": "Légende",
-      "phrase": "Elle suit les cases cochées. Fond de carte : OpenStreetMap, repli automatique sur le Plan IGN."
+      "titre": "Légende"
     },
     "carte": {
       "titre": "Carte",
@@ -291,8 +290,7 @@
       "textes": {
         "alt": "Légende officielle Géorisques : {libelle}",
         "chargement": "Chargement de la légende…",
-        "indisponible": "Légende officielle indisponible pour cette couche.",
-        "note": "Les couleurs et les niveaux sont ceux du service Géorisques. Ils figurent dans les images ci-dessus ; voir aussi le lien « Source officielle : Géorisques »."
+        "indisponible": "Légende officielle indisponible pour cette couche."
       }
     },
     "calques": {

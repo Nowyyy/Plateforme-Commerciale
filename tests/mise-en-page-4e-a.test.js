@@ -47,7 +47,7 @@ describe('lot 4e-A : structure de diagnostic.html', () => {
     const legende = section('legende');
     expect(legende).toContain('id="legende-reelle"');
     expect(legende).toContain('class="legende__technique visuellement-cache"');
-    expect(legende).toContain('diagnostic.textes.legende.phrase');
+    expect(legende).not.toContain('diagnostic.textes.legende.phrase'); // retretouche client lot 10c : plus de phrase sous la légende
   });
 });
 
@@ -75,8 +75,8 @@ describe('lot 4e-A : CSS de la mise en page', () => {
 describe('lot 4e-A : données', () => {
   it('textes de la légende, du panneau et des équipements non vides ; clés supprimées absentes', () => {
     const { legende, exposition, equipements } = diagnostic.textes;
-    for (const texte of [legende.titre, legende.phrase, exposition.titre, exposition.libelle, exposition.indicatif, exposition.phrase, equipements.titre, equipements.neutralise, equipements.voirFiche, equipements.comparer]) expect(texte.trim()).not.toBe('');
-    expect(legende.phrase).toBe('Elle suit les cases cochées. Fond de carte : OpenStreetMap, repli automatique sur le Plan IGN.');
+    for (const texte of [legende.titre, exposition.titre, exposition.libelle, exposition.indicatif, exposition.phrase, equipements.titre, equipements.neutralise, equipements.voirFiche, equipements.comparer]) expect(texte.trim()).not.toBe('');
+    expect(legende.phrase).toBeUndefined();
     expect(exposition.titre).toBe('Exposition à cette adresse');
     const brut = JSON.stringify(diagnostic);
     for (const cle of ['"score"', 'legendeFond', 'legendeCouches', 'chaleurNote', 'scoreIllustratif', 'noteGeorisques']) expect(brut, cle).not.toContain(cle);

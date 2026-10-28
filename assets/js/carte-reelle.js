@@ -216,6 +216,7 @@ function initialiser(donnees) {
     entree.etat = etat === 'ok' ? 'ok' : 'echec';
     if (etat === 'ok') {
       entree.img.hidden = false;
+      entree.li.classList.add('legende__item--prete'); // la réserve est levée : l'entrée prend la hauteur de son image
     } else {
       entree.img.hidden = true;
       entree.img.removeAttribute('src');

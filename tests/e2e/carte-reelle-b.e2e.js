@@ -74,7 +74,7 @@ test('aucun choix de fond : aucune radio « Fond de carte », OpenStreetMap par 
   await expect(page.getByRole('radio', { name: 'OpenStreetMap' })).toHaveCount(0);
   await expect(page.getByRole('radio', { name: 'Plan IGN' })).toHaveCount(0);
   await expect(page.getByText('Fond de carte', { exact: true })).toHaveCount(0);
-  await expect(page.locator('[data-role="legende"]')).toContainText('Fond de carte : OpenStreetMap, repli automatique sur le Plan IGN.');
+  await expect(page.locator('[data-role="legende"]')).not.toContainText('Fond de carte'); // retouche client lot 10c : phrase retirée (le fond reste attribué sur la carte)
   await expect.poll(() => journal.osm.length).toBeGreaterThan(0);
   expect(journal.ign).toHaveLength(0);
 });
