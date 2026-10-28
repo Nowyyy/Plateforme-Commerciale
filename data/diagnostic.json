@@ -283,6 +283,18 @@
       "transparent": true,
       "crs": "EPSG:3857"
     },
+    "legende": {
+      "hauteurReservee": 8,
+      "delai": 10000,
+      "langue": "fre",
+      "sld": "1.1.0",
+      "textes": {
+        "alt": "Légende officielle Géorisques : {libelle}",
+        "chargement": "Chargement de la légende…",
+        "indisponible": "Légende officielle indisponible pour cette couche.",
+        "note": "Les couleurs et les niveaux sont ceux du service Géorisques. Ils figurent dans les images ci-dessus ; voir aussi le lien « Source officielle : Géorisques »."
+      }
+    },
     "calques": {
       "inondation": [
         { "nom": "ALEA_SYNT_01_04FAI_FXX", "libelle": "Aléa inondation (Géorisques)" },

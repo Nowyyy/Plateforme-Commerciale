@@ -6,7 +6,7 @@
 import { donneesPretes } from './rendu.js';
 import { valider, CLE_STOCKAGE } from './adresse-validation.js';
 import { TOUS, calquesParDefaut } from './diagnostic-logique.js';
-import { analyserGeocodage, calquesActifs, calquesProposes, chaineAttribution, cochesInitiales, construireUrlGaspar, construireUrlGeocodage, construireUrlRga, doitBasculer, etatCalques, gabaritFondValide, hoteAutorise, libelleCalque, libellesLegende, lireExpositionRga, lireRisquesGaspar, optionsWms } from './carte-reelle-logique.js';
+import { analyserGeocodage, calquesActifs, calquesProposes, chaineAttribution, cochesInitiales, construireUrlGaspar, construireUrlGeocodage, construireUrlRga, doitBasculer, entreesLegende, etatCalques, etatLegende, gabaritFondValide, hoteAutorise, libelleCalque, libellesLegende, lireExpositionRga, lireRisquesGaspar, optionsWms, urlLegendeWms } from './carte-reelle-logique.js';
 
 function adresseDeSession() {
   try {
@@ -181,20 +181,80 @@ function initialiser(donnees) {
     signaler('lus', resultat.etats);
   };
 
-  // Légende : une entrée par couche, visible seulement tant que son calque est affiché.
+  // Légende officielle : une entrée par couche (libellé, puis image GetLegendGraphic du service). L'image n'est demandée qu'au premier
+  // affichage de l'entrée (case cochée, carte affichée) ; décocher masque l'entrée sans la détruire (cache). Échec : texte, jamais de pastille.
+  const legendeConfig = config.legende;
+  const etatLegendeZone = el('legende-etat');
+  const entreesLegendeDom = new Map(); // `${calque}\u0000${couche}` -> { li, img, echec, etat, minuterie }
+  const cleEntree = (calque, couche) => `${calque}\u0000${couche}`;
   const construireLegende = () => {
     const modele = el('modele-legende-reelle');
     const adresse = legende.querySelector('li:not([data-calque])');
+    legende.style.setProperty('--legende-reserve', `${legendeConfig.hauteurReservee}rem`);
     for (const entree of libellesLegende(config)) {
       const item = modele.content.cloneNode(true);
-      item.querySelector('li').setAttribute('data-calque', entree.calque);
+      const li = item.querySelector('li');
+      li.setAttribute('data-calque', entree.calque);
+      li.setAttribute('data-couche', entree.nom);
       item.querySelector('.legende__libelle').textContent = entree.libelle;
       item.querySelector('.legende__technique').textContent = entree.technique;
+      const img = item.querySelector('.legende__img');
+      img.alt = legendeConfig.textes.alt.replace('{libelle}', entree.libelle);
+      img.style.opacity = String(config.vue.opacite);
+      entreesLegendeDom.set(cleEntree(entree.calque, entree.nom), { li, img, echec: item.querySelector('.legende__echec'), etat: 'inactif', minuterie: null });
       legende.insertBefore(item, adresse);
     }
   };
+  const annoncerChargement = () => {
+    const enCours = [...entreesLegendeDom.values()].some((e) => e.etat === 'chargement');
+    etatLegendeZone.textContent = enCours ? legendeConfig.textes.chargement : '';
+  };
+  const conclureLegende = (entree, evenement) => {
+    if (entree.etat !== 'chargement') return;
+    clearTimeout(entree.minuterie);
+    const etat = etatLegende(evenement);
+    entree.etat = etat === 'ok' ? 'ok' : 'echec';
+    if (etat === 'ok') {
+      entree.img.hidden = false;
+    } else {
+      entree.img.hidden = true;
+      entree.img.removeAttribute('src');
+      entree.echec.textContent = legendeConfig.textes.indisponible;
+      entree.echec.hidden = false;
+    }
+    annoncerChargement();
+  };
+  const demanderLegende = (calque, couche) => {
+    const entree = entreesLegendeDom.get(cleEntree(calque, couche));
+    if (!entree || entree.etat !== 'inactif') return;
+    const url = urlLegendeWms(couche, config);
+    entree.etat = 'chargement';
+    if (!hoteAutorise(url)) {
+      conclureLegende(entree, { type: 'error' });
+      return;
+    }
+    entree.img.addEventListener('load', () => conclureLegende(entree, { type: 'load', largeur: entree.img.naturalWidth, hauteur: entree.img.naturalHeight }), { once: true });
+    entree.img.addEventListener('error', () => conclureLegende(entree, { type: 'error' }), { once: true });
+    entree.minuterie = setTimeout(() => conclureLegende(entree, { type: 'delai' }), legendeConfig.delai);
+    entree.img.src = url;
+    annoncerChargement();
+  };
+  // Entrées affichées : cases cochées, seulement une fois la carte affichée. Les entrées en échec sont réarmées à la destruction de la carte.
   const majLegende = () => {
-    for (const item of legende.querySelectorAll('li[data-calque]')) item.hidden = !etatCarte.calques.has(item.getAttribute('data-calque'));
+    const proposes = cases().map((c) => c.value);
+    const coches = cases().filter((c) => c.checked).map((c) => c.value);
+    const affichees = etatCarte.carte ? entreesLegende({ coches, proposes, config }) : [];
+    const cles = new Set(affichees.map((e) => cleEntree(e.calque, e.couche)));
+    for (const [cle, entree] of entreesLegendeDom) entree.li.hidden = !cles.has(cle);
+    for (const e of affichees) demanderLegende(e.calque, e.couche);
+  };
+  const rearmerLegendesEnEchec = () => {
+    for (const entree of entreesLegendeDom.values()) {
+      if (entree.etat !== 'echec') continue;
+      entree.etat = 'inactif';
+      entree.echec.hidden = true;
+      entree.echec.textContent = '';
+    }
   };
   // garderLectures : l'échec ne vient que de la carte, les lectures de l'API (coordonnées seulement) se poursuivent.
   const detruire = (garderLectures = false) => {
@@ -209,6 +269,7 @@ function initialiser(donnees) {
     }
     Object.assign(etatCarte, { fond: null, couche: null, erreurs: 0, charges: 0, debut: 0, minuterie: null, controle: null, attribution: '' });
     etatCarte.calques.clear();
+    rearmerLegendesEnEchec();
     if (!garderLectures) etatCarte.controleApi?.abort();
     etatFond.textContent = '';
     majLegende();

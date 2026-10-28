@@ -168,7 +168,7 @@ describe('lot 8d-A : workflow, CSS, modules et CLAUDE.md', () => {
     expect(lire('Docs/ref/conventions.md').split('\n').length).toBeLessThanOrEqual(190);
   });
   it('apercu.txt vise l\'accueil en Hi-Fi et Docs/apercus.txt décrit le lot 8d', () => {
-    expect([['index.html', 'type: hifi', 'titre: Comparateur de solutions'], ['index.html', 'type: hifi', 'titre: Carte réelle avec consentement'], ['index.html', 'type: hifi', "titre: Carte réelle seule, saisie assistée, calques selon l'adresse"], ['index.html', 'type: hifi', 'titre: Diagnostic : mise en page, niveau calculé, adresse stricte'], ['index.html', 'type: hifi', 'titre: Qualité technique : mesures et corrections']]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
+    expect([['index.html', 'type: hifi', 'titre: Comparateur de solutions'], ['index.html', 'type: hifi', 'titre: Carte réelle avec consentement'], ['index.html', 'type: hifi', "titre: Carte réelle seule, saisie assistée, calques selon l'adresse"], ['index.html', 'type: hifi', 'titre: Diagnostic : mise en page, niveau calculé, adresse stricte'], ['index.html', 'type: hifi', 'titre: Qualité technique : mesures et corrections'], ['index.html', 'type: hifi', 'titre: Retouches client : légende de carte, catégorie vendeur']]).toContainEqual(lire('apercu.txt').split('\n').filter(Boolean));
     expect(lire('Docs/apercus.txt')).toMatch(/^lot-8d\|.{10,}$/m);
   });
   it('les tests adaptés des lots précédents attendent les pages Hi-Fi du SAV', () => {

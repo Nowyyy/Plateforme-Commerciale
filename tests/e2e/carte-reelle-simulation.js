@@ -1,7 +1,15 @@
+import { deflateSync } from 'node:zlib';
+
 // Simulation des trois hôtes de la carte réelle : aucune requête n'est jamais envoyée en réel.
 // Toute requête vers un autre hôte que localhost est refusée et journalisée.
 export const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 export const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
+// Image de légende simulée : 200 × 90 px, un aplat (généré sans dépendance) ; PNG_VIDE : taille naturelle nulle (IHDR 0 × 0, refusée par le décodeur).
+const crc = (buf) => { let c = ~0; for (const o of buf) { c ^= o; for (let k = 0; k < 8; k += 1) c = (c >>> 1) ^ (0xedb88320 & -(c & 1)); } return ~c >>> 0; };
+const morceau = (type, donnees) => { const t = Buffer.concat([Buffer.from(type), donnees]); const n = Buffer.alloc(4); n.writeUInt32BE(donnees.length); const k = Buffer.alloc(4); k.writeUInt32BE(crc(t)); return Buffer.concat([n, t, k]); };
+const png = (l, h) => { const ihdr = Buffer.alloc(13); ihdr.writeUInt32BE(l, 0); ihdr.writeUInt32BE(h, 4); ihdr[8] = 8; ihdr[9] = 2; const lignes = Buffer.alloc((l * 3 + 1) * h, 0x90); for (let y = 0; y < h; y += 1) lignes[y * (l * 3 + 1)] = 0; return Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), morceau('IHDR', ihdr), morceau('IDAT', deflateSync(lignes)), morceau('IEND', Buffer.alloc(0))]); };
+export const LEGENDE_PNG = png(200, 90);
+export const PNG_VIDE = png(0, 0);
 export const reponseGeocodage = (lon = 4.8357, lat = 45.764, score = 0.92) => JSON.stringify({
   type: 'FeatureCollection',
   features: [{ type: 'Feature', geometry: { type: 'Point', coordinates: [lon, lat] }, properties: { label: ADRESSE, score, type: 'housenumber' } }],
@@ -30,8 +38,9 @@ const LOCAL = (url) => ['localhost', '127.0.0.1'].includes(new URL(url).hostname
 
 // options.geocodage : { status, corps, attente } ; `attente: true` ne répond jamais (délai dépassé).
 // options.tuiles : { osm: 'ok' | 'abandon', ign: 'ok' | 'abandon', wms: 'ok' | 'abandon' }.
+// options.legende : { mode: 'ok' | 'abandon' | '404' | 'texte' | 'vide' | 'attente', retard (ms), parCouche: { <nom>: mode } } (images GetLegendGraphic, PNG de LEGENDE_PNG).
 export async function simuler(page, options = {}) {
-  const journal = { externes: [], geocodage: [], completion: [], osm: [], ign: [], wms: [], api: [] };
+  const journal = { externes: [], geocodage: [], completion: [], osm: [], ign: [], wms: [], legende: [], api: [] };
   const geocodage = options.geocodage ?? {};
   const tuiles = { osm: 'ok', ign: 'ok', wms: 'ok', ...options.tuiles };
   page.on('request', (r) => {
@@ -46,6 +55,7 @@ export async function simuler(page, options = {}) {
     else if (hote === 'data.geopf.fr' && r.url().includes('/wmts')) journal.ign.push(entree);
     else if (hote === 'tile.openstreetmap.org') journal.osm.push(entree);
     else if (hote === 'www.georisques.gouv.fr' && new URL(r.url()).pathname.startsWith('/api/')) journal.api.push(entree);
+    else if (hote === 'www.georisques.gouv.fr' && r.url().includes('REQUEST=GetLegendGraphic')) journal.legende.push(entree);
     else if (hote === 'www.georisques.gouv.fr') journal.wms.push(entree);
   });
   await page.route((url) => !LOCAL(url.href), (route) => route.abort());
@@ -70,6 +80,17 @@ export async function simuler(page, options = {}) {
     return route.fulfill({ status: o.status ?? 200, contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: o.corps ?? defaut() });
   };
   await page.route('https://www.georisques.gouv.fr/services**', tuile('wms'));
+  const legende = options.legende ?? {};
+  await page.route((url) => url.hostname === 'www.georisques.gouv.fr' && url.searchParams.get('REQUEST') === 'GetLegendGraphic', async (route) => {
+    const mode = legende.parCouche?.[new URL(route.request().url()).searchParams.get('LAYER')] ?? legende.mode ?? 'ok';
+    if (mode === 'attente') return;
+    if (legende.retard) await new Promise((resolve) => { setTimeout(resolve, legende.retard); });
+    if (mode === 'abandon') return route.abort();
+    if (mode === '404') return route.fulfill({ status: 404, contentType: 'text/plain', body: 'introuvable' });
+    if (mode === 'texte') return route.fulfill({ status: 200, contentType: 'text/html', body: '<p>pas une image</p>' });
+    if (mode === 'vide') return route.fulfill({ status: 200, contentType: 'image/png', body: PNG_VIDE });
+    return route.fulfill({ status: 200, contentType: 'image/png', body: LEGENDE_PNG });
+  });
   await page.route('https://www.georisques.gouv.fr/api/v1/gaspar/**', reponseApi('gaspar', () => reponseGaspar()));
   await page.route('https://www.georisques.gouv.fr/api/v1/rga**', reponseApi('rga', () => reponseRga()));
   return journal;
