@@ -189,7 +189,6 @@ function initialiser(donnees) {
   const cleEntree = (calque, couche) => `${calque}\u0000${couche}`;
   const construireLegende = () => {
     const modele = el('modele-legende-reelle');
-    const adresse = legende.querySelector('li:not([data-calque])');
     legende.style.setProperty('--legende-reserve', `${legendeConfig.hauteurReservee}rem`);
     for (const entree of libellesLegende(config)) {
       const item = modele.content.cloneNode(true);
@@ -201,8 +200,8 @@ function initialiser(donnees) {
       const img = item.querySelector('.legende__img');
       img.alt = legendeConfig.textes.alt.replace('{libelle}', entree.libelle);
       img.style.opacity = String(config.vue.opacite);
-      entreesLegendeDom.set(cleEntree(entree.calque, entree.nom), { li, img, echec: item.querySelector('.legende__echec'), etat: 'inactif', minuterie: null });
-      legende.insertBefore(item, adresse);
+      entreesLegendeDom.set(cleEntree(entree.calque, entree.nom), { li, couche: entree.nom, image: item.querySelector('.legende__image'), img, echec: item.querySelector('.legende__echec'), etat: 'inactif', minuterie: null });
+      legende.append(item);
     }
   };
   const annoncerChargement = () => {
@@ -216,6 +215,11 @@ function initialiser(donnees) {
     entree.etat = etat === 'ok' ? 'ok' : 'echec';
     if (etat === 'ok') {
       entree.img.hidden = false;
+      // image officielle dont la série est répétée deux fois (carteReelle.legende.serieRepetee) : seule la moitié haute est montrée
+      if (legendeConfig.serieRepetee.includes(entree.couche)) {
+        entree.image.style.blockSize = `${entree.img.getBoundingClientRect().height / 2}px`;
+        entree.image.style.overflow = 'hidden';
+      }
       entree.li.classList.add('legende__item--prete'); // la réserve est levée : l'entrée prend la hauteur de son image
     } else {
       entree.img.hidden = true;

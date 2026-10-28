@@ -1,5 +1,5 @@
 # Lot 10c — Retouches client : légende officielle de la carte, catégorie « Protection de la personne » chez les vendeurs
-Aperçu : `/lot-10c/` (non vérifiable depuis la session). Services tiers et images de légende simulés : aucun score ni résultat réel. Parties A et B faites en deux sessions, puis retouche après retour du client sur le rendu réel de la légende (grille, phrases retirées).
+Aperçu : `/lot-10c/` (non vérifiable depuis la session). Services tiers et images de légende simulés : aucun score ni résultat réel. Parties A et B faites en deux sessions, puis retouche après retour du client sur le rendu réel de la légende (grille, phrases et entrée « Votre adresse » retirées, série des argiles rognée).
 ## Livré
 A : légende officielle (image `GetLegendGraphic` par couche cochée) à la place des pastilles génériques ; `urlLegendeWms`, `entreesLegende`, `etatLegende` (logique pure) ; `carteReelle.legende` (données) ; états chargement et échec ; plancher de `legende` remesuré (`tests/outils/mesure-legende.mjs`). B : catégorie `protection-personne` en dernier dans `pro.html` (groupe « Aléas et catégories couverts », aide et message `vide` adaptés), réserve de hauteur du formulaire remesurée.
 ## Choix
@@ -11,7 +11,7 @@ Image à taille naturelle (8 rem au plus, opacité = couche) ; nom technique de 
 - CLS (JSON +400 ms, 360 à 1440 px) : diagnostic 0,005 → 0,005 (avec adresse et images : 0,005 au plus) ; pro 0,005 au plus (objectif 0,08) ; réserve du formulaire à 8 px au plus de la hauteur mesurée. Console : 0 message ; axe : 0 violation à 375, 768, 1440 px ; JavaScript désactivé : seul le `noscript`.
 - `CLAUDE.md` : 7 484 caractères, inchangé ; workflow et dépendances inchangés ; aucune valeur hexadécimale ajoutée.
 ## Écarts d'empreinte justifiés (`diagnostic` et `pro` seules régénérées)
-- `diagnostic` : entrées de légende = libellé + 8 rem. `legende` 424 → 877 px (375), 267 → 506 (768), 301 → 506 (1440) ; `exposition`, `equipements`, `pied` décalés de +453, +238, +205 px ; `exposition` 839 → 1044 px à 1440 px (étirée sur `legende`).
+- `diagnostic` : entrées de légende = libellé + 8 rem. `legende` 424 → 838 px (375), 267 → 467 (768), 301 → 467 (1440) ; `exposition`, `equipements`, `pied` décalés de +414, +200, +167 px ; `exposition` 839 → 1006 px à 1440 px (étirée sur `legende`).
 - `pro` : cinquième case d'aléas. `formulaire` 2257 → 2312 px (375, libellé sur deux lignes), 1644 → 1692 (768), 1622 → 1670 (1440) ; `pied` décalé d'autant.
 ## Tests adaptés (avant / après)
 - `comparateur-a`, `sav-a-pages` : liste de titres d'`apercu.txt` autorisés, 5 → 6 titres. `pro-a.test` : égalité des cinq éléments avec l'accueil → quatre premiers égaux + cinquième `protection-personne`.
@@ -19,9 +19,9 @@ Image à taille naturelle (8 rem au plus, opacité = couche) ; nom technique de 
 ## Points ouverts
 - **`GetLegendGraphic` n'est pas vérifié en réel** (paramètres inférés du GetCapabilities) ; si une légende affiche « indisponible », relever le nom de la couche.
 - Le contenu de l'image (classes, niveaux, couleurs) n'est pas lisible par un lecteur d'écran : une phrase de la légende renvoie au service Géorisques.
-- Retour client : l'image de légende des argiles contient deux séries (« Exposition forte, moyenne, faible » répétées) ; c'est le contenu du service, non retouché. Phrase « Elle suit les cases cochées… » et note Géorisques retirées (la note d'accessibilité demandée disparaît ; le lien « Source officielle » reste sous les cases). Test `sav-a-logique` intermittent sous forte charge (repassé seul).
+- Retour client : l'image de légende des argiles contient deux séries (« Exposition forte, moyenne, faible » répétées) ; c'est le contenu du service, la moitié basse est masquée. Entrée « Votre adresse » retirée ; série répétée de l'image des argiles masquée (donnée `serieRepetee`, moitié haute seule : à retirer si le service corrige son image). Phrase « Elle suit les cases cochées… » et note Géorisques retirées (la note d'accessibilité demandée disparaît ; le lien « Source officielle » reste sous les cases). Test `sav-a-logique` intermittent sous forte charge (repassé seul).
 ## Choix à valider
-- Phrases de la légende retirées (retouche client) ; légende officielle plutôt que pastilles ; opacité de la légende = celle des couches (0,7) ; hauteur de 8 rem au plus.
+- Phrases et « Votre adresse » retirées, rognage des argiles (retouche client) ; légende officielle plutôt que pastilles ; opacité de la légende = celle des couches (0,7) ; hauteur de 8 rem au plus.
 - Texte d'échec sans fausse couleur ; groupe vendeur « Aléas et catégories couverts » ; une seule catégorie « Protection de la personne (froid, chaleur, chutes) » au lieu de trois.
 ## À tester par moi
 Sur un vrai téléphone et deux navigateurs, sur `/lot-10c/` : saisir une adresse réelle, arriver au diagnostic, comparer la couleur des zones de la carte à la légende pour les trois calques (zone inondable, argiles, commune concernée par les feux de forêt) ; cocher et décocher chaque calque et vérifier que la légende suit ; si une légende affiche « indisponible », me dire laquelle (nom de la couche) ; sur `/pro.html`, vérifier la nouvelle case, tenter un envoi à vide, puis envoyer avec la seule nouvelle case ; impression « calme et technique » ; blocs à ajuster désignés par `E2-4`, `E5-4` ; sur `/lots/`, « Page Hi-Fi » mène à `/lot-10c/`.

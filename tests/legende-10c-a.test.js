@@ -101,6 +101,10 @@ describe('données carteReelle.legende', () => {
     expect(legende.textes.alt).toBe('Légende officielle Géorisques : {libelle}');
     expect(legende.textes.chargement).toBe('Chargement de la légende…');
     expect(legende.textes.indisponible).toBe('Légende officielle indisponible pour cette couche.');
+    expect(legende.serieRepetee).toEqual(['ALEARG']); // l'image officielle des argiles répète sa série
+    const noms = ['inondation', 'argile', 'feu'].flatMap((c) => config.calques[c].map((l) => l.nom));
+    for (const nom of legende.serieRepetee) expect(noms).toContain(nom);
+    expect(diagnostic.textes.carte.legendeAdresse).toBeUndefined(); // entrée « Votre adresse » retirée
     expect(legende.textes.note).toBeUndefined(); // retouche client : note et phrase sous la légende retirées
   });
   it('plus aucune clé de couleur ni de motif d\'ancienne pastille', () => {
@@ -118,6 +122,7 @@ describe('diagnostic.html : gabarit de légende', () => {
     expect(gabarit).toContain('legende__echec');
     expect(gabarit).not.toMatch(/\sid=/);
     expect(gabarit).not.toMatch(/<svg|legende__motif|legende__fond/);
+    expect(html).not.toMatch(/legende__repere|Votre adresse/);
     expect(gabarit).not.toMatch(/\ssrc=/); // jamais de requête avant l'affichage de la légende
   });
   it('région role="status", note issue des données, aucun id dupliqué', () => {
@@ -138,7 +143,7 @@ describe('CSS de la légende', () => {
   const css = lire('css/diagnostic.css');
   const tokens = lire('css/tokens.css');
   it('plus de règle ni de jeton orphelin des anciennes pastilles', () => {
-    expect(css).not.toMatch(/legende__motif|legende__fond|--teinte/);
+    expect(css).not.toMatch(/legende__motif|legende__fond|legende__repere|--teinte/);
     expect(tokens).not.toMatch(/--calque-/);
     for (const f of readdirSync('css')) expect(lire(`css/${f}`), f).not.toMatch(/--calque-|--teinte|legende__motif|legende__fond/);
   });

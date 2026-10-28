@@ -216,7 +216,6 @@
         "feu": "Feux de forêt",
         "chaleur": "Chaleur extrême"
       },
-      "legendeAdresse": "Votre adresse",
       "lienGeorisques": "Source officielle : Géorisques",
       "nouvelOnglet": "(nouvel onglet)"
     }
@@ -287,6 +286,7 @@
       "delai": 10000,
       "langue": "fre",
       "sld": "1.1.0",
+      "serieRepetee": ["ALEARG"],
       "textes": {
         "alt": "Légende officielle Géorisques : {libelle}",
         "chargement": "Chargement de la légende…",

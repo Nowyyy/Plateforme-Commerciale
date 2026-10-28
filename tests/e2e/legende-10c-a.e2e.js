@@ -66,7 +66,8 @@ test('décocher masque l\'entrée sans nouvelle requête, recocher la réaffiche
   await expect(page.locator('#legende-reelle li[data-couche="ALEARG"] img')).toBeVisible();
   await page.waitForTimeout(500);
   expect(journal.legende).toHaveLength(4);
-  await expect(page.locator('#legende-reelle li').last()).toHaveText('Votre adresse');
+  await expect(page.locator('#legende-reelle')).not.toContainText('Votre adresse'); // retouche client : entrée retirée
+  await expect(page.locator('.legende__repere')).toHaveCount(0);
 });
 
 test('images affichées : hauteur maximale de 8 rem, alt issu des données, opacité de la couche, aucune pastille', async ({ page }) => {
@@ -90,6 +91,26 @@ test('images affichées : hauteur maximale de 8 rem, alt issu des données, opac
   await expect(page.locator('.legende__motif, .legende__fond')).toHaveCount(0);
   await expect(page.locator('[data-role="legende"]')).not.toContainText('Les couleurs et les niveaux sont ceux du service Géorisques.'); // retouche client : note retirée
   await expect(page.locator('[data-role="exposition"]')).toContainText('Source officielle : Géorisques'); // le lien officiel reste sous les cases
+});
+
+test('argiles : la série répétée de l\'image officielle est rognée (moitié haute seule), les autres images restent entières', async ({ page }) => {
+  await simuler(page);
+  await ouvrirDiagnostic(page, 1440);
+  await carteAffichee(page);
+  await expect(page.locator('#legende-reelle .legende__item--prete')).toHaveCount(4);
+  await page.waitForTimeout(200);
+  const mesure = (couche) => page.locator(`#legende-reelle li[data-couche="${couche}"]`).evaluate((li) => ({
+    image: li.querySelector('.legende__image').getBoundingClientRect().height,
+    img: li.querySelector('img').getBoundingClientRect().height,
+    debord: globalThis.getComputedStyle(li.querySelector('.legende__image')).overflow,
+  }));
+  const argile = await mesure('ALEARG');
+  expect(argile.debord).toBe('hidden');
+  expect(Math.abs(argile.image - argile.img / 2)).toBeLessThanOrEqual(1);
+  for (const couche of ['ALEA_SYNT_01_04FAI_FXX', 'PPRN_COMMUNE_RISQINOND_PRESCRIT', 'PPRN_COMMUNE_FEU_APPROUV']) {
+    const m = await mesure(couche);
+    expect(Math.abs(m.image - m.img), couche).toBeLessThanOrEqual(1);
+  }
 });
 
 for (const [mode, options] of [
