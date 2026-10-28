@@ -3,7 +3,7 @@ Aperçu : `/lot-10c/` (non vérifiable depuis la session). Services tiers et ima
 ## Livré
 A : légende officielle (image `GetLegendGraphic` par couche cochée) à la place des pastilles génériques ; `urlLegendeWms`, `entreesLegende`, `etatLegende` (logique pure) ; `carteReelle.legende` (données) ; états chargement et échec ; plancher de `legende` remesuré (`tests/outils/mesure-legende.mjs`). B : catégorie `protection-personne` en dernier dans `pro.html` (groupe « Aléas et catégories couverts », aide et message `vide` adaptés), réserve de hauteur du formulaire remesurée.
 ## Choix
-Image à taille naturelle (8 rem au plus, opacité = couche) ; nom technique de la couche conservé en texte masqué ; entrées en grille de colonnes égales dès 768 px (15 rem au moins), une colonne dessous, réserve de 8 rem levée quand l'image est reçue ; légende réarmée après un échec quand la carte est recréée ; libellé du lien du récapitulatif vendeur inchangé (« Aléas couverts par vos produits ») car seuls légende, aide et message `vide` devaient changer.
+Image à taille naturelle (8 rem au plus, réserve de 5 rem, opacité = couche ; une image plus haute que 5 rem agrandirait le cadre) ; nom technique de la couche conservé en texte masqué ; entrées en grille de colonnes égales dès 768 px (15 rem au moins), une colonne dessous, réserve de 8 rem levée quand l'image est reçue ; légende réarmée après un échec quand la carte est recréée ; libellé du lien du récapitulatif vendeur inchangé (« Aléas couverts par vos produits ») car seuls légende, aide et message `vide` devaient changer.
 ## Critères (chiffres)
 - Vitest 778 → 807 (29 nouveaux : 21 + 8) ; Playwright 748 → 779 (31 nouveaux : 18 + 13) ; lint propre ; aucun test supprimé.
 - Rectangles avant / après l'arrivée des images (réponse retardée de 2 s) : `legende`, `exposition`, `equipements`, `pied` identiques à 1 px, à 375, 768 et 1440 px.
@@ -11,7 +11,7 @@ Image à taille naturelle (8 rem au plus, opacité = couche) ; nom technique de 
 - CLS (JSON +400 ms, 360 à 1440 px) : diagnostic 0,005 → 0,005 (avec adresse et images : 0,005 au plus) ; pro 0,005 au plus (objectif 0,08) ; réserve du formulaire à 8 px au plus de la hauteur mesurée. Console : 0 message ; axe : 0 violation à 375, 768, 1440 px ; JavaScript désactivé : seul le `noscript`.
 - `CLAUDE.md` : 7 484 caractères, inchangé ; workflow et dépendances inchangés ; aucune valeur hexadécimale ajoutée.
 ## Écarts d'empreinte justifiés (`diagnostic` et `pro` seules régénérées)
-- `diagnostic` : entrées de légende = libellé + 8 rem. `legende` 424 → 838 px (375), 267 → 467 (768), 301 → 467 (1440) ; `exposition`, `equipements`, `pied` décalés de +414, +200, +167 px ; `exposition` 839 → 1006 px à 1440 px (étirée sur `legende`).
+- `diagnostic` : entrées de légende = libellé + 5 rem (réserve ramenée de 8 à 5 rem après retour client : zone blanche ; images réelles de 25 à 65 px). `legende` 424 → 646 px (375), 267 → 371 (768), 301 → 371 (1440) ; `exposition`, `equipements`, `pied` décalés de +222, +104, +71 px ; `exposition` 839 → 910 px à 1440 px (étirée sur `legende`).
 - `pro` : cinquième case d'aléas. `formulaire` 2257 → 2312 px (375, libellé sur deux lignes), 1644 → 1692 (768), 1622 → 1670 (1440) ; `pied` décalé d'autant.
 ## Tests adaptés (avant / après)
 - `comparateur-a`, `sav-a-pages` : liste de titres d'`apercu.txt` autorisés, 5 → 6 titres. `pro-a.test` : égalité des cinq éléments avec l'accueil → quatre premiers égaux + cinquième `protection-personne`.

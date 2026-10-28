@@ -87,7 +87,7 @@ test('images affichées : hauteur maximale de 8 rem, alt issu des données, opac
   const sansAlt = await images.evaluateAll((els) => els.filter((e) => !e.getAttribute('alt')).length);
   expect(sansAlt).toBe(0);
   const taille = await images.first().evaluate((e) => [e.getBoundingClientRect().width, e.getBoundingClientRect().height]);
-  expect(taille[0]).toBeCloseTo(200 * (taille[1] / 90) * 1, 0); // proportions conservées
+  expect(taille[0]).toBeCloseTo(200 * (taille[1] / 60) * 1, 0); // proportions conservées
   await expect(page.locator('.legende__motif, .legende__fond')).toHaveCount(0);
   await expect(page.locator('[data-role="legende"]')).not.toContainText('Les couleurs et les niveaux sont ceux du service Géorisques.'); // retouche client : note retirée
   await expect(page.locator('[data-role="exposition"]')).toContainText('Source officielle : Géorisques'); // le lien officiel reste sous les cases
@@ -129,7 +129,7 @@ for (const [mode, options] of [
     await expect(page.locator('#legende-reelle img:not([hidden])')).toHaveCount(0);
     await expect(page.locator('#legende-reelle img:visible')).toHaveCount(0); // ni image cassée ni texte alternatif affiché
     await expect(page.locator('.legende__motif, .legende__fond')).toHaveCount(0);
-    for (const hauteur of await entrees(page).evaluateAll((els) => els.map((e) => e.querySelector('.legende__image').getBoundingClientRect().height))) expect(hauteur).toBeGreaterThanOrEqual(128);
+    for (const hauteur of await entrees(page).evaluateAll((els) => els.map((e) => e.querySelector('.legende__image').getBoundingClientRect().height))) expect(hauteur).toBeGreaterThanOrEqual(80); // réserve de 5 rem
     await expect(page.locator('#carte-reelle .carte-reelle__repere')).toHaveCount(1); // la carte n'est pas affectée
     expect(sansBruitReseau(messages)).toEqual([]);
   });

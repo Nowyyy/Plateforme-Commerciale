@@ -4,11 +4,11 @@ import { deflateSync } from 'node:zlib';
 // Toute requête vers un autre hôte que localhost est refusée et journalisée.
 export const ADRESSE = '12 rue des Tilleuls, 69000 Lyon';
 export const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==', 'base64');
-// Image de légende simulée : 200 × 90 px, un aplat (généré sans dépendance) ; PNG_VIDE : taille naturelle nulle (IHDR 0 × 0, refusée par le décodeur).
+// Image de légende simulée : 200 × 60 px (taille des vraies légendes : 25 à 65 px), un aplat (généré sans dépendance) ; PNG_VIDE : taille naturelle nulle (IHDR 0 × 0, refusée par le décodeur).
 const crc = (buf) => { let c = ~0; for (const o of buf) { c ^= o; for (let k = 0; k < 8; k += 1) c = (c >>> 1) ^ (0xedb88320 & -(c & 1)); } return ~c >>> 0; };
 const morceau = (type, donnees) => { const t = Buffer.concat([Buffer.from(type), donnees]); const n = Buffer.alloc(4); n.writeUInt32BE(donnees.length); const k = Buffer.alloc(4); k.writeUInt32BE(crc(t)); return Buffer.concat([n, t, k]); };
 const png = (l, h) => { const ihdr = Buffer.alloc(13); ihdr.writeUInt32BE(l, 0); ihdr.writeUInt32BE(h, 4); ihdr[8] = 8; ihdr[9] = 2; const lignes = Buffer.alloc((l * 3 + 1) * h, 0x90); for (let y = 0; y < h; y += 1) lignes[y * (l * 3 + 1)] = 0; return Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), morceau('IHDR', ihdr), morceau('IDAT', deflateSync(lignes)), morceau('IEND', Buffer.alloc(0))]); };
-export const LEGENDE_PNG = png(200, 90);
+export const LEGENDE_PNG = png(200, 60);
 export const PNG_VIDE = png(0, 0);
 export const reponseGeocodage = (lon = 4.8357, lat = 45.764, score = 0.92) => JSON.stringify({
   type: 'FeatureCollection',

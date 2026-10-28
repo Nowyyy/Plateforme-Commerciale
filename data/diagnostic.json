@@ -282,7 +282,7 @@
       "crs": "EPSG:3857"
     },
     "legende": {
-      "hauteurReservee": 8,
+      "hauteurReservee": 5,
       "delai": 10000,
       "langue": "fre",
       "sld": "1.1.0",

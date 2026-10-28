@@ -94,7 +94,7 @@ describe('données carteReelle.legende', () => {
   const { legende } = config;
   it('clés complètes, textes non vides, réserve et délai entiers positifs', () => {
     expect(Number.isInteger(legende.hauteurReservee) && legende.hauteurReservee > 0).toBe(true);
-    expect(legende.hauteurReservee).toBe(8);
+    expect(legende.hauteurReservee).toBe(5); // retouche client : la réserve suit la plus haute image réelle (argiles rognées, environ 4 rem), non le plafond de 8 rem
     expect(Number.isInteger(legende.delai) && legende.delai > 0).toBe(true);
     expect(legende.delai).toBe(10000);
     for (const cle of ['alt', 'chargement', 'indisponible']) expect(legende.textes[cle].trim(), cle).not.toBe('');
