@@ -49,8 +49,10 @@ describe('lot 8b-A : données de data/pro.json', () => {
     expect(pro.limites.email.localMax).toBeLessThan(pro.limites.email.max);
   });
 
-  it('aléas : mêmes id et titres que aleas.liste de data/accueil.json', () => {
-    expect(pro.aleas).toEqual(accueil.aleas.liste.map(({ id, titre }) => ({ id, titre })));
+  it('aléas : les quatre premiers sont ceux de aleas.liste de data/accueil.json, dans l\'ordre ; le cinquième est protection-personne', () => {
+    expect(pro.aleas.slice(0, 4)).toEqual(accueil.aleas.liste.map(({ id, titre }) => ({ id, titre })));
+    expect(pro.aleas).toHaveLength(5);
+    expect(pro.aleas[4].id).toBe('protection-personne');
   });
 
   it('liens.pro vaut pro.html et tous les liens pointent vers des fichiers existants', () => {

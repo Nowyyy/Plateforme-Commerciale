@@ -54,8 +54,8 @@
         "aide": "9 à 15 chiffres, « + » autorisé en tête."
       },
       "aleas": {
-        "libelle": "Aléas couverts par vos produits",
-        "aide": "Cochez au moins un aléa."
+        "libelle": "Aléas et catégories couverts",
+        "aide": "Cochez au moins une case."
       },
       "description": {
         "libelle": "Description de vos produits",
@@ -111,6 +111,10 @@
     {
       "id": "canicule",
       "titre": "Canicule et chaleur extrême"
+    },
+    {
+      "id": "protection-personne",
+      "titre": "Protection de la personne (froid, chaleur, chutes)"
     }
   ],
   "limites": {
@@ -167,7 +171,7 @@
       "format": "Le numéro de téléphone n'est pas valide : 9 à 15 chiffres, « + » autorisé en tête."
     },
     "aleas": {
-      "vide": "Cochez au moins un aléa couvert par vos produits.",
+      "vide": "Choisissez au moins un aléa ou une catégorie.",
       "invalide": "Un des aléas sélectionnés n'est pas reconnu. Cochez-le de nouveau."
     },
     "description": {
