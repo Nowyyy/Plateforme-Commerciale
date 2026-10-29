@@ -134,6 +134,50 @@ export function libellesLegende(config) {
   return calques.flatMap((calque) => listeCouches(calque, config).map((c) => ({ calque, nom: c.nom, libelle: texte(c.libelle), technique: texte(textes.nomTechnique).replace('{nom}', c.nom) })));
 }
 
+// Image de légende officielle d'une couche (GetLegendGraphic) : base WMS de la configuration (hôte autorisé), nom technique seul variable.
+// Nom vide, avec espace ou caractère de contrôle, ou base refusée : chaîne vide.
+export function urlLegendeWms(couche, config) {
+  const nom = texte(couche);
+  const wms = estObjet(config) && estObjet(config.wms) ? config.wms : {};
+  const legende = estObjet(config) && estObjet(config.legende) ? config.legende : {};
+  const base = texte(wms.base);
+  if (nom === '' || !sansControle(nom) || !hoteAutorise(base)) return '';
+  try {
+    const u = new URL(base);
+    u.search = new URLSearchParams([
+      ['language', texte(legende.langue)],
+      ['SERVICE', 'WMS'],
+      ['VERSION', texte(wms.version)],
+      ['REQUEST', 'GetLegendGraphic'],
+      ['SLD_VERSION', texte(legende.sld)],
+      ['FORMAT', texte(wms.format)],
+      ['LAYER', nom],
+    ]).toString();
+    return u.toString();
+  } catch {
+    return '';
+  }
+}
+
+// Entrées de légende : une par couche des calques cochés et proposés, dans l'ordre de la configuration (chaleur : aucune).
+export function entreesLegende(entree) {
+  const { coches, proposes, config } = estObjet(entree) ? entree : {};
+  const cochees = new Set(Array.isArray(coches) ? coches : []);
+  const proposees = new Set(Array.isArray(proposes) ? proposes : []);
+  const calques = estObjet(config) && estObjet(config.calques) ? Object.keys(config.calques) : [];
+  return calques
+    .filter((calque) => cochees.has(calque) && proposees.has(calque))
+    .flatMap((calque) => listeCouches(calque, config).map((c) => ({ calque, couche: c.nom, libelle: texte(c.libelle) })));
+}
+
+// État d'une image de légende selon l'événement : { type: 'demande' | 'load' | 'error' | 'delai', largeur, hauteur } (tailles naturelles).
+export function etatLegende(evenement) {
+  if (!estObjet(evenement)) return 'chargement';
+  if (evenement.type === 'error' || evenement.type === 'delai') return 'echec';
+  if (evenement.type === 'load') return estNombre(evenement.largeur) && estNombre(evenement.hauteur) && evenement.largeur > 0 && evenement.hauteur > 0 ? 'ok' : 'echec';
+  return 'chargement';
+}
+
 // ---- Aléas recensés à l'adresse (lot 4d-C) : lecture tolérante de l'API Géorisques (formats inférés, non confirmés par un échantillon réel) ----
 
 const coord = (v) => (estNombre(v) ? String(Number(v.toFixed(6))) : '');

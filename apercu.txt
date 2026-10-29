@@ -1,3 +1,3 @@
 index.html
 type: hifi
-titre: Qualité technique : mesures et corrections
+titre: Retouches client : légende de carte, catégorie vendeur

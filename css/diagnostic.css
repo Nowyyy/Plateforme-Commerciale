@@ -367,16 +367,6 @@ html[data-rendu="erreur"] .diag__comparer {
 }
 
 /* Carte E2-3, légende E2-4 et exposition E2-5 : cases d'aléas, légende (cadre de la carte dans carte-reelle.css) */
-/* teinte de chaque calque, appliquée à la pastille de légende */
-[data-calque="inondation"] { --teinte: var(--calque-inondation); }
-[data-calque="argile"] { --teinte: var(--calque-argile); }
-[data-calque="feu"] { --teinte: var(--calque-feu); }
-
-.legende__fond {
-  fill: var(--teinte);
-  fill-opacity: 0.14;
-}
-
 .calques {
   min-inline-size: 0;
   margin: 0;
@@ -428,14 +418,23 @@ html[data-rendu="erreur"] .diag__comparer {
   accent-color: var(--color-navy);
 }
 
+/* Légende officielle : grille de colonnes égales (une colonne sous 768 px), entrées alignées en haut. Chaque entrée réserve le libellé plus la hauteur de l'image (--legende-reserve, carteReelle.legende.hauteurReservee) tant que
+   l'image n'est pas arrivée : le plancher du cadre (min-block-size) garde alors les blocs en place ; l'image reçue lève la réserve. */
 .legende {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-5);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4) var(--space-5);
   margin: 0;
   padding: 0;
   list-style: none;
   font-size: var(--text-sm);
+}
+
+@media (min-width: 768px) {
+  .legende {
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  }
 }
 
 .legende__item {
@@ -444,23 +443,38 @@ html[data-rendu="erreur"] .diag__comparer {
   gap: var(--space-3);
 }
 
-.legende__motif {
-  flex: none;
-  inline-size: 1.75rem;
-  block-size: 1.1875rem;
-  border: 1px solid var(--teinte);
-  border-radius: var(--radius-sm);
+.legende__item--couche {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-inline-size: 0;
 }
 
-.legende__repere {
-  flex: none;
-  inline-size: 1.75rem;
-  block-size: 1.1875rem;
-  fill: var(--color-navy);
+.legende__image {
+  display: block;
+  min-block-size: var(--legende-reserve, 8rem);
+  max-inline-size: 100%;
 }
 
-.legende__repere circle {
-  fill: var(--color-on-navy);
+.legende__item--prete .legende__image {
+  min-block-size: 0;
+}
+
+.legende__img {
+  display: block;
+  inline-size: auto;
+  block-size: auto;
+  max-inline-size: 100%;
+  max-block-size: 8rem;
+}
+
+.legende__img[hidden],
+.legende__echec[hidden] {
+  display: none;
+}
+
+.legende__echec {
+  color: var(--color-text-secondary);
 }
 
 .lien-externe {
@@ -515,7 +529,7 @@ html[data-rendu="erreur"] .diag__legende {
 }
 
 /* Planchers de hauteur (CLS) : contenu maximal de chaque cadre, mesuré par point de rupture (adresse simulée, mode de secours des aléas,
-   quatre couches affichées). Le remplissage par JavaScript, la lecture des aléas et l'apparition de la carte ne décalent donc rien. */
+   quatre couches affichées ; légende : images en attente (réserves de 8 rem), `tests/outils/mesure-legende.mjs`). Le remplissage par JavaScript, la lecture des aléas et l'apparition de la carte ne décalent donc rien. */
 .diag__panneau {
   min-block-size: 27.6rem;
 }
@@ -563,60 +577,54 @@ html[data-rendu="erreur"] .diag__legende {
 }
 
 .diag__legende .bloc-carte {
-  min-block-size: 26.5rem;
+  min-block-size: 40.4rem;
 }
 
-@media (min-width: 389px) {
+@media (min-width: 404px) {
   .diag__legende .bloc-carte {
-    min-block-size: 23.7rem;
+    min-block-size: 39.0rem;
   }
 }
 
-@media (min-width: 414px) {
+@media (min-width: 556px) {
   .diag__legende .bloc-carte {
-    min-block-size: 22.3rem;
+    min-block-size: 37.6rem;
   }
 }
 
-@media (min-width: 479px) {
+@media (min-width: 558px) {
   .diag__legende .bloc-carte {
-    min-block-size: 20.9rem;
+    min-block-size: 36.2rem;
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 768px) {
   .diag__legende .bloc-carte {
-    min-block-size: 18.1rem;
+    min-block-size: 23.2rem;
   }
 }
 
-@media (min-width: 700px) {
+@media (min-width: 880px) {
   .diag__legende .bloc-carte {
-    min-block-size: 16.7rem;
+    min-block-size: 26.0rem;
   }
 }
 
-@media (min-width: 850px) {
+@media (min-width: 934px) {
   .diag__legende .bloc-carte {
-    min-block-size: 14.8rem;
+    min-block-size: 23.2rem;
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1146px) {
   .diag__legende .bloc-carte {
-    min-block-size: 12.9rem;
-  }
-}
-
-@media (min-width: 1199px) {
-  .diag__legende .bloc-carte {
-    min-block-size: 11rem;
+    min-block-size: 15.3rem;
   }
 }
 
 @media (min-width: 1200px) {
   .diag__legende .bloc-carte {
-    min-block-size: 14.8rem;
+    min-block-size: 23.2rem;
   }
 }
 

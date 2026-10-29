@@ -206,8 +206,7 @@
       }
     },
     "legende": {
-      "titre": "Légende",
-      "phrase": "Elle suit les cases cochées. Fond de carte : OpenStreetMap, repli automatique sur le Plan IGN."
+      "titre": "Légende"
     },
     "carte": {
       "titre": "Carte",
@@ -217,7 +216,6 @@
         "feu": "Feux de forêt",
         "chaleur": "Chaleur extrême"
       },
-      "legendeAdresse": "Votre adresse",
       "lienGeorisques": "Source officielle : Géorisques",
       "nouvelOnglet": "(nouvel onglet)"
     }
@@ -282,6 +280,18 @@
       "format": "image/png",
       "transparent": true,
       "crs": "EPSG:3857"
+    },
+    "legende": {
+      "hauteurReservee": 5,
+      "delai": 10000,
+      "langue": "fre",
+      "sld": "1.1.0",
+      "serieRepetee": ["ALEARG"],
+      "textes": {
+        "alt": "Légende officielle Géorisques : {libelle}",
+        "chargement": "Chargement de la légende…",
+        "indisponible": "Légende officielle indisponible pour cette couche."
+      }
     },
     "calques": {
       "inondation": [

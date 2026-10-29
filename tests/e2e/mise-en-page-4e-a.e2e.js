@@ -58,12 +58,12 @@ test('375 et 768 px : ordre vertical adresse, carte, légende, exposition, équi
   }
 });
 
-test('légende : une entrée par couche affichée plus « Votre adresse » ; décocher une case masque l\'entrée ; nom technique masqué visuellement ; phrase de fond de carte', async ({ page }) => {
+test('légende : une entrée par couche affichée, aucune entrée « Votre adresse » (retouche client lot 10c) ; décocher une case masque l\'entrée ; nom technique masqué visuellement ; phrase de fond de carte', async ({ page }) => {
   await simuler(page);
   await ouvrirDiagnostic(page, 1440);
   await carteAffichee(page);
-  await expect(entreesVisibles(page)).toHaveCount(5); // inondation (2 couches), argiles, feux, adresse
-  await expect(entreesVisibles(page).last()).toHaveText('Votre adresse');
+  await expect(entreesVisibles(page)).toHaveCount(4); // inondation (2 couches), argiles, feux
+  await expect(page.locator('#legende-reelle')).not.toContainText('Votre adresse');
   const argile = entreesVisibles(page).filter({ hasText: 'Aléa retrait-gonflement des argiles (Géorisques)' });
   await expect(argile).toHaveCount(1);
   await expect(argile.locator('.legende__technique')).toHaveText('Couche : ALEARG');
@@ -72,14 +72,14 @@ test('légende : une entrée par couche affichée plus « Votre adresse » ; dé
   expect(technique.width).toBeLessThanOrEqual(1); // masqué visuellement, lisible par les lecteurs d'écran
   const legende = page.locator('[data-role="legende"]');
   await expect(legende.getByRole('heading', { level: 2, name: 'Légende' })).toBeVisible();
-  await expect(legende).toContainText('Elle suit les cases cochées. Fond de carte : OpenStreetMap, repli automatique sur le Plan IGN.');
+  await expect(legende).not.toContainText('Elle suit les cases cochées'); // retouche client lot 10c : phrase retirée
   await page.getByRole('checkbox', { name: 'Retrait-gonflement des argiles' }).uncheck();
-  await expect(entreesVisibles(page)).toHaveCount(4);
+  await expect(entreesVisibles(page)).toHaveCount(3);
   await expect(page.locator('#legende-reelle li[hidden] .legende__technique')).toHaveText('Couche : ALEARG');
   await page.getByRole('checkbox', { name: 'Zone inondable' }).uncheck();
-  await expect(entreesVisibles(page)).toHaveCount(2); // feux et adresse
+  await expect(entreesVisibles(page)).toHaveCount(1); // feux
   await page.getByRole('checkbox', { name: 'Zone inondable' }).check();
-  await expect(entreesVisibles(page)).toHaveCount(4);
+  await expect(entreesVisibles(page)).toHaveCount(3);
 });
 
 test('aucun choix de fond : ni groupe « Fond de carte », ni radio OpenStreetMap ou Plan IGN', async ({ page }) => {

@@ -126,11 +126,10 @@
           <h2 id="titre-legende" data-texte="diagnostic.textes.legende.titre"></h2>
           <ul class="legende carte-reelle__legende" id="legende-reelle">
             <template id="modele-legende-reelle">
-              <li class="legende__item"><svg class="legende__motif" viewBox="0 0 24 16" aria-hidden="true" focusable="false"><rect class="legende__fond" width="24" height="16" rx="2"/></svg><span class="legende__texte"><span class="legende__libelle"></span> <span class="legende__technique visuellement-cache"></span></span></li>
+              <li class="legende__item legende__item--couche" hidden><span class="legende__texte"><span class="legende__libelle"></span> <span class="legende__technique visuellement-cache"></span></span><span class="legende__image"><img class="legende__img" alt="" hidden><span class="legende__echec" hidden></span></span></li>
             </template>
-            <li class="legende__item"><svg class="legende__repere" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="8"/></svg><span data-texte="diagnostic.textes.carte.legendeAdresse"></span></li>
           </ul>
-          <p class="diag__mention" data-texte="diagnostic.textes.legende.phrase"></p>
+          <p class="visuellement-cache" id="legende-etat" role="status"></p>
         </div>
       </section>
       <section class="diag__bloc diag__exposition" data-bloc="E2-5" data-role="exposition" aria-labelledby="titre-exposition">

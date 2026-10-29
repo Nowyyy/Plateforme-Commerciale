@@ -36,10 +36,7 @@
   --color-border-fort: #9aa8bd;
   --color-relief: color-mix(in srgb, var(--color-navy) 10%, transparent);
   --opacite-relief-mobile: 0.5;
-  /* Légende des calques de la carte réelle : teintes dérivées (ni rouge ni ambre) */
-  --calque-inondation: #2b6cb0;
-  --calque-argile: #7c5e99;
-  --calque-feu: #2d6a4f;
+  /* Pastille d'aléa sélectionnée (bloc équipements) */
   --color-pastille-active: var(--color-navy);
   --color-on-pastille-active: var(--color-on-navy);
 

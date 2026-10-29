@@ -105,7 +105,7 @@ test('chaque règle par l\'interface : SIRET, e-mail, téléphone, description, 
   await page.locator('#description').evaluate((el) => { el.value = 'a'.repeat(1001); });
   await envoyer(page).click();
   await expect(erreur(page, 'description')).toContainText('trop longue');
-  await expect(erreur(page, 'aleas')).toContainText('Cochez au moins un aléa');
+  await expect(erreur(page, 'aleas')).toContainText('Choisissez au moins un aléa ou une catégorie');
   await page.getByLabel('Feux de forêt').check();
   await expect(erreur(page, 'aleas')).toBeHidden();
   // maxlength : le navigateur limite la saisie à 1 000 caractères
@@ -132,7 +132,7 @@ test('clavier : Entrée dans un champ valide, Tab suit l\'ordre du formulaire, l
     await page.keyboard.press('Tab');
   }
   expect(vus).toEqual(['societe', 'siret', 'prenom', 'nom', 'email', 'telephone', 'Inondations et crues', 'Grêle et vents violents', 'Feux de forêt',
-    'Canicule et chaleur extrême', 'description', 'message', 'consentement', 'Envoyer ma candidature', vus[14]]);
+    'Canicule et chaleur extrême', 'Protection de la personne (froid, chaleur, chutes)', 'description', 'message', 'consentement', 'Envoyer ma candidature']); // lot 10c-B : cinquième case
 
   for (const touche of ['Enter', 'Space']) {
     await page.reload();

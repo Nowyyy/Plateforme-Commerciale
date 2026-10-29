@@ -256,32 +256,62 @@ html[data-rendu="erreur"] .pro__bloc {
   }
 }
 
-/* Réserve de hauteur du formulaire tant qu'il est masqué (avant le branchement) : valeurs mesurées de 360 à 1440 px (CLS) */
+/* Réserve de hauteur du formulaire tant qu'il est masqué (avant le branchement) : hauteur mesurée de la carte, cinq cases d'aléas, de 360 à 1440 px (lot 10c-B, `tests/outils/cls-pro.mjs`) */
 html:not([data-formulaire]) .pro__carte--formulaire {
-  min-block-size: 139rem;
+  min-block-size: 142.5rem;
 }
 
-@media (min-width: 390px) {
+@media (min-width: 389px) {
   html:not([data-formulaire]) .pro__carte--formulaire {
-    min-block-size: 137rem;
+    min-block-size: 141.11rem;
   }
 }
 
-@media (min-width: 600px) {
+@media (min-width: 433px) {
   html:not([data-formulaire]) .pro__carte--formulaire {
-    min-block-size: 132rem;
+    min-block-size: 139.71rem;
+  }
+}
+
+@media (min-width: 467px) {
+  html:not([data-formulaire]) .pro__carte--formulaire {
+    min-block-size: 138.31rem;
+  }
+}
+
+@media (min-width: 495px) {
+  html:not([data-formulaire]) .pro__carte--formulaire {
+    min-block-size: 137.86rem;
+  }
+}
+
+@media (min-width: 555px) {
+  html:not([data-formulaire]) .pro__carte--formulaire {
+    min-block-size: 137.41rem;
+  }
+}
+
+@media (min-width: 593px) {
+  html:not([data-formulaire]) .pro__carte--formulaire {
+    min-block-size: 135.81rem;
+  }
+}
+
+@media (min-width: 603px) {
+  html:not([data-formulaire]) .pro__carte--formulaire {
+    min-block-size: 133.01rem;
   }
 }
 
 @media (min-width: 768px) {
   html:not([data-formulaire]) .pro__carte--formulaire {
-    min-block-size: 100rem;
+    min-block-size: 103.76rem;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 907px) {
   html:not([data-formulaire]) .pro__carte--formulaire {
-    min-block-size: 99rem;
+    min-block-size: 102.36rem;
   }
 }
 

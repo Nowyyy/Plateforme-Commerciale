@@ -93,13 +93,3 @@ html[data-rendu="erreur"] .carte-cadre {
   color: var(--color-navy);
   text-decoration: underline;
 }
-
-.carte-reelle__legende .legende__repere {
-  fill: none;
-}
-
-.carte-reelle__legende .legende__repere circle {
-  fill: var(--color-navy);
-  stroke: var(--color-on-navy);
-  stroke-width: 3;
-}

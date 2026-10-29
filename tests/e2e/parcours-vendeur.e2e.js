@@ -41,7 +41,7 @@ for (const largeur of [375, 1440]) {
     // les liens du récapitulatif ramènent aux champs ; saisie des champs restants au clavier
     await resume.getByRole('link', { name: 'Aléas couverts par vos produits' }).click();
     await page.keyboard.press('Space');
-    for (let i = 0; i < 4; i++) await page.keyboard.press('Tab');
+    for (let i = 0; i < 5; i++) await page.keyboard.press('Tab'); // lot 10c-B : cinq cases d'aléas
     await expect(page.getByLabel('Description de vos produits')).toBeFocused();
     await page.keyboard.type('Des batardeaux modulables et des clapets (exemple).');
     await expect(resume).toContainText('1 erreur à corriger');

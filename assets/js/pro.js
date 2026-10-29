@@ -6,7 +6,7 @@ import { remplirGabarit } from './cotes-logique.js';
 import { brancherFormulaire } from './formulaire.js';
 import { valider, construireResume } from './pro-logique.js';
 
-// Identifiants d'aléas acceptés par la validation : ceux de data/pro.json (mêmes que ceux de l'accueil).
+// Identifiants acceptés par la validation : ceux de data/pro.json (les quatre aléas de l'accueil, puis la catégorie « Protection de la personne »).
 export const idsAleas = (donnees) => donnees.pro.aleas.map((alea) => alea.id);
 
 const CHAMPS_TEXTE = ['societe', 'siret', 'prenom', 'nom', 'email', 'telephone', 'description', 'message'];
